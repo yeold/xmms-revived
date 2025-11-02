@@ -187,9 +187,9 @@ static void streaming_save_browse_cb(GtkWidget * w, gpointer data)
 {
 	if (!streaming_save_dirbrowser)
 	{
-		streaming_save_dirbrowser = xmms_create_dir_browser(_("Select the directory where you want to store the MPEG streams:"),
-								    mpg123_cfg.save_http_path, GTK_SELECTION_SINGLE, streaming_save_dirbrowser_cb);
-		gtk_signal_connect(GTK_OBJECT(streaming_save_dirbrowser), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &streaming_save_dirbrowser);
+	streaming_save_dirbrowser = xmms_create_dir_browser(_("Select the directory where you want to store the MPEG streams:"),
+				    mpg123_cfg.save_http_path, GTK_SELECTION_SINGLE, streaming_save_dirbrowser_cb);
+	g_signal_connect(G_OBJECT(streaming_save_dirbrowser), "destroy", G_CALLBACK(gtk_widget_destroyed), &streaming_save_dirbrowser);
 		gtk_window_set_transient_for(GTK_WINDOW(streaming_save_dirbrowser), GTK_WINDOW(mpg123_configurewin));
 		gtk_widget_show(streaming_save_dirbrowser);
 	}
@@ -240,8 +240,8 @@ void mpg123_configure(void)
 		return;
 	}
 	mpg123_configurewin = gtk_window_new(GDK_WINDOW_DIALOG);
-	gtk_signal_connect(GTK_OBJECT(mpg123_configurewin), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &mpg123_configurewin);
-	gtk_signal_connect(GTK_OBJECT(mpg123_configurewin), "destroy", GTK_SIGNAL_FUNC(configure_destroy), &mpg123_configurewin);
+	g_signal_connect(G_OBJECT(mpg123_configurewin), "destroy", G_CALLBACK(gtk_widget_destroyed), &mpg123_configurewin);
+	g_signal_connect(G_OBJECT(mpg123_configurewin), "destroy", G_CALLBACK(configure_destroy), &mpg123_configurewin);
 	gtk_window_set_title(GTK_WINDOW(mpg123_configurewin), _("MPG123 Configuration"));
 	gtk_window_set_policy(GTK_WINDOW(mpg123_configurewin), FALSE, FALSE, FALSE);
 	/*  gtk_window_set_position(GTK_WINDOW(mpg123_configurewin), GTK_WIN_POS_MOUSE); */
@@ -333,7 +333,7 @@ void mpg123_configure(void)
 
 	auto_select = gtk_check_button_new_with_label(_("Automatic detection"));
 	gtk_box_pack_start(GTK_BOX(decoder_vbox), auto_select, FALSE, FALSE, 0);
-	gtk_signal_connect(GTK_OBJECT(auto_select), "clicked", GTK_SIGNAL_FUNC(auto_select_cb), NULL);
+	g_signal_connect(G_OBJECT(auto_select), "clicked", G_CALLBACK(auto_select_cb), NULL);
 
 	decoder_3dnow = gtk_radio_button_new_with_label(NULL, _("3DNow! optimized decoder"));
 	gtk_box_pack_start(GTK_BOX(decoder_vbox), decoder_3dnow, FALSE, FALSE, 0);
@@ -445,7 +445,7 @@ void mpg123_configure(void)
 
 	streaming_proxy_use = gtk_check_button_new_with_label(_("Use proxy"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(streaming_proxy_use), mpg123_cfg.use_proxy);
-	gtk_signal_connect(GTK_OBJECT(streaming_proxy_use), "clicked", GTK_SIGNAL_FUNC(proxy_use_cb), NULL);
+	g_signal_connect(G_OBJECT(streaming_proxy_use), "clicked", G_CALLBACK(proxy_use_cb), NULL);
 	gtk_box_pack_start(GTK_BOX(streaming_proxy_vbox), streaming_proxy_use, FALSE, FALSE, 0);
 
 	streaming_proxy_hbox = gtk_hbox_new(FALSE, 5);
@@ -472,7 +472,7 @@ void mpg123_configure(void)
 	streaming_proxy_auth_use = gtk_check_button_new_with_label(_("Use authentication"));
 	gtk_widget_set_sensitive(streaming_proxy_auth_use, mpg123_cfg.use_proxy);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(streaming_proxy_auth_use), mpg123_cfg.proxy_use_auth);
-	gtk_signal_connect(GTK_OBJECT(streaming_proxy_auth_use), "clicked", GTK_SIGNAL_FUNC(proxy_auth_use_cb), NULL);
+	g_signal_connect(G_OBJECT(streaming_proxy_auth_use), "clicked", G_CALLBACK(proxy_auth_use_cb), NULL);
 	gtk_box_pack_start(GTK_BOX(streaming_proxy_vbox), streaming_proxy_auth_use, FALSE, FALSE, 0);
 
 	streaming_proxy_auth_hbox = gtk_hbox_new(FALSE, 5);
@@ -510,7 +510,7 @@ void mpg123_configure(void)
 
 	streaming_save_use = gtk_check_button_new_with_label(_("Save stream to disk"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(streaming_save_use), mpg123_cfg.save_http_stream);
-	gtk_signal_connect(GTK_OBJECT(streaming_save_use), "clicked", GTK_SIGNAL_FUNC(streaming_save_use_cb), NULL);
+	g_signal_connect(G_OBJECT(streaming_save_use), "clicked", G_CALLBACK(streaming_save_use_cb), NULL);
 	gtk_box_pack_start(GTK_BOX(streaming_save_vbox), streaming_save_use, FALSE, FALSE, 0);
 
 	streaming_save_hbox = gtk_hbox_new(FALSE, 5);
@@ -525,7 +525,7 @@ void mpg123_configure(void)
 	gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_entry, TRUE, TRUE, 0);
 
 	streaming_save_browse = gtk_button_new_with_label(_("Browse"));
-	gtk_signal_connect(GTK_OBJECT(streaming_save_browse), "clicked", GTK_SIGNAL_FUNC(streaming_save_browse_cb), NULL);
+	g_signal_connect(G_OBJECT(streaming_save_browse), "clicked", G_CALLBACK(streaming_save_browse_cb), NULL);
 	gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_browse, FALSE, FALSE, 0);
 
 	streaming_cast_frame = gtk_frame_new(_("SHOUT/Icecast:"));
@@ -559,7 +559,7 @@ void mpg123_configure(void)
 
 	title_override = gtk_check_button_new_with_label(_("Override generic titles"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(title_override), mpg123_cfg.title_override);
-	gtk_signal_connect(GTK_OBJECT(title_override), "clicked", title_override_cb, NULL);
+	g_signal_connect(G_OBJECT(title_override), "clicked", G_CALLBACK(title_override_cb), NULL);
 	gtk_box_pack_start(GTK_BOX(title_id3_vbox), title_override, FALSE, FALSE, 0);
 
 	title_id3_box = gtk_hbox_new(FALSE, 5);
@@ -584,13 +584,13 @@ void mpg123_configure(void)
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
 	ok = gtk_button_new_with_label(_("OK"));
-	gtk_signal_connect(GTK_OBJECT(ok), "clicked", GTK_SIGNAL_FUNC(mpg123_configurewin_ok), NULL);
+	g_signal_connect(G_OBJECT(ok), "clicked", G_CALLBACK(mpg123_configurewin_ok), NULL);
 	GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);
 	gtk_widget_grab_default(ok);
 
 	cancel = gtk_button_new_with_label(_("Cancel"));
-	gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(mpg123_configurewin));
+	g_signal_connect_swapped(G_OBJECT(cancel), "clicked", G_CALLBACK(gtk_widget_destroy), mpg123_configurewin);
 	GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
 
