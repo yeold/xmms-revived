@@ -12,3 +12,6 @@ po/Makefile.in
 po/POTFILES
 xmms/i18n.h
 xmms/stamp-h2
+
+
+*.o
