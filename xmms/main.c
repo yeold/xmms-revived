@@ -125,25 +125,26 @@ enum
 
 GtkItemFactoryEntry mainwin_options_menu_entries[] =
 {
-	{N_("/Preferences"), "<control>P", mainwin_options_menu_callback, MAINWIN_OPT_PREFS, "<Item>"},
-	{N_("/Skin Browser"), "<alt>S", mainwin_options_menu_callback, MAINWIN_OPT_SKIN, "<Item>"},
-	{N_("/Reload skin"), "F5", mainwin_options_menu_callback, MAINWIN_OPT_RELOADSKIN, "<Item>"},
+	{N_("/Preferences"), "<control>P", (GtkItemFactoryCallback)mainwin_options_menu_callback, MAINWIN_OPT_PREFS, "<Item>"},
+	{N_("/Skin Browser"), "<alt>S", (GtkItemFactoryCallback)mainwin_options_menu_callback, MAINWIN_OPT_SKIN, "<Item>"},
+	{N_("/Skin Browser"), "<alt>S", (GtkItemFactoryCallback)mainwin_options_menu_callback, MAINWIN_OPT_SKIN, "<Item>"},
+	{N_("/Reload skin"), "F5", (GtkItemFactoryCallback)mainwin_options_menu_callback, MAINWIN_OPT_RELOADSKIN, "<Item>"},
 	{N_("/-"), NULL, NULL, 0, "<Separator>"},
-	{N_("/Repeat"), "R", mainwin_options_menu_callback, MAINWIN_OPT_REPEAT, "<ToggleItem>"},
-	{N_("/Shuffle"), "S", mainwin_options_menu_callback, MAINWIN_OPT_SHUFFLE, "<ToggleItem>"},
-	{N_("/No Playlist Advance"), "<control>N", mainwin_options_menu_callback, MAINWIN_OPT_NPA, "<ToggleItem>"},
+	{N_("/Repeat"), "R", (GtkItemFactoryCallback)mainwin_options_menu_callback, MAINWIN_OPT_REPEAT, "<ToggleItem>"},
+	{N_("/Shuffle"), "S", (GtkItemFactoryCallback)mainwin_options_menu_callback, MAINWIN_OPT_SHUFFLE, "<ToggleItem>"},
+	{N_("/No Playlist Advance"), "<control>N", (GtkItemFactoryCallback)mainwin_options_menu_callback, MAINWIN_OPT_NPA, "<ToggleItem>"},
 	{N_("/-"), NULL, NULL, 0, "<Separator>"},
-	{N_("/Time Elapsed"), "<control>E", mainwin_options_menu_callback, MAINWIN_OPT_TELAPSED, "<RadioItem>"},
-	{N_("/Time Remaining"), "<control>R", mainwin_options_menu_callback, MAINWIN_OPT_TREMAINING, "/Time Elapsed"},
-	{N_("/Time Display (MMM:SS)"), "<shift><control>L", mainwin_options_menu_callback, MAINWIN_OPT_TDISPLAY, "<ToggleItem>"},
+	{N_("/Time Elapsed"), "<control>E", (GtkItemFactoryCallback)mainwin_options_menu_callback, MAINWIN_OPT_TELAPSED, "<RadioItem>"},
+	{N_("/Time Remaining"), "<control>R", (GtkItemFactoryCallback)mainwin_options_menu_callback, MAINWIN_OPT_TREMAINING, "/Time Elapsed"},
+	{N_("/Time Display (MMM:SS)"), "<shift><control>L", (GtkItemFactoryCallback)mainwin_options_menu_callback, MAINWIN_OPT_TDISPLAY, "<ToggleItem>"},
 	{N_("/-"), NULL, NULL, 0, "<Separator>"},
-	{N_("/Always On Top"), "<control>A", mainwin_options_menu_callback, MAINWIN_OPT_ALWAYS, "<ToggleItem>"},
-	{N_("/Show on all desktops"), "<control>S", mainwin_options_menu_callback, MAINWIN_OPT_STICKY, "<ToggleItem>"},
-	{N_("/WindowShade Mode"), "<control>W", mainwin_options_menu_callback, MAINWIN_OPT_WS, "<ToggleItem>"},
-	{N_("/Playlist WindowShade Mode"), "<control><shift>W", mainwin_options_menu_callback, MAINWIN_OPT_PWS, "<ToggleItem>"},
-	{N_("/Equalizer WindowShade Mode"), "<control><alt>W", mainwin_options_menu_callback, MAINWIN_OPT_EQWS, "<ToggleItem>"},
-	{N_("/DoubleSize"), "<control>D", mainwin_options_menu_callback, MAINWIN_OPT_DOUBLESIZE, "<ToggleItem>"},
-	{N_("/Easy Move"), "<control>E", mainwin_options_menu_callback, MAINWIN_OPT_EASY_MOVE, "<ToggleItem>"},
+	{N_("/Always On Top"), "<control>A", (GtkItemFactoryCallback)mainwin_options_menu_callback, MAINWIN_OPT_ALWAYS, "<ToggleItem>"},
+	{N_("/Show on all desktops"), "<control>S", (GtkItemFactoryCallback)mainwin_options_menu_callback, MAINWIN_OPT_STICKY, "<ToggleItem>"},
+	{N_("/WindowShade Mode"), "<control>W", (GtkItemFactoryCallback)mainwin_options_menu_callback, MAINWIN_OPT_WS, "<ToggleItem>"},
+	{N_("/Playlist WindowShade Mode"), "<control><shift>W", (GtkItemFactoryCallback)mainwin_options_menu_callback, MAINWIN_OPT_PWS, "<ToggleItem>"},
+	{N_("/Equalizer WindowShade Mode"), "<control><alt>W", (GtkItemFactoryCallback)mainwin_options_menu_callback, MAINWIN_OPT_EQWS, "<ToggleItem>"},
+	{N_("/DoubleSize"), "<control>D", (GtkItemFactoryCallback)mainwin_options_menu_callback, MAINWIN_OPT_DOUBLESIZE, "<ToggleItem>"},
+	{N_("/Easy Move"), "<control>E", (GtkItemFactoryCallback)mainwin_options_menu_callback, MAINWIN_OPT_EASY_MOVE, "<ToggleItem>"},
 };
 
 static gint mainwin_options_menu_entries_num =
@@ -159,10 +160,10 @@ enum
 
 GtkItemFactoryEntry mainwin_songname_menu_entries[] =
 {
-	{N_("/File Info"), NULL, mainwin_songname_menu_callback, MAINWIN_SONGNAME_FILEINFO, "<Item>"},
-	{N_("/Jump To File"), "J", mainwin_songname_menu_callback, MAINWIN_SONGNAME_JTF, "<Item>"},
-	{N_("/Jump To Time"), "<control>J", mainwin_songname_menu_callback, MAINWIN_SONGNAME_JTT, "<Item>"},
-	{N_("/Autoscroll Song Name"), NULL, mainwin_songname_menu_callback, MAINWIN_SONGNAME_SCROLL, "<ToggleItem>"},
+	{N_("/File Info"), NULL, (GtkItemFactoryCallback)mainwin_songname_menu_callback, MAINWIN_SONGNAME_FILEINFO, "<Item>"},
+	{N_("/Jump To File"), "J", (GtkItemFactoryCallback)mainwin_songname_menu_callback, MAINWIN_SONGNAME_JTF, "<Item>"},
+	{N_("/Jump To Time"), "<control>J", (GtkItemFactoryCallback)mainwin_songname_menu_callback, MAINWIN_SONGNAME_JTT, "<Item>"},
+	{N_("/Autoscroll Song Name"), NULL, (GtkItemFactoryCallback)mainwin_songname_menu_callback, MAINWIN_SONGNAME_SCROLL, "<ToggleItem>"},
 };
 
 static gint mainwin_songname_menu_entries_num =
@@ -187,43 +188,43 @@ enum
 GtkItemFactoryEntry mainwin_vis_menu_entries[] =
 {
 	{N_("/Visualization Mode"), NULL, NULL, 0, "<Branch>"},
-	{N_("/Visualization Mode/Analyzer"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_ANALYZER, "<RadioItem>"},
-	{N_("/Visualization Mode/Scope"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_SCOPE, "/Visualization Mode/Analyzer"},
-	{N_("/Visualization Mode/Off"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_OFF, "/Visualization Mode/Analyzer"},
+	{N_("/Visualization Mode/Analyzer"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_ANALYZER, "<RadioItem>"},
+	{N_("/Visualization Mode/Scope"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_SCOPE, "/Visualization Mode/Analyzer"},
+	{N_("/Visualization Mode/Off"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_OFF, "/Visualization Mode/Analyzer"},
 	{N_("/Analyzer Mode"), NULL, NULL, 0, "<Branch>"},
-	{N_("/Analyzer Mode/Normal"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_ANALYZER_NORMAL, "<RadioItem>"},
-	{N_("/Analyzer Mode/Fire"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_ANALYZER_FIRE, "/Analyzer Mode/Normal"},
-	{N_("/Analyzer Mode/Vertical Lines"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_ANALYZER_VLINES, "/Analyzer Mode/Normal"},
+	{N_("/Analyzer Mode/Normal"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_ANALYZER_NORMAL, "<RadioItem>"},
+	{N_("/Analyzer Mode/Fire"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_ANALYZER_FIRE, "/Analyzer Mode/Normal"},
+	{N_("/Analyzer Mode/Vertical Lines"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_ANALYZER_VLINES, "/Analyzer Mode/Normal"},
 	{N_("/Analyzer Mode/-"), NULL, NULL, 0, "<Separator>"},
-	{N_("/Analyzer Mode/Lines"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_ANALYZER_LINES, "<RadioItem>"},
-	{N_("/Analyzer Mode/Bars"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_ANALYZER_BARS, "/Analyzer Mode/Lines"},
+	{N_("/Analyzer Mode/Lines"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_ANALYZER_LINES, "<RadioItem>"},
+	{N_("/Analyzer Mode/Bars"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_ANALYZER_BARS, "/Analyzer Mode/Lines"},
 	{N_("/Analyzer Mode/-"), NULL, NULL, 0, "<Separator>"},
-	{N_("/Analyzer Mode/Peaks"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_ANALYZER_PEAKS, "<ToggleItem>"},
+	{N_("/Analyzer Mode/Peaks"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_ANALYZER_PEAKS, "<ToggleItem>"},
 	{N_("/Scope Mode"), NULL, NULL, 0, "<Branch>"},
-	{N_("/Scope Mode/Dot Scope"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_SCOPE_DOT, "<RadioItem>"},
-	{N_("/Scope Mode/Line Scope"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_SCOPE_LINE, "/Scope Mode/Dot Scope"},
-	{N_("/Scope Mode/Solid Scope"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_SCOPE_SOLID, "/Scope Mode/Dot Scope"},
+	{N_("/Scope Mode/Dot Scope"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_SCOPE_DOT, "<RadioItem>"},
+	{N_("/Scope Mode/Line Scope"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_SCOPE_LINE, "/Scope Mode/Dot Scope"},
+	{N_("/Scope Mode/Solid Scope"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_SCOPE_SOLID, "/Scope Mode/Dot Scope"},
 	{N_("/WindowShade VU Mode"), NULL, NULL, 0, "<Branch>"},
-	{N_("/WindowShade VU Mode/Normal"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_VU_NORMAL, "<RadioItem>"},
-	{N_("/WindowShade VU Mode/Smooth"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_VU_SMOOTH, "/WindowShade VU Mode/Normal"},
+	{N_("/WindowShade VU Mode/Normal"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_VU_NORMAL, "<RadioItem>"},
+	{N_("/WindowShade VU Mode/Smooth"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_VU_SMOOTH, "/WindowShade VU Mode/Normal"},
 	{N_("/Refresh Rate"), NULL, NULL, 0, "<Branch>"},
-	{N_("/Refresh Rate/Full (~50 fps)"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_REFRESH_FULL, "<RadioItem>"},
-	{N_("/Refresh Rate/Half (~25 fps)"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_REFRESH_HALF, "/Refresh Rate/Full (~50 fps)"},
-	{N_("/Refresh Rate/Quarter (~13 fps)"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_REFRESH_QUARTER, "/Refresh Rate/Full (~50 fps)"},
-	{N_("/Refresh Rate/Eighth (~6 fps)"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_REFRESH_EIGHTH, "/Refresh Rate/Full (~50 fps)"},
+	{N_("/Refresh Rate/Full (~50 fps)"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_REFRESH_FULL, "<RadioItem>"},
+	{N_("/Refresh Rate/Half (~25 fps)"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_REFRESH_HALF, "/Refresh Rate/Full (~50 fps)"},
+	{N_("/Refresh Rate/Quarter (~13 fps)"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_REFRESH_QUARTER, "/Refresh Rate/Full (~50 fps)"},
+	{N_("/Refresh Rate/Eighth (~6 fps)"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_REFRESH_EIGHTH, "/Refresh Rate/Full (~50 fps)"},
 	{N_("/Analyzer Falloff"), NULL, NULL, 0, "<Branch>"},
-	{N_("/Analyzer Falloff/Slowest"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_AFALLOFF_SLOWEST, "<RadioItem>"},
-	{N_("/Analyzer Falloff/Slow"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_AFALLOFF_SLOW, "/Analyzer Falloff/Slowest"},
-	{N_("/Analyzer Falloff/Medium"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_AFALLOFF_MEDIUM, "/Analyzer Falloff/Slowest"},
-	{N_("/Analyzer Falloff/Fast"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_AFALLOFF_FAST, "/Analyzer Falloff/Slowest"},
-	{N_("/Analyzer Falloff/Fastest"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_AFALLOFF_FASTEST, "/Analyzer Falloff/Slowest"},
+	{N_("/Analyzer Falloff/Slowest"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_AFALLOFF_SLOWEST, "<RadioItem>"},
+	{N_("/Analyzer Falloff/Slow"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_AFALLOFF_SLOW, "/Analyzer Falloff/Slowest"},
+	{N_("/Analyzer Falloff/Medium"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_AFALLOFF_MEDIUM, "/Analyzer Falloff/Slowest"},
+	{N_("/Analyzer Falloff/Fast"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_AFALLOFF_FAST, "/Analyzer Falloff/Slowest"},
+	{N_("/Analyzer Falloff/Fastest"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_AFALLOFF_FASTEST, "/Analyzer Falloff/Slowest"},
 	{N_("/Peaks Falloff"), NULL, NULL, 0, "<Branch>"},
-	{N_("/Peaks Falloff/Slowest"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_PFALLOFF_SLOWEST, "<RadioItem>"},
-	{N_("/Peaks Falloff/Slow"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_PFALLOFF_SLOW, "/Peaks Falloff/Slowest"},
-	{N_("/Peaks Falloff/Medium"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_PFALLOFF_MEDIUM, "/Peaks Falloff/Slowest"},
-	{N_("/Peaks Falloff/Fast"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_PFALLOFF_FAST, "/Peaks Falloff/Slowest"},
-	{N_("/Peaks Falloff/Fastest"), NULL, mainwin_vis_menu_callback, MAINWIN_VIS_PFALLOFF_FASTEST, "/Peaks Falloff/Slowest"},
-	{N_("/Visualization plugins"), "<control>V", mainwin_vis_menu_callback, MAINWIN_VIS_PLUGINS, "<Item>"}
+	{N_("/Peaks Falloff/Slowest"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_PFALLOFF_SLOWEST, "<RadioItem>"},
+	{N_("/Peaks Falloff/Slow"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_PFALLOFF_SLOW, "/Peaks Falloff/Slowest"},
+	{N_("/Peaks Falloff/Medium"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_PFALLOFF_MEDIUM, "/Peaks Falloff/Slowest"},
+	{N_("/Peaks Falloff/Fast"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_PFALLOFF_FAST, "/Peaks Falloff/Slowest"},
+	{N_("/Peaks Falloff/Fastest"), NULL, (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_PFALLOFF_FASTEST, "/Peaks Falloff/Slowest"},
+	{N_("/Visualization plugins"), "<control>V", (GtkItemFactoryCallback)mainwin_vis_menu_callback, MAINWIN_VIS_PLUGINS, "<Item>"}
 };
 
 static gint mainwin_vis_menu_entries_num =
@@ -269,38 +270,38 @@ void mainwin_general_menu_callback(gpointer cb_data, guint action, GtkWidget * w
 
 GtkItemFactoryEntry mainwin_general_menu_entries[] =
 {
-	{N_("/About XMMS"), NULL, mainwin_general_menu_callback, MAINWIN_GENERAL_ABOUT, "<Item>"},
+	{N_("/About XMMS"), NULL, (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_ABOUT, "<Item>"},
 	{N_("/-"), NULL, NULL, 0, "<Separator>"},
-	{N_("/Play File"), "L", mainwin_general_menu_callback, MAINWIN_GENERAL_PLAYFILE, "<Item>"},
-	{N_("/Play Directory"), "<shift>L", mainwin_general_menu_callback, MAINWIN_GENERAL_PLAYDIRECTORY, "<Item>"},
-	{N_("/Play Location"), "<control>L", mainwin_general_menu_callback, MAINWIN_GENERAL_PLAYLOCATION, "<Item>"},
-	{N_("/View File Info"), "<control>3" , mainwin_general_menu_callback, MAINWIN_GENERAL_FILEINFO, "<Item>"},
+	{N_("/Play File"), "L", (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_PLAYFILE, "<Item>"},
+	{N_("/Play Directory"), "<shift>L", (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_PLAYDIRECTORY, "<Item>"},
+	{N_("/Play Location"), "<control>L", (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_PLAYLOCATION, "<Item>"},
+	{N_("/View File Info"), "<control>3" , (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_FILEINFO, "<Item>"},
 	{N_("/-"), NULL, NULL, 0, "<Separator>"},
-	{N_("/Main Window"), "<alt>W", mainwin_general_menu_callback, MAINWIN_GENERAL_SHOWMWIN, "<ToggleItem>"},
-	{N_("/Playlist Editor"), "<alt>E", mainwin_general_menu_callback, MAINWIN_GENERAL_SHOWPLWIN, "<ToggleItem>"},
-	{N_("/Graphical EQ"), "<alt>G", mainwin_general_menu_callback, MAINWIN_GENERAL_SHOWEQWIN, "<ToggleItem>"},
+	{N_("/Main Window"), "<alt>W", (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_SHOWMWIN, "<ToggleItem>"},
+	{N_("/Playlist Editor"), "<alt>E", (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_SHOWPLWIN, "<ToggleItem>"},
+	{N_("/Graphical EQ"), "<alt>G", (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_SHOWEQWIN, "<ToggleItem>"},
 	{N_("/-"), NULL, NULL, 0, "<Separator>"},
 	{N_("/Options"), NULL, NULL, 0, "<Item>"},
 	{N_("/Playback"), NULL, NULL, 0, "<Branch>"},
-	{N_("/Playback/Previous"), "Z", mainwin_general_menu_callback, MAINWIN_GENERAL_PREV, "<Item>"},
-	{N_("/Playback/Play"), "X", mainwin_general_menu_callback, MAINWIN_GENERAL_PLAY, "<Item>"},
-	{N_("/Playback/Pause"), "C", mainwin_general_menu_callback, MAINWIN_GENERAL_PAUSE, "<Item>"},
-	{N_("/Playback/Stop"), "V", mainwin_general_menu_callback, MAINWIN_GENERAL_STOP, "<Item>"},
-	{N_("/Playback/Next"), "B", mainwin_general_menu_callback, MAINWIN_GENERAL_NEXT, "<Item>"},
+	{N_("/Playback/Previous"), "Z", (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_PREV, "<Item>"},
+	{N_("/Playback/Play"), "X", (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_PLAY, "<Item>"},
+	{N_("/Playback/Pause"), "C", (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_PAUSE, "<Item>"},
+	{N_("/Playback/Stop"), "V", (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_STOP, "<Item>"},
+	{N_("/Playback/Next"), "B", (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_NEXT, "<Item>"},
 	{N_("/Playback/-"), NULL, NULL, 0, "<Separator>"},
 /*      {N_("/Playback/Stop with Fadeout"),"<Shift>V",mainwin_general_menu_callback,MAINWIN_GENERAL_STOPFADE,"<Item>"}, */
-	{N_("/Playback/Back 5 Seconds"), NULL, mainwin_general_menu_callback, MAINWIN_GENERAL_BACK5SEC, "<Item>"},
-	{N_("/Playback/Fwd 5 Seconds"), NULL, mainwin_general_menu_callback, MAINWIN_GENERAL_FWD5SEC, "<Item>"},
-	{N_("/Playback/Start of List"), "<control>Z", mainwin_general_menu_callback, MAINWIN_GENERAL_START, "<Item>"},
-	{N_("/Playback/10 Tracks Back"), NULL, mainwin_general_menu_callback, MAINWIN_GENERAL_BACK10, "<Item>"},
-	{N_("/Playback/10 Tracks Fwd"), NULL, mainwin_general_menu_callback, MAINWIN_GENERAL_FWD10, "<Item>"},
+	{N_("/Playback/Back 5 Seconds"), NULL, (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_BACK5SEC, "<Item>"},
+	{N_("/Playback/Fwd 5 Seconds"), NULL, (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_FWD5SEC, "<Item>"},
+	{N_("/Playback/Start of List"), "<control>Z", (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_START, "<Item>"},
+	{N_("/Playback/10 Tracks Back"), NULL, (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_BACK10, "<Item>"},
+	{N_("/Playback/10 Tracks Fwd"), NULL, (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_FWD10, "<Item>"},
 	{N_("/Playback/-"), NULL, NULL, 0, "<Separator>"},
-	{N_("/Playback/Jump to Time"), "<control>J", mainwin_general_menu_callback, MAINWIN_GENERAL_JTT, "<Item>"},
-	{N_("/Playback/Jump to File"), "J", mainwin_general_menu_callback, MAINWIN_GENERAL_JTF, "<Item>"},
-	{N_("/Playback/Clear Queue"), "<shift>Q", mainwin_general_menu_callback, MAINWIN_GENERAL_CQUEUE, "<Item>"},
+	{N_("/Playback/Jump to Time"), "<control>J", (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_JTT, "<Item>"},
+	{N_("/Playback/Jump to File"), "J", (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_JTF, "<Item>"},
+	{N_("/Playback/Clear Queue"), "<shift>Q", (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_CQUEUE, "<Item>"},
 	{N_("/Visualization"), NULL, NULL, 0, "<Item>"},
 	{N_("/-"), NULL, NULL, 0, "<Separator>"},
-	{N_("/Exit"), "<control>Q", mainwin_general_menu_callback, MAINWIN_GENERAL_EXIT, "<Item>"}
+	{N_("/Exit"), "<control>Q", (GtkItemFactoryCallback)mainwin_general_menu_callback, MAINWIN_GENERAL_EXIT, "<Item>"}
 };
 
 static const int mainwin_general_menu_entries_num =
@@ -1365,10 +1366,10 @@ void mainwin_press(GtkWidget * widget, GdkEventButton * event, gpointer callback
 
 	}
 	if (grab)
-		gdk_pointer_grab(mainwin->window, FALSE,
-				 GDK_BUTTON_MOTION_MASK |
-				 GDK_BUTTON_RELEASE_MASK,
-				 GDK_NONE, GDK_NONE, GDK_CURRENT_TIME);
+	gdk_pointer_grab(mainwin->window, FALSE,
+		 GDK_BUTTON_MOTION_MASK |
+		 GDK_BUTTON_RELEASE_MASK,
+		 NULL, NULL, GDK_CURRENT_TIME);
 }
 
 void mainwin_focus_in(GtkWidget * widget, GdkEvent * event, gpointer callback_data)
@@ -1514,12 +1515,12 @@ void mainwin_jump_to_time(void)
 	jump = gtk_button_new_with_label(_("Jump"));
 	GTK_WIDGET_SET_FLAGS(jump, GTK_CAN_DEFAULT);
 	gtk_container_add(GTK_CONTAINER(bbox), jump);
-	gtk_signal_connect(GTK_OBJECT(jump), "clicked", GTK_SIGNAL_FUNC(mainwin_jump_to_time_cb), time_entry);
+	g_signal_connect(G_OBJECT(jump), "clicked", G_CALLBACK(mainwin_jump_to_time_cb), time_entry);
 	gtk_widget_show(jump);
 	cancel = gtk_button_new_with_label(_("Cancel"));
 	GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
 	gtk_container_add(GTK_CONTAINER(bbox), cancel);
-	gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(mainwin_jtt));
+	g_signal_connect_swapped(G_OBJECT(cancel), "clicked", G_CALLBACK(gtk_widget_destroy), GTK_OBJECT(mainwin_jtt));
 	gtk_widget_show(cancel);
 
 	tindex = input_get_time() / 1000;
@@ -2337,17 +2338,17 @@ void mainwin_queue_manager(void)
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
 	gtk_box_pack_start(GTK_BOX(bbox), queue, FALSE, FALSE, 0);
-	gtk_signal_connect(GTK_OBJECT(queue), "clicked",
-			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_queue_cb), edit_clist_qlist_and_queue);
+	g_signal_connect(G_OBJECT(queue), "clicked",
+               G_CALLBACK(mainwin_jump_to_file_queue_cb), edit_clist_qlist_and_queue);
 	GTK_WIDGET_SET_FLAGS(queue, GTK_CAN_DEFAULT);
 	gtk_widget_show(queue);
 	gtk_widget_grab_default(queue);
 
 	cancel = gtk_button_new_with_label(_("Close"));
 	gtk_box_pack_start(GTK_BOX(bbox), cancel, FALSE, FALSE, 0);
-	gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked",
-				  GTK_SIGNAL_FUNC(gtk_widget_destroy),
-				  GTK_OBJECT(mainwin_qm));
+	g_signal_connect_swapped(G_OBJECT(cancel), "clicked",
+				  G_CALLBACK(gtk_widget_destroy),
+				  G_OBJECT(mainwin_qm));
 	GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
 	gtk_widget_show(cancel);
 	gtk_widget_show(bbox);
@@ -2444,9 +2445,7 @@ void mainwin_show_dirbrowser(void)
 	{
 		mainwin_dir_browser = xmms_create_dir_browser(_("Select directory to add:"), cfg.filesel_path, GTK_SELECTION_SINGLE, mainwin_add_dir_handler);
 		g_signal_connect_swapped(G_OBJECT(mainwin_dir_browser), "destroy", G_CALLBACK(gtk_widget_destroyed), &mainwin_dir_browser);
-		gtk_signal_connect(GTK_OBJECT(mainwin_dir_browser),
-				   "key_press_event",
-				   util_dialog_keypress_cb, NULL);
+	g_signal_connect(G_OBJECT(mainwin_dir_browser), "key-press-event", G_CALLBACK(util_dialog_keypress_cb), NULL);
 		gtk_window_set_transient_for(GTK_WINDOW(mainwin_dir_browser), GTK_WINDOW(mainwin));
 	}
 	if (!GTK_WIDGET_VISIBLE(mainwin_dir_browser))
@@ -2492,15 +2491,14 @@ void mainwin_show_add_url_window(void)
 
 	mainwin_url_window =
 		util_create_add_url_window(_("Enter location to play:"),
-					   mainwin_url_ok_clicked,
-					   mainwin_url_enqueue_clicked);
+				   G_CALLBACK(mainwin_url_ok_clicked),
+				   G_CALLBACK(mainwin_url_enqueue_clicked));
 	gtk_window_set_transient_for(GTK_WINDOW(mainwin_url_window),
 				     GTK_WINDOW(mainwin));
 	g_signal_connect_swapped(G_OBJECT(mainwin_url_window), "destroy",
 			   G_CALLBACK(gtk_widget_destroyed),
 			   &mainwin_url_window);
-	gtk_signal_connect(GTK_OBJECT(mainwin_url_window), "key_press_event",
-			   util_dialog_keypress_cb, NULL);
+	g_signal_connect(G_OBJECT(mainwin_url_window), "key-press-event", G_CALLBACK(util_dialog_keypress_cb), NULL);
 	gtk_widget_show(mainwin_url_window);
 }
 
@@ -2515,8 +2513,7 @@ void mainwin_eject_pushed(void)
 		filebrowser = util_create_filebrowser(TRUE);
 		g_signal_connect_swapped(G_OBJECT(filebrowser), "destroy",
 			   G_CALLBACK(gtk_widget_destroyed), &filebrowser);
-	gtk_signal_connect(GTK_OBJECT(filebrowser), "key_press_event",
-			   util_dialog_keypress_cb,  NULL);
+	g_signal_connect(G_OBJECT(filebrowser), "key-press-event", G_CALLBACK(util_dialog_keypress_cb),  NULL);
 }
 
 void mainwin_play_pushed(void)
@@ -3319,7 +3316,7 @@ static void mainwin_set_icon (GtkWidget *win)
 {
 	static GdkPixmap *icon;
 	static GdkBitmap *mask;
-	Atom icon_atom;
+	GdkAtom icon_atom;
 	glong data[2];
 
 	if (!icon)
@@ -3488,7 +3485,7 @@ void mainwin_create(void)
 
 void mainwin_recreate(void)
 {
-	gtk_signal_disconnect_by_func(GTK_OBJECT(mainwin), mainwin_destroy, NULL);
+	g_signal_handlers_disconnect_by_func(G_OBJECT(mainwin), G_CALLBACK(mainwin_destroy), NULL);
 	dock_window_list = g_list_remove(dock_window_list, mainwin);
 	gtk_widget_destroy(mainwin);
 	mainwin_create_gtk();
@@ -4080,8 +4077,8 @@ void check_pposition(void)
 
 	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_wmclass(GTK_WINDOW(window), "XMMS_Player", "xmms");
-	gtk_signal_connect(GTK_OBJECT(window), "configure_event",
-			   GTK_SIGNAL_FUNC(pposition_configure), NULL);
+	g_signal_connect(G_OBJECT(window), "configure_event",
+			   G_CALLBACK(pposition_configure), NULL);
 	gtk_widget_set_uposition(window, 0, 0);
 	gtk_widget_realize(window);
 

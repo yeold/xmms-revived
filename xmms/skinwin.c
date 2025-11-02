@@ -49,7 +49,7 @@ void create_skin_window(void)
 	skinwin = gtk_window_new(GDK_WINDOW_DIALOG);
 	gtk_window_set_title(GTK_WINDOW(skinwin), _("Skin selector"));
 	gtk_window_set_transient_for(GTK_WINDOW(skinwin), GTK_WINDOW(mainwin));
-	gtk_signal_connect(GTK_OBJECT(skinwin), "delete_event", GTK_SIGNAL_FUNC(skinwin_delete_event), NULL);
+	g_signal_connect(G_OBJECT(skinwin), "delete_event", G_CALLBACK(skinwin_delete_event), NULL);
 	gtk_container_border_width(GTK_CONTAINER(skinwin), 10);
 
 	vbox = gtk_vbox_new(FALSE, 5);
@@ -59,7 +59,7 @@ void create_skin_window(void)
 	skinwin_list = gtk_clist_new_with_titles(1, titles);
 	gtk_clist_column_titles_passive(GTK_CLIST(skinwin_list));
 	gtk_clist_set_selection_mode(GTK_CLIST(skinwin_list), GTK_SELECTION_SINGLE);
-	gtk_signal_connect(GTK_OBJECT(skinwin_list), "select_row", GTK_SIGNAL_FUNC(change_skin_event), NULL);
+	g_signal_connect(G_OBJECT(skinwin_list), "select_row", G_CALLBACK(change_skin_event), NULL);
 	gtk_widget_set_usize(skinwin_list, 250, 200);
 	scrolled_win = gtk_scrolled_window_new(NULL, NULL);
 	gtk_container_add(GTK_CONTAINER(scrolled_win), skinwin_list);
@@ -77,7 +77,7 @@ void create_skin_window(void)
 	checkbox = gtk_check_button_new_with_label(_("Select random skin on play"));
 	gtk_box_pack_start(GTK_BOX(main_hbox), checkbox, FALSE, FALSE, 0);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(checkbox), cfg.random_skin_on_play);
-	gtk_signal_connect(GTK_OBJECT(checkbox), "toggled", GTK_SIGNAL_FUNC(enable_random_skin_event), NULL);
+	g_signal_connect(G_OBJECT(checkbox), "toggled", G_CALLBACK(enable_random_skin_event), NULL);
 
 	hbox = gtk_hbutton_box_new();
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(hbox), GTK_BUTTONBOX_END);
@@ -85,7 +85,7 @@ void create_skin_window(void)
 	gtk_box_pack_start(GTK_BOX(main_hbox), hbox, TRUE, TRUE, 0);
 	skinwin_close = gtk_button_new_with_label(_("Close"));
 	GTK_WIDGET_SET_FLAGS(skinwin_close, GTK_CAN_DEFAULT);
-	gtk_signal_connect(GTK_OBJECT(skinwin_close), "clicked", GTK_SIGNAL_FUNC(skinwin_delete_event), NULL);
+	g_signal_connect(G_OBJECT(skinwin_close), "clicked", G_CALLBACK(skinwin_delete_event), NULL);
 	gtk_box_pack_start(GTK_BOX(hbox), skinwin_close, FALSE, FALSE, 0);
 	gtk_widget_grab_default(skinwin_close);
 }

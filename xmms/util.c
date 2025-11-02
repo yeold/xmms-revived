@@ -460,9 +460,7 @@ static void util_menu_position(GtkMenu *menu, gint *x, gint *y, gpointer data)
 static void util_menu_delete_popup_data(GtkObject *object,
 					GtkItemFactory *ifactory)
 {
-	gtk_signal_disconnect_by_func(object,
-				      GTK_SIGNAL_FUNC(util_menu_delete_popup_data),
-				      ifactory);
+	g_signal_handlers_disconnect_by_func(G_OBJECT(object), G_CALLBACK(util_menu_delete_popup_data), ifactory);
 	gtk_object_remove_data_by_id(GTK_OBJECT(ifactory), quark_popup_data);
 }
 
@@ -508,10 +506,10 @@ void util_item_factory_popup_with_data(GtkItemFactory * ifactory,
 		gtk_object_set_data_by_id_full(GTK_OBJECT (ifactory),
 					       quark_popup_data,
 					       data, destroy);
-		gtk_signal_connect(GTK_OBJECT(ifactory->widget),
-				   "selection-done",
-				   GTK_SIGNAL_FUNC(util_menu_delete_popup_data),
-				   ifactory);
+	g_signal_connect(G_OBJECT(ifactory->widget),
+		   "selection-done",
+		   G_CALLBACK(util_menu_delete_popup_data),
+		   ifactory);
 	}
 
 	gtk_menu_popup(GTK_MENU(ifactory->widget), NULL, NULL,
@@ -600,7 +598,7 @@ GtkWidget* util_create_add_url_window(gchar *caption, GCallback ok_func, GCallba
 	}
 
 	cancel = gtk_button_new_with_label(_("Cancel"));
-	gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(win));
+	g_signal_connect_swapped(G_OBJECT(cancel), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(win));
 	GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), cancel, FALSE, FALSE, 0);
 	gtk_widget_show(cancel);

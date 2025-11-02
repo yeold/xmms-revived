@@ -33,7 +33,7 @@ void glist_movedown(GList * list);
 void glist_moveup(GList * list);
 void util_item_factory_popup(GtkItemFactory * ifactory, guint x, guint y, guint mouse_button, guint32 time);
 void util_item_factory_popup_with_data(GtkItemFactory * ifactory, gpointer data, GtkDestroyNotify destroy, guint x, guint y, guint mouse_button, guint32 time);
-GtkWidget *util_create_add_url_window(gchar *caption, GtkSignalFunc ok_func, GtkSignalFunc enqueue_func);
+GtkWidget *util_create_add_url_window(gchar *caption, GCallback ok_func, GCallback enqueue_func);
 GtkWidget *util_create_filebrowser(gboolean clear_pl_on_ok);
 gboolean util_filebrowser_is_dir(GtkFileSelection * filesel);
 GdkFont *util_font_load(gchar *name);

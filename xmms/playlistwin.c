@@ -92,31 +92,31 @@ enum
 
 GtkItemFactoryEntry playlistwin_sort_menu_entries[] =
 {
-	{N_("/Sort List"), NULL, NULL, 0, "<Branch>"},
-	{N_("/Sort List/By Title"), NULL, playlistwin_sort_menu_callback,
-					PLAYLISTWIN_SORT_BYTITLE, "<Item>"},
-	{N_("/Sort List/By Filename"), NULL, playlistwin_sort_menu_callback,
-	 PLAYLISTWIN_SORT_BYFILENAME, "<Item>"},
-	{N_("/Sort List/By Path + Filename"), NULL, playlistwin_sort_menu_callback,
-					PLAYLISTWIN_SORT_BYPATH, "<Item>"},
-	{N_("/Sort List/By Date"), NULL, playlistwin_sort_menu_callback,
-					PLAYLISTWIN_SORT_BYDATE, "<Item>"},
+	 {N_("/Sort List"), NULL, NULL, 0, "<Branch>"},
+	 {N_("/Sort List/By Title"), NULL, (GtkItemFactoryCallback)playlistwin_sort_menu_callback,
+						  PLAYLISTWIN_SORT_BYTITLE, "<Item>"},
+	 {N_("/Sort List/By Filename"), NULL, (GtkItemFactoryCallback)playlistwin_sort_menu_callback,
+ PLAYLISTWIN_SORT_BYFILENAME, "<Item>"},
+	 {N_("/Sort List/By Path + Filename"), NULL, (GtkItemFactoryCallback)playlistwin_sort_menu_callback,
+						  PLAYLISTWIN_SORT_BYPATH, "<Item>"},
+	 {N_("/Sort List/By Date"), NULL, (GtkItemFactoryCallback)playlistwin_sort_menu_callback,
+						  PLAYLISTWIN_SORT_BYDATE, "<Item>"},
 	{N_("/Selection"), NULL, NULL, 0, "<Branch>"},
-	{N_("/Selection/Sort By Title"), NULL, playlistwin_sort_menu_callback,
-					PLAYLISTWIN_SORT_SEL_BYTITLE, "<Item>"},
-	{N_("/Selection/Sort By Filename"), NULL, playlistwin_sort_menu_callback,
-					PLAYLISTWIN_SORT_SEL_BYFILENAME, "<Item>"},
-	{N_("/Selection/Sort By Path + Filename"), NULL, playlistwin_sort_menu_callback,
-					PLAYLISTWIN_SORT_SEL_BYPATH, "<Item>"},
-	{N_("/Selection/Sort By Date"), NULL, playlistwin_sort_menu_callback,
-					PLAYLISTWIN_SORT_SEL_BYDATE, "<Item>"},
-	{N_("/Selection/Randomize"), NULL, playlistwin_sort_menu_callback,
-					PLAYLISTWIN_SORT_SEL_RANDOMIZE, "<Item>"},
+	{N_("/Selection/Sort By Title"), NULL, (GtkItemFactoryCallback)playlistwin_sort_menu_callback,
+				PLAYLISTWIN_SORT_SEL_BYTITLE, "<Item>"},
+	{N_("/Selection/Sort By Filename"), NULL, (GtkItemFactoryCallback)playlistwin_sort_menu_callback,
+				PLAYLISTWIN_SORT_SEL_BYFILENAME, "<Item>"},
+	{N_("/Selection/Sort By Path + Filename"), NULL, (GtkItemFactoryCallback)playlistwin_sort_menu_callback,
+				PLAYLISTWIN_SORT_SEL_BYPATH, "<Item>"},
+	{N_("/Selection/Sort By Date"), NULL, (GtkItemFactoryCallback)playlistwin_sort_menu_callback,
+				PLAYLISTWIN_SORT_SEL_BYDATE, "<Item>"},
+	{N_("/Selection/Randomize"), NULL, (GtkItemFactoryCallback)playlistwin_sort_menu_callback,
+				PLAYLISTWIN_SORT_SEL_RANDOMIZE, "<Item>"},
 	{"/-", NULL, NULL, 0, "<Separator>"},
-	{N_("/Randomize List"), NULL, playlistwin_sort_menu_callback,
-					PLAYLISTWIN_SORT_RANDOMIZE, "<Item>"},
-	{N_("/Reverse List"), NULL, playlistwin_sort_menu_callback,
-					PLAYLISTWIN_SORT_REVERSE, "<Item>"},
+	{N_("/Randomize List"), NULL, (GtkItemFactoryCallback)playlistwin_sort_menu_callback,
+				PLAYLISTWIN_SORT_RANDOMIZE, "<Item>"},
+	{N_("/Reverse List"), NULL, (GtkItemFactoryCallback)playlistwin_sort_menu_callback,
+				PLAYLISTWIN_SORT_REVERSE, "<Item>"},
 };
 
 static const int playlistwin_sort_menu_entries_num =
@@ -128,10 +128,10 @@ enum {
 };
 
 static GtkItemFactoryEntry playlistwin_playlist_filetypes[] = {
-	{N_("/By extension"), NULL, playlistwin_save_type_cb, PLAYLISTWIN_SAVE_EXTENSION, NULL},
+	{N_("/By extension"), NULL, (GtkItemFactoryCallback)playlistwin_save_type_cb, PLAYLISTWIN_SAVE_EXTENSION, NULL},
 	{"/-", NULL, NULL, 0, "<Separator>"},
-	{"/m3u", NULL, playlistwin_save_type_cb, PLAYLISTWIN_SAVE_M3U, NULL},
-	{"/pls", NULL, playlistwin_save_type_cb, PLAYLISTWIN_SAVE_PLS, NULL},
+	{"/m3u", NULL, (GtkItemFactoryCallback)playlistwin_save_type_cb, PLAYLISTWIN_SAVE_M3U, NULL},
+	{"/pls", NULL, (GtkItemFactoryCallback)playlistwin_save_type_cb, PLAYLISTWIN_SAVE_PLS, NULL},
 };
 
 static const int playlistwin_playlist_filetypes_num =
@@ -145,8 +145,8 @@ enum
 
 GtkItemFactoryEntry playlistwin_sub_menu_entries[] =
 {
-	{N_("/Remove Dead Files"), NULL, playlistwin_sub_menu_callback, PLAYLISTWIN_REMOVE_DEAD_FILES, "<Item>"},
-	{N_("/Physically Delete Files"), NULL, playlistwin_sub_menu_callback, PLAYLISTWIN_PHYSICALLY_DELETE, "<Item>"},
+	{N_("/Remove Dead Files"), NULL, (GtkItemFactoryCallback)playlistwin_sub_menu_callback, PLAYLISTWIN_REMOVE_DEAD_FILES, "<Item>"},
+	{N_("/Physically Delete Files"), NULL, (GtkItemFactoryCallback)playlistwin_sub_menu_callback, PLAYLISTWIN_PHYSICALLY_DELETE, "<Item>"},
 };
 
 static const int playlistwin_sub_menu_entries_num =
@@ -155,34 +155,34 @@ static const int playlistwin_sub_menu_entries_num =
 
 GtkItemFactoryEntry playlistwin_popup_menu_entries[] =
 {
-	{N_("/View File Info"), "<control>3", playlistwin_popup_menu_callback, MISC_FILEINFO, "<Item>"},
-	{N_("/Queue - Unqueue"), "Q", playlistwin_popup_menu_callback, MISC_QUEUE, "<Item>"},
-	{N_("/Queue manager"), "<alt>Q", playlistwin_popup_menu_callback, MISC_QUEUE_MANAGER, "<Item>"},
+	{N_("/View File Info"), "<control>3", (GtkItemFactoryCallback)playlistwin_popup_menu_callback, MISC_FILEINFO, "<Item>"},
+	{N_("/Queue - Unqueue"), "Q", (GtkItemFactoryCallback)playlistwin_popup_menu_callback, MISC_QUEUE, "<Item>"},
+	{N_("/Queue manager"), "<alt>Q", (GtkItemFactoryCallback)playlistwin_popup_menu_callback, MISC_QUEUE_MANAGER, "<Item>"},
 	{N_("/-"), NULL, NULL, 0, "<Separator>"},
 	{N_("/Add"), NULL, NULL, 0, "<Branch>"},
-	{N_("/Add/File"), NULL, playlistwin_popup_menu_callback, ADD_FILE, "<Item>"},
-	{N_("/Add/Directory"), NULL, playlistwin_popup_menu_callback, ADD_DIR, "<Item>"},
-	{N_("/Add/Url"), NULL, playlistwin_popup_menu_callback, ADD_URL, "<Item>"},
+	{N_("/Add/File"), NULL, (GtkItemFactoryCallback)playlistwin_popup_menu_callback, ADD_FILE, "<Item>"},
+	{N_("/Add/Directory"), NULL, (GtkItemFactoryCallback)playlistwin_popup_menu_callback, ADD_DIR, "<Item>"},
+	{N_("/Add/Url"), NULL, (GtkItemFactoryCallback)playlistwin_popup_menu_callback, ADD_URL, "<Item>"},
 
 	{N_("/Remove"), NULL, NULL, 0, "<Branch>"},
-	{N_("/Remove/Selected"), NULL, playlistwin_popup_menu_callback, SUB_SELECTED, "<Item>"},
-	{N_("/Remove/Crop"), NULL, playlistwin_popup_menu_callback, SUB_CROP, "<Item>"},
-	{N_("/Remove/All"), NULL, playlistwin_popup_menu_callback, SUB_ALL, "<Item>"},
+	{N_("/Remove/Selected"), NULL, (GtkItemFactoryCallback)playlistwin_popup_menu_callback, SUB_SELECTED, "<Item>"},
+	{N_("/Remove/Crop"), NULL, (GtkItemFactoryCallback)playlistwin_popup_menu_callback, SUB_CROP, "<Item>"},
+	{N_("/Remove/All"), NULL, (GtkItemFactoryCallback)playlistwin_popup_menu_callback, SUB_ALL, "<Item>"},
 	{N_("/Remove/Misc"), NULL, NULL, 0, "<Item>"},
 
 	{N_("/Selection"), NULL, NULL, 0, "<Branch>"},
-	{N_("/Selection/Select All"), NULL, playlistwin_popup_menu_callback, SEL_ALL, "<Item>"},
-	{N_("/Selection/Select None"), NULL, playlistwin_popup_menu_callback, SEL_ZERO, "<Item>"},
-	{N_("/Selection/Invert Selection"), NULL, playlistwin_popup_menu_callback, SEL_INV, "<Item>"},
+	{N_("/Selection/Select All"), NULL, (GtkItemFactoryCallback)playlistwin_popup_menu_callback, SEL_ALL, "<Item>"},
+	{N_("/Selection/Select None"), NULL, (GtkItemFactoryCallback)playlistwin_popup_menu_callback, SEL_ZERO, "<Item>"},
+	{N_("/Selection/Invert Selection"), NULL, (GtkItemFactoryCallback)playlistwin_popup_menu_callback, SEL_INV, "<Item>"},
 	{N_("/Selection/-"), NULL, NULL, 0, "<Separator>"},
-	{N_("/Selection/Read Extended Info"), NULL, playlistwin_popup_menu_callback, SEL_LOOKUP, "<Item>"},
+	{N_("/Selection/Read Extended Info"), NULL, (GtkItemFactoryCallback)playlistwin_popup_menu_callback, SEL_LOOKUP, "<Item>"},
 
 	{N_("/Sort"), NULL, NULL, 0, "<Item>"},
 
 	{N_("/Playlist"), NULL, NULL, 0, "<Branch>"},
-	{N_("/Playlist/Load List"), NULL, playlistwin_popup_menu_callback, PLIST_LOAD, "<Item>"},
-	{N_("/Playlist/Save List"), NULL, playlistwin_popup_menu_callback, PLIST_SAVE, "<Item>"},
-	{N_("/Playlist/New List"), NULL, playlistwin_popup_menu_callback, PLIST_NEW, "<Item>"},
+	{N_("/Playlist/Load List"), NULL, (GtkItemFactoryCallback)playlistwin_popup_menu_callback, PLIST_LOAD, "<Item>"},
+	{N_("/Playlist/Save List"), NULL, (GtkItemFactoryCallback)playlistwin_popup_menu_callback, PLIST_SAVE, "<Item>"},
+	{N_("/Playlist/New List"), NULL, (GtkItemFactoryCallback)playlistwin_popup_menu_callback, PLIST_NEW, "<Item>"},
 };
 
 static const int playlistwin_popup_menu_entries_num =
@@ -615,7 +615,7 @@ void playlistwin_show_add_url_window(void)
 {
 	if(!playlistwin_url_window)
 	{
-		playlistwin_url_window = util_create_add_url_window(_("Enter URL to add:"), GTK_SIGNAL_FUNC(playlistwin_url_ok_clicked), NULL);
+		playlistwin_url_window = util_create_add_url_window(_("Enter URL to add:"), G_CALLBACK(playlistwin_url_ok_clicked), NULL);
 		gtk_window_set_transient_for(GTK_WINDOW(playlistwin_url_window), GTK_WINDOW(playlistwin));
 		g_signal_connect_swapped(G_OBJECT(playlistwin_url_window), "destroy", G_CALLBACK(gtk_widget_destroyed), &playlistwin_url_window);
 		gtk_widget_show(playlistwin_url_window);
@@ -731,9 +731,9 @@ static void playlistwin_save_playlist_error(char* path, GtkWidget *filesel)
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->action_area), bbox, FALSE, FALSE, 0);
 
 	close = gtk_button_new_with_label(_("OK"));
-	gtk_signal_connect_object(GTK_OBJECT(close), "clicked",
-				  GTK_SIGNAL_FUNC(gtk_widget_destroy),
-				  GTK_OBJECT(dialog));
+	g_signal_connect_swapped(G_OBJECT(close), "clicked",
+				  G_CALLBACK(gtk_widget_destroy),
+				  G_OBJECT(dialog));
 	GTK_WIDGET_SET_FLAGS(close, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), close, FALSE, FALSE, 0);
 	gtk_widget_grab_default(close);
@@ -780,21 +780,21 @@ static void playlistwin_check_overwrite(GtkWidget *filesel, char *filename, int 
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->action_area), bbox, FALSE, FALSE, 0);
 
 	overwrite = gtk_button_new_with_label(_("Overwrite"));
-	gtk_signal_connect(GTK_OBJECT(overwrite), "clicked",
-			   GTK_SIGNAL_FUNC(playlistwin_check_overwrite_cb),
+	g_signal_connect(G_OBJECT(overwrite), "clicked",
+			   G_CALLBACK(playlistwin_check_overwrite_cb),
 			   data);
-	gtk_signal_connect_object(GTK_OBJECT(overwrite), "clicked",
-				  GTK_SIGNAL_FUNC(gtk_widget_destroy),
-				  GTK_OBJECT(dialog));
+	g_signal_connect_swapped(G_OBJECT(overwrite), "clicked",
+				  G_CALLBACK(gtk_widget_destroy),
+				  G_OBJECT(dialog));
 	GTK_WIDGET_SET_FLAGS(overwrite, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), overwrite, FALSE, FALSE, 0);
 	cancel = gtk_button_new_with_label(_("Cancel"));
-	gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked",
-				  GTK_SIGNAL_FUNC(g_free),
-				  (GtkObject*) data);
-	gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked",
-				  GTK_SIGNAL_FUNC(gtk_widget_destroy),
-				  GTK_OBJECT(dialog));
+	g_signal_connect_swapped(G_OBJECT(cancel), "clicked",
+				  G_CALLBACK(g_free),
+				  data);
+	g_signal_connect_swapped(G_OBJECT(cancel), "clicked",
+				  G_CALLBACK(gtk_widget_destroy),
+				  G_OBJECT(dialog));
 	GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), cancel, FALSE, FALSE, 0);
 	gtk_widget_grab_default(overwrite);
@@ -919,13 +919,13 @@ static void playlistwin_show_load_filesel(void)
 		gtk_file_selection_set_filename(GTK_FILE_SELECTION(load_filesel),
 						cfg.playlist_path);
 	object = GTK_OBJECT(GTK_FILE_SELECTION(load_filesel)->ok_button);
-	gtk_signal_connect(object, "clicked",
-			   GTK_SIGNAL_FUNC(playlistwin_load_filesel_ok),
+	g_signal_connect(G_OBJECT(object), "clicked",
+			   G_CALLBACK(playlistwin_load_filesel_ok),
 			   load_filesel);
 	object = GTK_OBJECT(GTK_FILE_SELECTION(load_filesel)->cancel_button);
-	gtk_signal_connect_object(object, "clicked",
-				  GTK_SIGNAL_FUNC(gtk_widget_destroy),
-				  GTK_OBJECT(load_filesel));
+	g_signal_connect_swapped(G_OBJECT(object), "clicked",
+				  G_CALLBACK(gtk_widget_destroy),
+				  G_OBJECT(load_filesel));
 	g_signal_connect_swapped(G_OBJECT(load_filesel), "destroy",
 			   G_CALLBACK(gtk_widget_destroyed), &load_filesel);
 	gtk_widget_show(load_filesel);
@@ -955,13 +955,13 @@ static void playlistwin_show_save_filesel(void)
 		gtk_file_selection_set_filename(GTK_FILE_SELECTION(filesel),
 						cfg.playlist_path);
 	object = GTK_OBJECT(GTK_FILE_SELECTION(filesel)->ok_button);
-	gtk_signal_connect(object, "clicked",
-			   GTK_SIGNAL_FUNC(playlistwin_save_filesel_ok),
+	g_signal_connect(G_OBJECT(object), "clicked",
+			   G_CALLBACK(playlistwin_save_filesel_ok),
 			   filesel);
 	object = GTK_OBJECT(GTK_FILE_SELECTION(filesel)->cancel_button);
-	gtk_signal_connect_object(object, "clicked",
-				  GTK_SIGNAL_FUNC(gtk_widget_hide),
-				  GTK_OBJECT(filesel));
+	g_signal_connect_swapped(G_OBJECT(object), "clicked",
+				  G_CALLBACK(gtk_widget_hide),
+				  G_OBJECT(filesel));
 	g_signal_connect_swapped(G_OBJECT(filesel), "destroy",
 			   G_CALLBACK(gtk_widget_destroyed), &filesel);
 	/*
@@ -1285,7 +1285,7 @@ static void playlistwin_press(GtkWidget * widget, GdkEventButton * event, gpoint
 	if (grab)
 		gdk_pointer_grab(playlistwin->window, FALSE,
 				 GDK_BUTTON_MOTION_MASK | GDK_BUTTON_RELEASE_MASK,
-				 GDK_NONE, GDK_NONE, GDK_CURRENT_TIME);
+				 NULL, NULL, GDK_CURRENT_TIME);
 
 }
 
@@ -1480,9 +1480,9 @@ static void playlistwin_physically_delete(void)
 
 	ok = gtk_button_new_with_label(_("OK"));
 	cancel = gtk_button_new_with_label(_("Cancel"));
-	gtk_signal_connect(GTK_OBJECT(ok), "clicked", playlistwin_physically_delete_cb, selected_list);
-	gtk_signal_connect_object(GTK_OBJECT(ok), "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(dialog));
-	gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(dialog));
+	g_signal_connect(G_OBJECT(ok), "clicked", G_CALLBACK(playlistwin_physically_delete_cb), selected_list);
+	g_signal_connect_swapped(G_OBJECT(ok), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(dialog));
+	g_signal_connect_swapped(G_OBJECT(cancel), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(dialog));
 	gtk_box_pack_start(GTK_BOX(bbox), ok, FALSE, FALSE, 0);
 	GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), cancel, FALSE, FALSE, 0);
@@ -1619,7 +1619,7 @@ static gboolean playlistwin_keypress(GtkWidget * w, GdkEventKey * event, gpointe
 			break;
 		default:
 			/* TODO give a non-null quark? */
-			if (!gtk_accel_group_activate(playlistwin_accel, NULL, playlistwin, event->keyval, event->state))
+			if (!gtk_accel_group_activate(playlistwin_accel, (GQuark)0, G_OBJECT(playlistwin), event->keyval, event->state))
 				gtk_widget_event(mainwin, (GdkEvent *) event);
 			refresh = FALSE;
 			break;
@@ -1940,18 +1940,18 @@ static void playlistwin_create_gtk(void)
 	playlistwin_set_hints();
 	util_set_cursor(playlistwin);
 
-	gtk_signal_connect(GTK_OBJECT(playlistwin), "delete_event", GTK_SIGNAL_FUNC(playlistwin_delete), NULL);
-	gtk_signal_connect(GTK_OBJECT(playlistwin), "button_press_event", GTK_SIGNAL_FUNC(playlistwin_press), NULL);
-	gtk_signal_connect(GTK_OBJECT(playlistwin), "button_release_event", GTK_SIGNAL_FUNC(playlistwin_release), NULL);
-	gtk_signal_connect(GTK_OBJECT(playlistwin), "motion_notify_event", GTK_SIGNAL_FUNC(playlistwin_motion), NULL);
-	gtk_signal_connect(GTK_OBJECT(playlistwin), "focus_in_event", GTK_SIGNAL_FUNC(playlistwin_focus_in), NULL);
-	gtk_signal_connect(GTK_OBJECT(playlistwin), "focus_out_event", GTK_SIGNAL_FUNC(playlistwin_focus_out), NULL);
-	gtk_signal_connect(GTK_OBJECT(playlistwin), "configure_event", GTK_SIGNAL_FUNC(playlistwin_configure), NULL);
-	gtk_signal_connect(GTK_OBJECT(playlistwin), "client_event", GTK_SIGNAL_FUNC(playlistwin_client_event), NULL);
+	g_signal_connect(G_OBJECT(playlistwin), "delete_event", G_CALLBACK(playlistwin_delete), NULL);
+	g_signal_connect(G_OBJECT(playlistwin), "button_press_event", G_CALLBACK(playlistwin_press), NULL);
+	g_signal_connect(G_OBJECT(playlistwin), "button_release_event", G_CALLBACK(playlistwin_release), NULL);
+	g_signal_connect(G_OBJECT(playlistwin), "motion_notify_event", G_CALLBACK(playlistwin_motion), NULL);
+	g_signal_connect(G_OBJECT(playlistwin), "focus_in_event", G_CALLBACK(playlistwin_focus_in), NULL);
+	g_signal_connect(G_OBJECT(playlistwin), "focus_out_event", G_CALLBACK(playlistwin_focus_out), NULL);
+	g_signal_connect(G_OBJECT(playlistwin), "configure_event", G_CALLBACK(playlistwin_configure), NULL);
+	g_signal_connect(G_OBJECT(playlistwin), "client_event", G_CALLBACK(playlistwin_client_event), NULL);
 	xmms_drag_dest_set(playlistwin);
-	gtk_signal_connect(GTK_OBJECT(playlistwin), "drag-data-received", GTK_SIGNAL_FUNC(playlistwin_drag_data_received), NULL);
-	gtk_signal_connect(GTK_OBJECT(playlistwin), "key-press-event", GTK_SIGNAL_FUNC(playlistwin_keypress), NULL);
-	gtk_signal_connect(GTK_OBJECT(playlistwin), "selection_received", GTK_SIGNAL_FUNC(selection_received), NULL);
+	g_signal_connect(G_OBJECT(playlistwin), "drag-data-received", G_CALLBACK(playlistwin_drag_data_received), NULL);
+	g_signal_connect(G_OBJECT(playlistwin), "key-press-event", G_CALLBACK(playlistwin_keypress), NULL);
+	g_signal_connect(G_OBJECT(playlistwin), "selection_received", G_CALLBACK(selection_received), NULL);
 
 	if (!cfg.show_wm_decorations)
 		gdk_window_set_decorations(playlistwin->window, 0);

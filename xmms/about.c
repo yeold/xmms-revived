@@ -290,8 +290,8 @@ void show_about_window(void)
 	gtk_container_set_border_width(GTK_CONTAINER(about_window), 10);
 	g_signal_connect_swapped(G_OBJECT(about_window), "destroy",
 			   G_CALLBACK(gtk_widget_destroyed), &about_window);
-	gtk_signal_connect(GTK_OBJECT(about_window), "key_press_event",
-			   util_dialog_keypress_cb, NULL);
+	g_signal_connect(G_OBJECT(about_window), "key_press_event",
+			   G_CALLBACK(util_dialog_keypress_cb), NULL);
 	gtk_widget_realize(about_window);
 	
 	about_vbox = gtk_vbox_new(FALSE, 5);
@@ -346,9 +346,9 @@ void show_about_window(void)
 	gtk_box_pack_start(GTK_BOX(about_vbox), bbox, FALSE, FALSE, 0);
 
 	close_btn = gtk_button_new_with_label(_("Close"));
-	gtk_signal_connect_object(GTK_OBJECT(close_btn), "clicked",
-				  GTK_SIGNAL_FUNC(gtk_widget_destroy),
-				  GTK_OBJECT(about_window));
+	g_signal_connect_swapped(G_OBJECT(close_btn), "clicked",
+				  G_CALLBACK(gtk_widget_destroy),
+				  G_OBJECT(about_window));
 	GTK_WIDGET_SET_FLAGS(close_btn, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), close_btn, TRUE, TRUE, 0);
 	gtk_widget_grab_default(close_btn);

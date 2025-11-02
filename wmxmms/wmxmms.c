@@ -589,20 +589,20 @@ void init(void)
 	gtk_widget_set_events(window,
 			      GDK_BUTTON_MOTION_MASK | GDK_BUTTON_PRESS_MASK |
 			      GDK_BUTTON_RELEASE_MASK | GDK_EXPOSURE_MASK);
-	gtk_signal_connect(GTK_OBJECT(window), "expose_event",
-			   GTK_SIGNAL_FUNC(expose_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(window), "button_press_event",
-			   GTK_SIGNAL_FUNC(button_press_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(window), "button_release_event",
-			   GTK_SIGNAL_FUNC(button_release_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(window), "motion_notify_event",
-			   GTK_SIGNAL_FUNC(motion_notify_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(window), "destroy",
-			   GTK_SIGNAL_FUNC(destroy_cb), NULL);
+	g_signal_connect(G_OBJECT(window), "expose_event",
+			   G_CALLBACK(expose_cb), NULL);
+	g_signal_connect(G_OBJECT(window), "button_press_event",
+			   G_CALLBACK(button_press_cb), NULL);
+	g_signal_connect(G_OBJECT(window), "button_release_event",
+			   G_CALLBACK(button_release_cb), NULL);
+	g_signal_connect(G_OBJECT(window), "motion_notify_event",
+			   G_CALLBACK(motion_notify_cb), NULL);
+	g_signal_connect(G_OBJECT(window), "destroy",
+			   G_CALLBACK(destroy_cb), NULL);
 	gtk_drag_dest_set(window, GTK_DEST_DEFAULT_ALL, drop_types, 1,
 			  GDK_ACTION_COPY);
-	gtk_signal_connect(GTK_OBJECT(window), "drag_data_received",
-			   GTK_SIGNAL_FUNC(drag_data_received), NULL);
+	g_signal_connect(G_OBJECT(window), "drag_data_received",
+			   G_CALLBACK(drag_data_received), NULL);
 
 	gtk_widget_realize(window);
 	bg_color.red = 0;
@@ -623,20 +623,20 @@ void init(void)
 	gtk_widget_set_events(icon_win,
 			      GDK_BUTTON_MOTION_MASK | GDK_BUTTON_PRESS_MASK |
 			      GDK_BUTTON_RELEASE_MASK | GDK_EXPOSURE_MASK);
-	gtk_signal_connect(GTK_OBJECT(icon_win), "expose_event",
-			   GTK_SIGNAL_FUNC(expose_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(icon_win), "button_press_event",
-			   GTK_SIGNAL_FUNC(button_press_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(icon_win), "button_release_event",
-			   GTK_SIGNAL_FUNC(button_release_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(icon_win), "motion_notify_event",
-			   GTK_SIGNAL_FUNC(motion_notify_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(icon_win), "destroy",
-			   GTK_SIGNAL_FUNC(destroy_cb), NULL);
+	g_signal_connect(G_OBJECT(icon_win), "expose_event",
+			   G_CALLBACK(expose_cb), NULL);
+	g_signal_connect(G_OBJECT(icon_win), "button_press_event",
+			   G_CALLBACK(button_press_cb), NULL);
+	g_signal_connect(G_OBJECT(icon_win), "button_release_event",
+			   G_CALLBACK(button_release_cb), NULL);
+	g_signal_connect(G_OBJECT(icon_win), "motion_notify_event",
+			   G_CALLBACK(motion_notify_cb), NULL);
+	g_signal_connect(G_OBJECT(icon_win), "destroy",
+			   G_CALLBACK(destroy_cb), NULL);
 	gtk_drag_dest_set(icon_win, GTK_DEST_DEFAULT_ALL, drop_types, 1,
 			  GDK_ACTION_COPY);
-	gtk_signal_connect(GTK_OBJECT(icon_win), "drag_data_received",
-			   GTK_SIGNAL_FUNC(drag_data_received), NULL);
+	g_signal_connect(G_OBJECT(icon_win), "drag_data_received",
+			   G_CALLBACK(drag_data_received), NULL);
 	gtk_widget_realize(icon_win);
 	bg_color.red = 0;
 	bg_color.green = 0;
