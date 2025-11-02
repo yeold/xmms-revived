@@ -12,6 +12,7 @@ po/Makefile.in
 po/POTFILES
 xmms/i18n.h
 xmms/stamp-h2
+xmms.spec
 
 autom4te.cache
 
