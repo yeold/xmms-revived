@@ -1,0 +1,14 @@
+config.h
+config.log
+config.status
+libtool
+Makefile
+stamp-h1
+wmxmms.1
+xmms-config
+xmms.1
+**/.deps
+po/Makefile.in
+po/POTFILES
+xmms/i18n.h
+xmms/stamp-h2
