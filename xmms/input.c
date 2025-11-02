@@ -366,9 +366,10 @@ void input_get_song_info(gchar * filename, gchar ** title, gint * length)
 		ext = strrchr(temp, '.');
 		if (ext)
 			*ext = '\0';
-		input->file_name = g_basename(temp);
+		input->file_name = g_path_get_basename(temp);
 		input->file_ext = ext ? ext+1 : NULL;
-		input->file_path = temp;
+		input->file_path = g_strdup(temp);
+		g_free(temp);
 
 		(*title) = xmms_get_titlestring(xmms_get_gentitle_format(),
 						input);
@@ -390,7 +391,7 @@ static void input_general_file_info_box(char *filename, InputPlugin *ip)
 		
 	window = gtk_window_new(GDK_WINDOW_DIALOG);
 	gtk_window_set_policy(GTK_WINDOW(window), FALSE, TRUE, FALSE);
-	title = g_strdup_printf(_("File Info - %s"), g_basename(filename));
+	title = g_strdup_printf(_("File Info - %s"), g_path_get_basename(filename));
 	gtk_window_set_title(GTK_WINDOW(window), title);
 	g_free(title);
 	gtk_container_set_border_width(GTK_CONTAINER(window), 10);
@@ -429,13 +430,13 @@ static void input_general_file_info_box(char *filename, InputPlugin *ip)
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
 	cancel = gtk_button_new_with_label(_("Close"));
-	gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked",
-				  GTK_SIGNAL_FUNC(gtk_widget_destroy),
-				  GTK_OBJECT(window));
+	g_signal_connect_swapped(cancel, "clicked",
+				G_CALLBACK(gtk_widget_destroy),
+				window);
 	GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
-	gtk_signal_connect(GTK_OBJECT(window), "key_press_event",
-			   util_dialog_keypress_cb, NULL);
+	g_signal_connect(window, "key-press-event",
+			G_CALLBACK(util_dialog_keypress_cb), NULL);
 
 	gtk_widget_show_all(window);
 }

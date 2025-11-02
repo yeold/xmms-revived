@@ -160,7 +160,7 @@ static void bscope_init(void)
 	bg_pixmap = gdk_pixmap_create_from_xpm_d(window->window,NULL,NULL,bscope_xmms_logo_xpm);
 	gdk_window_set_back_pixmap(window->window,bg_pixmap,0);
 	gtk_signal_connect(GTK_OBJECT(window),"destroy",GTK_SIGNAL_FUNC(bscope_destroy_cb),NULL);
-	gtk_signal_connect(GTK_OBJECT(window), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &window);
+	g_signal_connect_swapped(G_OBJECT(window), "destroy", G_CALLBACK(gtk_widget_destroyed), &window);
 	gtk_widget_set_usize(window, WIDTH, HEIGHT);
 	
 	area = gtk_drawing_area_new();

@@ -89,7 +89,7 @@ static void sanalyzer_init(void)
 	bg_pixmap = gdk_pixmap_create_from_xpm_d(window->window,NULL,NULL,sanalyzer_xmms_logo_xpm);
 	gdk_window_set_back_pixmap(window->window,bg_pixmap,0);
 	gtk_signal_connect(GTK_OBJECT(window),"destroy",GTK_SIGNAL_FUNC(sanalyzer_destroy_cb),NULL);
-	gtk_signal_connect(GTK_OBJECT(window), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &window);
+	g_signal_connect_swapped(G_OBJECT(window), "destroy", G_CALLBACK(gtk_widget_destroyed), &window);
 	gtk_widget_set_usize(window, WIDTH, HEIGHT);
 	gc = gdk_gc_new(window->window);
 	draw_pixmap = gdk_pixmap_new(window->window,WIDTH,HEIGHT,gdk_rgb_get_visual()->depth);

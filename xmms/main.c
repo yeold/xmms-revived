@@ -1466,9 +1466,9 @@ void mainwin_jump_to_time(void)
 	gtk_window_set_title(GTK_WINDOW(mainwin_jtt), _("Jump to time"));
 	gtk_window_set_policy(GTK_WINDOW(mainwin_jtt), FALSE, FALSE, FALSE);
 	gtk_window_set_transient_for(GTK_WINDOW(mainwin_jtt), GTK_WINDOW(mainwin));
-	gtk_signal_connect(GTK_OBJECT(mainwin_jtt), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &mainwin_jtt);
-	gtk_signal_connect(GTK_OBJECT(mainwin_jtt), "key_press_event",
-			   util_dialog_keypress_cb, NULL);
+	g_signal_connect(G_OBJECT(mainwin_jtt), "destroy", G_CALLBACK(gtk_widget_destroyed), &mainwin_jtt);
+	g_signal_connect(G_OBJECT(mainwin_jtt), "key-press-event",
+			   G_CALLBACK(util_dialog_keypress_cb), NULL);
 	gtk_container_border_width(GTK_CONTAINER(mainwin_jtt), 10);
 
 	vbox = gtk_vbox_new(FALSE, 5);
@@ -1487,7 +1487,7 @@ void mainwin_jump_to_time(void)
 	gtk_widget_show(hbox_new);
 	time_entry = gtk_entry_new();
 	gtk_box_pack_start(GTK_BOX(hbox_new), time_entry, FALSE, FALSE, 5);
-	gtk_signal_connect(GTK_OBJECT(time_entry), "activate", GTK_SIGNAL_FUNC(mainwin_jump_to_time_cb), time_entry);
+	g_signal_connect(G_OBJECT(time_entry), "activate", G_CALLBACK(mainwin_jump_to_time_cb), time_entry);
 	gtk_widget_show(time_entry);
 	gtk_widget_set_usize(time_entry, 70, -1);
 	label = gtk_label_new(_("minutes:seconds"));
@@ -1880,8 +1880,8 @@ static void mainwin_jump_to_file(void)
 	gtk_window_set_title(GTK_WINDOW(mainwin_jtf), _("Jump to file"));
 	gtk_window_set_transient_for(GTK_WINDOW(mainwin_jtf),
 				     GTK_WINDOW(mainwin));
-	gtk_signal_connect(GTK_OBJECT(mainwin_jtf), "destroy",
-			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_cleanup), edit_clist_qlist_and_queue);
+	g_signal_connect(G_OBJECT(mainwin_jtf), "destroy",
+			   G_CALLBACK(mainwin_jump_to_file_cleanup), edit_clist_qlist_and_queue);
 	gtk_container_border_width(GTK_CONTAINER(mainwin_jtf), 10);
 	gtk_window_set_default_size(GTK_WINDOW(mainwin_jtf), 300, 350);
 
@@ -1891,18 +1891,18 @@ static void mainwin_jump_to_file(void)
 
 	queue = gtk_button_new_with_label(_("Queue"));
 
-	title[0] = _("Q");
+	title[0] = _("Q"); 
 	title[1] = _("Files");
 	clist = gtk_clist_new_with_titles(2, title);
 
 	gtk_clist_set_column_auto_resize(GTK_CLIST(clist), 0, TRUE);
 	gtk_clist_set_column_justification(GTK_CLIST(clist), 0, GTK_JUSTIFY_RIGHT);
 	gtk_clist_set_selection_mode(GTK_CLIST(clist), GTK_SELECTION_BROWSE);
-	gtk_signal_connect(GTK_OBJECT(clist), "select_row",
-			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_select_row_cb),
+	g_signal_connect(G_OBJECT(clist), "select-row",
+			   G_CALLBACK(mainwin_jump_to_file_select_row_cb),
 			   queue);
-	gtk_signal_connect(GTK_OBJECT(clist), "key_press_event",
-			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_keypress_cb),
+	g_signal_connect(G_OBJECT(clist), "key-press-event",
+			   G_CALLBACK(mainwin_jump_to_file_keypress_cb),
 			   NULL);
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
@@ -1914,10 +1914,10 @@ static void mainwin_jump_to_file(void)
 
 	edit = gtk_entry_new();
 	gtk_entry_set_editable(GTK_ENTRY(edit), TRUE);
-	gtk_signal_connect(GTK_OBJECT(edit), "changed",
-			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_edit_cb), clist);
-	gtk_signal_connect(GTK_OBJECT(edit), "key_press_event",
-			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_entry_keypress_cb), clist);
+	g_signal_connect(G_OBJECT(edit), "changed",
+			   G_CALLBACK(mainwin_jump_to_file_edit_cb), clist);
+	g_signal_connect(G_OBJECT(edit), "key-press-event",
+			   G_CALLBACK(mainwin_jump_to_file_entry_keypress_cb), clist);
 	gtk_box_pack_start(GTK_BOX(hbox), edit, TRUE, TRUE, 3);
 	gtk_widget_show(edit);
 
@@ -1948,23 +1948,23 @@ static void mainwin_jump_to_file(void)
 
 	jump = gtk_button_new_with_label(_("Jump"));
 	gtk_box_pack_start(GTK_BOX(bbox), jump, FALSE, FALSE, 0);
-	gtk_signal_connect(GTK_OBJECT(jump), "clicked",
-			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_jump_cb), clist);
+	g_signal_connect(G_OBJECT(queue), "clicked",
+			   G_CALLBACK(mainwin_jump_to_file_queue_cb), edit_clist_qlist_and_queue);
 	GTK_WIDGET_SET_FLAGS(jump, GTK_CAN_DEFAULT);
 	gtk_widget_show(jump);
 	gtk_widget_grab_default(jump);
 
 	gtk_box_pack_start(GTK_BOX(bbox), queue, FALSE, FALSE, 0);
-	gtk_signal_connect(GTK_OBJECT(queue), "clicked",
-			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_queue_cb), edit_clist_qlist_and_queue);
+	g_signal_connect_swapped(G_OBJECT(cancel), "clicked",
+			   G_CALLBACK(gtk_widget_destroy), mainwin_qm);
 	GTK_WIDGET_SET_FLAGS(queue, GTK_CAN_DEFAULT);
 	gtk_widget_show(queue);
 
 	cancel = gtk_button_new_with_label(_("Close"));
 	gtk_box_pack_start(GTK_BOX(bbox), cancel, FALSE, FALSE, 0);
-	gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked",
-				  GTK_SIGNAL_FUNC(gtk_widget_destroy),
-				  GTK_OBJECT(mainwin_jtf));
+	g_signal_connect_swapped(G_OBJECT(cancel), "clicked",
+				  G_CALLBACK(gtk_widget_destroy),
+				  mainwin_jtf);
 	GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
 	gtk_widget_show(cancel);
 	gtk_widget_show(bbox);
@@ -2202,8 +2202,8 @@ void mainwin_queue_manager(void)
 	gtk_window_set_title(GTK_WINDOW(mainwin_qm), _("Jump to file"));
 	gtk_window_set_transient_for(GTK_WINDOW(mainwin_qm),
 				     GTK_WINDOW(mainwin));
-	gtk_signal_connect(GTK_OBJECT(mainwin_qm), "destroy",
-			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_cleanup), edit_clist_qlist_and_queue);
+	g_signal_connect(G_OBJECT(mainwin_qm), "destroy",
+			   G_CALLBACK(mainwin_jump_to_file_cleanup), edit_clist_qlist_and_queue);
 	gtk_container_border_width(GTK_CONTAINER(mainwin_qm), 10);
 	gtk_window_set_default_size(GTK_WINDOW(mainwin_qm), 600, 350);
 
@@ -2235,11 +2235,11 @@ void mainwin_queue_manager(void)
 	gtk_clist_set_column_auto_resize(GTK_CLIST(qlist), 0, TRUE);
 	gtk_clist_set_column_justification(GTK_CLIST(qlist), 0, GTK_JUSTIFY_RIGHT);
 	gtk_clist_set_selection_mode(GTK_CLIST(qlist), GTK_SELECTION_BROWSE);
-	gtk_signal_connect(GTK_OBJECT(qlist), "key_press_event",
-			   GTK_SIGNAL_FUNC(mainwin_queue_manager_qlist_keypress_cb),
+	g_signal_connect(G_OBJECT(qlist), "key-press-event",
+			   G_CALLBACK(mainwin_queue_manager_qlist_keypress_cb),
 			   edit_clist_qlist_and_queue);
-	gtk_signal_connect(GTK_OBJECT(qlist), "row-move",
-			GTK_SIGNAL_FUNC(mainwin_queue_manager_reorder), edit_clist_qlist_and_queue);
+	g_signal_connect(G_OBJECT(qlist), "row-move",
+			G_CALLBACK(mainwin_queue_manager_reorder), edit_clist_qlist_and_queue);
 	gtk_clist_set_reorderable(GTK_CLIST(qlist), TRUE);
 	gtk_container_add(GTK_CONTAINER(qscrollwin), qlist);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(qscrollwin), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
@@ -2259,22 +2259,22 @@ void mainwin_queue_manager(void)
 
 	move_up = gtk_button_new_with_label(_("Move up"));
 	gtk_box_pack_start(GTK_BOX(qbox), move_up, FALSE, FALSE, 0);
-	gtk_signal_connect(GTK_OBJECT(move_up), "clicked",
-			   GTK_SIGNAL_FUNC(mainwin_queue_manager_move_up_cb), edit_clist_qlist_and_queue);
+	g_signal_connect(G_OBJECT(move_up), "clicked",
+			   G_CALLBACK(mainwin_queue_manager_move_up_cb), edit_clist_qlist_and_queue);
 	GTK_WIDGET_SET_FLAGS(move_up, GTK_CAN_DEFAULT);
 	gtk_widget_show(move_up);
 
 	move_down = gtk_button_new_with_label(_("Move down"));
 	gtk_box_pack_start(GTK_BOX(qbox), move_down, FALSE, FALSE, 0);
-	gtk_signal_connect(GTK_OBJECT(move_down), "clicked",
-			   GTK_SIGNAL_FUNC(mainwin_queue_manager_move_down_cb), edit_clist_qlist_and_queue);
+	g_signal_connect(G_OBJECT(move_down), "clicked",
+			   G_CALLBACK(mainwin_queue_manager_move_down_cb), edit_clist_qlist_and_queue);
 	GTK_WIDGET_SET_FLAGS(move_down, GTK_CAN_DEFAULT);
 	gtk_widget_show(move_down);
 
 	remove = gtk_button_new_with_label(_("Remove"));
 	gtk_box_pack_start(GTK_BOX(qbox), remove, FALSE, FALSE, 0);
-	gtk_signal_connect(GTK_OBJECT(remove), "clicked",
-			   GTK_SIGNAL_FUNC(mainwin_queue_manager_remove_cb), edit_clist_qlist_and_queue);
+	g_signal_connect(G_OBJECT(remove), "clicked",
+			   G_CALLBACK(mainwin_queue_manager_remove_cb), edit_clist_qlist_and_queue);
 	GTK_WIDGET_SET_FLAGS(remove, GTK_CAN_DEFAULT);
 	gtk_widget_show(remove);
 
@@ -2284,11 +2284,11 @@ void mainwin_queue_manager(void)
 	gtk_clist_set_column_auto_resize(GTK_CLIST(clist), 0, TRUE);
 	gtk_clist_set_column_justification(GTK_CLIST(clist), 0, GTK_JUSTIFY_RIGHT);
 	gtk_clist_set_selection_mode(GTK_CLIST(clist), GTK_SELECTION_BROWSE);
-	gtk_signal_connect(GTK_OBJECT(clist), "select_row",
-			   GTK_SIGNAL_FUNC(mainwin_queue_manager_select_row_cb),
+	g_signal_connect(G_OBJECT(clist), "select-row",
+			   G_CALLBACK(mainwin_queue_manager_select_row_cb),
 			   edit_clist_qlist_and_queue);
-	gtk_signal_connect(GTK_OBJECT(clist), "key_press_event",
-			   GTK_SIGNAL_FUNC(mainwin_queue_manager_keypress_cb),
+	g_signal_connect(G_OBJECT(clist), "key-press-event", 
+			   G_CALLBACK(mainwin_queue_manager_keypress_cb),
 			   qlist);
 	hbox = gtk_hbox_new(FALSE, 3);
 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
@@ -2300,13 +2300,13 @@ void mainwin_queue_manager(void)
 
 	edit = gtk_entry_new();
 	gtk_entry_set_editable(GTK_ENTRY(edit), TRUE);
-	gtk_signal_connect(GTK_OBJECT(edit), "changed",
-			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_edit_cb), clist);
+	g_signal_connect(G_OBJECT(edit), "changed",
+			   G_CALLBACK(mainwin_jump_to_file_edit_cb), clist);
 	/* For updating the queue when people press enter */
-	gtk_signal_connect(GTK_OBJECT(edit), "changed",
-			   GTK_SIGNAL_FUNC(mainwin_queue_manager_queue_refresh), qlist);
-	gtk_signal_connect(GTK_OBJECT(edit), "key_press_event",
-			   GTK_SIGNAL_FUNC(mainwin_queue_manager_entry_keypress_cb), edit_clist_qlist_and_queue);
+	g_signal_connect(G_OBJECT(edit), "changed",
+			   G_CALLBACK(mainwin_queue_manager_queue_refresh), qlist);
+	g_signal_connect(G_OBJECT(edit), "key-press-event",
+			   G_CALLBACK(mainwin_queue_manager_entry_keypress_cb), edit_clist_qlist_and_queue);
 	gtk_box_pack_start(GTK_BOX(hbox), edit, TRUE, TRUE, 3);
 	gtk_widget_show(edit);
 
@@ -2443,7 +2443,7 @@ void mainwin_show_dirbrowser(void)
 	if (!mainwin_dir_browser)
 	{
 		mainwin_dir_browser = xmms_create_dir_browser(_("Select directory to add:"), cfg.filesel_path, GTK_SELECTION_SINGLE, mainwin_add_dir_handler);
-		gtk_signal_connect(GTK_OBJECT(mainwin_dir_browser), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &mainwin_dir_browser);
+		g_signal_connect_swapped(G_OBJECT(mainwin_dir_browser), "destroy", G_CALLBACK(gtk_widget_destroyed), &mainwin_dir_browser);
 		gtk_signal_connect(GTK_OBJECT(mainwin_dir_browser),
 				   "key_press_event",
 				   util_dialog_keypress_cb, NULL);
@@ -2496,8 +2496,8 @@ void mainwin_show_add_url_window(void)
 					   mainwin_url_enqueue_clicked);
 	gtk_window_set_transient_for(GTK_WINDOW(mainwin_url_window),
 				     GTK_WINDOW(mainwin));
-	gtk_signal_connect(GTK_OBJECT(mainwin_url_window), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed),
+	g_signal_connect_swapped(G_OBJECT(mainwin_url_window), "destroy",
+			   G_CALLBACK(gtk_widget_destroyed),
 			   &mainwin_url_window);
 	gtk_signal_connect(GTK_OBJECT(mainwin_url_window), "key_press_event",
 			   util_dialog_keypress_cb, NULL);
@@ -2512,9 +2512,9 @@ void mainwin_eject_pushed(void)
 		gdk_window_raise(filebrowser->window);
 		return;
 	}
-	filebrowser = util_create_filebrowser(TRUE);
-	gtk_signal_connect(GTK_OBJECT(filebrowser), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &filebrowser);
+		filebrowser = util_create_filebrowser(TRUE);
+		g_signal_connect_swapped(G_OBJECT(filebrowser), "destroy",
+			   G_CALLBACK(gtk_widget_destroyed), &filebrowser);
 	gtk_signal_connect(GTK_OBJECT(filebrowser), "key_press_event",
 			   util_dialog_keypress_cb,  NULL);
 }
@@ -3438,7 +3438,7 @@ static void mainwin_create_gtk(void)
 
 	gtk_widget_set_events(mainwin, GDK_FOCUS_CHANGE_MASK | GDK_BUTTON_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_STRUCTURE_MASK);
 	if (cfg.player_x != -1 && cfg.save_window_position)
-		dock_set_uposition(mainwin, cfg.player_x, cfg.player_y);
+		dock_set_uposition(mainwin, cfg.player_x, cfg.player_y); 
 	gtk_widget_realize(mainwin);
 
 	mainwin_set_icon(mainwin);
@@ -3452,27 +3452,27 @@ static void mainwin_create_gtk(void)
 		gdk_window_set_decorations(mainwin->window, 0);
 	gtk_window_add_accel_group(GTK_WINDOW(mainwin), mainwin_accel);
 
-	gtk_signal_connect(GTK_OBJECT(mainwin), "destroy",
-			   GTK_SIGNAL_FUNC(mainwin_destroy), NULL);
-	gtk_signal_connect(GTK_OBJECT(mainwin), "button_press_event",
-			   GTK_SIGNAL_FUNC(mainwin_press), NULL);
-	gtk_signal_connect(GTK_OBJECT(mainwin), "button_release_event",
-			   GTK_SIGNAL_FUNC(mainwin_release), NULL);
-	gtk_signal_connect(GTK_OBJECT(mainwin), "motion_notify_event",
-			   GTK_SIGNAL_FUNC(mainwin_motion), NULL);
-	gtk_signal_connect(GTK_OBJECT(mainwin), "focus_in_event",
-			   GTK_SIGNAL_FUNC(mainwin_focus_in), NULL);
-	gtk_signal_connect(GTK_OBJECT(mainwin), "focus_out_event",
-			   GTK_SIGNAL_FUNC(mainwin_focus_out), NULL);
-	gtk_signal_connect(GTK_OBJECT(mainwin), "configure_event",
-			   GTK_SIGNAL_FUNC(mainwin_configure), NULL);
-	gtk_signal_connect(GTK_OBJECT(mainwin), "client_event",
-			   GTK_SIGNAL_FUNC(mainwin_client_event), NULL);
+	g_signal_connect(G_OBJECT(mainwin), "destroy",
+			   G_CALLBACK(mainwin_destroy), NULL);
+	g_signal_connect(G_OBJECT(mainwin), "button-press-event", 
+			   G_CALLBACK(mainwin_press), NULL);
+	g_signal_connect(G_OBJECT(mainwin), "button-release-event",
+			   G_CALLBACK(mainwin_release), NULL); 
+	g_signal_connect(G_OBJECT(mainwin), "motion-notify-event",
+			   G_CALLBACK(mainwin_motion), NULL);
+	g_signal_connect(G_OBJECT(mainwin), "focus-in-event",
+			   G_CALLBACK(mainwin_focus_in), NULL);
+	g_signal_connect(G_OBJECT(mainwin), "focus-out-event", 
+			   G_CALLBACK(mainwin_focus_out), NULL);
+	g_signal_connect(G_OBJECT(mainwin), "configure-event",
+			   G_CALLBACK(mainwin_configure), NULL);
+	g_signal_connect(G_OBJECT(mainwin), "client-event",
+			   G_CALLBACK(mainwin_client_event), NULL);
 	xmms_drag_dest_set(mainwin);
-	gtk_signal_connect(GTK_OBJECT(mainwin), "drag-data-received",
-			   GTK_SIGNAL_FUNC(mainwin_drag_data_received), NULL);
-	gtk_signal_connect(GTK_OBJECT(mainwin), "key-press-event",
-			   GTK_SIGNAL_FUNC(mainwin_keypress), NULL);
+	g_signal_connect(G_OBJECT(mainwin), "drag-data-received",
+			   G_CALLBACK(mainwin_drag_data_received), NULL);
+	g_signal_connect(G_OBJECT(mainwin), "key-press-event",
+			   G_CALLBACK(mainwin_keypress), NULL);
 
 	gdk_window_set_group(mainwin->window, mainwin->window);
 	mainwin_set_back_pixmap();
@@ -3527,8 +3527,8 @@ static void output_failed(void)
 			  "You have the correct output plugin selected\n"
 			  "No other program is blocking the soundcard"),
 			_("OK"), FALSE, NULL, NULL);
-		gtk_signal_connect(GTK_OBJECT(infobox), "destroy",
-				   gtk_widget_destroyed, &infobox);
+		g_signal_connect_swapped(G_OBJECT(infobox), "destroy",
+			   G_CALLBACK(gtk_widget_destroyed), &infobox);
 	}
 	else
 		gdk_window_raise(infobox->window);

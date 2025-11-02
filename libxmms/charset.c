@@ -22,6 +22,13 @@
 
 #include "charset.h"
 
+/* Handle ICONV_CONST definition */
+#ifdef HAVE_ICONV
+#ifndef ICONV_CONST
+#define ICONV_CONST const
+#endif
+#endif
+
 
 char* xmms_charset_get_current(void)
 {
@@ -42,12 +49,12 @@ char* xmms_charset_get_current(void)
 #ifdef HAVE_ICONV
 char* xmms_charset_convert(const char *string, size_t insize, char *from, char *to)
 {
-	size_t outleft, outsize;
-	iconv_t cd;
-	char *out, *outptr;
-	ICONV_CONST char *input = (ICONV_CONST char *) string;
-
-	if (!string)
+        size_t outleft, outsize;
+        iconv_t cd;
+        char *out, *outptr;
+        char *input;
+        /* Handle const char* to char* conversion for iconv */
+        input = (char *)string;	if (!string)
 		return NULL;
 
 	if (!from)

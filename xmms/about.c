@@ -288,8 +288,8 @@ void show_about_window(void)
 	gtk_window_set_title(GTK_WINDOW(about_window), _("About XMMS"));
 	gtk_window_set_policy(GTK_WINDOW(about_window), FALSE, TRUE, FALSE);
 	gtk_container_set_border_width(GTK_CONTAINER(about_window), 10);
-	gtk_signal_connect(GTK_OBJECT(about_window), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &about_window);
+	g_signal_connect_swapped(G_OBJECT(about_window), "destroy",
+			   G_CALLBACK(gtk_widget_destroyed), &about_window);
 	gtk_signal_connect(GTK_OBJECT(about_window), "key_press_event",
 			   util_dialog_keypress_cb, NULL);
 	gtk_widget_realize(about_window);

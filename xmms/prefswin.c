@@ -440,7 +440,7 @@ void prefswin_font_browse_cb(GtkWidget * w, gpointer data)
 	gtk_font_selection_dialog_set_font_name(GTK_FONT_SELECTION_DIALOG(fontsel), gtk_entry_get_text(GTK_ENTRY(prefswin_options_font_entry)));
 	gtk_signal_connect(GTK_OBJECT(GTK_FONT_SELECTION_DIALOG(fontsel)->ok_button), "clicked", GTK_SIGNAL_FUNC(prefswin_font_browse_ok), fontsel);
 	gtk_signal_connect_object(GTK_OBJECT(GTK_FONT_SELECTION_DIALOG(fontsel)->cancel_button), "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(fontsel));
-	gtk_signal_connect(GTK_OBJECT(fontsel), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &fontsel);
+	g_signal_connect_swapped(G_OBJECT(fontsel), "destroy", G_CALLBACK(gtk_widget_destroyed), &fontsel);
 	gtk_widget_show(fontsel);
 }
 
@@ -467,7 +467,7 @@ void prefswin_mainwin_font_browse_cb(GtkWidget * w, gpointer data)
 		gtk_font_selection_dialog_set_font_name(GTK_FONT_SELECTION_DIALOG(fontsel), gtk_entry_get_text(GTK_ENTRY(prefswin_mainwin_font_entry)));
 		gtk_signal_connect(GTK_OBJECT(GTK_FONT_SELECTION_DIALOG(fontsel)->ok_button), "clicked", GTK_SIGNAL_FUNC(prefswin_mainwin_font_browse_ok), fontsel);
 		gtk_signal_connect_object(GTK_OBJECT(GTK_FONT_SELECTION_DIALOG(fontsel)->cancel_button), "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(fontsel));
-		gtk_signal_connect(GTK_OBJECT(fontsel), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &fontsel);
+		g_signal_connect_swapped(G_OBJECT(fontsel), "destroy", G_CALLBACK(gtk_widget_destroyed), &fontsel);
 		gtk_widget_show(fontsel);
 	}
 }

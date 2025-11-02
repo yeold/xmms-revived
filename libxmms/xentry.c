@@ -282,19 +282,17 @@ static void gtk_move_forward_word (GtkEntry *entry)
 
 	editable = GTK_EDITABLE (entry);
 
-	/* Prevent any leak of information */
-	if (!gtk_entry_get_visibility(editable))
-	{
-		gtk_editable_set_position(GTK_EDITABLE(entry), -1);
-		return;
-	}
+        /* Prevent any leak of information */
+        if (!gtk_entry_get_visibility(GTK_ENTRY(editable)))
+        {
+                gtk_editable_set_position(GTK_EDITABLE(entry), -1);
+                return;
+        }
 
-	if (entry->text && (gtk_editable_get_position(editable) < entry->text_length))
-	{
-		text = entry->text;
-		i = gtk_editable_get_position(editable);
-
-		if (
+        if (entry->text && (gtk_editable_get_position(editable) < entry->text_length))
+        {
+                text = (GdkWChar *)g_utf8_to_ucs4(entry->text, -1, NULL, NULL, NULL);
+                i = gtk_editable_get_position(editable);		if (
 		    !isalnum(text[i]))
 			for (; i < entry->text_length; i++)
 			{
@@ -320,19 +318,17 @@ static void gtk_move_backward_word(GtkEntry *entry)
 
 	editable = GTK_EDITABLE (entry);
 
-	/* Prevent any leak of information */
-	if (!gtk_entry_get_visibility(editable))
-	{
-		gtk_editable_set_position(GTK_EDITABLE(entry), 0);
-		return;
-	}
+        /* Prevent any leak of information */
+        if (!gtk_entry_get_visibility(GTK_ENTRY(editable)))
+        {
+                gtk_editable_set_position(GTK_EDITABLE(entry), 0);
+                return;
+        }
 
-	if (entry->text && gtk_editable_get_position(editable) > 0)
-	{
-		text = entry->text;
-		i = gtk_editable_get_position(editable);
-
-		if (
+        if (entry->text && gtk_editable_get_position(editable) > 0)
+        {
+                text = (GdkWChar *)g_utf8_to_ucs4(entry->text, -1, NULL, NULL, NULL);
+                i = gtk_editable_get_position(editable);		if (
 		    !isalnum(text[i]))
 			for (; i >= 0; i--)
 			{

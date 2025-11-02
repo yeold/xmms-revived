@@ -34,6 +34,12 @@ AC_C_BIGENDIAN
 AC_CHECK_FUNC([sched_setscheduler])
 AC_CHECK_FUNC([nanosleep])
 
+# Check for POSIX libraries
+AC_SEARCH_LIBS([clock_gettime], [rt])
+POSIX_LIBS="$LIBS"
+AC_SUBST(POSIX_LIBS)
+LIBS=""
+
 AM_PATH_GLIB_2_0([2.0.0],,[AC_MSG_ERROR([*** GLIB >= 2.0.0 not installed - please install first ***])])
 AM_PATH_GTK_2_0([2.0.0],,[AC_MSG_ERROR([*** GTK+ >= 2.0.0 not installed - please install first ***])],[gthread])
 

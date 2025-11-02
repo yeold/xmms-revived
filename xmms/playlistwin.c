@@ -587,8 +587,8 @@ static void playlistwin_show_filebrowser(void)
 		return;
 
 	filebrowser = util_create_filebrowser(FALSE);
-	gtk_signal_connect(GTK_OBJECT(filebrowser), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &filebrowser);
+	g_signal_connect_swapped(G_OBJECT(filebrowser), "destroy",
+			   G_CALLBACK(gtk_widget_destroyed), &filebrowser);
 }
 
 
@@ -617,7 +617,7 @@ void playlistwin_show_add_url_window(void)
 	{
 		playlistwin_url_window = util_create_add_url_window(_("Enter URL to add:"), GTK_SIGNAL_FUNC(playlistwin_url_ok_clicked), NULL);
 		gtk_window_set_transient_for(GTK_WINDOW(playlistwin_url_window), GTK_WINDOW(playlistwin));
-		gtk_signal_connect(GTK_OBJECT(playlistwin_url_window), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &playlistwin_url_window);
+		g_signal_connect_swapped(G_OBJECT(playlistwin_url_window), "destroy", G_CALLBACK(gtk_widget_destroyed), &playlistwin_url_window);
 		gtk_widget_show(playlistwin_url_window);
 	}
 
@@ -641,8 +641,8 @@ static void playlistwin_show_dirbrowser(void)
 					      cfg.filesel_path,
 					      GTK_SELECTION_EXTENDED,
 					      playlistwin_add_dir_handler);
-	gtk_signal_connect(GTK_OBJECT(dir_browser),
-			   "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed),
+		g_signal_connect_swapped(G_OBJECT(dir_browser),
+			   "destroy", G_CALLBACK(gtk_widget_destroyed),
 			   &dir_browser);
 	gtk_window_set_transient_for(GTK_WINDOW(dir_browser),
 				     GTK_WINDOW(playlistwin));
@@ -926,8 +926,8 @@ static void playlistwin_show_load_filesel(void)
 	gtk_signal_connect_object(object, "clicked",
 				  GTK_SIGNAL_FUNC(gtk_widget_destroy),
 				  GTK_OBJECT(load_filesel));
-	gtk_signal_connect(GTK_OBJECT(load_filesel), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &load_filesel);
+	g_signal_connect_swapped(G_OBJECT(load_filesel), "destroy",
+			   G_CALLBACK(gtk_widget_destroyed), &load_filesel);
 	gtk_widget_show(load_filesel);
 }
 
@@ -962,8 +962,8 @@ static void playlistwin_show_save_filesel(void)
 	gtk_signal_connect_object(object, "clicked",
 				  GTK_SIGNAL_FUNC(gtk_widget_hide),
 				  GTK_OBJECT(filesel));
-	gtk_signal_connect(GTK_OBJECT(filesel), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &filesel);
+	g_signal_connect_swapped(G_OBJECT(filesel), "destroy",
+			   G_CALLBACK(gtk_widget_destroyed), &filesel);
 	/*
 	 * I18N: "Save options" here is "options for saving, not "save
 	 * the options"
