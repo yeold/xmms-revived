@@ -10,6 +10,7 @@ msgstr ""
 "PO-Revision-Date: 2003-01-29 23:50+0400\n"
 "Last-Translator: Aiet Kolkhi <aiet@gmx.net>\n"
 "Language-Team: Georgian\n"
+"Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -335,8 +336,8 @@ msgstr ""
 "ავტორი თიმ ფერგიუსონ (Tim Ferguson) <timf@dgs.monash.edu.au>.\n"
 "http://www.dgs.monash.edu.au/~timf/\n"
 "\n"
-"5+ ღილაკის უზრუნველყოფა ჯასთინ ვეიქის (Justin Wake) მიერ <justin@globalsoft."
-"com.au>\n"
+"5+ ღილაკის უზრუნველყოფა ჯასთინ ვეიქის (Justin Wake) მიერ "
+"<justin@globalsoft.com.au>\n"
 "\n"
 "XMMS-ის ერთი ან ორი ჯოისტიკით კონტროლი.\n"
 
@@ -860,9 +861,9 @@ msgstr "სტანდარტული პანირების დან�
 msgid "Quality"
 msgstr "ხარისხი"
 
-#: Input/mikmod/plugin.c:606 Input/mpg123/configure.c:367
-#: xmms/equalizer.c:1653 xmms/equalizer.c:1689 xmms/prefswin.c:960
-#: xmms/prefswin.c:1055 xmms/prefswin.c:1062
+#: Input/mikmod/plugin.c:606 Input/mpg123/configure.c:367 xmms/equalizer.c:1653
+#: xmms/equalizer.c:1689 xmms/prefswin.c:960 xmms/prefswin.c:1055
+#: xmms/prefswin.c:1062
 msgid "Options"
 msgstr "პარამეტრები"
 
@@ -1853,10 +1854,10 @@ msgid ""
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
 msgstr ""
-"სინუს ტონ-გენერატორი ჰავარდ ქვალენის (Havard Kvalen) მიერ <havardk@xmms."
-"org>\n"
-"დამუშავებულია დენიელ ჯ. ფენგის (Daniel J. Peng) მიერ <danielpeng@bigfoot."
-"com>\n"
+"სინუს ტონ-გენერატორი ჰავარდ ქვალენის (Havard Kvalen) მიერ "
+"<havardk@xmms.org>\n"
+"დამუშავებულია დენიელ ჯ. ფენგის (Daniel J. Peng) მიერ "
+"<danielpeng@bigfoot.com>\n"
 "\n"
 "გამოსაყენებლად, დაამატეთ URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005, რათა დაუკრათ 2000Hz ტონური სიგნალი და 2005Hz ტონური "
