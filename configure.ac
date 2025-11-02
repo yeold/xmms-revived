@@ -1,12 +1,19 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([xmms], [1.18.1])
+AC_INIT([xmms],[1.18.1])
 AC_CANONICAL_HOST
+
+AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIRS([m4])
+AC_CONFIG_AUX_DIR([.])
 
 cflags_set=${CFLAGS+set}
 AM_CONFIG_HEADER([config.h xmms/i18n.h])
 
 AM_INIT_AUTOMAKE([1.18.1])
+
+m4_pattern_allow([AM_GNU_GETTEXT])
+m4_pattern_allow([AM_GNU_GETTEXT_VERSION])
 
 AC_ARG_ENABLE([one-plugin-dir],
 [  --enable-one-plugin-dir  use a single plugin dir [default=no]],,
@@ -49,8 +56,8 @@ dnl ***
 dnl *** Various compiler setup.
 dnl ***
 AC_PROG_CC
-AC_GNU_SOURCE
-AC_ISC_POSIX
+AC_USE_SYSTEM_EXTENSIONS
+AC_SEARCH_LIBS([strerror],[cposix])
 dnl AC_PROG_CXX
 AC_C_BIGENDIAN
 AC_C_INLINE
@@ -70,7 +77,7 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
 AM_DISABLE_STATIC
-AM_PROG_LIBTOOL
+LT_INIT
 
 AC_CHECK_HEADER([pthread.h],,[AC_MSG_ERROR([*** POSIX threads support not installed - please install first ***])])
 
@@ -93,8 +100,16 @@ AC_SUBST([SM_LIBS])
 LIBS=$LIBS_save
 
 AC_PATH_X
-AM_ICONV
 
+AC_CHECK_FUNCS([iconv])
+AC_CHECK_HEADERS([iconv.h])
+AC_ARG_WITH([libiconv-prefix],
+  [AS_HELP_STRING([--with-libiconv-prefix=DIR], [search for libiconv in DIR/include and DIR/lib])],
+  [for dir in `echo "$withval" | tr : ' '`; do
+    if test -d $dir/include; then CPPFLAGS="$CPPFLAGS -I$dir/include"; fi
+    if test -d $dir/lib; then LDFLAGS="$LDFLAGS -L$dir/lib"; fi
+   done])
+AC_CHECK_LIB([iconv], [libiconv_open], [LIBS="$LIBS -liconv"])
 
 dnl ***
 dnl *** Check for XF86VidMode extension
@@ -203,12 +218,11 @@ AC_ARG_ENABLE([esd],
 	[enable_esd="yes"])
 
 if test "x$enable_esd" = "xyes"; then
-	AM_PATH_ESD([0.2.8],
-	   [have_esd=yes
-	    AC_CHECK_LIB([esd], [esd_get_latency],
-	       AC_DEFINE([HAVE_ESD_GET_LATENCY],,
-		  [Define if libesd has the esd_get_latency function]))],
-	   [have_esd=no])
+	PKG_CHECK_MODULES([ESD], [esound >= 0.2.8],
+	    [have_esd=yes
+	     AC_CHECK_LIB([esd], [esd_get_latency],
+	        [AC_DEFINE([HAVE_ESD_GET_LATENCY],,[Define if libesd has the esd_get_latency function])])],
+	    [have_esd=no])
 else
 	AC_MSG_RESULT([*** esound plugin disabled per user request ***])
 	have_esd=no
@@ -240,31 +254,14 @@ AC_ARG_ENABLE([vorbis],
 	[enable_vorbis="yes"])
 
 if test "x$enable_vorbis" = "xyes"; then
-	XIPH_PATH_OGG([have_ogg=yes],[have_ogg=no])
-	XIPH_PATH_VORBIS([have_vorbis=yes],[have_vorbis=no])
-	if test "x$have_vorbis" = "xyes"; then
-	  AC_MSG_CHECKING([if Vorbis is sufficiently new])
-	  CFLAGS_save=$CFLAGS
-	  LIBS_save=$LIBS
-	  CFLAGS="$CFLAGS $VORBIS_CFLAGS $OGG_CFLAGS"
-	  LIBS="$LIBS $VORBIS_LIBS $OGG_LIBS"
-	  AC_TRY_COMPILE(
-		[#include <vorbis/vorbisfile.h>],
-		[OggVorbis_File vf;
-		 float **pcm;
-		 ov_read_float(&vf, &pcm, 1024, 0);],
-		[AC_MSG_RESULT([yes])],
-		[AC_MSG_RESULT([no (need atleast 1.0)])
-		 have_vorbis=no])
-	  CFLAGS=$CFLAGS_save
-	  LIBS=$LIBS_save
-	fi
-	have_oggvorbis=no
-	if test "x$have_ogg" = "xyes"; then
-		if test "x$have_vorbis" = "xyes"; then
-			have_oggvorbis=yes
-		fi
-	fi
+    PKG_CHECK_MODULES([OGG], [ogg >= 1.0], [have_ogg=yes], [have_ogg=no])
+    PKG_CHECK_MODULES([VORBIS], [vorbis >= 1.0], [have_vorbis=yes], [have_vorbis=no])
+    PKG_CHECK_MODULES([VORBISFILE], [vorbisfile >= 1.0], [have_vorbisfile=yes], [have_vorbisfile=no])
+    
+    have_oggvorbis=no
+    if test "x$have_ogg" = "xyes" && test "x$have_vorbis" = "xyes" && test "x$have_vorbisfile" = "xyes"; then
+        have_oggvorbis=yes
+    fi
 else
 	AC_MSG_RESULT([*** Ogg Vorbis plugin disabled per user request ***])
 	have_oggvorbis=no
@@ -280,26 +277,50 @@ LIBS_save=$LIBS
 CFLAGS="$CFLAGS $GTK_CFLAGS"
 LIBS="$LIBS $GTK_LIBS"
 AC_CACHE_CHECK([for thread-safe Xlib],[xmms_cv_lib_xlibs_threadsafe],
-[AC_TRY_RUN([
+[AC_RUN_IFELSE([AC_LANG_SOURCE([[
 #include <X11/Xlib.h>
 int main()
 {
    exit(!(XInitThreads()));
-}],
-[xmms_cv_lib_xlibs_threadsafe=yes],
-[xmms_cv_lib_xlibs_threadsafe=no],
-[xmms_cv_lib_xlibs_threadsafe=yes])])
+}]])],[xmms_cv_lib_xlibs_threadsafe=yes],[xmms_cv_lib_xlibs_threadsafe=no],[xmms_cv_lib_xlibs_threadsafe=yes])])
 CFLAGS=$CFLAGS_save
 LIBS=$LIBS_save
 
 
 dnl ***
-dnl *** This is just a copy of po/LINGUAS and is here to avoid breaking
-dnl *** compatibility with automake 1.4
-dnl ***
+dnl *** Internationalization support
 ALL_LINGUAS="af az be bg bs ca cs cy da de el en en_GB eo es et eu fi fr ga gl hr hu id it ja ka ko lt lv mk ms nn nl no pl pt pt_BR ro ru sk sl sq sr sr@Latn sv tg th tr uk uz vi wa zh_CN zh_TW"
 
-AM_GNU_GETTEXT
+# Turn on GNU gettext (use system autopoint/gettext infrastructure)
+AM_GNU_GETTEXT([external])
+
+AC_CHECK_HEADERS([locale.h])
+AC_CHECK_FUNCS([setlocale])
+AC_CHECK_FUNCS([gettext])
+AC_CHECK_HEADERS([libintl.h])
+AC_CHECK_LIB([intl], [gettext], [INTL_LIBS="-lintl"])
+AC_SUBST([INTL_LIBS])
+
+# Check if we need to use included libintl
+AC_ARG_WITH([included-gettext],
+  [AS_HELP_STRING([--with-included-gettext],
+    [use the GNU gettext library included here @<:@default=no@:>@])],
+  [], [with_included_gettext=no])
+
+# Check if translations should be built
+AC_MSG_CHECKING([whether NLS is requested])
+AC_ARG_ENABLE([nls],
+  [  --disable-nls           do not use Native Language Support],
+  [USE_NLS=$enableval], [USE_NLS=yes])
+AC_MSG_RESULT([$USE_NLS])
+AC_SUBST([USE_NLS])
+
+if test "x$with_included_gettext" = "xyes"; then
+  USE_INCLUDED_LIBINTL=yes
+else
+  USE_INCLUDED_LIBINTL=no
+fi
+AC_SUBST([USE_INCLUDED_LIBINTL])
 
 localedir=${datadir}/locale
 AC_SUBST([localedir])
@@ -359,10 +380,9 @@ dnl ***
 dnl *** Check if we have socklen_t type
 dnl ***
 AC_CACHE_CHECK([for socklen_t], [xmms_cv_type_socklen_t],[
-	AC_TRY_COMPILE([
+	AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 	#include <sys/types.h>
-	#include <sys/socket.h>],
-	[socklen_t s;],[xmms_cv_type_socklen_t=yes],[xmms_cv_type_socklen_t=no])
+	#include <sys/socket.h>]], [[socklen_t s;]])],[xmms_cv_type_socklen_t=yes],[xmms_cv_type_socklen_t=no])
 ])
 if test "x$xmms_cv_type_socklen_t" = "xno"; then
 	AC_DEFINE([socklen_t], [int], [Define to int if the socklen_t type is missing])
@@ -473,10 +493,7 @@ AC_CHECK_FUNCS([sched_get_priority_max])
 AC_CHECK_FUNCS([srandomdev])
 
 AC_CACHE_CHECK([for nl_langinfo(CODESET)], [xmms_cv_func_langinfo], [
-AC_TRY_COMPILE([#include <langinfo.h>],
-        [char *codeset = nl_langinfo (CODESET);],
-   [xmms_cv_func_langinfo=yes],
-   [xmms_cv_func_langinfo=no])])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <langinfo.h>]], [[char *codeset = nl_langinfo (CODESET);]])],[xmms_cv_func_langinfo=yes],[xmms_cv_func_langinfo=no])])
 if test "x$xmms_cv_func_langinfo" = "xyes"; then
   AC_DEFINE([HAVE_CODESET],,[Define if nl_langinfo(CODESET) is available.])
 fi
@@ -624,7 +641,7 @@ AC_CONFIG_SUBDIRS([libxmms])
 AC_SUBST([xmmsdir])
 AC_SUBST([plugindir])
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
 Makefile
 xmms.1
 wmxmms.1
@@ -660,8 +677,12 @@ Visualization/sanalyzer/Makefile
 Visualization/opengl_spectrum/Makefile
 wmxmms/Makefile
 po/Makefile.in
-intl/Makefile],
-[chmod +x xmms-config])
+intl/Makefile.in
+])
+
+AM_CONDITIONAL([USE_INCLUDED_LIBINTL], [test "x$USE_INCLUDED_LIBINTL" = "xyes"])
+AC_CONFIG_COMMANDS([default],[chmod +x xmms-config],[])
+AC_OUTPUT
 
 echo ""
 echo "Configuration:"

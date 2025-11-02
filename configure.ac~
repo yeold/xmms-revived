@@ -1,11 +1,12 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([xmms/main.c])
+
+AC_INIT([xmms], [1.18.1])
 AC_CANONICAL_HOST
 
 cflags_set=${CFLAGS+set}
 AM_CONFIG_HEADER([config.h xmms/i18n.h])
 
-AM_INIT_AUTOMAKE([xmms], [1.2.11])
+AM_INIT_AUTOMAKE([1.18.1])
 
 AC_ARG_ENABLE([one-plugin-dir],
 [  --enable-one-plugin-dir  use a single plugin dir [default=no]],,

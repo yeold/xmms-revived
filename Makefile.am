@@ -1,4 +1,6 @@
-SUBDIRS = intl libxmms xmms Output Input Effect General Visualization wmxmms po
+SUBDIRS = libxmms xmms Output Input Effect General Visualization wmxmms po
+
+ACLOCAL_AMFLAGS = -I m4
 
 bin_SCRIPTS = xmms-config
 

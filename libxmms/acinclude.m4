@@ -1,8 +1,12 @@
-dnl XMMS_FUNC_POSIX(FUNCTION... [, ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
-dnl Test for functions in posix libraries, and define POSIX_LIBS
-AC_DEFUN([XMMS_FUNC_POSIX],
+dnl This is a stub acinclude.m4 that includes the XMMS-specific macros.dnl XMMS_FUNC_POSIX(FUNCTION... [, ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+
+dnl The original macros have been moved to m4/xmms-libxmms.m4 to avoid conflictsdnl Test for functions in posix libraries, and define POSIX_LIBS
+
+dnl with system libtool macros.AC_DEFUN([XMMS_FUNC_POSIX],
+
 [dnl
-    xmms_posix4=no
+
+m4_include([m4/xmms-libxmms.m4])    xmms_posix4=no
     xmms_rt=no
     for xmms_func in $1
     do
