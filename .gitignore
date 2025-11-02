@@ -21,3 +21,4 @@ autom4te.cache
 *.lo
 *.la
 *~
+xmms/xmms
