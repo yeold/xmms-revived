@@ -1,0 +1,10 @@
+{
+    "makefile.buildLog": "./build.log",
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/isac/repos/xmms-glib2/xmms",
+            "binaryPath": "/home/isac/repos/xmms-glib2/xmms/xmms",
+            "binaryArgs": []
+        }
+    ]
+}

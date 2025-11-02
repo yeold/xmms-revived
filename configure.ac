@@ -677,7 +677,6 @@ Visualization/sanalyzer/Makefile
 Visualization/opengl_spectrum/Makefile
 wmxmms/Makefile
 po/Makefile.in
-intl/Makefile.in
 ])
 
 AM_CONDITIONAL([USE_INCLUDED_LIBINTL], [test "x$USE_INCLUDED_LIBINTL" = "xyes"])

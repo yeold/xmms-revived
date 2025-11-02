@@ -2527,6 +2527,7 @@ AS_IF([test "$am_cv_xargs_n_works" = yes], [am__xargs_n='xargs -n'], [dnl
 AC_SUBST(am__xargs_n)
 ])
 
+m4_include([m4/build-to-host.m4])
 m4_include([m4/gettext.m4])
 m4_include([m4/host-cpu-c-abi.m4])
 m4_include([m4/iconv.m4])
