@@ -1,0 +1,20 @@
+.TH GNOMEXMMS 1 "6 August 2001" "Version @VERSION@" "XMMS Manual Pages"
+.SH NAME
+GNOMEXMMS \- a XMMS control applet.
+.SH SYNOPSIS
+.B gnomexmms
+[\-\-help]
+.SH DESCRIPTION
+\fIGNOMEXMMS\fP is a applet for the GNOME desktop environment that
+will dock into the GNOME panel.  From the applet you can start and
+control xmms.
+
+.SH OPTIONS
+gnomexmms accepts the following options:
+.TP
+.B \-?, \-\-help
+Show summary of options inherited from GNOME.
+.SH SEE ALSO
+.BR xmms (1),
+.BR gnome (1),
+.BR wmxmms (1)

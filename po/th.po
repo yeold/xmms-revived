@@ -1,0 +1,4063 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: XMMS 1.2.5\n"
+"POT-Creation-Date: 2002-01-08 17:20+0100\n"
+"PO-Revision-Date: 2001-12-08 03:34+0700GMT\n"
+"Last-Translator: Supphachoke Suntiwichaya <webmaster@mrchoke.f2s.com>\n"
+"Language-Team: thai <th@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-11\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 0.9.5\n"
+
+#: Effect/echo_plugin/echo.c:43
+#, c-format
+msgid "Echo Plugin %s"
+msgstr "ปลั๊กอินเสียง Echo %s"
+
+#: Effect/echo_plugin/gui.c:8
+msgid ""
+"Echo Plugin\n"
+"By Johan Levin 1999.\n"
+"\n"
+"Surround echo by Carl van Schaik 1999"
+msgstr ""
+"ปลั๊กอินเสียง Echo \n"
+"โดย Johan Levin 1999.\n"
+"\n"
+"เสียง echo รอบทิศทาง โดย Carl van Schaik 1999"
+
+#: Effect/echo_plugin/gui.c:22
+msgid "About Echo Plugin"
+msgstr "เกี่ยวกับ ปลั๊กอิน Echo"
+
+#: Effect/echo_plugin/gui.c:23 Effect/echo_plugin/gui.c:135
+#: Effect/stereo_plugin/stereo.c:56 Effect/stereo_plugin/stereo.c:120
+#: Effect/voice/about.c:35 General/ir/about.c:51 General/ir/configure.c:205
+#: General/ir/configure.c:377 General/joystick/about.c:35
+#: General/joystick/configure.c:272 General/song_change/song_change.c:209
+#: Input/cdaudio/cdindex.c:151 Input/cdaudio/configure.c:256
+#: Input/mikmod/plugin.c:123 Input/mikmod/plugin.c:613
+#: Input/mpg123/configure.c:633 Input/mpg123/fileinfo.c:118
+#: Input/mpg123/fileinfo.c:123 Input/mpg123/fileinfo.c:157
+#: Input/mpg123/fileinfo.c:161 Input/mpg123/fileinfo.c:167
+#: Input/mpg123/http.c:208 Input/mpg123/mpg123.c:1102
+#: Input/tonegen/tonegen.c:54 Input/vorbis/configure.c:347
+#: Input/vorbis/fileinfo.c:202 Input/vorbis/http.c:208
+#: Input/vorbis/vorbis.c:601 Output/OSS/about.c:45 Output/OSS/configure.c:308
+#: Output/disk_writer/disk_writer.c:130 Output/disk_writer/disk_writer.c:383
+#: Output/esd/about.c:44 Output/esd/configure.c:208 Output/solaris/about.c:24
+#: Output/solaris/configure.c:266 Visualization/blur_scope/config.c:101
+#: Visualization/opengl_spectrum/configure.c:73 libxmms/dirbrowser.c:294
+#: xmms/equalizer.c:1271 xmms/equalizer.c:1277 xmms/equalizer.c:1341
+#: xmms/equalizer.c:1350 xmms/equalizer.c:1600 xmms/main.c:2953
+#: xmms/playlistwin.c:1165 xmms/playlistwin.c:1218 xmms/prefswin.c:259
+#: xmms/prefswin.c:999 xmms/util.c:581
+msgid "Ok"
+msgstr "ตกลง"
+
+#: Effect/echo_plugin/gui.c:74
+msgid "Configure Echo"
+msgstr "ปรับแต่งเสียง Echo"
+
+#: Effect/echo_plugin/gui.c:87
+msgid "Delay: (ms)"
+msgstr "หน่วงเวลา: (ms)"
+
+#: Effect/echo_plugin/gui.c:92
+msgid "Feedback: (%)"
+msgstr "ย้อนกลับ: (%)"
+
+#: Effect/echo_plugin/gui.c:97
+msgid "Volume: (%)"
+msgstr "ระดับเสียง: (%)"
+
+#: Effect/echo_plugin/gui.c:120
+msgid "Surround echo"
+msgstr "เสียง echo รอบทิศทาง"
+
+#: Effect/echo_plugin/gui.c:143 Effect/stereo_plugin/stereo.c:129
+#: General/ir/configure.c:212 General/ir/configure.c:384
+#: General/joystick/configure.c:279 General/song_change/song_change.c:216
+#: Input/cdaudio/configure.c:262 Input/mikmod/plugin.c:620
+#: Input/mpg123/configure.c:639 Input/mpg123/fileinfo.c:332
+#: Input/vorbis/configure.c:353 Input/vorbis/fileinfo.c:615
+#: Output/OSS/configure.c:314 Output/disk_writer/disk_writer.c:390
+#: Output/esd/configure.c:215 Output/solaris/configure.c:278
+#: Visualization/blur_scope/config.c:109
+#: Visualization/opengl_spectrum/configure.c:80 libxmms/dirbrowser.c:302
+#: xmms/equalizer.c:1271 xmms/equalizer.c:1277 xmms/equalizer.c:1341
+#: xmms/equalizer.c:1350 xmms/equalizer.c:1604 xmms/main.c:1451
+#: xmms/playlistwin.c:1219 xmms/prefswin.c:1003 xmms/util.c:601
+msgid "Cancel"
+msgstr "ยกเลิก"
+
+#: Effect/echo_plugin/gui.c:150 Effect/stereo_plugin/stereo.c:136
+#: General/joystick/configure.c:285 Output/solaris/configure.c:273
+#: xmms/equalizer.c:1610 xmms/prefswin.c:1007
+msgid "Apply"
+msgstr "มีผลทันที"
+
+#: Effect/stereo_plugin/stereo.c:26
+msgid ""
+"Extra Stereo Plugin\n"
+"\n"
+"By Johan Levin 1999."
+msgstr ""
+"ปลั๊กอิน Extra Stereo \n"
+"\n"
+"โดย Johan Levin 1999."
+
+#: Effect/stereo_plugin/stereo.c:35
+#, c-format
+msgid "Extra Stereo Plugin %s"
+msgstr "ปลั๊กอิน Extra Stereo %s"
+
+#: Effect/stereo_plugin/stereo.c:55
+msgid "About Extra Stereo Plugin"
+msgstr "เกี่ยวกับปลั๊กอิน Extra Stereo"
+
+#: Effect/stereo_plugin/stereo.c:97
+msgid "Configure Extra Stereo"
+msgstr "ปรับค่า Extra Stereo"
+
+#: Effect/stereo_plugin/stereo.c:99
+msgid "Effect intensity:"
+msgstr "แอฟเฟ็ค ระดับความเข้ม:"
+
+#: Effect/voice/about.c:31
+msgid "About Voice Removal Plugin"
+msgstr "เกี่ยวกับ ปลั๊กอิน Voice Removal"
+
+#: Effect/voice/about.c:32
+msgid ""
+"XMMS Voice Removal Plugin\n"
+"\n"
+"A simple voice removal plugin by Anders Carlsson <andersca@gnu.org>"
+msgstr ""
+"XMMS Voice Removal Plugin\n"
+"\n"
+"ปลั๊กอินแยกเสียงร้อง โดย  by Anders Carlsson <andersca@gnu.org>"
+
+#: Effect/voice/voice.c:23
+#, c-format
+msgid "Voice removal plugin %s"
+msgstr "ปลั๊กอิน Voice removal %s"
+
+#: General/ir/about.c:27 xmms/prefswin.c:666 xmms/prefswin.c:699
+#: xmms/prefswin.c:736 xmms/prefswin.c:776 xmms/prefswin.c:823
+msgid "About"
+msgstr "เกี่ยวกับ"
+
+#: General/ir/about.c:35
+msgid "XMMS IRman Plugin:"
+msgstr "ปลั๊กอิน XMMS IRman :"
+
+#: General/ir/about.c:41
+msgid ""
+"Created by Charles Sielski <stray@teklabs.net>\n"
+"Control XMMS with your TV / VCR / Stereo remote \n"
+"IRman page - http://www.evation.com/irman/"
+msgstr ""
+"สร้างโดย Charles Sielski <stray@teklabs.net>\n"
+"ควบคุม XMMS ด้วย รีโมต TV / VCR / Stereo ของคุณ \n"
+"IRman page - http://www.evation.com/irman/"
+
+#: General/ir/configure.c:27
+msgid "Play"
+msgstr "เล่น"
+
+#: General/ir/configure.c:27 General/joystick/configure.c:26
+msgid "Stop"
+msgstr "หยุด"
+
+#: General/ir/configure.c:27
+msgid "Pause"
+msgstr "หยุดชั่วคราว"
+
+#: General/ir/configure.c:28
+msgid "Prev"
+msgstr "ก่อนหน้า"
+
+#: General/ir/configure.c:28
+msgid "Next"
+msgstr "ถัดไป"
+
+#: General/ir/configure.c:28
+msgid "Vol +"
+msgstr "+ เสียง"
+
+#: General/ir/configure.c:29
+msgid "Seek -5s"
+msgstr "Seek -5 วินาที"
+
+#: General/ir/configure.c:29
+msgid "Seek +5s"
+msgstr "Seek +5 วินาที"
+
+#: General/ir/configure.c:29
+msgid "Vol -"
+msgstr "- เสียง"
+
+#: General/ir/configure.c:30 General/joystick/configure.c:28
+msgid "Shuffle"
+msgstr "เล่นสุ่ม"
+
+#: General/ir/configure.c:30 General/joystick/configure.c:29
+msgid "Repeat"
+msgstr "เล่นวน"
+
+#: General/ir/configure.c:30 xmms/prefswin.c:930
+msgid "Playlist"
+msgstr "รายการเพลง"
+
+#: General/ir/configure.c:31
+msgid "+100"
+msgstr "+100"
+
+#: General/ir/configure.c:35
+msgid "0"
+msgstr "0"
+
+#: General/ir/configure.c:35
+msgid "1"
+msgstr "1"
+
+#: General/ir/configure.c:35
+msgid "2"
+msgstr "2"
+
+#: General/ir/configure.c:35
+msgid "3"
+msgstr "3"
+
+#: General/ir/configure.c:35
+msgid "4"
+msgstr "4"
+
+#: General/ir/configure.c:36
+msgid "5"
+msgstr "5"
+
+#: General/ir/configure.c:36
+msgid "6"
+msgstr "6"
+
+#: General/ir/configure.c:36
+msgid "7"
+msgstr "7"
+
+#: General/ir/configure.c:36
+msgid "8"
+msgstr "8"
+
+#: General/ir/configure.c:36
+msgid "9"
+msgstr "9"
+
+#: General/ir/configure.c:146
+#, c-format
+msgid "`%s' Button Setup"
+msgstr "ปุ่มตั้งค่า `%s'"
+
+#: General/ir/configure.c:156
+msgid "Enter code or use remote"
+msgstr "ใส่โค๊ด หรือ ใช้รีโมต"
+
+#: General/ir/configure.c:255
+msgid "XMMS IRman Configuration"
+msgstr "ปรับค่า XMMS IRman"
+
+#: General/ir/configure.c:269 Input/cdaudio/configure.c:105
+#: Input/cdaudio/configure.c:114
+msgid "Device:"
+msgstr "อุปกรณ์ :"
+
+#: General/ir/configure.c:278
+msgid "Device: "
+msgstr "อุปกรณ์ : "
+
+#: General/ir/configure.c:288
+msgid "IR code length: "
+msgstr "ความยาว โค๊ต IR: "
+
+#: General/ir/configure.c:301
+msgid "Controls:"
+msgstr "ควบคุม :"
+
+#: General/ir/configure.c:340
+msgid "Playlists:"
+msgstr "รายการเพลง :"
+
+#: General/ir/configure.c:369
+msgid "General"
+msgstr "พื้นฐาน"
+
+#: General/ir/ir.c:50
+#, c-format
+msgid "IRman Control %s"
+msgstr "IRman ควบคุม %s"
+
+#: General/ir/ir.c:189
+#, c-format
+msgid "unable to open port `%s' (%s)\n"
+msgstr "ไม่สามารถเปิดพอร์ต `%s' (%s)\n"
+
+#: General/joystick/about.c:28
+msgid "About Joystick Driver"
+msgstr "เกี่ยวกับ ไดร์ฟเวอร์ Joystick"
+
+#: General/joystick/about.c:29
+msgid ""
+"Joystick Control Plugin\n"
+"\n"
+"Created by Tim Ferguson <timf@dgs.monash.edu.au>.\n"
+"http://www.dgs.monash.edu.au/~timf/\n"
+"\n"
+"5+ button support by Justin Wake <justin@globalsoft.com.au>\n"
+"\n"
+"Control XMMS with one or two joysticks.\n"
+msgstr ""
+"ปลั๊กอินควบคุม Joystick\n"
+"\n"
+" สร้างโดย Tim Ferguson <timf@dgs.monash.edu.au>.\n"
+" http://www.dgs.monash.edu.au/~timf/\n"
+"\n"
+" 5+ button support by Justin Wake <justin@globalsoft.com.au>\n"
+"\n"
+"ควบคุม XMMS ด้วย 1 หรือ 2  joysticks.\n"
+"\n"
+
+#: General/joystick/configure.c:26
+msgid "Play/Pause"
+msgstr "เล่น/หยุดชั่วคราว"
+
+#: General/joystick/configure.c:26
+msgid "Next Track"
+msgstr "แทร็ค ถัดไป"
+
+#: General/joystick/configure.c:26
+msgid "Prev Track"
+msgstr "แทร็คก่อนหน้า"
+
+#: General/joystick/configure.c:27
+msgid "Fwd 5 tracks"
+msgstr "ไปหน้า 5 แทร็ค"
+
+#: General/joystick/configure.c:27
+msgid "Back 5 tracks"
+msgstr "กลับ 5 แทร็ค"
+
+#: General/joystick/configure.c:27
+msgid "Volume Up"
+msgstr "เพิ่มระดับเสียง"
+
+#: General/joystick/configure.c:28
+msgid "Volume Down"
+msgstr "ลดระดับเสียง"
+
+#: General/joystick/configure.c:28
+msgid "Forward 5s"
+msgstr "ไปหน้า 5 วินาที"
+
+#: General/joystick/configure.c:28
+msgid "Rewind 5s"
+msgstr "กลับหลัง 5 วินาที"
+
+#: General/joystick/configure.c:29
+msgid "Alternate"
+msgstr "ทางเลือกอื่น"
+
+#: General/joystick/configure.c:29
+msgid "Nothing"
+msgstr "ไม่มีอะไร"
+
+#: General/joystick/configure.c:94
+msgid "XMMS Joystick Configuration"
+msgstr "ปรับค่า XMMS Joystick "
+
+#. --------------------------------------------------
+#: General/joystick/configure.c:118
+msgid "Devices:"
+msgstr "อุปกรณ์ :"
+
+#. ------------------------------
+#: General/joystick/configure.c:128
+msgid "Joystick 1:"
+msgstr "จอยสติก 1 :"
+
+#. ------------------------------
+#: General/joystick/configure.c:140
+msgid "Joystick 2:"
+msgstr "จอยสติก 2 :"
+
+#. ------------------------------
+#: General/joystick/configure.c:152
+msgid "Sensitivity (10-32767):"
+msgstr "การตอบสนอง (10-32767):"
+
+#. --------------------------------------------------
+#: General/joystick/configure.c:183
+msgid "Directionals:"
+msgstr "ทิศทาง :"
+
+#. --------------------------------------------------
+#: General/joystick/configure.c:208
+msgid "Directionals (alternate):"
+msgstr "ทิศทาง (ตัวเลือก):"
+
+#. --------------------------------------------------
+#: General/joystick/configure.c:233
+msgid "Buttons:"
+msgstr "ปุ่ม :"
+
+#: General/joystick/configure.c:244
+#, c-format
+msgid "Button %d:"
+msgstr "ปุ่ม %d:"
+
+#: General/joystick/joy.c:60
+#, c-format
+msgid "Joystick Control %s"
+msgstr "ควบคุม Joystick %s"
+
+#: General/joystick/joy.c:159
+msgid "Joystick Control"
+msgstr "ควบคุม Joystick"
+
+#: General/joystick/joy.c:217 General/joystick/joy.c:267
+msgid ""
+"\n"
+"Joystick Control: error reading"
+msgstr ""
+"\n"
+"การควบคุม Joystick: เกิดข้อผิดพลาดระหว่างการอ่าน"
+
+#: General/song_change/song_change.c:46
+#, c-format
+msgid "Song Change %s"
+msgstr "เปลี่ยนเพลง %s"
+
+#: General/song_change/song_change.c:129
+msgid "Song Change Configuration"
+msgstr "ปรับค่าการเปลี่ยนเพลง"
+
+#: General/song_change/song_change.c:137
+msgid "Song change"
+msgstr "เปลี่ยนเพลง"
+
+#: General/song_change/song_change.c:145
+msgid "Playlist end"
+msgstr "จบรายการเพลง"
+
+#: General/song_change/song_change.c:154
+msgid ""
+"Shell-command to run when xmms changes song.  It can optionally include the "
+"string %%s which will be replaced by the new song title."
+msgstr ""
+"คำสั่งที่ใช้เพมื่อมีการเปลี่ยนเพลง.  ซึ่งสามารถรวมเป็นชุด  %%s "
+"ซึ่งจะแทนที่ด้วยชื่อเพลงใหม่."
+
+#: General/song_change/song_change.c:168 General/song_change/song_change.c:192
+msgid "Command:"
+msgstr "คำสั่ง"
+
+#: General/song_change/song_change.c:181
+msgid "Shell-command to run when xmms reaches the end of the playlist."
+msgstr "คำสั่งที่จะใช้งานเมื่อสิ้นสุดรายการเพลง"
+
+#: Input/cdaudio/cdaudio.c:148
+#, c-format
+msgid "CD Audio Player %s"
+msgstr "ตัวเล่น CD  %s"
+
+#: Input/cdaudio/cdaudio.c:373 Input/cdaudio/cdaudio.c:382
+#, c-format
+msgid "CD Audio Track %02u"
+msgstr "แทร็ค CD ที่  %02u"
+
+#: Input/cdaudio/cdindex.c:147 xmms/prefswin.c:252
+msgid "Warning"
+msgstr "คำเตือน"
+
+#: Input/cdaudio/cdindex.c:148
+msgid ""
+"The SHA-1 hash function failed to properly\n"
+"generate a test key.  As such, Xmms will\n"
+"not be able to contact a CD Index server.\n"
+msgstr ""
+" SHA-1 ฟังชั่น hash ล้มเหลว\n"
+"ในการสร้างคีย์ทดสอบ   , Xmms จะไม่\n"
+"สามารถติดต่อ   CD เซิร์ฟเวอร์.\n"
+
+#: Input/cdaudio/cdindex.c:175 Input/cdaudio/cdinfo.c:145
+#: Input/cdaudio/cdinfo.c:146 Input/cdaudio/cdinfo.c:147
+msgid "(unknown)"
+msgstr "(ไม่ทราบ)"
+
+#: Input/cdaudio/configure.c:88
+msgid "CD Audio Player Configuration"
+msgstr "ปรับค่า ตัวเล่น CD"
+
+#: Input/cdaudio/configure.c:122
+msgid "Directory:"
+msgstr "ไดเร็กทอรี่"
+
+#.
+#. * Volume config
+#.
+#: Input/cdaudio/configure.c:134
+msgid "Volume setting:"
+msgstr "กำหนดค่า ระดับเสีง"
+
+#: Input/cdaudio/configure.c:140
+msgid "OSS Mixer"
+msgstr "OSS มิกเซอร์"
+
+#: Input/cdaudio/configure.c:148
+msgid "CDROM drive"
+msgstr "ไดร์ฟ ซีดีรอม"
+
+#: Input/cdaudio/configure.c:153
+msgid "Device"
+msgstr "อุปกรณ์"
+
+#. CDDB
+#: Input/cdaudio/configure.c:163
+msgid "CDDB:"
+msgstr "CDDB:"
+
+#: Input/cdaudio/configure.c:173
+msgid "Use CDDB"
+msgstr "ใช้ CDDB"
+
+#: Input/cdaudio/configure.c:176
+msgid "Get server list"
+msgstr "รับรายการเวิร์ฟเวอร์"
+
+#: Input/cdaudio/configure.c:178
+msgid "Show network window"
+msgstr "แสดง หน้าต่างเครือข่าย"
+
+#: Input/cdaudio/configure.c:185
+msgid "CDDB server:"
+msgstr "เซิร์ฟเวอร์ CDDB :"
+
+#.
+#. * CDindex
+#.
+#: Input/cdaudio/configure.c:196
+msgid "CD Index:"
+msgstr "ดัชนี CD :"
+
+#: Input/cdaudio/configure.c:203
+msgid "Use CD Index"
+msgstr "ใช้ดัชนี CD"
+
+#: Input/cdaudio/configure.c:210
+msgid "CD Index server:"
+msgstr "เซิร์ฟเวอร์ ดัชนี CD :"
+
+#.
+#. * Track names
+#.
+#: Input/cdaudio/configure.c:223
+msgid "Track names:"
+msgstr "ชื่อแทรก :"
+
+#: Input/cdaudio/configure.c:229 Input/mpg123/configure.c:607
+#: Input/vorbis/configure.c:320
+msgid "Override generic titles"
+msgstr "ใช้แทนไตเติ้ล เดิม "
+
+#: Input/cdaudio/configure.c:240
+msgid "Name format:"
+msgstr "ชื่อรูปแบบ :"
+
+#: Input/cdaudio/configure.c:249
+msgid "CD Info"
+msgstr "ข้อมูล ซีดี"
+
+#: Input/idcin/idcin.c:106
+msgid "Huffman decode error.\n"
+msgstr "การถอดรหัส Huffman. ผิดพลาด\n"
+
+#: Input/idcin/idcin.c:200
+#, c-format
+msgid "Id Software .cin player %s"
+msgstr "Id Software .cin player %s"
+
+#: Input/idcin/idcin.c:409
+msgid "Error opening audio for idcin.\n"
+msgstr "เกิดข้อผิดพลาดสำหรับการเปิดเพลง  idcin.\n"
+
+#: Input/idcin/idcin.c:418
+msgid "IDCin Play"
+msgstr "เล่น IDCin"
+
+#: Input/mikmod/plugin.c:89
+msgid "About mikmod plugin"
+msgstr "เกี่ยวกับปลั๊กอิน mikmod"
+
+#: Input/mikmod/plugin.c:113
+msgid ""
+"Mikmod Plugin\n"
+"http://www.multimania.com/miodrag/mikmod/\n"
+"Ported to xmms by J. Nick Koston"
+msgstr ""
+"ปลั๊กอิน Mikmod\n"
+"http://www.multimania.com/miodrag/mikmod/\n"
+"พอร์ตเข้า xmms โดย J. Nick Koston"
+
+#: Input/mikmod/plugin.c:182
+#, c-format
+msgid "MikMod Player %s"
+msgstr "ตัวเล่น MikMod %s"
+
+#: Input/mikmod/plugin.c:368
+msgid "Couldn't load mod"
+msgstr "ไม่สามารถโหลดโมดูล"
+
+#: Input/mikmod/plugin.c:440
+msgid "MikMod Configuration"
+msgstr "ปรับค่า MikMod"
+
+#: Input/mikmod/plugin.c:464 Input/mpg123/configure.c:303
+msgid "Resolution:"
+msgstr "ความละเอียด"
+
+#: Input/mikmod/plugin.c:475 Input/mpg123/configure.c:310
+msgid "16 bit"
+msgstr "16  บิต"
+
+#: Input/mikmod/plugin.c:483 Input/mpg123/configure.c:315
+msgid "8 bit"
+msgstr "8 บิต"
+
+#: Input/mikmod/plugin.c:491 Input/mpg123/configure.c:331
+msgid "Channels:"
+msgstr "ช่อง :"
+
+#: Input/mikmod/plugin.c:502 Input/mpg123/fileinfo.c:182
+msgid "Stereo"
+msgstr "สเตอร์ริโอ"
+
+#: Input/mikmod/plugin.c:510 Input/mpg123/configure.c:344
+msgid "Mono"
+msgstr "โมโน"
+
+#: Input/mikmod/plugin.c:518 Input/mpg123/configure.c:360
+msgid "Down sample:"
+msgstr "วาง ตัวอย่าง:"
+
+#: Input/mikmod/plugin.c:529 Input/mpg123/configure.c:367
+msgid "1:1 (44 kHz)"
+msgstr "1:1 (44 กิโลเฮิร์ต)"
+
+#: Input/mikmod/plugin.c:538 Input/mpg123/configure.c:372
+msgid "1:2 (22 kHz)"
+msgstr "1:2 (22 กิโลเฮิร์ต)"
+
+#: Input/mikmod/plugin.c:546 Input/mpg123/configure.c:377
+msgid "1:4 (11 kHz)"
+msgstr "1:4 (11 กิโลเฮิร์ต)"
+
+#: Input/mikmod/plugin.c:558
+msgid "Look for hidden patterns in modules "
+msgstr "มองหารูปแบบที่ซ่อนอยู่ในโมดูล "
+
+#: Input/mikmod/plugin.c:565
+msgid "Use surround mixing"
+msgstr "ใช้การมิกซ์แบบรอบทิศทาง"
+
+#: Input/mikmod/plugin.c:572
+msgid "Force volume fade at the end of the module"
+msgstr "รี่เสียงลงเมื่อสิ้นสุดโมดูล"
+
+#: Input/mikmod/plugin.c:579
+msgid "Use interpolation"
+msgstr "ใช้ interpolation"
+
+#: Input/mikmod/plugin.c:586
+msgid "Default panning separation"
+msgstr "ค่ามาตรฐาน การแยกเสียงซ้าย ขวา"
+
+#: Input/mikmod/plugin.c:598
+msgid "Quality"
+msgstr "คุณภาพ"
+
+#: Input/mikmod/plugin.c:603 Input/mpg123/configure.c:440
+#: xmms/equalizer.c:1552 xmms/equalizer.c:1588 xmms/prefswin.c:838
+#: xmms/prefswin.c:915 xmms/prefswin.c:922
+msgid "Options"
+msgstr "ตัวเลือก"
+
+#: Input/mpg123/configure.c:231
+msgid "Select the directory where you want to store the MPEG streams:"
+msgstr "ให้เลือกไดเร็คทอรี่สำหรับเก็บ MPEG  :"
+
+#: Input/mpg123/configure.c:286
+msgid "MPG123 Configuration"
+msgstr "ปรับค่า MPEG 123`"
+
+#: Input/mpg123/configure.c:338
+msgid "Stereo (if available)"
+msgstr "สเตอร์ริโอ (ถ้ามี)"
+
+#: Input/mpg123/configure.c:410
+msgid "Decoder:"
+msgstr "ตัวถอดรหัส:"
+
+#: Input/mpg123/configure.c:417
+msgid "Enable Automatic detection"
+msgstr "กำหนดการตรวจจับอัตโนมัติ"
+
+#: Input/mpg123/configure.c:423
+msgid "use 3DNow! optimized decoder"
+msgstr "ใช้ค่าที่เหมาะสมของ 3DNow! กับตัวถอดรหัส"
+
+#: Input/mpg123/configure.c:431
+msgid "use FPU decoder"
+msgstr "ใช้  ตัวถอดรหัส FPU  "
+
+#: Input/mpg123/configure.c:446
+msgid "Detect files by content (instead of file extention)"
+msgstr "ตรวจสอบแฟ้มตามข้อมูลภายใน (ดูจากนามสกุล)"
+
+#: Input/mpg123/configure.c:450
+msgid "Decoder"
+msgstr "ตัวถอดรหัส"
+
+#: Input/mpg123/configure.c:454 Input/vorbis/configure.c:187
+#: Output/OSS/configure.c:264 Output/esd/configure.c:163
+#: Output/solaris/configure.c:231
+msgid "Buffering:"
+msgstr "การสะสม:"
+
+#: Input/mpg123/configure.c:465 Input/vorbis/configure.c:197
+msgid "Buffer size (kb):"
+msgstr "ขนาดความจำสะสม (กิโลไบต์):"
+
+#: Input/mpg123/configure.c:475 Input/vorbis/configure.c:206
+#: Output/OSS/configure.c:285 Output/esd/configure.c:190
+#: Output/solaris/configure.c:252
+msgid "Pre-buffer (percent):"
+msgstr "เตรียมสะสม (%):"
+
+#.
+#. * Proxy config.
+#.
+#: Input/mpg123/configure.c:485 Input/vorbis/configure.c:216
+msgid "Proxy:"
+msgstr "พร๊อกซี่:"
+
+#: Input/mpg123/configure.c:493 Input/vorbis/configure.c:224
+msgid "Use proxy"
+msgstr "ใช้พร๊อกซี่"
+
+#: Input/mpg123/configure.c:502 Input/vorbis/configure.c:233
+#: Output/esd/configure.c:105 Output/esd/configure.c:136
+msgid "Host:"
+msgstr "โฮส :"
+
+#: Input/mpg123/configure.c:509 Input/vorbis/configure.c:240
+#: Output/esd/configure.c:145
+msgid "Port:"
+msgstr "พอร์ต :"
+
+#: Input/mpg123/configure.c:519 Input/vorbis/configure.c:250
+msgid "Use authentication"
+msgstr "ใช้ authentication"
+
+#: Input/mpg123/configure.c:529 Input/vorbis/configure.c:260
+msgid "Username:"
+msgstr "ชื่อผู้ใช้ :"
+
+#: Input/mpg123/configure.c:537 Input/vorbis/configure.c:268
+msgid "Password:"
+msgstr "รหัสผ่าน :"
+
+#.
+#. * Save to disk config.
+#.
+#: Input/mpg123/configure.c:550 Input/vorbis/configure.c:281
+msgid "Save stream to disk:"
+msgstr "บันทึกลงแผ่นดิสก์ :"
+
+#: Input/mpg123/configure.c:558 Input/vorbis/configure.c:289
+msgid "Save stream to disk"
+msgstr "บันทึกลงแผ่นดิสก์ :"
+
+#: Input/mpg123/configure.c:567 Input/vorbis/configure.c:298
+#: Output/disk_writer/disk_writer.c:356
+msgid "Path:"
+msgstr "พาธ:"
+
+#: Input/mpg123/configure.c:574 Input/vorbis/configure.c:305
+#: Output/disk_writer/disk_writer.c:367 xmms/prefswin.c:940
+#: xmms/prefswin.c:960
+msgid "Browse"
+msgstr "ค้นหา"
+
+#: Input/mpg123/configure.c:578
+msgid "SHOUT/Icecast:"
+msgstr "SHOUT/Icecast:"
+
+#: Input/mpg123/configure.c:585
+msgid "Enable SHOUT/Icecast title streaming"
+msgstr "กำหนดให้ SHOUT/Icecast title streaming"
+
+#: Input/mpg123/configure.c:589
+msgid "Enable Icecast Metadata UDP Channel"
+msgstr "กำหนดให้ Icecast Metadata UDP Channel"
+
+#: Input/mpg123/configure.c:593 Input/vorbis/configure.c:309
+msgid "Streaming"
+msgstr "สตรีมมิ่ง"
+
+#: Input/mpg123/configure.c:595
+msgid "ID3 Tags:"
+msgstr "ข้อมูล ID3 :"
+
+#: Input/mpg123/configure.c:602
+msgid "Disable ID3V2 tags"
+msgstr "ไม่ใช้ข้อมูล  ID3V2"
+
+#: Input/mpg123/configure.c:616
+msgid "ID3 format:"
+msgstr "รูปแบบ ID3"
+
+#.
+#. * Title page
+#.
+#: Input/mpg123/configure.c:626 Input/vorbis/configure.c:340
+#: xmms/prefswin.c:971 xmms/prefswin.c:987
+msgid "Title"
+msgstr "ชื่อเพลง"
+
+#: Input/mpg123/fileinfo.c:117 Input/mpg123/fileinfo.c:123
+#: Input/mpg123/fileinfo.c:156 Input/mpg123/fileinfo.c:161
+#: Input/mpg123/fileinfo.c:166
+msgid "File Info"
+msgstr "ข้อมูลของแฟ้ม"
+
+#: Input/mpg123/fileinfo.c:117 Input/mpg123/fileinfo.c:123
+msgid "Couldn't write tag!"
+msgstr "ไม่สามารถเขียนข้อมูลได้"
+
+#: Input/mpg123/fileinfo.c:157 Input/mpg123/fileinfo.c:166
+msgid "Couldn't remove tag!"
+msgstr "ไม่สามารถลบข้อมูลได้"
+
+#: Input/mpg123/fileinfo.c:161
+msgid "No tag to remove!"
+msgstr "ไม่มีข้อมูลที่จะลบ !"
+
+#: Input/mpg123/fileinfo.c:182
+msgid "Joint stereo"
+msgstr "Joint stereo"
+
+#: Input/mpg123/fileinfo.c:183
+msgid "Dual channel"
+msgstr "ช่องคู่"
+
+#: Input/mpg123/fileinfo.c:183
+msgid "Single channel"
+msgstr "ช่องเดี่ยว"
+
+#: Input/mpg123/fileinfo.c:196 Input/mpg123/fileinfo.c:490
+#, c-format
+msgid "Bitrate: %d kb/s"
+msgstr "อัตราบิต: %d กิโลบิต/วินาที"
+
+#: Input/mpg123/fileinfo.c:197 Input/mpg123/fileinfo.c:492
+#, c-format
+msgid "Samplerate: %ld Hz"
+msgstr "อัตราการสุ่มตัวอย่าง: %ld เฮิร์ต"
+
+#: Input/mpg123/fileinfo.c:211
+msgid "None"
+msgstr "ไม่มี"
+
+#: Input/mpg123/fileinfo.c:212
+msgid "50/15 ms"
+msgstr "50/15 ms"
+
+#: Input/mpg123/fileinfo.c:214
+msgid "CCIT J.17"
+msgstr "CCIT J.17"
+
+#: Input/mpg123/fileinfo.c:215
+msgid "No"
+msgstr "ไม่"
+
+#: Input/mpg123/fileinfo.c:216
+msgid "Yes"
+msgstr "ใช่"
+
+#: Input/mpg123/fileinfo.c:236 Input/vorbis/fileinfo.c:429
+msgid "Filename:"
+msgstr "ชื่อแฟ้ม :"
+
+#: Input/mpg123/fileinfo.c:248
+msgid "ID3 Tag:"
+msgstr "ข้อมูล ID3:"
+
+#: Input/mpg123/fileinfo.c:255 Input/vorbis/fileinfo.c:451
+msgid "Title:"
+msgstr "ชื่อเพลง :"
+
+#: Input/mpg123/fileinfo.c:262 Input/vorbis/fileinfo.c:461
+msgid "Artist:"
+msgstr "ศิลปิน :"
+
+#: Input/mpg123/fileinfo.c:269 Input/vorbis/fileinfo.c:471
+msgid "Album:"
+msgstr "อัลบัม :"
+
+#: Input/mpg123/fileinfo.c:276 Input/vorbis/fileinfo.c:481
+msgid "Comment:"
+msgstr "หมายเหตุ :"
+
+#: Input/mpg123/fileinfo.c:283
+msgid "Year:"
+msgstr "ปี :"
+
+#: Input/mpg123/fileinfo.c:291 Input/vorbis/fileinfo.c:502
+msgid "Track number:"
+msgstr "แทร็ค ที่ :"
+
+#: Input/mpg123/fileinfo.c:299 Input/vorbis/fileinfo.c:513
+msgid "Genre:"
+msgstr "ประเภทดนตรี:"
+
+#: Input/mpg123/fileinfo.c:321 Input/vorbis/fileinfo.c:601
+msgid "Save"
+msgstr "บันทึก"
+
+#: Input/mpg123/fileinfo.c:327
+msgid "Remove ID3"
+msgstr "ลบข้อมูล ID3"
+
+#: Input/mpg123/fileinfo.c:337
+msgid "MPEG Info:"
+msgstr "ข้อมูล MPEG:"
+
+#: Input/mpg123/fileinfo.c:376 Input/vorbis/fileinfo.c:759
+#, c-format
+msgid "File Info - %s"
+msgstr "ข้อมูลของแฟ้ม - %s"
+
+#: Input/mpg123/fileinfo.c:485
+#, c-format
+msgid ""
+"Bitrate: Variable,\n"
+"avg. bitrate: %d kb/s"
+msgstr ""
+"อัตราบิต: ตัวแปร,\n"
+"เฉลี่ย. อัตรา: %d กิโลบิต/วินาที"
+
+#: Input/mpg123/fileinfo.c:493
+#, c-format
+msgid ""
+"%s\n"
+"Error protection: %s\n"
+"Copyright: %s\n"
+"Original: %s\n"
+"Emphasis: %s"
+msgstr ""
+"%s\n"
+"การป้องกัน ผิดพลาด: %s\n"
+"ลิขสิทธิ์: %s\n"
+"ต้นฉบับ: %s\n"
+"Emphasis: %s"
+
+#: Input/mpg123/fileinfo.c:494
+#, c-format
+msgid ""
+"%d frames\n"
+"Filesize: %lu B"
+msgstr ""
+"%d เฟรม\n"
+"ขนาดแฟ้ม: %lu ไบต์"
+
+#: Input/mpg123/http.c:208 Input/vorbis/http.c:208
+#: Output/disk_writer/disk_writer.c:127
+msgid "Error"
+msgstr "ผิดพลาด"
+
+#: Input/mpg123/http.c:362 Input/vorbis/http.c:317
+#, c-format
+msgid "LOOKING UP %s"
+msgstr "กำลังหา %s"
+
+#: Input/mpg123/http.c:368 Input/vorbis/http.c:323
+#, c-format
+msgid "Couldn't look up host %s"
+msgstr "หาโฮสต์ %s ไม่เจอ"
+
+#: Input/mpg123/http.c:381 Input/vorbis/http.c:336
+#, c-format
+msgid "CONNECTING TO %s:%d"
+msgstr "กำลังติดต่อไปยัง %s:%d"
+
+#: Input/mpg123/http.c:388 Input/mpg123/http.c:408 Input/vorbis/http.c:343
+#: Input/vorbis/http.c:363
+#, c-format
+msgid "Couldn't connect to host %s"
+msgstr "ไม่สามารถติดต่อไปยัง %s"
+
+#: Input/mpg123/http.c:466 Input/vorbis/http.c:407
+msgid "CONNECTED: WAITING FOR REPLY"
+msgstr "ติดต่อได้แล้ว: กรุณารอการตอบกลับ"
+
+#: Input/mpg123/http.c:507 Input/vorbis/http.c:448
+#, c-format
+msgid ""
+"Couldn't connect to host %s\n"
+"Server reported: %s"
+msgstr ""
+"ไม่สามารถติดต่อไปยัง โฮสต์ %s\n"
+"เพราะ: %s"
+
+#: Input/mpg123/http.c:628 Input/vorbis/http.c:559
+#, c-format
+msgid "PRE-BUFFERING: %dKB/%dKB"
+msgstr "เริ่มสะสมข้อมูล: %dกิโลไบต์/%dกิโลไบต์"
+
+#: Input/mpg123/id3_frame_content.c:73
+msgid " (Remix)"
+msgstr " (รีมิกซ์)"
+
+#: Input/mpg123/id3_frame_content.c:79
+msgid " (Cover)"
+msgstr " (ครอบคลุม)"
+
+#: Input/mpg123/mpg123.c:24 Input/vorbis/fileinfo.c:67
+msgid "Blues"
+msgstr "บลู"
+
+#: Input/mpg123/mpg123.c:24 Input/vorbis/fileinfo.c:67
+msgid "Classic Rock"
+msgstr "คลาสสิกร็อค"
+
+#: Input/mpg123/mpg123.c:24 Input/vorbis/fileinfo.c:67
+msgid "Country"
+msgstr "คันทรีย์"
+
+#: Input/mpg123/mpg123.c:24 Input/vorbis/fileinfo.c:67
+msgid "Dance"
+msgstr "แด็ซ"
+
+#: Input/mpg123/mpg123.c:25 Input/vorbis/fileinfo.c:68
+msgid "Disco"
+msgstr "ดิสโก้"
+
+#: Input/mpg123/mpg123.c:25 Input/vorbis/fileinfo.c:68
+msgid "Funk"
+msgstr "ฟรั้ง"
+
+#: Input/mpg123/mpg123.c:25 Input/vorbis/fileinfo.c:68
+msgid "Grunge"
+msgstr "กรั่ง"
+
+#: Input/mpg123/mpg123.c:25 Input/vorbis/fileinfo.c:68
+msgid "Hip-Hop"
+msgstr "ฮิป - ฮอป"
+
+#: Input/mpg123/mpg123.c:26 Input/vorbis/fileinfo.c:69
+msgid "Jazz"
+msgstr "แจ๊ด"
+
+#: Input/mpg123/mpg123.c:26 Input/vorbis/fileinfo.c:69
+msgid "Metal"
+msgstr "เมทัล"
+
+#: Input/mpg123/mpg123.c:26 Input/vorbis/fileinfo.c:69
+msgid "New Age"
+msgstr "นิวเอจ"
+
+#: Input/mpg123/mpg123.c:26 Input/vorbis/fileinfo.c:69
+msgid "Oldies"
+msgstr "โอลดี้"
+
+#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:70
+msgid "Other"
+msgstr "อื่นๆ"
+
+#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:70
+msgid "Pop"
+msgstr "ป๊อบ"
+
+#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:70
+msgid "R&B"
+msgstr "อาร์ &บี"
+
+#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:70
+msgid "Rap"
+msgstr "แร๊ป"
+
+#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:70
+msgid "Reggae"
+msgstr "แร๊คเก้"
+
+#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:71
+msgid "Rock"
+msgstr "ร็อค"
+
+#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:71
+msgid "Techno"
+msgstr "เทคโน"
+
+#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:71
+msgid "Industrial"
+msgstr "อินดัสเรียล"
+
+#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:71
+msgid "Alternative"
+msgstr "อัลเทอร์"
+
+#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:72
+msgid "Ska"
+msgstr "Ska"
+
+#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:72
+msgid "Death Metal"
+msgstr "เดทเมททัล"
+
+#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:72
+msgid "Pranks"
+msgstr "พั้ง"
+
+#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:72
+msgid "Soundtrack"
+msgstr "เพลงประกอบ"
+
+#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:73
+msgid "Euro-Techno"
+msgstr "ยูโร เทคโน"
+
+#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:73
+msgid "Ambient"
+msgstr "อัมเบี่ยน"
+
+#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:73
+msgid "Trip-Hop"
+msgstr "ทริป - ฮอพ"
+
+#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:73
+msgid "Vocal"
+msgstr "โวคัล"
+
+#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:74
+msgid "Jazz+Funk"
+msgstr "แจ๊ส+ฟั่ง"
+
+#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:74
+msgid "Fusion"
+msgstr "ฟิวชั่น"
+
+#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:74
+msgid "Trance"
+msgstr "ทรานซ์"
+
+#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:74
+msgid "Classical"
+msgstr "คลาสสิค"
+
+#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:75
+msgid "Instrumental"
+msgstr "อินทรูเมนต์"
+
+#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:75
+msgid "Acid"
+msgstr "เอซิด"
+
+#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:75
+msgid "House"
+msgstr "เฮาส์"
+
+#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:75
+msgid "Game"
+msgstr "เกม"
+
+#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:76
+msgid "Sound Clip"
+msgstr "คลิบ เสียง"
+
+#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:76
+msgid "Gospel"
+msgstr "บทสวด"
+
+#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:76
+msgid "Noise"
+msgstr "เสียงดัง"
+
+#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:76
+msgid "Alt"
+msgstr "Alt"
+
+#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:77
+msgid "Bass"
+msgstr "เบส"
+
+#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:77
+msgid "Soul"
+msgstr "โซล"
+
+#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:77
+msgid "Punk"
+msgstr "พั้ง"
+
+#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:77
+msgid "Space"
+msgstr "สเปซ"
+
+#: Input/mpg123/mpg123.c:35 Input/vorbis/fileinfo.c:78
+msgid "Meditative"
+msgstr "เมดิเตทีบ"
+
+#: Input/mpg123/mpg123.c:35 Input/vorbis/fileinfo.c:78
+msgid "Instrumental Pop"
+msgstr "อินทรูเมนต์ ป๊อป"
+
+#: Input/mpg123/mpg123.c:36 Input/vorbis/fileinfo.c:79
+msgid "Instrumental Rock"
+msgstr "อินทรูเมนต์ ร็อค"
+
+#: Input/mpg123/mpg123.c:36 Input/vorbis/fileinfo.c:79
+msgid "Ethnic"
+msgstr "อีทนิค"
+
+#: Input/mpg123/mpg123.c:36 Input/vorbis/fileinfo.c:79
+msgid "Gothic"
+msgstr "โกนิค"
+
+#: Input/mpg123/mpg123.c:37 Input/vorbis/fileinfo.c:80
+msgid "Darkwave"
+msgstr "ดาร์คเวฟ"
+
+#: Input/mpg123/mpg123.c:37 Input/vorbis/fileinfo.c:80
+msgid "Techno-Industrial"
+msgstr "เทคโน-อินดัสเทรียล"
+
+#: Input/mpg123/mpg123.c:37 Input/vorbis/fileinfo.c:80
+msgid "Electronic"
+msgstr "อิเลคโทรนิค"
+
+#: Input/mpg123/mpg123.c:38 Input/vorbis/fileinfo.c:81
+msgid "Pop-Folk"
+msgstr "ป๊อป-โฟร์ค"
+
+#: Input/mpg123/mpg123.c:38 Input/vorbis/fileinfo.c:81
+msgid "Eurodance"
+msgstr "ยูโรเดนซ์"
+
+#: Input/mpg123/mpg123.c:38 Input/vorbis/fileinfo.c:81
+msgid "Dream"
+msgstr "ดรีม"
+
+#: Input/mpg123/mpg123.c:39 Input/vorbis/fileinfo.c:82
+msgid "Southern Rock"
+msgstr "เซาเทิร์นร็อค"
+
+#: Input/mpg123/mpg123.c:39 Input/vorbis/fileinfo.c:82
+msgid "Comedy"
+msgstr "คัมเมดี"
+
+#: Input/mpg123/mpg123.c:39 Input/vorbis/fileinfo.c:82
+msgid "Cult"
+msgstr "คัลต์"
+
+#: Input/mpg123/mpg123.c:40 Input/vorbis/fileinfo.c:83
+msgid "Gangsta Rap"
+msgstr "แก๊งสตา แรฟ"
+
+#: Input/mpg123/mpg123.c:40 Input/vorbis/fileinfo.c:83
+msgid "Top 40"
+msgstr "ทอป 40"
+
+#: Input/mpg123/mpg123.c:40 Input/vorbis/fileinfo.c:83
+msgid "Christian Rap"
+msgstr "คริสต์เตียน แรป"
+
+#: Input/mpg123/mpg123.c:41 Input/vorbis/fileinfo.c:84
+msgid "Pop/Funk"
+msgstr "ป๊อป/ฟั้ง"
+
+#: Input/mpg123/mpg123.c:41 Input/vorbis/fileinfo.c:84
+msgid "Jungle"
+msgstr "จังเกิ้ล"
+
+#: Input/mpg123/mpg123.c:41 Input/vorbis/fileinfo.c:84
+msgid "Native American"
+msgstr "เนทีพ อเมริกัน"
+
+#: Input/mpg123/mpg123.c:42 Input/vorbis/fileinfo.c:85
+msgid "Cabaret"
+msgstr "คาบาเร็ต"
+
+#: Input/mpg123/mpg123.c:42 Input/vorbis/fileinfo.c:85
+msgid "New Wave"
+msgstr "นิวเว็ฟ"
+
+#: Input/mpg123/mpg123.c:42 Input/vorbis/fileinfo.c:85
+msgid "Psychedelic"
+msgstr "ไซเคดีลิค"
+
+#: Input/mpg123/mpg123.c:42 Input/vorbis/fileinfo.c:85
+msgid "Rave"
+msgstr "ราฟ"
+
+#: Input/mpg123/mpg123.c:43 Input/vorbis/fileinfo.c:86
+msgid "Showtunes"
+msgstr "โซว์ทูนส์"
+
+#: Input/mpg123/mpg123.c:43 Input/vorbis/fileinfo.c:86
+msgid "Trailer"
+msgstr "เทรลเลอร์"
+
+#: Input/mpg123/mpg123.c:43 Input/vorbis/fileinfo.c:86
+msgid "Lo-Fi"
+msgstr "โล-ไฟ"
+
+#: Input/mpg123/mpg123.c:43 Input/vorbis/fileinfo.c:86
+msgid "Tribal"
+msgstr "ไทรบาล"
+
+#: Input/mpg123/mpg123.c:44 Input/vorbis/fileinfo.c:87
+msgid "Acid Punk"
+msgstr "เอซิด พั้ง"
+
+#: Input/mpg123/mpg123.c:44 Input/vorbis/fileinfo.c:87
+msgid "Acid Jazz"
+msgstr "เอซิดแจ๊ส"
+
+#: Input/mpg123/mpg123.c:44 Input/vorbis/fileinfo.c:87
+msgid "Polka"
+msgstr "โพลคา"
+
+#: Input/mpg123/mpg123.c:44 Input/vorbis/fileinfo.c:87
+msgid "Retro"
+msgstr "เรโทร"
+
+#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:88
+msgid "Musical"
+msgstr "มิวสิคคัล"
+
+#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:88
+msgid "Rock & Roll"
+msgstr "ร็อค & โรลล์"
+
+#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:88
+msgid "Hard Rock"
+msgstr "ฮาร์ดร็อค"
+
+#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:88
+msgid "Folk"
+msgstr "โฟล์ค"
+
+#: Input/mpg123/mpg123.c:46 Input/vorbis/fileinfo.c:89
+msgid "Folk/Rock"
+msgstr "โฟล์ค/ร็อค"
+
+#: Input/mpg123/mpg123.c:46 Input/vorbis/fileinfo.c:89
+msgid "National Folk"
+msgstr "เนชั่นเนล โฟล์ค"
+
+#: Input/mpg123/mpg123.c:46 Input/vorbis/fileinfo.c:89
+msgid "Swing"
+msgstr "สวิง"
+
+#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:90
+msgid "Fast-Fusion"
+msgstr "ฟาสท์-ฟิวชั่น"
+
+#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:90
+msgid "Bebob"
+msgstr "บิ๊ปป๊อป"
+
+#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:90
+msgid "Latin"
+msgstr "ลาติน"
+
+#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:90
+msgid "Revival"
+msgstr "รีวิวัล"
+
+#: Input/mpg123/mpg123.c:48 Input/vorbis/fileinfo.c:91
+msgid "Celtic"
+msgstr "ซีลติค"
+
+#: Input/mpg123/mpg123.c:48 Input/vorbis/fileinfo.c:91
+msgid "Bluegrass"
+msgstr "บลูกลาส"
+
+#: Input/mpg123/mpg123.c:48 Input/vorbis/fileinfo.c:91
+msgid "Avantgarde"
+msgstr "อเวนเกรด"
+
+#: Input/mpg123/mpg123.c:49 Input/vorbis/fileinfo.c:92
+msgid "Gothic Rock"
+msgstr "โกติก ร็อค"
+
+#: Input/mpg123/mpg123.c:49 Input/vorbis/fileinfo.c:92
+msgid "Progressive Rock"
+msgstr "โปรแกรสซีพ ร็อค"
+
+#: Input/mpg123/mpg123.c:50 Input/vorbis/fileinfo.c:93
+msgid "Psychedelic Rock"
+msgstr "ไซเคดิลิค ร็อค"
+
+#: Input/mpg123/mpg123.c:50 Input/vorbis/fileinfo.c:93
+msgid "Symphonic Rock"
+msgstr "ซิมโฟนิค ร็อค"
+
+#: Input/mpg123/mpg123.c:50 Input/vorbis/fileinfo.c:93
+msgid "Slow Rock"
+msgstr "สโลว์ร็อค"
+
+#: Input/mpg123/mpg123.c:51 Input/vorbis/fileinfo.c:94
+msgid "Big Band"
+msgstr "บิ๊กแบน"
+
+#: Input/mpg123/mpg123.c:51 Input/vorbis/fileinfo.c:94
+msgid "Chorus"
+msgstr "โครัส"
+
+#: Input/mpg123/mpg123.c:51 Input/vorbis/fileinfo.c:94
+msgid "Easy Listening"
+msgstr "อีสซี ลิซซึ่นนิ่ง"
+
+#: Input/mpg123/mpg123.c:52 Input/vorbis/fileinfo.c:95
+msgid "Acoustic"
+msgstr "อคลูสติค"
+
+#: Input/mpg123/mpg123.c:52 Input/vorbis/fileinfo.c:95
+msgid "Humour"
+msgstr "ฮูเมอร์"
+
+#: Input/mpg123/mpg123.c:52 Input/vorbis/fileinfo.c:95
+msgid "Speech"
+msgstr "สปีซ"
+
+#: Input/mpg123/mpg123.c:52 Input/vorbis/fileinfo.c:95
+msgid "Chanson"
+msgstr "ซานซัน"
+
+#: Input/mpg123/mpg123.c:53 Input/vorbis/fileinfo.c:96
+msgid "Opera"
+msgstr "โอเปร่า"
+
+#: Input/mpg123/mpg123.c:53 Input/vorbis/fileinfo.c:96
+msgid "Chamber Music"
+msgstr "ซัมเบอร์ มิวสิค"
+
+#: Input/mpg123/mpg123.c:53 Input/vorbis/fileinfo.c:96
+msgid "Sonata"
+msgstr "โซนาตา"
+
+#: Input/mpg123/mpg123.c:53 Input/vorbis/fileinfo.c:96
+msgid "Symphony"
+msgstr "ซิมโฟนี่"
+
+#: Input/mpg123/mpg123.c:54 Input/vorbis/fileinfo.c:97
+msgid "Booty Bass"
+msgstr "บูตตี้เบส"
+
+#: Input/mpg123/mpg123.c:54 Input/vorbis/fileinfo.c:97
+msgid "Primus"
+msgstr "ไฟรมัส"
+
+#: Input/mpg123/mpg123.c:54 Input/vorbis/fileinfo.c:97
+msgid "Porn Groove"
+msgstr "พอร์นกรู๊ฟ"
+
+#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:98
+msgid "Satire"
+msgstr "ซาตี้"
+
+#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:98
+msgid "Slow Jam"
+msgstr "สโลว์แจม"
+
+#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:98
+msgid "Club"
+msgstr "คลับ"
+
+#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:98
+msgid "Tango"
+msgstr "เทงโก"
+
+#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:99
+msgid "Samba"
+msgstr "แซมบ้า"
+
+#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:99
+msgid "Folklore"
+msgstr "โฟล์คเลอร์"
+
+#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:99
+msgid "Ballad"
+msgstr "บอลลัด"
+
+#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:99
+msgid "Power Ballad"
+msgstr "เพาเวอร์บอลลัด"
+
+#: Input/mpg123/mpg123.c:57 Input/vorbis/fileinfo.c:100
+msgid "Rhythmic Soul"
+msgstr "ริททึ่มมิค โซล"
+
+#: Input/mpg123/mpg123.c:57 Input/vorbis/fileinfo.c:100
+msgid "Freestyle"
+msgstr "ฟรีสไตล์"
+
+#: Input/mpg123/mpg123.c:57 Input/vorbis/fileinfo.c:100
+msgid "Duet"
+msgstr "เดียต"
+
+#: Input/mpg123/mpg123.c:58 Input/vorbis/fileinfo.c:101
+msgid "Punk Rock"
+msgstr "พั้งร็อค"
+
+#: Input/mpg123/mpg123.c:58 Input/vorbis/fileinfo.c:101
+msgid "Drum Solo"
+msgstr "โวโล กลอง"
+
+#: Input/mpg123/mpg123.c:58 Input/vorbis/fileinfo.c:101
+msgid "A Cappella"
+msgstr "เอ คัพพิลลา"
+
+#: Input/mpg123/mpg123.c:59 Input/vorbis/fileinfo.c:102
+msgid "Euro-House"
+msgstr "ยูโร-เฮาส์"
+
+#: Input/mpg123/mpg123.c:59 Input/vorbis/fileinfo.c:102
+msgid "Dance Hall"
+msgstr "แดนซ์ ฮอล"
+
+#: Input/mpg123/mpg123.c:59 Input/vorbis/fileinfo.c:102
+msgid "Goa"
+msgstr "กัว"
+
+#: Input/mpg123/mpg123.c:60 Input/vorbis/fileinfo.c:103
+msgid "Drum & Bass"
+msgstr "กลอง & เบส"
+
+#: Input/mpg123/mpg123.c:60 Input/vorbis/fileinfo.c:103
+msgid "Club-House"
+msgstr "คลับ - เฮาส์"
+
+#: Input/mpg123/mpg123.c:60 Input/vorbis/fileinfo.c:103
+msgid "Hardcore"
+msgstr "ฮาร์ดคอร์"
+
+#: Input/mpg123/mpg123.c:61 Input/vorbis/fileinfo.c:104
+msgid "Terror"
+msgstr "เทอร์เรอร์"
+
+#: Input/mpg123/mpg123.c:61 Input/vorbis/fileinfo.c:104
+msgid "Indie"
+msgstr "อินดี้"
+
+#: Input/mpg123/mpg123.c:61 Input/vorbis/fileinfo.c:104
+msgid "BritPop"
+msgstr "บริตป๊อป"
+
+#: Input/mpg123/mpg123.c:61 Input/vorbis/fileinfo.c:104
+msgid "Negerpunk"
+msgstr "เนเกอร์พั้ง"
+
+#: Input/mpg123/mpg123.c:62 Input/vorbis/fileinfo.c:105
+msgid "Polsk Punk"
+msgstr "พอล์ค พั้ง"
+
+#: Input/mpg123/mpg123.c:62 Input/vorbis/fileinfo.c:105
+msgid "Beat"
+msgstr "บีต"
+
+#: Input/mpg123/mpg123.c:62 Input/vorbis/fileinfo.c:105
+msgid "Christian Gangsta Rap"
+msgstr "คริสต์เตียน แก๊งสตา แรฟ"
+
+#: Input/mpg123/mpg123.c:63 Input/vorbis/fileinfo.c:106
+msgid "Heavy Metal"
+msgstr "เฮฟวีเมททัล"
+
+#: Input/mpg123/mpg123.c:63 Input/vorbis/fileinfo.c:106
+msgid "Black Metal"
+msgstr "แบล็คเมททัล"
+
+#: Input/mpg123/mpg123.c:63 Input/vorbis/fileinfo.c:106
+msgid "Crossover"
+msgstr "คลอสโอเวอร์"
+
+#: Input/mpg123/mpg123.c:64 Input/vorbis/fileinfo.c:107
+msgid "Contemporary Christian"
+msgstr "คอนเทมพอรารี่ คลิสต์เตียน"
+
+#: Input/mpg123/mpg123.c:64 Input/vorbis/fileinfo.c:107
+msgid "Christian Rock"
+msgstr "คริสต์เตียนร็อค"
+
+#: Input/mpg123/mpg123.c:65 Input/vorbis/fileinfo.c:108
+msgid "Merengue"
+msgstr "เมอเรง"
+
+#: Input/mpg123/mpg123.c:65 Input/vorbis/fileinfo.c:108
+msgid "Salsa"
+msgstr "ซาลซา"
+
+#: Input/mpg123/mpg123.c:65 Input/vorbis/fileinfo.c:108
+msgid "Thrash Metal"
+msgstr "ทรัซเมททัล"
+
+#: Input/mpg123/mpg123.c:66 Input/vorbis/fileinfo.c:109
+msgid "Anime"
+msgstr "เอนิมี"
+
+#: Input/mpg123/mpg123.c:66 Input/vorbis/fileinfo.c:109
+msgid "JPop"
+msgstr "เจป๊อป"
+
+#: Input/mpg123/mpg123.c:66 Input/vorbis/fileinfo.c:109
+msgid "Synthpop"
+msgstr "ซินทึมป๊อป"
+
+#: Input/mpg123/mpg123.c:1099
+msgid "About MPEG Layer 1/2/3 plugin"
+msgstr "เกี่ยวกับ  MPEG Layer 1/2/3  "
+
+#: Input/mpg123/mpg123.c:1100
+msgid ""
+"mpg123 decoding engine by Michael Hipp <mh@mpg123.de>\n"
+"Plugin by The XMMS team"
+msgstr ""
+"ตัวถอดรหัส mpg123  โดย  Michael Hipp <mh@mpg123.de>\n"
+"ปลั๊กอิน โดย The XMMS team"
+
+#: Input/mpg123/mpg123.c:1134
+#, c-format
+msgid "MPEG Layer 1/2/3 Player %s"
+msgstr "ตัวเล่น MPEG Layer 1/2/3  %s"
+
+#: Input/tonegen/tonegen.c:49
+msgid "About Tone Generator"
+msgstr "เกี่ยวกับ Tone Generator"
+
+#: Input/tonegen/tonegen.c:50
+msgid ""
+"Sinus tone generator by Hๅvard Kvๅlen <havardk@xmms.org>\n"
+"Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"\n"
+"To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
+"e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
+msgstr ""
+
+#: Input/tonegen/tonegen.c:163
+msgid "Tone Generator: "
+msgstr "ตัวสร้าง โทน:"
+
+#: Input/tonegen/tonegen.c:263
+#, c-format
+msgid "Tone Generator %s"
+msgstr "ตัวสร้าง โทน %s "
+
+#: Input/vorbis/configure.c:122
+msgid "Select the directory where you want to store the Ogg Vorbis streams:"
+msgstr "เลือกไดเร็กทอรี่สำหรับเก็บ  Ogg Vorbis streams:"
+
+#: Input/vorbis/configure.c:175
+msgid "Ogg Vorbis Configuration"
+msgstr "กำหนดค่า Ogg Vorbis"
+
+#. Title config..
+#: Input/vorbis/configure.c:313
+msgid "Ogg Vorbis Tags:"
+msgstr "ข้อมูล Ogg Vorbis :"
+
+#: Input/vorbis/configure.c:329 xmms/prefswin.c:979
+msgid "Title format:"
+msgstr "รูปแบบ ของชื่อเพลง:"
+
+#: Input/vorbis/fileinfo.c:197
+#, c-format
+msgid ""
+"An error occured:\n"
+"%s"
+msgstr ""
+"เกิดข้อผิดพลาด :\n"
+"%s"
+
+#: Input/vorbis/fileinfo.c:200
+msgid "Error!"
+msgstr "ผิดพลาด!"
+
+#: Input/vorbis/fileinfo.c:229 Input/vorbis/fileinfo.c:276
+#: Input/vorbis/fileinfo.c:297 Input/vorbis/fileinfo.c:306
+msgid "Failed to modify tag"
+msgstr "การแก้ไขข้อมูลล้มเหลว"
+
+#: Input/vorbis/fileinfo.c:443
+msgid "Ogg Vorbis Tag:"
+msgstr "ข้อมูล Ogg Vorbis :"
+
+#: Input/vorbis/fileinfo.c:491
+msgid "Date:"
+msgstr "วันที่:"
+
+#: Input/vorbis/fileinfo.c:532
+msgid "Description:"
+msgstr "รายละเอียด:"
+
+#: Input/vorbis/fileinfo.c:542
+msgid "Location:"
+msgstr "ที่เก็บ:"
+
+#: Input/vorbis/fileinfo.c:552
+msgid "Version:"
+msgstr "รุ่น:"
+
+#: Input/vorbis/fileinfo.c:563
+msgid "ISRC number:"
+msgstr "จำนวน ISRC :"
+
+#: Input/vorbis/fileinfo.c:574
+msgid "Organization:"
+msgstr "องค์กร:"
+
+#: Input/vorbis/fileinfo.c:584
+msgid "Copyright:"
+msgstr "ลิขสิทธิ์ :"
+
+#: Input/vorbis/fileinfo.c:608
+msgid "Remove Tag"
+msgstr "ลบ ข้อมูล"
+
+#: Input/vorbis/fileinfo.c:623
+msgid "Ogg Vorbis Info:"
+msgstr "ข้อมูล Ogg Vorbis :"
+
+#: Input/vorbis/fileinfo.c:708
+#, c-format
+msgid "Nominal bitrate: %d kbps"
+msgstr "อัตราบิต : %d กิโลบิต/วินาที"
+
+#: Input/vorbis/fileinfo.c:709
+#, c-format
+msgid "Samplerate: %d Hz"
+msgstr "อัตราการสุ่มตัวอย่าง: %d เฮิร์ต"
+
+#: Input/vorbis/fileinfo.c:710
+#, c-format
+msgid "Channels: %d"
+msgstr "ช่อง : %d"
+
+#: Input/vorbis/fileinfo.c:711
+#, c-format
+msgid "Length: %d:%.2d"
+msgstr "ความยาว: %d:%.2d"
+
+#: Input/vorbis/fileinfo.c:712
+#, c-format
+msgid "File size: %d B"
+msgstr "ขนาดแฟ้ม: %d ไบต์"
+
+#: Input/vorbis/vorbis.c:117
+#, c-format
+msgid "Ogg Vorbis Player %s"
+msgstr "ตัวเล่น Ogg Vorbis %s"
+
+#: Input/vorbis/vorbis.c:589
+msgid "About Ogg Vorbis Plugin"
+msgstr "เกี่ยวกับ Ogg Vorbis"
+
+#: Input/vorbis/vorbis.c:590
+msgid ""
+"Ogg Vorbis Plugin by Xiphophorus\n"
+"\n"
+"Original code by\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"Contributions from\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"Hๅvard Kvๅlen <havardk@xmms.org>\n"
+"\n"
+"Visit Xiphophorus at http://www.xiph.org/\n"
+msgstr ""
+"ปลั๊กอิน Ogg Vorbis โดย Xiphophorus\n"
+"\n"
+"ต้นฉบับ โดย\n"
+"Tony Arcieri <bascule@inferno.tusculum.edu>\n"
+"Contributions จาก\n"
+"Chris Montgomery <monty@xiph.org>\n"
+"Peter Alm <peter@xmms.org>\n"
+"Michael Smith <msmith@labyrinth.edu.au>\n"
+"Jack Moffitt <jack@icecast.org>\n"
+"Jorn Baayen <jorn@nl.linux.org>\n"
+"H?ard Kv?en <havardk@xmms.org>\n"
+"\n"
+"ติดตาม Xiphophorus ได้ที่  http://www.xiph.org/\n"
+
+#: Input/wav/wav.c:57
+#, c-format
+msgid "Wave Player %s"
+msgstr "ตัวเล่น Wave %s"
+
+#: Output/OSS/OSS.c:44
+#, c-format
+msgid "OSS Driver %s"
+msgstr "ไดร์ฟเวอร์ OSS  %s"
+
+#: Output/OSS/about.c:30
+msgid "About OSS Driver"
+msgstr "เกี่ยวกับ ไดร์ฟเวอร์ OSS"
+
+#: Output/OSS/about.c:31
+msgid ""
+"XMMS OSS Driver\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
+"USA."
+msgstr ""
+"ไดร์ฟเวอร์ XMMS OSS \n"
+"\n"
+" โปรแกรมนี้เป็นของฟรี ท่านสามารถแก้ไข หรือปรับปุรงได้ \n"
+"ภายได้เงื่อนไขของ GNU \n"
+"หวังว่าโปรแกรมนี้สามารถใช้ประโยชน์ได้ แต่ไม่รับรองข้อผิดพลาดที่เกิดขึ้น,\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
+"USA."
+
+#: Output/OSS/configure.c:133
+#, c-format
+msgid "Default (%s)"
+msgstr "ค่ามาตรฐาน (%s)"
+
+#: Output/OSS/configure.c:151
+msgid "Default"
+msgstr "ค่ามาตรฐาน"
+
+#: Output/OSS/configure.c:180
+msgid "OSS Driver configuration"
+msgstr "การปรับค่า ไดร์ฟเวอร์ OSS"
+
+#: Output/OSS/configure.c:194
+msgid "Audio device:"
+msgstr "อุปกรณ์เสียง"
+
+#: Output/OSS/configure.c:212 Output/OSS/configure.c:246
+msgid "Use alternate device:"
+msgstr "ใช้ อุปกรณ์อื่น"
+
+#: Output/OSS/configure.c:228
+msgid "Mixer device:"
+msgstr "อุปกรณ์ปรับแต่งเสียง"
+
+#: Output/OSS/configure.c:262 Output/solaris/configure.c:229
+msgid "Devices"
+msgstr "อุปกรณ์"
+
+#: Output/OSS/configure.c:276 Output/esd/configure.c:176
+#: Output/solaris/configure.c:243
+msgid "Buffer size (ms):"
+msgstr "ขนาดของการสะสมข้อมูล (ms)"
+
+#: Output/OSS/configure.c:292 Output/esd/configure.c:201
+#: Output/solaris/configure.c:259
+msgid "Buffering"
+msgstr "กำลังสะสมข้อมูล"
+
+#: Output/OSS/configure.c:293
+msgid "Mixer Settings:"
+msgstr "การตั้งต่า มิกเซอร์"
+
+#: Output/OSS/configure.c:298
+msgid "Volume controls Master not PCM"
+msgstr "ปรับเสียงโดยใช้ Master ไม่ใช่  PCM"
+
+#: Output/OSS/configure.c:301
+msgid "Mixer"
+msgstr "ปรับแต่งเสียง"
+
+#: Output/disk_writer/disk_writer.c:96
+#, c-format
+msgid "Disk Writer Plugin %s"
+msgstr "ปลั๊กอิน Disk Writer %s"
+
+#: Output/disk_writer/disk_writer.c:128
+msgid ""
+"You cannot use the Disk Writer plugin\n"
+"when you're running in realtime mode."
+msgstr ""
+"ไม่สามารถใช้ปลั๊กอิน  Disk Writer\n"
+"ขณะเล่นแบบ เรียลไทม์โหมด."
+
+#: Output/disk_writer/disk_writer.c:301
+msgid "Select the directory where you want to store the output files:"
+msgstr "เลือกไดเร็กทอรี่สำหรับการบันทึกข้อมูล :"
+
+#: Output/disk_writer/disk_writer.c:345
+msgid "Disk Writer Configuration"
+msgstr "การปรับค่า Disk Writer "
+
+#: Output/esd/about.c:29
+msgid "About ESounD Plugin"
+msgstr "เกี่ยวกับปลั๊กอิน  ESounD"
+
+#: Output/esd/about.c:30
+msgid ""
+"XMMS ESounD Plugin\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
+"USA."
+msgstr ""
+
+#: Output/esd/configure.c:95
+msgid "ESD Plugin configuration"
+msgstr "การปรับค่า ปลั๊กอิน ESD "
+
+#: Output/esd/configure.c:117
+msgid "Use remote host"
+msgstr "ใช้รีโมตโฮสต์"
+
+#: Output/esd/configure.c:124
+msgid "Volume controls OSS mixer"
+msgstr "ควบคุมเสียง OSS mixer"
+
+#: Output/esd/configure.c:161
+msgid "Server"
+msgstr "เซิร์ฟเวอร์"
+
+#: Output/esd/esd.c:45
+#, c-format
+msgid "eSound Output Plugin %s"
+msgstr "ปลั๊กอิน eSound Output  %s"
+
+#: Output/solaris/Sun.c:32
+#, c-format
+msgid "Solaris audio plugin %s"
+msgstr "ปลั๊กอิน Solaris audio %s"
+
+#: Output/solaris/about.c:20
+msgid "About Solaris Audio Driver"
+msgstr "เกี่ยวกับ ไดร์ฟเวอร์ Solaris Audio"
+
+#: Output/solaris/about.c:21
+msgid ""
+"XMMS Solaris Audio Driver\n"
+"\n"
+"Written by John Riddoch (jr@scms.rgu.ac.uk)\n"
+"with help from many contributors."
+msgstr ""
+"ไดรืฟเวอร์ XMMS Solaris Audio\n"
+"\n"
+"เขียนโดย John Riddoch (jr@scms.rgu.ac.uk)\n"
+"ภายใต้การช่วยเหลือของผู้ร่วมพัฒนา."
+
+#: Output/solaris/configure.c:101
+#, c-format
+msgid "Default - %s"
+msgstr "ค่ามาตรฐาน - %s"
+
+#: Output/solaris/configure.c:121
+#, c-format
+msgid "Soundcard #%d - %s"
+msgstr "ซาวการ์ด #%d - %s"
+
+#: Output/solaris/configure.c:154
+msgid "Configure Solaris driver"
+msgstr "ปรับค่า ไดร์ฟเวอร์ Solaris"
+
+#: Output/solaris/configure.c:190
+msgid "Always use AUDIODEV environment variable"
+msgstr "ใช้ ตัวแปร AUDIODEV  เสมอ"
+
+#: Output/solaris/configure.c:196
+msgid "Output ports:"
+msgstr "พอร์ต Output :"
+
+#: Output/solaris/configure.c:206
+msgid "Line out"
+msgstr "ไลน์เอาต์"
+
+#: Output/solaris/configure.c:207
+msgid "Headphones"
+msgstr "หูฟัง"
+
+#: Output/solaris/configure.c:208
+msgid "Internal speaker"
+msgstr "ลำโพงเครื่อง"
+
+#: Visualization/blur_scope/blur_scope.c:62
+#, c-format
+msgid "Blur Scope %s"
+msgstr "เบลอ สโคบ %s"
+
+#: Visualization/blur_scope/blur_scope.c:157
+msgid "Blur scope"
+msgstr "เบลอสโคบ"
+
+#: Visualization/blur_scope/config.c:68
+msgid "Color Entry"
+msgstr "สีเข้า"
+
+#: Visualization/blur_scope/config.c:76
+#: Visualization/opengl_spectrum/configure.c:51
+msgid "Options:"
+msgstr "ตัวเลือก:"
+
+#: Visualization/opengl_spectrum/configure.c:43
+msgid "OpenGL Spectrum configuration"
+msgstr "การตั้งค่า OpenGL สเป็คตรัม"
+
+#: Visualization/opengl_spectrum/configure.c:57
+msgid "3DFX Fullscreen mode"
+msgstr "โหมดเต็มจอ 3DFX "
+
+#: Visualization/opengl_spectrum/opengl_spectrum.c:123
+#: Visualization/opengl_spectrum/opengl_spectrum.c:124
+msgid "OpenGL Spectrum analyzer"
+msgstr "OpenGL สเป็คตรัม analyzer"
+
+#: Visualization/opengl_spectrum/opengl_spectrum.c:142
+#, c-format
+msgid "OpenGL Spectrum analyzer %s"
+msgstr "OpenGL สเป็คตรัม analyzer %s"
+
+#: Visualization/sanalyzer/spectrum.c:66
+#, c-format
+msgid "Simple spectrum analyzer %s"
+msgstr "สเป็คตรัม  analyzer อย่างง่าย %s"
+
+#: Visualization/sanalyzer/spectrum.c:86
+msgid "Spectrum analyzer"
+msgstr "สเป็คตรัม analyzer"
+
+#: gnomexmms/gnomexmms.c:537
+msgid "xmms applet"
+msgstr "แอปเพลต xmms"
+
+#: gnomexmms/gnomexmms.c:538
+msgid "Copyright (C) Anders Carlsson 1999), Hiroshi Takekawa 2001"
+msgstr "สงวนลิขสิทธิ์ (C) Anders Carlsson 1999), Hiroshi Takekawa 2001"
+
+#: gnomexmms/gnomexmms.c:540
+msgid ""
+"A simple xmms gnome panel applet by Anders Carlsson.\n"
+"Some code is from wmxmms by Mikael Alm.\n"
+"Tooltip support by Hiroshi Takekawa."
+msgstr ""
+
+#: gnomexmms/gnomexmms.c:568
+msgid "About..."
+msgstr "เกี่ยวกับ ..."
+
+#: libxmms/titlestring.c:277
+msgid "Performer/Artist"
+msgstr "พรีฟอร์มเมอร์/ศิลปิน"
+
+#: libxmms/titlestring.c:278
+msgid "Album"
+msgstr "อัลบัม"
+
+#: libxmms/titlestring.c:279
+msgid "Genre"
+msgstr "ประเภท"
+
+#: libxmms/titlestring.c:280
+msgid "File name"
+msgstr "ชื่อแฟ้ม"
+
+#: libxmms/titlestring.c:281
+msgid "File path"
+msgstr "ชื่อพาธ"
+
+#: libxmms/titlestring.c:282
+msgid "File extension"
+msgstr "นามสกุล"
+
+#: libxmms/titlestring.c:283
+msgid "Track name"
+msgstr "ชื่อแทร็ค"
+
+#: libxmms/titlestring.c:284
+msgid "Track number"
+msgstr "แทร็คที่"
+
+#: libxmms/titlestring.c:285
+msgid "Date"
+msgstr "วันที่"
+
+#: libxmms/titlestring.c:286
+msgid "Year"
+msgstr "ปี"
+
+#: libxmms/titlestring.c:287
+msgid "Comment"
+msgstr "หมายเหตุ"
+
+#: wmxmms/getopt.c:632 xmms/getopt.c:632
+#, c-format
+msgid "%s: option `%s' is ambiguous\n"
+msgstr "%s: ตัวเลือก  `%s' เป็น ambiguous\n"
+
+#: wmxmms/getopt.c:656 xmms/getopt.c:656
+#, c-format
+msgid "%s: option `--%s' doesn't allow an argument\n"
+msgstr "%s: ตัวเลือก `--%s' ไม่อนุญาตตัวแปร\n"
+
+#: wmxmms/getopt.c:661 xmms/getopt.c:661
+#, c-format
+msgid "%s: option `%c%s' doesn't allow an argument\n"
+msgstr "%s:ตัวเลือก `%c%s' ไม่อนุญาตตัวแปร\n"
+
+#: wmxmms/getopt.c:678 wmxmms/getopt.c:851 xmms/getopt.c:678 xmms/getopt.c:851
+#, c-format
+msgid "%s: option `%s' requires an argument\n"
+msgstr "%s: ตัวเลือก `%s' ต้องการค่าตัวแปร\n"
+
+#. --option
+#: wmxmms/getopt.c:707 xmms/getopt.c:707
+#, c-format
+msgid "%s: unrecognized option `--%s'\n"
+msgstr "%s: ไม่รู้จัก ตัวเลือก `--%s'\n"
+
+#. +option or -option
+#: wmxmms/getopt.c:711 xmms/getopt.c:711
+#, c-format
+msgid "%s: unrecognized option `%c%s'\n"
+msgstr "%s: ไม่รู้จัก ตัวเลือก `%c%s'\n"
+
+#. 1003.2 specifies the format of this message.
+#: wmxmms/getopt.c:737 xmms/getopt.c:737
+#, c-format
+msgid "%s: illegal option -- %c\n"
+msgstr "%s: ไม่มี ตัวเลือก -- %c\n"
+
+#: wmxmms/getopt.c:740 xmms/getopt.c:740
+#, c-format
+msgid "%s: invalid option -- %c\n"
+msgstr "%s:  ตัวเลือก ไม่ถูกต้อง -- %c\n"
+
+#. 1003.2 specifies the format of this message.
+#: wmxmms/getopt.c:770 wmxmms/getopt.c:900 xmms/getopt.c:770 xmms/getopt.c:900
+#, c-format
+msgid "%s: option requires an argument -- %c\n"
+msgstr "%s: ตัวเลือก ต้องการค่าตัวแปร -- %c\n"
+
+#: wmxmms/getopt.c:817 xmms/getopt.c:817
+#, c-format
+msgid "%s: option `-W %s' is ambiguous\n"
+msgstr "%s: ตัวเลือก  `-W %s' เป็น ambiguous\n"
+
+#: wmxmms/getopt.c:835 xmms/getopt.c:835
+#, c-format
+msgid "%s: option `-W %s' doesn't allow an argument\n"
+msgstr "%s: ตัวเลือก `-W %s' ไม่อนุญาติตัวแปร\n"
+
+#: wmxmms/wmxmms.c:617
+#, c-format
+msgid "ERROR: Couldn't find %s\n"
+msgstr "ผิดพลาด: ไม่สามารถหา %s\n"
+
+#: wmxmms/wmxmms.c:652
+#, c-format
+msgid ""
+"Usage: %s [options]\n"
+"\n"
+"Options:\n"
+"--------\n"
+"\n"
+"-h, --help\t\tDisplay this text and exit.\n"
+"-g, --geometry\t\tSet the geometry (for example +20+20)\n"
+"-s, --session\t\tSet the xmms session to use (Default: 0)\n"
+"-c, --command\t\tCommand to launch xmms (Default: xmms)\n"
+"-i, --icon\t\tSet the icon to use when xmms is not running\n"
+"-n, --single\t\tOnly a single click is needed to start xmms\n"
+"-t, --title\t\tDisplay song title when mouse is in window\n"
+"-v, --version\t\tDisplay version information and exit\n"
+"\n"
+msgstr ""
+"ให้ใช้: %s [ตัวเลือก]\n"
+"\n"
+"ตัวเลือก:\n"
+"--------\n"
+"\n"
+"-h, --help\t\tแสดงข้อความช่วยเลือกนี้ แล้วออก.\n"
+"-g, --geometry\t\tตั้งค่าโครงสร้าง (เช่น +20+20)\n"
+"-s, --session\t\tตั้งค่า xmms เซ็ตชั่น (ค่าปกติ: 0)\n"
+"-c, --command\t\tคำสั่งสำหรับเรียก xmms (ค่าปกติ: xmms)\n"
+"-i, --icon\t\tตั้งค่าไอคอนเมื่อ xmms ไม่ได้ทำงาน\n"
+"-n, --single\t\tสำหรับการคลิ๊กครั้งเดียวในการเรียก  xmms\n"
+"-t, --title\t\tแสดงชื่อเพลงเมื่อเมาส์อยู่บนวินโดว์\n"
+"-v, --version\t\tแสดงรุ่น แล้วออก\n"
+"\n"
+
+#: xmms/about.c:28
+msgid "Main Programming:"
+msgstr "การโปรแกรมหลัก:"
+
+#: xmms/about.c:29
+msgid "Peter Alm"
+msgstr ""
+
+#: xmms/about.c:31
+msgid "Additional Programming:"
+msgstr "สนับสนุน การโปรแกรม"
+
+#. for languages that can't display 'a ring' (ๅ) replace it with "aa"
+#: xmms/about.c:33 xmms/about.c:130
+msgid "Hๅvard Kvๅlen"
+msgstr ""
+
+#: xmms/about.c:34
+msgid "Derrik Pates"
+msgstr ""
+
+#: xmms/about.c:36
+msgid "With Additional Help:"
+msgstr "สนับสนุน ช่วยเหลือ"
+
+#: xmms/about.c:37
+msgid "Sean Atkinson"
+msgstr ""
+
+#: xmms/about.c:38 xmms/about.c:101
+msgid "Jorn Baayen"
+msgstr ""
+
+#: xmms/about.c:39
+msgid "James M. Cape"
+msgstr ""
+
+#: xmms/about.c:40
+msgid "Anders Carlsson (effect plugins)"
+msgstr ""
+
+#: xmms/about.c:41
+msgid "Chun-Chung Chen (xfont patch)"
+msgstr ""
+
+#: xmms/about.c:42
+msgid "Tim Ferguson (joystick plugin)"
+msgstr ""
+
+#: xmms/about.c:43
+msgid "Ben Gertzfield"
+msgstr ""
+
+#: xmms/about.c:44
+msgid "Vesa Halttunen"
+msgstr ""
+
+#: xmms/about.c:45
+msgid "Logan Hanks"
+msgstr ""
+
+#: xmms/about.c:46
+msgid "Eric L. Hernes (FreeBSD patches)"
+msgstr ""
+
+#: xmms/about.c:47
+msgid "Ville Herva"
+msgstr ""
+
+#: xmms/about.c:48
+msgid "Michael Hipp and others (MPG123 engine)"
+msgstr ""
+
+#. for languages that can't display 'a diaeresis' (ไ) replace it with "ae"
+#: xmms/about.c:50
+msgid "Olle Hไllnไs (compiling fixes)"
+msgstr ""
+
+#: xmms/about.c:51
+msgid "David Jacoby"
+msgstr ""
+
+#: xmms/about.c:52
+msgid "Osamu Kayasono (3DNow!)"
+msgstr ""
+
+#: xmms/about.c:53
+msgid "Lyle B Kempler"
+msgstr ""
+
+#: xmms/about.c:54
+msgid "J. Nick Koston (MikMod plugin)"
+msgstr ""
+
+#: xmms/about.c:55
+msgid "Aaron Lehmann"
+msgstr ""
+
+#: xmms/about.c:56
+msgid "Johan Levin (echo + stereo plugin)"
+msgstr ""
+
+#: xmms/about.c:57
+msgid "Eric Lindvall"
+msgstr ""
+
+#: xmms/about.c:58 xmms/about.c:104
+msgid "Colin Marquardt"
+msgstr ""
+
+#: xmms/about.c:59
+msgid "Willem Monsuwe"
+msgstr ""
+
+#: xmms/about.c:60
+msgid "John Riddoch (Solaris plugin)"
+msgstr ""
+
+#: xmms/about.c:61
+msgid "Pablo Saratxaga (i18n)"
+msgstr ""
+
+#: xmms/about.c:62
+msgid "Carl van Schaik (pro logic plugin)"
+msgstr ""
+
+#. for languages that can't display 'o diaeresis' (๖) replace it with "oe"
+#: xmms/about.c:64
+msgid "J๖rg Schuler"
+msgstr ""
+
+#: xmms/about.c:65
+msgid "Charles Sielski (irman plugin)"
+msgstr ""
+
+#: xmms/about.c:66 xmms/about.c:131
+msgid "Espen Skoglund"
+msgstr ""
+
+#: xmms/about.c:67
+msgid "Kimura Takuhiro (3DNow!)"
+msgstr ""
+
+#: xmms/about.c:68
+msgid "Zinx Verituse"
+msgstr ""
+
+#: xmms/about.c:69
+msgid "Ryan Weaver (RPMs among other things)"
+msgstr ""
+
+#: xmms/about.c:70
+msgid "Chris Wilson"
+msgstr ""
+
+#: xmms/about.c:71
+msgid "Dave Yearke"
+msgstr ""
+
+#: xmms/about.c:72
+msgid "Stephan K. Zitz"
+msgstr ""
+
+#: xmms/about.c:74
+msgid "Homepage and Graphics:"
+msgstr "โฮมเพจ และ กราฟิก:"
+
+#: xmms/about.c:75 xmms/about.c:147
+msgid "Thomas Nilsson"
+msgstr ""
+
+#: xmms/about.c:77
+msgid "Support and Docs:"
+msgstr "สนับสนุน และ เอกสาร"
+
+#. for languages that can't display 'a diaeresis' (ไ) replace it with "ae"
+#: xmms/about.c:79 xmms/about.c:146
+msgid "Olle Hไllnไs"
+msgstr ""
+
+#: xmms/about.c:84
+msgid "Afrikaans:"
+msgstr "อัฟกานิสถาน:"
+
+#. for languages that can't display 'e acute' (้) replace it with "e"
+#: xmms/about.c:86
+msgid "Schalk W. Cronj้ "
+msgstr ""
+
+#: xmms/about.c:87
+msgid "Azerbaijani:"
+msgstr "อาเซอร์ไบจัน"
+
+#: xmms/about.c:87
+msgid "Vasif Ismailoglu"
+msgstr ""
+
+#: xmms/about.c:88
+msgid "Basque:"
+msgstr ""
+
+#: xmms/about.c:88
+msgid "I๑igo Salvador Azurmendi"
+msgstr ""
+
+#: xmms/about.c:89
+msgid "Brazilian Portuguese:"
+msgstr "บลาซิล โปรตุเกส:"
+
+#: xmms/about.c:89
+msgid "Juan Carlos Castro y Castro"
+msgstr ""
+
+#: xmms/about.c:90
+msgid "Bulgarian:"
+msgstr "เบลเยี่ยม:"
+
+#: xmms/about.c:90
+msgid "Yovko D. Lambrev"
+msgstr ""
+
+#: xmms/about.c:91
+msgid "Catalan:"
+msgstr "คตาล๊อก:"
+
+#: xmms/about.c:91
+msgid "Quico Llach"
+msgstr ""
+
+#: xmms/about.c:92
+msgid "Chinese:"
+msgstr "จีน:"
+
+#: xmms/about.c:92
+msgid "Chun-Chung Chen"
+msgstr ""
+
+#: xmms/about.c:92
+msgid "Jouston Huang"
+msgstr ""
+
+#: xmms/about.c:93
+msgid "Andrew Lee"
+msgstr ""
+
+#: xmms/about.c:93
+msgid "Chih-Wei Huang"
+msgstr ""
+
+#: xmms/about.c:93
+msgid "Danny Zeng"
+msgstr ""
+
+#: xmms/about.c:94
+msgid "Croatian:"
+msgstr "โครเอเซีย:"
+
+#: xmms/about.c:94
+msgid "Vlatko Kosturjak"
+msgstr ""
+
+#: xmms/about.c:94
+msgid "Vladimir Vuksan"
+msgstr ""
+
+#: xmms/about.c:95
+msgid "Czech:"
+msgstr "เช็ค:"
+
+#. for languages that can't display 'i acute' (ํ) replace it with "i"
+#: xmms/about.c:97
+msgid "Vladimํr Marek"
+msgstr ""
+
+#: xmms/about.c:98
+msgid "Radek Vybiral"
+msgstr ""
+
+#: xmms/about.c:99
+msgid "Danish:"
+msgstr "เดนมาร์ก:"
+
+#: xmms/about.c:99
+msgid "Nikolaj Berg Amondsen"
+msgstr ""
+
+#: xmms/about.c:99
+msgid "Troels Liebe Bentsen"
+msgstr ""
+
+#: xmms/about.c:100
+msgid "Kenneth Christiansen"
+msgstr ""
+
+#: xmms/about.c:100
+msgid "Keld Simonsen"
+msgstr ""
+
+#: xmms/about.c:101
+msgid "Dutch:"
+msgstr "ดัช:"
+
+#: xmms/about.c:101
+msgid "Wilmer van der Gaast"
+msgstr ""
+
+#: xmms/about.c:102
+msgid "Tom Laermans"
+msgstr ""
+
+#: xmms/about.c:103
+msgid "Esperanto:"
+msgstr "เอสเพอรันโต:"
+
+#: xmms/about.c:103
+msgid "D. Dale Gulledge"
+msgstr ""
+
+#: xmms/about.c:104
+msgid "German:"
+msgstr "เยอรมัน:"
+
+#: xmms/about.c:104
+msgid "Stefan Siegel"
+msgstr ""
+
+#: xmms/about.c:105
+msgid "Greek:"
+msgstr "กรีก:"
+
+#: xmms/about.c:105
+msgid "Kyritsis Athanasios"
+msgstr ""
+
+#: xmms/about.c:106
+msgid "French:"
+msgstr "ฟรั่งเศส:"
+
+#: xmms/about.c:106
+msgid "Arnaud Boissinot"
+msgstr ""
+
+#: xmms/about.c:106
+msgid "Eric Fernandez-Bellot"
+msgstr ""
+
+#: xmms/about.c:107
+msgid "Galician:"
+msgstr "กาลิเชี่ยน:"
+
+#. for languages that can't display 'i acute' (ํ) replace it with "i"
+#: xmms/about.c:109
+msgid "Alberto Garcํa"
+msgstr ""
+
+#. for languages that can't display 'a acute' (แ) replace it with "a"
+#: xmms/about.c:111
+msgid "David Fernแndez Vaamonde"
+msgstr ""
+
+#: xmms/about.c:112
+msgid "Hungarian:"
+msgstr "ฮังการี่:"
+
+#: xmms/about.c:112
+msgid "Arpad Biro"
+msgstr ""
+
+#: xmms/about.c:113
+msgid "Indonesian:"
+msgstr "อินโดนีเซีย:"
+
+#: xmms/about.c:113
+msgid "Budi Rachmanto"
+msgstr ""
+
+#: xmms/about.c:114
+msgid "Irish:"
+msgstr "ไอริซ:"
+
+#: xmms/about.c:114
+msgid "Alastair McKinstry"
+msgstr ""
+
+#: xmms/about.c:115
+msgid "Italian:"
+msgstr "อิตาเลี่ยน:"
+
+#: xmms/about.c:115
+msgid "Paolo Lorenzin"
+msgstr ""
+
+#: xmms/about.c:116
+msgid "Japanese:"
+msgstr "ญี่ปุ่น:"
+
+#: xmms/about.c:116
+msgid "Hiroshi Takekawa"
+msgstr ""
+
+#: xmms/about.c:117
+msgid "Korean:"
+msgstr "เกาหลี:"
+
+#: xmms/about.c:117
+msgid "Jaegeum Choe"
+msgstr ""
+
+#: xmms/about.c:117
+msgid "Sang-Jin Hwang"
+msgstr ""
+
+#: xmms/about.c:118
+msgid "Byeong-Chan Kim"
+msgstr ""
+
+#: xmms/about.c:118
+msgid "Man-Yong Lee"
+msgstr ""
+
+#: xmms/about.c:119
+msgid "Lithuanian:"
+msgstr "ลิโทเนีย:"
+
+#: xmms/about.c:119
+msgid "Gediminas Paulauskas"
+msgstr ""
+
+#: xmms/about.c:120
+msgid "Latvian:"
+msgstr ""
+
+#. I18N: The "n" should be replaced with 'n cedilla' (๒) if it
+#. can be displayed
+#. I18N: The last "s" should be replaced with 's caron' (๐) if
+#. it can be displayed
+#: xmms/about.c:125
+msgid "Juris Kudins"
+msgstr ""
+
+#: xmms/about.c:126
+msgid "Vitauts Stochka"
+msgstr ""
+
+#: xmms/about.c:127
+msgid "Norwegian:"
+msgstr "นอร์เวย์:"
+
+#. for languages that can't display 'o slash' (๘) replace it with "oe"
+#: xmms/about.c:129
+msgid "Andreas Bergstr๘m"
+msgstr ""
+
+#: xmms/about.c:130
+msgid "Terje Bjerkelia"
+msgstr ""
+
+#: xmms/about.c:130
+msgid "Roy-Magne Mo"
+msgstr ""
+
+#: xmms/about.c:132
+msgid "Polish:"
+msgstr "โบลิซ:"
+
+#: xmms/about.c:132
+msgid "Grzegorz Kowal"
+msgstr ""
+
+#: xmms/about.c:133
+msgid "Portuguese:"
+msgstr "โปรตุเกส:"
+
+#: xmms/about.c:133
+msgid "Jorge Costa"
+msgstr ""
+
+#: xmms/about.c:134
+msgid "Romanian:"
+msgstr "โรมาเนีย:"
+
+#: xmms/about.c:134
+msgid "Florin Grad"
+msgstr ""
+
+#. I18N: The "s" should be replaced with 's cedilla' (บ) if it
+#. can be displayed
+#: xmms/about.c:137
+msgid "Misu Moldovan"
+msgstr ""
+
+#: xmms/about.c:138
+msgid "Russian:"
+msgstr "รัสเซีย:"
+
+#: xmms/about.c:138
+msgid "Valek Filippov"
+msgstr ""
+
+#: xmms/about.c:138
+msgid "Alexandr P. Kovalenko"
+msgstr ""
+
+#: xmms/about.c:139
+msgid "Maxim Koshelev"
+msgstr ""
+
+#: xmms/about.c:139
+msgid "Aleksey Smirnov"
+msgstr ""
+
+#: xmms/about.c:140
+msgid "Serbian:"
+msgstr "เชอร์เบีย:"
+
+#: xmms/about.c:140
+msgid "Tomislav Jankovic"
+msgstr ""
+
+#: xmms/about.c:141
+msgid "Slovak:"
+msgstr "สโลวัค:"
+
+#: xmms/about.c:141
+msgid "Pavol Cvengros"
+msgstr ""
+
+#: xmms/about.c:142
+msgid "Tomas Hornocek"
+msgstr ""
+
+#: xmms/about.c:142
+msgid "Jan Matis"
+msgstr ""
+
+#: xmms/about.c:143
+msgid "Spanish:"
+msgstr "สเปน:"
+
+#: xmms/about.c:143
+msgid "Fabian Mandelbaum"
+msgstr ""
+
+#: xmms/about.c:143
+msgid "Jordi Mallach"
+msgstr ""
+
+#. for languages that can't display 'i acute' (ํ) replace it with "i"
+#: xmms/about.c:145
+msgid "Juan Manuel Garcํa Molina"
+msgstr ""
+
+#: xmms/about.c:146
+msgid "Swedish:"
+msgstr "สวีเดน:"
+
+#: xmms/about.c:146
+msgid "David Hedbor"
+msgstr ""
+
+#: xmms/about.c:147
+msgid "Christian Rose"
+msgstr ""
+
+#: xmms/about.c:147
+msgid "Fuad Sabanovic"
+msgstr ""
+
+#: xmms/about.c:148
+msgid "Tajik:"
+msgstr ""
+
+#: xmms/about.c:148
+msgid "Trinh Minh Thanh"
+msgstr ""
+
+#: xmms/about.c:149
+msgid "Thai:"
+msgstr "ภาษาไทย:"
+
+#: xmms/about.c:149
+msgid "Supphachoke Suntiwichaya"
+msgstr "ศุภโชค ศันติวิชยะ"
+
+#: xmms/about.c:150
+msgid "Turkish:"
+msgstr "ตุรกี:"
+
+#: xmms/about.c:150
+msgid "Nazmi Savga"
+msgstr ""
+
+#. I18N: The "i" should be replaced with 'dotless i' (ý) if it
+#. can be displayed
+#. for languages that can't display 'O diaeresis' (ึ) replace it with "O"
+#: xmms/about.c:154
+msgid "ึmer Fadil Usta"
+msgstr ""
+
+#: xmms/about.c:155
+msgid "Ukrainian:"
+msgstr "ยูเครน:"
+
+#: xmms/about.c:155
+msgid "Dmytro Koval'ov"
+msgstr ""
+
+#: xmms/about.c:156
+msgid "Vietnamese:"
+msgstr "เวียตนาม:"
+
+#: xmms/about.c:156
+msgid "Roger Kovacs"
+msgstr ""
+
+#: xmms/about.c:156
+msgid "Dilshod Marupov"
+msgstr ""
+
+#: xmms/about.c:157
+msgid "Walloon:"
+msgstr "วัลลูน:"
+
+#: xmms/about.c:157
+msgid "Lucyin Mahin"
+msgstr ""
+
+#: xmms/about.c:157
+msgid "Pablo Saratxaga"
+msgstr ""
+
+#: xmms/about.c:222
+msgid "About XMMS"
+msgstr "เกี่ยวกับ XMMS"
+
+#: xmms/about.c:252
+#, c-format
+msgid "XMMS %s - Cross platform multimedia player"
+msgstr "XMMS รุ่น %s - โปรแกรมมัลติมีเดียไม่ขึ้นกับเพลตฟอร์ม"
+
+#: xmms/about.c:259
+msgid "Copyright (C) 1997-2001 4front Technologies"
+msgstr "สงวนลิขสิทธิ์  1997-2001 4front Technologies"
+
+#: xmms/about.c:268
+msgid "Credits"
+msgstr "เครดิต"
+
+#: xmms/about.c:273
+msgid "Translators"
+msgstr "ผู้แปลภาษา"
+
+#.
+#. * This is ugly.
+#. * Change the Cancel buttons caption to Close.
+#.
+#: xmms/about.c:279 xmms/equalizer.c:1404 xmms/equalizer.c:1408
+#: xmms/main.c:1757 xmms/skinwin.c:86 xmms/util.c:844
+msgid "Close"
+msgstr "ปิด"
+
+#: xmms/eq_slider.c:61
+msgid "PREAMP"
+msgstr "พรีแอมป์"
+
+#: xmms/eq_slider.c:61
+msgid "60HZ"
+msgstr "60 เฮิร์ต"
+
+#: xmms/eq_slider.c:61
+msgid "170HZ"
+msgstr "170 เฮิร์ต"
+
+#: xmms/eq_slider.c:62
+msgid "310HZ"
+msgstr "310 เฮิร์ต"
+
+#: xmms/eq_slider.c:62
+msgid "600HZ"
+msgstr "600 เฮิร์ต"
+
+#: xmms/eq_slider.c:62
+msgid "1KHZ"
+msgstr "1 กิโลเฮิร์ต"
+
+#: xmms/eq_slider.c:63
+msgid "3KHZ"
+msgstr "3 กิโลเฮิร์ต"
+
+#: xmms/eq_slider.c:63
+msgid "6KHZ"
+msgstr "6 กิโลเฮิร์ต"
+
+#: xmms/eq_slider.c:63
+msgid "12KHZ"
+msgstr "12 กิโลเฮิร์ต"
+
+#: xmms/eq_slider.c:64
+msgid "14KHZ"
+msgstr "14 กิโลเฮิร์ต"
+
+#: xmms/eq_slider.c:64
+msgid "16KHZ"
+msgstr "16 กิโลเฮิร์ต"
+
+#: xmms/equalizer.c:79
+msgid "/Load"
+msgstr "/โหลด"
+
+#: xmms/equalizer.c:80
+msgid "/Load/Preset"
+msgstr "/โหลด/พรีเซ็ต"
+
+#: xmms/equalizer.c:81
+msgid "/Load/Auto-load preset"
+msgstr "/โหลด/โหลดพรีเซ็ตแบบอัตโนมัต"
+
+#: xmms/equalizer.c:82
+msgid "/Load/Default"
+msgstr "/โหลด/ค่าปกติ"
+
+#: xmms/equalizer.c:83 xmms/equalizer.c:85
+msgid "/Load/-"
+msgstr "/โหลด/-"
+
+#: xmms/equalizer.c:84
+msgid "/Load/Zero"
+msgstr "/โหลด/ศูนย์"
+
+#: xmms/equalizer.c:86
+msgid "/Load/From file"
+msgstr "/โหลด/จากแฟ้ม"
+
+#: xmms/equalizer.c:87
+msgid "/Load/From WinAMP EQF file"
+msgstr "/โหลด/จาก วินแอมป์ EQF"
+
+#: xmms/equalizer.c:88
+msgid "/Import"
+msgstr "/ส่งออก"
+
+#: xmms/equalizer.c:89
+msgid "/Import/WinAMP Presets"
+msgstr "/ส่งออก/วินแอมป์พรีเซ็ต"
+
+#: xmms/equalizer.c:90
+msgid "/Save"
+msgstr "/บันทึก"
+
+#: xmms/equalizer.c:91
+msgid "/Save/Preset"
+msgstr "/บันทึก/พรีเซ็ต"
+
+#: xmms/equalizer.c:92
+msgid "/Save/Auto-load preset"
+msgstr "/บันทึก/พรีเซ็ตอัตโนมัติ"
+
+#: xmms/equalizer.c:93
+msgid "/Save/Default"
+msgstr "/บันทึก/ค่าปกติ"
+
+#: xmms/equalizer.c:94
+msgid "/Save/-"
+msgstr "/บันทึก/-"
+
+#: xmms/equalizer.c:95
+msgid "/Save/To file"
+msgstr "/บันทึก/เป็นแฟ้ม"
+
+#: xmms/equalizer.c:96
+msgid "/Save/To WinAMP EQF file"
+msgstr "/บันทึก/เป็นแฟ้ม วินแอมป์ EQF"
+
+#: xmms/equalizer.c:97
+msgid "/Delete"
+msgstr "/ลบ"
+
+#: xmms/equalizer.c:98
+msgid "/Delete/Preset"
+msgstr "/ลบ/พรีเซ็ต"
+
+#: xmms/equalizer.c:99
+msgid "/Delete/Auto-load preset"
+msgstr "/ลบ/พรีเซ็ตอัตโนมัติ"
+
+#: xmms/equalizer.c:100
+msgid "/Configure Equalizer"
+msgstr "/ปรับแต่งเสียง"
+
+#: xmms/equalizer.c:649
+msgid "XMMS Equalizer"
+msgstr "ปรับแต่งเสียง"
+
+#: xmms/equalizer.c:1204
+msgid "Presets"
+msgstr "พรีเซ็ต"
+
+#: xmms/equalizer.c:1271
+msgid "Load preset"
+msgstr "โหลดพรีเซ็ต"
+
+#: xmms/equalizer.c:1277
+msgid "Load auto-preset"
+msgstr "โหลดพรีเซ็ตอัตโนมัติ"
+
+#: xmms/equalizer.c:1300 xmms/equalizer.c:1315
+msgid "Load equalizer preset"
+msgstr "โหลด พรีเซ็ตปรับเแต่งสียง"
+
+#: xmms/equalizer.c:1330
+msgid "Import equalizer presets"
+msgstr "ส่งออก พรีเซ็ตปรับเแต่งสียง"
+
+#: xmms/equalizer.c:1341
+msgid "Save preset"
+msgstr "บันทึกพรีเซ็ต"
+
+#: xmms/equalizer.c:1350
+msgid "Save auto-preset"
+msgstr "บันทึก พรีเซ็ตอัตโนมัติ"
+
+#: xmms/equalizer.c:1371 xmms/equalizer.c:1394
+msgid "Save equalizer preset"
+msgstr "บันทึก พรีเซ็ตปรับแต่งเสียง"
+
+#: xmms/equalizer.c:1404
+msgid "Delete preset"
+msgstr "ลบพรีเซ็ต"
+
+#: xmms/equalizer.c:1404 xmms/equalizer.c:1408
+msgid "Delete"
+msgstr "ลบ"
+
+#: xmms/equalizer.c:1408
+msgid "Delete auto-preset"
+msgstr "ลบ พรีเซ็ตอัตโนมัติ"
+
+#: xmms/equalizer.c:1540
+msgid "Configure Equalizer"
+msgstr "ปรับแต่งเสียง"
+
+#: xmms/equalizer.c:1561
+msgid "Directory preset file:"
+msgstr "ไดเร็กทอรี่ เก็บ พรีเซ็ต"
+
+#: xmms/equalizer.c:1569
+msgid "File preset extension:"
+msgstr "นามสกุลของ พรีเซ็ต"
+
+#: xmms/equalizer.c:1576
+msgid ""
+"If \"Auto\" is enabled on the equalizer, xmms will try to load equalizer "
+"presets like this:\n"
+"1: Look for a preset file in the directory of the file we are about to "
+"play.\n"
+"2: Look for a directory preset file in the same directory.\n"
+"3: Look for a preset saved with the \"auto-load\" feature\n"
+"4: Finally, try to load the \"default\" preset"
+msgstr ""
+
+#: xmms/main.c:125
+msgid "/Preferences"
+msgstr "/การกำหนดคุณสมบัติ"
+
+#: xmms/main.c:126
+msgid "/Skin Browser"
+msgstr "/ตัวค้นหา สกิน"
+
+#: xmms/main.c:127
+msgid "/Reload skin"
+msgstr "/เรียกสกินอีกครั้ง"
+
+#. "<control>3"
+#: xmms/main.c:128 xmms/main.c:132 xmms/main.c:135 xmms/main.c:269
+#: xmms/main.c:274 xmms/main.c:278 xmms/main.c:297 xmms/playlistwin.c:85
+#: xmms/playlistwin.c:114
+msgid "/-"
+msgstr ""
+
+#: xmms/main.c:129
+msgid "/Repeat"
+msgstr "/เล่นวน"
+
+#: xmms/main.c:130
+msgid "/Shuffle"
+msgstr "/เล่นสุ่ม"
+
+#: xmms/main.c:131
+msgid "/No Playlist Advance"
+msgstr "/ปรับรายการเพลงเอง"
+
+#: xmms/main.c:133
+msgid "/Time Elapsed"
+msgstr "/แสดงเวลาที่เล่น"
+
+#: xmms/main.c:134
+msgid "/Time Remaining"
+msgstr "/แสดงเวลาที่เหลือ"
+
+#: xmms/main.c:136
+msgid "/Always On Top"
+msgstr "/อยู่บนสุดเสมอ"
+
+#: xmms/main.c:137
+msgid "/Sticky"
+msgstr "/อยู่กับที่"
+
+#: xmms/main.c:138
+msgid "/WindowShade Mode"
+msgstr "/พับเก็บ"
+
+#: xmms/main.c:139
+msgid "/Playlist WindowShade Mode"
+msgstr "/พับเก็บหน้าต่างรายการเพลง"
+
+#: xmms/main.c:140
+msgid "/Equalizer WindowShade Mode"
+msgstr "/พับเก็บหน้าต่าปรับแต่งเสียง"
+
+#: xmms/main.c:141
+msgid "/DoubleSize"
+msgstr "/ขยายหน้าต่างสองเท่า"
+
+#: xmms/main.c:142
+msgid "/Easy Move"
+msgstr "/เลื่อนที่"
+
+#: xmms/main.c:158
+msgid "/File Info"
+msgstr "/ข้อมูลของแฟ้ม"
+
+#: xmms/main.c:159
+msgid "/Jump To File"
+msgstr "/ไปที่แฟ้ม.."
+
+#: xmms/main.c:160
+msgid "/Jump To Time"
+msgstr "/ไปที่เวลา.."
+
+#: xmms/main.c:161
+msgid "/Autoscroll Songname"
+msgstr "/ชื่อเพลงวิ่งอัตโนมัติ"
+
+#: xmms/main.c:185
+msgid "/Visualization Mode"
+msgstr "/วิชวลไลเซชั่นโหมด"
+
+#: xmms/main.c:186
+msgid "/Visualization Mode/Analyzer"
+msgstr "/วิชวลไลเซชั่นโหมด/อนาไลเซอร์"
+
+#: xmms/main.c:187
+msgid "/Visualization Mode/Scope"
+msgstr "/วิชวลไลเซชั่นโหมด/สโคป"
+
+#: xmms/main.c:188
+msgid "/Visualization Mode/Off"
+msgstr "/วิชวลไลเซชั่นโหมด/ปิด"
+
+#: xmms/main.c:189
+msgid "/Analyzer Mode"
+msgstr "/อนาไลเซอร์โหมด"
+
+#: xmms/main.c:190
+msgid "/Analyzer Mode/Normal"
+msgstr "/อนาไลเซอร์โหมด/ปกติ"
+
+#: xmms/main.c:191
+msgid "/Analyzer Mode/Fire"
+msgstr "/อนาไลเซอร์โหมด/แบบไฟ"
+
+#: xmms/main.c:192
+msgid "/Analyzer Mode/Vertical Lines"
+msgstr "/อนาไลเซอร์โหมด/แบบเส้นแนวดิ่ง"
+
+#: xmms/main.c:193 xmms/main.c:196
+msgid "/Analyzer Mode/-"
+msgstr "/อนาไลเซอร์โหมด/-"
+
+#: xmms/main.c:194
+msgid "/Analyzer Mode/Lines"
+msgstr "/อนาไลเซอร์โหมด/แบบเส้น"
+
+#: xmms/main.c:195
+msgid "/Analyzer Mode/Bars"
+msgstr "/อนาไลเซอร์โหมด/แบบแท่ง"
+
+#: xmms/main.c:197
+msgid "/Analyzer Mode/Peaks"
+msgstr "/อนาไลเซอร์โหมด/แบบพีค"
+
+#: xmms/main.c:198
+msgid "/Scope Mode"
+msgstr "/สโคปโหมด"
+
+#: xmms/main.c:199
+msgid "/Scope Mode/Dot Scope"
+msgstr "/สโคปโหมด/แบบจุด"
+
+#: xmms/main.c:200
+msgid "/Scope Mode/Line Scope"
+msgstr "/สโคปโหมด/แบบเส้น"
+
+#: xmms/main.c:201
+msgid "/Scope Mode/Solid Scope"
+msgstr "/สโคปโหมด/แบบโซลิด"
+
+#: xmms/main.c:202
+msgid "/WindowShade VU Mode"
+msgstr "/หน้าต่างพับเก็บ VU โหมด"
+
+#: xmms/main.c:203
+msgid "/WindowShade VU Mode/Normal"
+msgstr "/หน้าต่างพับเก็บ VU โหมด/แบบปกติ"
+
+#: xmms/main.c:204
+msgid "/WindowShade VU Mode/Smooth"
+msgstr "/หน้าต่างพับเก็บ VU โหมด/แบบเรียบ"
+
+#: xmms/main.c:205
+msgid "/Refresh Rate"
+msgstr "/อัตรารีเฟรต"
+
+#: xmms/main.c:206
+msgid "/Refresh Rate/Full (~50 fps)"
+msgstr "/อัตรารีเฟรต/เต็ม (-50 เฟรมต่อวินาที)"
+
+#: xmms/main.c:207
+msgid "/Refresh Rate/Half (~25 fps)"
+msgstr "/อัตรารีเฟรต/ครึ่ง(-25 เฟรมต่อวินาที)"
+
+#: xmms/main.c:208
+msgid "/Refresh Rate/Quarter (~13 fps)"
+msgstr "/อัตรารีเฟรต/หนึ่งใน4 (-13 เฟรมต่อวินาที)"
+
+#: xmms/main.c:209
+msgid "/Refresh Rate/Eighth (~6 fps)"
+msgstr "/อัตรารีเฟรต/หนึ่งใน8(-6เฟรมต่อวินาที)"
+
+#: xmms/main.c:210
+msgid "/Analyzer Falloff"
+msgstr "/ความเร็ว อนาไลเซอร์ "
+
+#: xmms/main.c:211
+msgid "/Analyzer Falloff/Slowest"
+msgstr "/ความเร็ว อนาไลเซอร์/ช้ามาก "
+
+#: xmms/main.c:212
+msgid "/Analyzer Falloff/Slow"
+msgstr "/ความเร็ว อนาไลเซอร์/ช้า"
+
+#: xmms/main.c:213
+msgid "/Analyzer Falloff/Medium"
+msgstr "/ความเร็ว อนาไลเซอร์/ปานกลาง "
+
+#: xmms/main.c:214
+msgid "/Analyzer Falloff/Fast"
+msgstr "/ความเร็ว อนาไลเซอร์/เร็ว"
+
+#: xmms/main.c:215
+msgid "/Analyzer Falloff/Fastest"
+msgstr "/ความเร็ว อนาไลเซอร์/เร็วมาก "
+
+#: xmms/main.c:216
+msgid "/Peaks Falloff"
+msgstr "/ความเร็วพีค"
+
+#: xmms/main.c:217
+msgid "/Peaks Falloff/Slowest"
+msgstr "/ความเร็วพีค/ช้ามาก"
+
+#: xmms/main.c:218
+msgid "/Peaks Falloff/Slow"
+msgstr "/ความเร็วพีค/ช้า"
+
+#: xmms/main.c:219
+msgid "/Peaks Falloff/Medium"
+msgstr "/ความเร็วพีค/ปานกลาง"
+
+#: xmms/main.c:220
+msgid "/Peaks Falloff/Fast"
+msgstr "/ความเร็วพีค/เร็ว"
+
+#: xmms/main.c:221
+msgid "/Peaks Falloff/Fastest"
+msgstr "/ความเร็วพีค/เร็วมาก"
+
+#: xmms/main.c:222
+msgid "/Visualization plugins"
+msgstr "/ปลั๊กอิน วิชวลไลเซชั่น"
+
+#: xmms/main.c:268
+msgid "/About XMMS"
+msgstr "/เกี่ยวกับ XMMS"
+
+#: xmms/main.c:270
+msgid "/Play File"
+msgstr "/เล่น จากแฟ้ม"
+
+#: xmms/main.c:271
+msgid "/Play Directory"
+msgstr "/เล่น จากไดเร็กทอรี่"
+
+#: xmms/main.c:272
+msgid "/Play Location"
+msgstr "/เล่น จากที่เก็บบนเว็บ"
+
+#: xmms/main.c:273 xmms/playlistwin.c:113
+msgid "/View File Info"
+msgstr "/แสดงข้อมูลแฟ้ม"
+
+#: xmms/main.c:275
+msgid "/Main Window"
+msgstr "/หน้าต่างหลัก"
+
+#: xmms/main.c:276
+msgid "/Playlist Editor"
+msgstr "/ตัวแก้ไขรายการเพลง"
+
+#: xmms/main.c:277
+msgid "/Graphical EQ"
+msgstr "/ตัวปรับแต่เสียง"
+
+#: xmms/main.c:279
+msgid "/Options"
+msgstr "/ตัวเลือก"
+
+#: xmms/main.c:280
+msgid "/Playback"
+msgstr "/เล่นเพลง"
+
+#: xmms/main.c:281
+msgid "/Playback/Previous"
+msgstr "/เล่นเพลง/ย้อนกลับ"
+
+#: xmms/main.c:282
+msgid "/Playback/Play"
+msgstr "/เล่นเพลง/เล่น"
+
+#: xmms/main.c:283
+msgid "/Playback/Pause"
+msgstr "/เล่นเพลง/พัก"
+
+#: xmms/main.c:284
+msgid "/Playback/Stop"
+msgstr "/เล่นเพลง/หยุด"
+
+#: xmms/main.c:285
+msgid "/Playback/Next"
+msgstr "/เล่นเพลง/ไปหน้า"
+
+#: xmms/main.c:286 xmms/main.c:293
+msgid "/Playback/-"
+msgstr "/เล่นเพลง/-"
+
+#. {N_("/Playback/Stop with Fadeout"),"<Shift>V",mainwin_general_menu_callback,MAINWIN_GENERAL_STOPFADE,"<Item>"},
+#: xmms/main.c:288
+msgid "/Playback/Back 5 Seconds"
+msgstr "/เล่นเพลง/ย้อนกลับ 5 วินาที"
+
+#: xmms/main.c:289
+msgid "/Playback/Fwd 5 Seconds"
+msgstr "/เล่นเพลง/ไปหน้า 5 วินาที"
+
+#: xmms/main.c:290
+msgid "/Playback/Start of List"
+msgstr "/เล่นเพลง/เพลงแรก"
+
+#: xmms/main.c:291
+msgid "/Playback/10 Tracks Back"
+msgstr "/เล่นเพลง/ย้อนกลับ 10 แทร็ค"
+
+#: xmms/main.c:292
+msgid "/Playback/10 Tracks Fwd"
+msgstr "/เล่นเพลง/ไปหน้า 10 แทร็ค"
+
+#: xmms/main.c:294
+msgid "/Playback/Jump to Time"
+msgstr "/เล่นเพลง/ไปยังเวลา ..."
+
+#: xmms/main.c:295
+msgid "/Playback/Jump to File"
+msgstr "/เล่นเพลง/ไปยังแฟ้ม ..."
+
+#: xmms/main.c:296
+msgid "/Visualization"
+msgstr "/วิชวลไลเซชั้น"
+
+#: xmms/main.c:298
+msgid "/Exit"
+msgstr "/ออก"
+
+#: xmms/main.c:1050 xmms/main.c:2811
+msgid "XMMS"
+msgstr "XMMS ไทย"
+
+#: xmms/main.c:1399
+msgid "Jump to time"
+msgstr "ไปที่เวลา .."
+
+#: xmms/main.c:1409
+msgid "Jump to:"
+msgstr "ไปที่ :"
+
+#: xmms/main.c:1425
+msgid "minutes:seconds"
+msgstr "นาที : วินาที"
+
+#: xmms/main.c:1432
+msgid "Track length:"
+msgstr "ความยาวแทร็ค"
+
+#: xmms/main.c:1446 xmms/main.c:1750
+msgid "Jump"
+msgstr "ไป.."
+
+#: xmms/main.c:1702
+msgid "Jump to file"
+msgstr "ไปที่แฟ้ม ..."
+
+#: xmms/main.c:1713
+msgid "Files"
+msgstr "แฟ้ม"
+
+#: xmms/main.c:1722
+msgid "Search: "
+msgstr "ค้นหา:"
+
+#: xmms/main.c:1868 xmms/playlistwin.c:573
+msgid "Select directory to add:"
+msgstr "เลือกไดเร็คทอรี่ที่จะเพิ่ม:"
+
+#: xmms/main.c:1905
+msgid "Enter location to play:"
+msgstr "ใส่ที่เก็บบนเว็บืั้จะเล่น:"
+
+#: xmms/main.c:2016
+msgid "SEEK TO: %d:%-2.2d/%d:%-2.2d (%d%%)"
+msgstr "ไปที่ : %d:%-2.2d/%d:%-2.2d (%d%%)"
+
+#: xmms/main.c:2041 xmms/main.c:2584
+msgid "VOLUME: %d%%"
+msgstr "ระดับเสียง: %d%%"
+
+#: xmms/main.c:2070 xmms/main.c:2589
+msgid "BALANCE: %d%% LEFT"
+msgstr "สมดุลย์เสียง: %d%% ทางซ้าย"
+
+#: xmms/main.c:2075 xmms/main.c:2592
+msgid "BALANCE: CENTER"
+msgstr "สมดุลย์เสียง : ตรงกลาง"
+
+#: xmms/main.c:2080 xmms/main.c:2595
+msgid "BALANCE: %d%% RIGHT"
+msgstr "สมดุลย์เสียง : %d%% ทางขวา"
+
+#: xmms/main.c:2456
+msgid "OPTIONS MENU"
+msgstr "เมนู ตัวเลือก"
+
+#: xmms/main.c:2462
+msgid "DISABLE ALWAYS ON TOP (N/A)"
+msgstr "ไม่อยู่บนสุด (n/a)`"
+
+#: xmms/main.c:2464
+msgid "ENABLE ALWAYS ON TOP (N/A)"
+msgstr "อยู่บนสุด (n/a)"
+
+#: xmms/main.c:2467
+msgid "DISABLE ALWAYS ON TOP"
+msgstr "ยกเลิกการอยู่บนตลอดเวลา"
+
+#: xmms/main.c:2469
+msgid "ENABLE ALWAYS ON TOP"
+msgstr "กำหนดให้อยู่บนตลอดเวลา"
+
+#: xmms/main.c:2472
+msgid "FILE INFO BOX"
+msgstr "กล่องข้อมูลของแฟ้ม"
+
+#: xmms/main.c:2476
+msgid "DISABLE DOUBLESIZE"
+msgstr "ยกเลิกการตั้งค่าขนาดหน้าต่างสองเท่า"
+
+#: xmms/main.c:2478
+msgid "ENABLE DOUBLESIZE"
+msgstr "กำหนดให้หน้าต่างมีขนาดสองเท่า"
+
+#: xmms/main.c:2481
+msgid "VISUALIZATION MENU"
+msgstr "เมนู วิชวลไลเซชั่น"
+
+#: xmms/main.c:2948
+msgid "Couldn't open audio"
+msgstr "ไม่สามารถเปิดเสียงได้"
+
+#: xmms/main.c:2949
+msgid ""
+"Please check that:\n"
+"\n"
+"1. You have the correct output plugin selected\n"
+"2. No other programs is blocking the soundcard\n"
+"3. Your soundcard is configured properly"
+msgstr ""
+"กรุณาตรวจสอบ ดังนี้:\n"
+"\n"
+"1. คุณเลืิอกปลั๊กอินสำหรับเอาต์พุตถูกต้องหรือไม่\n"
+"2. มีโปรแกรมอื่นๆ ใช้งานซาวการ์ดอยู่หรือไม่\n"
+"3. กำหนดค่าของซาวการ์ดถูกต้องหรือไม่"
+
+#: xmms/main.c:3093
+msgid ""
+"Usage: xmms [options] [files] ...\n"
+"\n"
+"Options:\n"
+"--------\n"
+msgstr ""
+
+#. -h, --help switch
+#: xmms/main.c:3098
+msgid "Display this text and exit."
+msgstr "แสเงข้อความนี้แล้วออก:"
+
+#. -n, --session switch
+#: xmms/main.c:3101
+msgid "Select XMMS session (Default: 0)"
+msgstr "เลือกเซสชั่น XMMS (ค่าปกติ: 0)"
+
+#. -r, --rew switch
+#: xmms/main.c:3104
+msgid "Skip backwards in playlist"
+msgstr "ยกเว้นการย้อนกลับในรายการเพลง"
+
+#. -p, --play switch
+#: xmms/main.c:3107
+msgid "Start playing current playlist"
+msgstr "เริ่มเล่นรายการเพลงปัจจุบัน"
+
+#. -u, --pause switch
+#: xmms/main.c:3110
+msgid "Pause current song"
+msgstr "หยุดเพลงชั่วคราว"
+
+#. -s, --stop switch
+#: xmms/main.c:3113
+msgid "Stop current song"
+msgstr "หยุดเพลงที่เล่น"
+
+#. -t, --play-pause switch
+#: xmms/main.c:3116
+msgid "Pause if playing, play otherwise"
+msgstr "หยุดเล่น ถ้ามีการเล่นอย่างอื่น"
+
+#. -f, --fwd switch
+#: xmms/main.c:3119
+msgid "Skip forward in playlist"
+msgstr "ยกเว้นการเดินหน้าในรายการเพลง"
+
+#. -e, --enqueue switch
+#: xmms/main.c:3122
+msgid "Don't clear the playlist"
+msgstr "ไม่ต้องลบรายการเพลง"
+
+#. -m, --show-main-window switch
+#: xmms/main.c:3125
+msgid "Show the main window."
+msgstr "แสดง หน้าต่างหลัก"
+
+#. -v, --version switch
+#: xmms/main.c:3128
+msgid "Print version number and exit."
+msgstr "แสดงหมายเลขรุ่นแล้วออก"
+
+#: xmms/main.c:3246
+msgid ""
+"\n"
+"Segmentation fault\n"
+"\n"
+"You've probably found a bug in XMMS, please visit\n"
+"http://bugs.xmms.org and fill out a bug report.\n"
+"\n"
+msgstr ""
+
+#: xmms/main.c:3386
+msgid ""
+"Sorry, threads isn't supported on your platform.\n"
+"\n"
+"If you're on a libc5 based linux system and installed GLIB & GTK+ before "
+"you\n"
+"installed LinuxThreads you need to recompile GLIB & GTK+\n"
+msgstr ""
+
+#: xmms/main.c:3433
+#, c-format
+msgid ""
+"Sorry, your GTK+ version (%d.%d.%d) doesn't work with XMMS.\n"
+"Please use GTK+ %s or newer.\n"
+msgstr ""
+"GTK+ รุ่น (%d.%d.%d) ไม่สามารถใช้งาน XMMS ได้\n"
+"ให้ใช้ GTK+ %s หรือใหม่กว่าครับ\n"
+
+#. xmms.desktop comment
+#: xmms/main.c:3503
+msgid "X Multimedia System"
+msgstr "ระบบมัลติมีเดียบน X"
+
+#: xmms/playlistwin.c:75
+msgid "/Sort List"
+msgstr "/เรียงลำดับ"
+
+#: xmms/playlistwin.c:76
+msgid "/Sort List/By Title"
+msgstr "/เรียงลำดับ/ตาม ชื่อเพลง"
+
+#: xmms/playlistwin.c:77
+msgid "/Sort List/By Filename"
+msgstr "/เรียงลำดับ/ตาม ชื่อแฟ้ม"
+
+#: xmms/playlistwin.c:78
+msgid "/Sort List/By Path + Filename"
+msgstr "/เรียงลำดับ/ตามพาธ + ชื่อแฟ้ม"
+
+#: xmms/playlistwin.c:79
+msgid "/Sort List/By Date"
+msgstr "/เรียงลำดับ/ตาม วันที่"
+
+#: xmms/playlistwin.c:80
+msgid "/Sort Selection"
+msgstr "/เรียงลำดับที่เลือกไว้"
+
+#: xmms/playlistwin.c:81
+msgid "/Sort Selection/By Title"
+msgstr "/เรียงลำดับที่เลือกไว้/ตาม ชื่อเพลง"
+
+#: xmms/playlistwin.c:82
+msgid "/Sort Selection/By Filename"
+msgstr "/เรียงลำดับที่เลือกไว้/ตาม ชื่อแฟ้ม"
+
+#: xmms/playlistwin.c:83
+msgid "/Sort Selection/By Path + Filename"
+msgstr "/เรียงลำดับที่เลือกไว้/ตาม พาธ + ชื่อแฟ้ม"
+
+#: xmms/playlistwin.c:84
+msgid "/Sort Selection/By Date"
+msgstr "/เรียงลำดับที่เลือกไว้/ตาม วันที่"
+
+#: xmms/playlistwin.c:86
+msgid "/Randomize List"
+msgstr "/รายการแบบสุ่ม"
+
+#: xmms/playlistwin.c:87
+msgid "/Reverse List"
+msgstr "/รายการแบบกลับจากเดิม"
+
+#: xmms/playlistwin.c:101
+msgid "/Remove Dead Files"
+msgstr "/ลบแฟ้มที่ไม่มีออก"
+
+#: xmms/playlistwin.c:102
+msgid "/Physically Delete Files"
+msgstr "/ลบแฟ้มจริงๆ"
+
+#: xmms/playlistwin.c:115
+msgid "/Add"
+msgstr "/เพิ่ม"
+
+#: xmms/playlistwin.c:116
+msgid "/Add/File"
+msgstr "/เพิ่ม/แฟ้ม"
+
+#: xmms/playlistwin.c:117
+msgid "/Add/Directory"
+msgstr "/เพิ่ม/ไดเร็กทอรี่"
+
+#: xmms/playlistwin.c:118
+msgid "/Add/Url"
+msgstr "/เพิ่ม/ที่อยู่บนเว็บ"
+
+#: xmms/playlistwin.c:120
+msgid "/Remove"
+msgstr "/ลบ"
+
+#: xmms/playlistwin.c:121
+msgid "/Remove/Selected"
+msgstr "/ลบ/ที่เลือกไว้"
+
+#: xmms/playlistwin.c:122
+msgid "/Remove/Crop"
+msgstr "/ลบ/ลบที่ไม่เลือก"
+
+#: xmms/playlistwin.c:123
+msgid "/Remove/All"
+msgstr "/ลบ/ทั้งหมด"
+
+#: xmms/playlistwin.c:124
+msgid "/Remove/Misc"
+msgstr "/ลบ/อื่นๆ"
+
+#: xmms/playlistwin.c:126
+msgid "/Selection"
+msgstr "/เลือก"
+
+#: xmms/playlistwin.c:127
+msgid "/Selection/Select All"
+msgstr "/เลือก/ทั้งหมด"
+
+#: xmms/playlistwin.c:128
+msgid "/Selection/Select None"
+msgstr "/เลือก/ไม่เลือก"
+
+#: xmms/playlistwin.c:129
+msgid "/Selection/Invert Selection"
+msgstr "/เลือก/เลือกแบบตรงข้าม"
+
+#: xmms/playlistwin.c:130
+msgid "/Selection/-"
+msgstr "/การเลือก/-"
+
+#: xmms/playlistwin.c:131
+msgid "/Selection/Read Extended Info"
+msgstr "/การเลือก/อ่านข้อมูลส่วนขยาย"
+
+#: xmms/playlistwin.c:133
+msgid "/Sort"
+msgstr "/เรียง"
+
+#: xmms/playlistwin.c:135
+msgid "/Playlist"
+msgstr "/รายการเพลง"
+
+#: xmms/playlistwin.c:136
+msgid "/Playlist/Load List"
+msgstr "/รายการเพลง/โหลด รายการ"
+
+#: xmms/playlistwin.c:137
+msgid "/Playlist/Save List"
+msgstr "/รายการเพลง/บันทึก รายการ"
+
+#: xmms/playlistwin.c:138
+msgid "/Playlist/New List"
+msgstr "/รายการเพลง/สร้างรายการใหม่"
+
+#: xmms/playlistwin.c:551
+msgid "Enter URL to add:"
+msgstr "ใส่ที่อยู่ของเว็บ เพื่อเพิ่ม:"
+
+#: xmms/playlistwin.c:695
+msgid "Load playlist"
+msgstr "โหลดรายการเพลง"
+
+#: xmms/playlistwin.c:721
+msgid "Save playlist"
+msgstr "บันทึกรายการเพลง"
+
+#: xmms/playlistwin.c:1145
+#, c-format
+msgid "Failed to delete \"%s\": %s."
+msgstr "ไม่สามารถลบ \"%s\": %s."
+
+#: xmms/playlistwin.c:1161
+#, c-format
+msgid "%d of %d files successfully deleted."
+msgstr "ลบ %d ของ แฟ้ม %d  สำเร็จ"
+
+#: xmms/playlistwin.c:1165
+msgid "XMMS: Files deleted"
+msgstr "XMMS: ลบแฟ้ม"
+
+#: xmms/playlistwin.c:1196
+msgid "XMMS: Delete files?"
+msgstr "XMMS: ลบแฟ้ม ?"
+
+#: xmms/playlistwin.c:1205
+#, c-format
+msgid "Really delete %d files?"
+msgstr "จะลบแฟ้ม  %d หรือไม่?"
+
+#: xmms/playlistwin.c:1207
+#, c-format
+msgid "Really delete: \"%s\"?"
+msgstr "จะลบ : \"%s\" หรือไม่?"
+
+#: xmms/playlistwin.c:1650
+msgid "XMMS Playlist"
+msgstr "รายการเพลง"
+
+#: xmms/prefswin.c:253
+msgid ""
+"Realtime priority is a way for XMMS to make sure it always\n"
+"get as much CPU time as needed for decoding audio files without\n"
+"any \"skips\".\n"
+"\n"
+"This requires that XMMS is run with root privileges and\n"
+"may, although it's very unusal, lock up your computer.\n"
+"\n"
+"You have been warned, to activate this you need to\n"
+"restart XMMS."
+msgstr ""
+
+#: xmms/prefswin.c:389
+msgid "Select playlist font:"
+msgstr "เลือกฟอนต์ สำหรับรายการเพลง:"
+
+#: xmms/prefswin.c:416
+msgid "Select main window font:"
+msgstr "เลือก ฟอนต์ของหน้าต่างหลัก:"
+
+#: xmms/prefswin.c:611
+msgid "Preferences"
+msgstr "ตั้งค่าคุณสมบัติ"
+
+#.
+#. * Input plugins
+#.
+#: xmms/prefswin.c:633
+msgid "Input Plugins"
+msgstr "ปลั๊กอิน อินพุต"
+
+#: xmms/prefswin.c:641
+msgid "Input plugins"
+msgstr "ปลั๊กอิน อินพุต"
+
+#: xmms/prefswin.c:663 xmms/prefswin.c:695 xmms/prefswin.c:732
+#: xmms/prefswin.c:772 xmms/prefswin.c:819
+msgid "Configure"
+msgstr "ตั้งค่า"
+
+#: xmms/prefswin.c:670 xmms/prefswin.c:780 xmms/prefswin.c:827
+msgid "Enable plugin"
+msgstr "เปิดทำงานปลั๊กอิน"
+
+#.
+#. * Output plugin
+#.
+#: xmms/prefswin.c:678
+msgid "Output Plugin"
+msgstr "ปลั๊กอิน เอาต์พุต"
+
+#: xmms/prefswin.c:703
+msgid "Audio I/O Plugins"
+msgstr "ปลั๊กอิน ออดิโอ I/O"
+
+#.
+#. * Effect plugins
+#.
+#: xmms/prefswin.c:715
+msgid "Effect Plugins"
+msgstr "ปลั๊กอิน แอฟเฟ็ก"
+
+#: xmms/prefswin.c:740
+msgid "Use plugins"
+msgstr "ใช้ ปลั๊กอิน"
+
+#.
+#. * General plugins
+#.
+#: xmms/prefswin.c:747
+msgid "General Plugins"
+msgstr "ปลั๊กอิน พื้นฐาน"
+
+#: xmms/prefswin.c:754
+msgid "General plugins"
+msgstr "ปลั๊กอินพื้นฐาน"
+
+#: xmms/prefswin.c:784
+msgid "Effect/General Plugins"
+msgstr "ปลั๊กอิน แอฟเฟ็ก/พื้นฐาน"
+
+#: xmms/prefswin.c:792 xmms/prefswin.c:831
+msgid "Visualization Plugins"
+msgstr "ปลั๊กอิน วิชวลไลเซชั่น"
+
+#: xmms/prefswin.c:800
+msgid "Visualization plugins"
+msgstr "ปลั๊กอิน วิชวลไลเซชั่น"
+
+#: xmms/prefswin.c:846
+msgid "Read info on"
+msgstr "อ่านข้อมูล "
+
+#: xmms/prefswin.c:848
+msgid "demand"
+msgstr "เมื่อต้องการ"
+
+#: xmms/prefswin.c:850
+msgid "load"
+msgstr "ขณะโหลด"
+
+#: xmms/prefswin.c:853
+msgid "Allow multiple instances"
+msgstr "อนุญาติให้ ใช้แบบ มัลติ อินสเต็น"
+
+#: xmms/prefswin.c:855
+msgid "Reverse file order in fileselector"
+msgstr "เรียงลำดับแฟ้มกลับ ในตัวเลือกแฟ้ม"
+
+#: xmms/prefswin.c:856
+msgid "Always show clutterbar"
+msgstr "แสดง คลัสเตอร์บาร์ ตลอดเวลา"
+
+#: xmms/prefswin.c:858
+msgid "Convert %20 to space"
+msgstr "เปลี่ยน %20 เป็นช่องว่าง"
+
+#: xmms/prefswin.c:859
+msgid "Save window positions"
+msgstr "บันทึกตำแหน่งของหน้าต่าง"
+
+#: xmms/prefswin.c:861
+msgid "Convert underscore to space"
+msgstr "เปลี่ยนขีดล่างเป็นช่องว่าง"
+
+#: xmms/prefswin.c:862
+msgid "Show numbers in playlist"
+msgstr "แสดงลำดับเป็นตัวเลขในรายการเพลง"
+
+#: xmms/prefswin.c:864
+msgid "Dim titlebar when inactive"
+msgstr "ไตเติ้ลบาร์จะจางเมื่อไม่ได้โฟกัส"
+
+#: xmms/prefswin.c:865
+msgid "Save playlist position"
+msgstr "บันทึกตำแหน่งของรายการเพลง"
+
+#: xmms/prefswin.c:867
+msgid "Sort \"Jump to file\" alphabetical"
+msgstr "เรียง \"หน้าต่าง ไปยังแฟ้ม\" ตามตัวอักษร"
+
+#: xmms/prefswin.c:868
+msgid "Equalizer doublesize linked"
+msgstr "เชื่อมหน้าต่างปรับเสียงเมื่อขนาดสองเท่า"
+
+#: xmms/prefswin.c:870
+msgid "Use realtime priority when available"
+msgstr "ใช้เรลไทม์ก่อนถ้ามี"
+
+#: xmms/prefswin.c:872
+msgid "Smooth title scroll"
+msgstr "ชื่อเพลงจะเลื่อนแบบนุ่มๆ"
+
+#: xmms/prefswin.c:876
+msgid "Pause between songs for"
+msgstr "หยุดระหว่าง เพลง "
+
+#. I18N: s = seconds
+#: xmms/prefswin.c:882
+msgid "s"
+msgstr "วินาที"
+
+#: xmms/prefswin.c:888
+msgid "Snap windows at"
+msgstr "เชื่อมหน้าต่างที่ "
+
+#: xmms/prefswin.c:893
+msgid "pixels"
+msgstr "พิกเซล"
+
+#: xmms/prefswin.c:898
+msgid "Do not hide windowmanager decorations"
+msgstr "ไม่ซ่อนรูปแบบหน้าต่างของวินโดว์เมเนเจอร์"
+
+#: xmms/prefswin.c:899
+msgid "Use '\\' as a directory delimiter"
+msgstr "ใช้ '\\' สำหรับแสดงไดเร็กทอรี่"
+
+#: xmms/prefswin.c:902
+msgid "Transparent playlist window"
+msgstr "หน้าต่างรายการเพลงแบบโปร่งใส"
+
+#: xmms/prefswin.c:905
+msgid "Mouse Wheel adjusts Volume by (%)"
+msgstr "เมาส์แบบเลื่อน ใช้ปรับเสียงโดย (%)"
+
+#: xmms/prefswin.c:913
+msgid "Read meta data from playlists"
+msgstr "อ่าน ข้อมูล Meta จากรายการเพลง "
+
+#: xmms/prefswin.c:927
+msgid "Use fontsets (Enable for multi-byte charset support)"
+msgstr "ใช้ชุดฟอนต์ (สำหรับ มัลติฟอนต์)"
+
+#: xmms/prefswin.c:946
+msgid "Main Window"
+msgstr "หน้าต่างหลัก"
+
+#: xmms/prefswin.c:953
+msgid "Use X font"
+msgstr "ใช้ฟอนต์ของ X"
+
+#: xmms/prefswin.c:965
+msgid "Fonts"
+msgstr "ฟอนต์"
+
+#: xmms/prefswin.c:1183 xmms/prefswin.c:1213
+msgid " (enabled)"
+msgstr "(ใช้งาน)"
+
+#: xmms/prefswin.c:1242
+msgid " (disabled)"
+msgstr "(งดใช้งาน)"
+
+#: xmms/skinwin.c:50
+msgid "Skin selector"
+msgstr "ตัวเลือก สกิน"
+
+#: xmms/skinwin.c:58
+msgid "Skins"
+msgstr "สกิน"
+
+#: xmms/skinwin.c:77
+msgid "Select random skin on play"
+msgstr "ทำการสุ่มสกินเวลาเล่น"
+
+#: xmms/skinwin.c:195
+msgid "(none)"
+msgstr "(ใช้สกินของ XMMS)"
+
+#. I18N note: "Enqueue" here means "Add to playlist"
+#: xmms/util.c:593
+msgid "Enqueue"
+msgstr "รอคิว"
+
+#: xmms/util.c:808
+msgid "Load file(s)"
+msgstr "โหลด แฟ้ม"
+
+#: xmms/util.c:827
+msgid "Add selected files"
+msgstr "เพิ่มแฟ้มที่เลือก"
+
+#: xmms/util.c:832
+msgid "Add all files in directory"
+msgstr "เพิ่มแฟ้มในไดเร็กทอรี่"

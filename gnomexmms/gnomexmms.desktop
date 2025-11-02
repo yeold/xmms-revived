@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=XMMS Applet
+Name[es]=Applet XMMS
+Name[fr]=Appliquette XMMS
+Name[ja]=XMMS¥¢¥×¥ì¥Ã¥È
+Name[wa]=Aplikete XMMS
+Name[zh_TW.Big5]=MP3 ÀH¨­Å¥
+Name[zh_CN.GB2312]=MP3 ²¥·ÅÆ÷
+Name[sv]=XMMS-panelprogram
+Name[pt_BR]=Applet do XMMS
+Exec=gnomexmms --activate-goad-server=gnomexmms
+Icon=
+Terminal=0
+Type=Application

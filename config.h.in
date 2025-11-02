@@ -1,0 +1,295 @@
+/* config.h.in.  Generated automatically from configure.in by autoheader.  */
+
+#if defined(USE_DMALLOC)
+# include <glib.h>
+
+/* 
+ * G_malloc() and friends are redefined by glib.h when using DMALLOC.
+ */
+# define ALLOC(type, count)	    (type *) malloc (sizeof (type) * (count))
+# define CALLOC(type, count)	    (type *) calloc ((count), sizeof (type))
+# define REALLOC(mem, type, count)  (type *) realloc ((mem), sizeof (type) * (count))
+# define MALLOC(size)		    (gpointer) malloc (size)
+# define FREE(mem)		    (void) free (mem)
+
+
+/*
+ * Wrapper macro which invokes the given function and allocates the
+ * returned string through the dmalloc library.
+ */
+# define g_wrap_it(function, args...) 					\
+({									\
+	gchar *__s1 = function (args);					\
+	gchar *__s2 = strcpy (malloc (strlen (__s1) + 1), __s1);	\
+	g_free_orig (__s1);						\
+	__s2;								\
+})
+
+
+/* 
+ * The follwing functions return strings which must be freed with
+ * g_free().  We must therefore wrap them so that the strings are
+ * allocated via the dmalloc library.
+ */
+# define g_strdup(str)                 g_wrap_it (g_strdup, str)
+# define g_strdup_printf(fmt, args...) g_wrap_it (g_strdup_printf, fmt ,##args)
+# define g_strdup_vprintf(fmt, argv)   g_wrap_it (g_strdup_vprintf, fmt, argv)
+# define g_strndup(str, n)             g_wrap_it (g_strndup, str, n)
+# define g_strnfill(len, fill_char)    g_wrap_it (g_strnfill, len, fill_char)
+# define g_strconcat(str1, args...)    g_wrap_it (g_strconcat, str1 ,##args)
+# define g_strjoin(sep, args...)       g_wrap_it (g_strjoin, sep ,##args)
+# define g_strescape(str)              g_wrap_it (g_strescape, str)
+# define g_strjoinv(sep, str_array)    g_wrap_it (g_strjoinv, sep, str_array)
+
+
+void g_free_func (gpointer mem);
+void g_free_orig (gpointer mem);
+
+#else
+# define g_free_func g_free
+#endif
+
+/* Define if you have the sched_setscheduler function.  */
+#undef HAVE_SCHED_SETSCHEDULER
+
+
+/* Define if using alloca.c.  */
+#undef C_ALLOCA
+
+/* Define to empty if the keyword does not work.  */
+#undef const
+
+/* Define to one of _getb67, GETB67, getb67 for Cray-2 and Cray-YMP systems.
+   This function is required for alloca.c support on those systems.  */
+#undef CRAY_STACKSEG_END
+
+/* Define if you have alloca, as a function or macro.  */
+#undef HAVE_ALLOCA
+
+/* Define if you have <alloca.h> and it should be used (not on Ultrix).  */
+#undef HAVE_ALLOCA_H
+
+/* Define if you have a working `mmap' system call.  */
+#undef HAVE_MMAP
+
+/* Define as __inline if that's what the C compiler calls it.  */
+#undef inline
+
+/* Define to `long' if <sys/types.h> doesn't define.  */
+#undef off_t
+
+/* Define if you need to in order for stat and other things to work.  */
+#undef _POSIX_SOURCE
+
+/* Define to `unsigned' if <sys/types.h> doesn't define.  */
+#undef size_t
+
+/* If using the C implementation of alloca, define if you know the
+   direction of stack growth for your system; otherwise it will be
+   automatically deduced at run-time.
+ STACK_DIRECTION > 0 => grows toward higher addresses
+ STACK_DIRECTION < 0 => grows toward lower addresses
+ STACK_DIRECTION = 0 => direction of growth unknown
+ */
+#undef STACK_DIRECTION
+
+/* Define if you have the ANSI C header files.  */
+#undef STDC_HEADERS
+
+/* Define if your processor stores words with the most significant
+   byte first (like Motorola and SPARC, unlike Intel and VAX).  */
+#undef WORDS_BIGENDIAN
+
+#undef HAVE_SOUND
+#undef PACKAGE
+#undef VERSION
+#undef USE_3DNOW
+#undef WITH_SYMBOL_UNDERSCORE
+#undef WITH_SM
+#undef ENABLE_NLS
+#undef HAVE_CATGETS
+#undef HAVE_GETTEXT
+#undef HAVE_LC_MESSAGES
+#undef HAVE_STPCPY
+#undef DISABLE_STRICT_FPE
+
+/* The number of bytes in a long.  */
+#undef SIZEOF_LONG
+
+/* Define if you have the __argz_count function.  */
+#undef HAVE___ARGZ_COUNT
+
+/* Define if you have the __argz_next function.  */
+#undef HAVE___ARGZ_NEXT
+
+/* Define if you have the __argz_stringify function.  */
+#undef HAVE___ARGZ_STRINGIFY
+
+/* Define if you have the dcgettext function.  */
+#undef HAVE_DCGETTEXT
+
+/* Define if you have the getcwd function.  */
+#undef HAVE_GETCWD
+
+/* Define if you have the getmntinfo function.  */
+#undef HAVE_GETMNTINFO
+
+/* Define if you have the getpagesize function.  */
+#undef HAVE_GETPAGESIZE
+
+/* Define if you have the iconv_open function.  */
+#undef HAVE_ICONV_OPEN
+
+/* Define if you have the mkdtemp function.  */
+#undef HAVE_MKDTEMP
+
+/* Define if you have the munmap function.  */
+#undef HAVE_MUNMAP
+
+/* Define if you have the putenv function.  */
+#undef HAVE_PUTENV
+
+/* Define if you have the sched_get_priority_max function.  */
+#undef HAVE_SCHED_GET_PRIORITY_MAX
+
+/* Define if you have the setenv function.  */
+#undef HAVE_SETENV
+
+/* Define if you have the setlocale function.  */
+#undef HAVE_SETLOCALE
+
+/* Define if you have the srandomdev function.  */
+#undef HAVE_SRANDOMDEV
+
+/* Define if you have the stpcpy function.  */
+#undef HAVE_STPCPY
+
+/* Define if you have the strcasecmp function.  */
+#undef HAVE_STRCASECMP
+
+/* Define if you have the strchr function.  */
+#undef HAVE_STRCHR
+
+/* Define if you have the strdup function.  */
+#undef HAVE_STRDUP
+
+/* Define if you have the <GL/gl.h> header file.  */
+#undef HAVE_GL_GL_H
+
+/* Define if you have the <GL/glx.h> header file.  */
+#undef HAVE_GL_GLX_H
+
+/* Define if you have the <argz.h> header file.  */
+#undef HAVE_ARGZ_H
+
+/* Define if you have the <dlfcn.h> header file.  */
+#undef HAVE_DLFCN_H
+
+/* Define if you have the <fcntl.h> header file.  */
+#undef HAVE_FCNTL_H
+
+/* Define if you have the <fnmatch.h> header file.  */
+#undef HAVE_FNMATCH_H
+
+/* Define if you have the <fts.h> header file.  */
+#undef HAVE_FTS_H
+
+/* Define if you have the <limits.h> header file.  */
+#undef HAVE_LIMITS_H
+
+/* Define if you have the <linux/cdrom.h> header file.  */
+#undef HAVE_LINUX_CDROM_H
+
+/* Define if you have the <linux/joystick.h> header file.  */
+#undef HAVE_LINUX_JOYSTICK_H
+
+/* Define if you have the <locale.h> header file.  */
+#undef HAVE_LOCALE_H
+
+/* Define if you have the <machine/soundcard.h> header file.  */
+#undef HAVE_MACHINE_SOUNDCARD_H
+
+/* Define if you have the <malloc.h> header file.  */
+#undef HAVE_MALLOC_H
+
+/* Define if you have the <nl_types.h> header file.  */
+#undef HAVE_NL_TYPES_H
+
+/* Define if you have the <sched.h> header file.  */
+#undef HAVE_SCHED_H
+
+/* Define if you have the <string.h> header file.  */
+#undef HAVE_STRING_H
+
+/* Define if you have the <sys/cdio.h> header file.  */
+#undef HAVE_SYS_CDIO_H
+
+/* Define if you have the <sys/ioctl.h> header file.  */
+#undef HAVE_SYS_IOCTL_H
+
+/* Define if you have the <sys/param.h> header file.  */
+#undef HAVE_SYS_PARAM_H
+
+/* Define if you have the <sys/sched.h> header file.  */
+#undef HAVE_SYS_SCHED_H
+
+/* Define if you have the <sys/soundcard.h> header file.  */
+#undef HAVE_SYS_SOUNDCARD_H
+
+/* Define if you have the <unistd.h> header file.  */
+#undef HAVE_UNISTD_H
+
+/* Define if you have the <wchar.h> header file.  */
+#undef HAVE_WCHAR_H
+
+/* Define if you have the i library (-li).  */
+#undef HAVE_LIBI
+
+/* Name of package */
+#undef PACKAGE
+
+/* Version number of package */
+#undef VERSION
+
+/* Path to OSS DSP, really just a data pipe, default is /dev/dsp. */
+#undef DEV_DSP
+
+/* Path to OSS mixer, default is /dev/mixer. */
+#undef DEV_MIXER
+
+/* Path to default cdaudio device. */
+#undef CDDA_DEVICE
+
+/* Path to default cdaudio directory. */
+#undef CDDA_DIRECTORY
+
+/* XF86VidMode extension is present */
+#undef XF86VIDMODE
+
+/* Define if zlib is available */
+#undef HAVE_LIBZ
+
+/* Define if libxml is present */
+#undef WITH_CDINDEX
+
+/* Define if libxml has the xmlDocGetRootElement function */
+#undef HAVE_XMLDOCGETROOTELEMENT
+
+/* Define if libesd has the esd_get_latency function */
+#undef HAVE_ESD_GET_LATENCY
+
+/* Define to int if the socklen_t type is missing */
+#undef socklen_t
+
+/* Define if you have the FreeBSD newpcm driver */
+#undef HAVE_NEWPCM
+
+/* Define if nl_langinfo(CODESET) is available. */
+#undef HAVE_CODESET
+
+/* Define to symbol prefix, if any */
+#undef SYMBOL_PREFIX
+
+/*  Define to disable per user plugin directory */
+#undef DISABLE_USER_PLUGIN_DIR
+

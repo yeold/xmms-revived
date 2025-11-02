@@ -1,0 +1,5 @@
+[gnomexmms]
+type=exe
+repo_id=IDL:GNOME/Applet:1.0
+description=XMMS Applet
+location_info=gnomexmms
