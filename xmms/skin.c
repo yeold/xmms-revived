@@ -1,7 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2001  Peter Alm, Mikael Alm, Olle Hallnas,
+ *  Copyright (C) 1998-2002  Peter Alm, Mikael Alm, Olle Hallnas,
  *                           Thomas Nilsson and 4Front Technologies
- *  Copyright (C) 1999-2001  Haavard Kvaalen
+ *  Copyright (C) 1999-2002  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -132,9 +132,9 @@ static void skin_get_textcolors(GdkPixmap *text, GdkColor *bgc, GdkColor *fgc)
 
 	if (text == NULL)
 		return;
-	
+
 	/* Get the first line of text */
-	gi = gdk_image_get(text, 0, 0, 155, 6);
+	gi = gdk_image_get(text, 0, 0, 152, 6);
 	cm = gdk_window_get_colormap(playlistwin->window);
 	for (i = 0; i < 6; i ++)
 	{
@@ -161,6 +161,7 @@ static void skin_get_textcolors(GdkPixmap *text, GdkColor *bgc, GdkColor *fgc)
 			}
 		}
 	}
+	gdk_image_destroy(gi);
 }
 
 void init_skins(void)
@@ -522,7 +523,12 @@ static void skin_load_pixmaps(const char *path)
 	load_skin_pixmap(&skin->titlebar, path, "titlebar.bmp");
 	load_skin_pixmap(&skin->shufrep, path, "shufrep.bmp");
 	load_skin_pixmap(&skin->text, path, "text.bmp");
-	skin_get_textcolors(skin->text.pixmap, skin->textbg, skin->textfg);
+	if (skin->text.current_width < 152 || skin->text.current_height < 6)
+		skin_get_textcolors(skin->text.def_pixmap,
+				    skin->textbg, skin->textfg);
+	else
+		skin_get_textcolors(skin->text.pixmap,
+				    skin->textbg, skin->textfg);
 	load_skin_pixmap(&skin->volume, path, "volume.bmp");
 	load_skin_pixmap(&skin->balance, path, "balance.bmp");
 	if (skin->balance.pixmap == NULL)
@@ -555,9 +561,42 @@ static void skin_load_pixmaps(const char *path)
 	load_skin_viscolor(path, "viscolor.txt");
 }
 
+/*
+ * escape_shell_chars()
+ *
+ * Escapes characters that are special to the shell inside double quotes.
+ */
+
+static char * escape_shell_chars(const char *string)
+{
+	const char *special = "$`\"\\"; /* Characters to escape */
+	const char *in = string;
+	char *out, *escaped;
+	int num = 0;
+
+	while (*in != '\0')
+		if (strchr(special, *in++))
+			num++;
+
+	escaped = g_malloc(strlen(string) + num + 1);
+
+	in = string;
+	out = escaped;
+
+	while (*in != '\0')
+	{
+		if (strchr(special, *in))
+			*out++ = '\\';
+		*out++ = *in++;
+	}
+	*out = '\0';
+
+	return escaped;
+}
+
 static char * skin_decompress_skin(const char* path)
 {
-	char *tmp = NULL, *tempdir, *unzip, *tar, *ending;
+	char *tmp = NULL, *tempdir, *unzip, *tar, *ending, *escaped;
 
 	unzip = getenv("UNZIPCMD");
 	if (!unzip)
@@ -577,16 +616,19 @@ static char * skin_decompress_skin(const char* path)
 		return NULL;
 	}
 
+	escaped = escape_shell_chars(path);
+
 	if (!strcasecmp(ending, ".zip") || !strcasecmp(ending, ".wsz"))
-		tmp = g_strdup_printf("%s >/dev/null -o -j \"%s\" -d %s", unzip, path, tempdir);
+		tmp = g_strdup_printf("%s >/dev/null -o -j \"%s\" -d %s", unzip, escaped, tempdir);
 	if (!strcasecmp(ending, ".tgz") || !strcasecmp(ending, ".gz"))
-		tmp = g_strdup_printf("%s >/dev/null xzf \"%s\" -C %s", tar, path, tempdir);
+		tmp = g_strdup_printf("%s >/dev/null xzf \"%s\" -C %s", tar, escaped, tempdir);
 	if (!strcasecmp(ending, ".bz2"))
-		tmp = g_strdup_printf("bzip2 -dc \"%s\" | %s >/dev/null xf - -C %s", path, tar, tempdir);
+		tmp = g_strdup_printf("bzip2 -dc \"%s\" | %s >/dev/null xf - -C %s", escaped, tar, tempdir);
 	if (!strcasecmp(ending, ".tar"))
-		tmp = g_strdup_printf("%s >/dev/null xf \"%s\" -C %s", tar, path, tempdir);
+		tmp = g_strdup_printf("%s >/dev/null xf \"%s\" -C %s", tar, escaped, tempdir);
 
 	system(tmp);
+	g_free(escaped);
 	g_free(tmp);
 	return tempdir;
 }

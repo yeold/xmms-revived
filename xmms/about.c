@@ -1,10 +1,10 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2001  Peter Alm, Mikael Alm, Olle Hallnas,
+ *  Copyright (C) 1998-2004  Peter Alm, Mikael Alm, Olle Hallnas,
  *                           Thomas Nilsson and 4Front Technologies
- *  Copyright (C) 2000-2001  Haavard Kvaalen <havardk@xmms.org>
+ *  Copyright (C) 2000-2004  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public Licensse as published by
+ *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  (at your option) any later version.
  *
@@ -24,16 +24,17 @@
  * The different sections are kept in alphabetical order
  */
 
-static const gchar *credit_text[] =
+static const char *credit_text[] =
 {N_("Main Programming:") ,
 	N_("Peter Alm"),
 	NULL,
  N_("Additional Programming:"),
-/* for languages that can't display 'a ring' (å) replace it with "aa" */
-	N_("Håvard Kvålen"),
+	/* I18N: UTF-8 Translation: "H\303\245vard Kv\303\245len" */
+	N_("Haavard Kvaalen"),
 	N_("Derrik Pates"),
 	NULL,
  N_("With Additional Help:"),
+	N_("Tony Arcieri"),
 	N_("Sean Atkinson"),
 	N_("Jorn Baayen"),
 	N_("James M. Cape"),
@@ -45,11 +46,15 @@ static const gchar *credit_text[] =
 	N_("Logan Hanks"),
 	N_("Eric L. Hernes (FreeBSD patches)"),
 	N_("Ville Herva"),
-        N_("Michael Hipp and others (MPG123 engine)"),
-/* for languages that can't display 'a diaeresis' (ä) replace it with "ae" */
-	N_("Olle Hällnäs (compiling fixes)"),
-        N_("David Jacoby"),
-	N_("Osamu Kayasono (3DNow!)"),
+ 	N_("Ian 'Hixie' Hickson"),
+	N_("higway (MMX)"),
+	N_("Michael Hipp and others (MPG123 engine)"),
+	/* I18N: UTF-8 translation: "Olle H\303\244lln\303\244s ..." */
+	N_("Olle Hallnas (compiling fixes)"),
+	/* I18N: UTF-8 translation: "Matti H\303\244m\303\244l\303\244inen" */
+	N_("Matti Hamalainen"),
+	N_("David Jacoby"),
+	N_("Osamu Kayasono (3DNow!/MMX)"),
 	N_("Lyle B Kempler"),
 	N_("J. Nick Koston (MikMod plugin)"),
 	N_("Aaron Lehmann"),
@@ -57,13 +62,17 @@ static const gchar *credit_text[] =
 	N_("Eric Lindvall"),
 	N_("Colin Marquardt"),
 	N_("Willem Monsuwe"),
+	N_("Heikki Orsila"),
+	N_("Gian-Carlo Pascutto"),
 	N_("John Riddoch (Solaris plugin)"),
+	N_("Josip Rodin"),
 	N_("Pablo Saratxaga (i18n)"),
 	N_("Carl van Schaik (pro logic plugin)"),
-/* for languages that can't display 'o diaeresis' (ö) replace it with "oe" */
-	N_("Jörg Schuler"),
+	/* I18N: UTF-8 translation: "J\303\266rg Schuler" */
+	N_("Joerg Schuler"),
 	N_("Charles Sielski (irman plugin)"),
 	N_("Espen Skoglund"),
+	N_("Matthieu Sozeau (ALSA plugin)"),
 	N_("Kimura Takuhiro (3DNow!)"),
 	N_("Zinx Verituse"),
 	N_("Ryan Weaver (RPMs among other things)"),
@@ -71,90 +80,148 @@ static const gchar *credit_text[] =
 	N_("Dave Yearke"),
 	N_("Stephan K. Zitz"),
 	NULL,
+ N_("Default skin:"),
+ 	N_("Leonard \"Blayde\" Tan"),
+	N_("Robin Sylvestre (Equalizer and Playlist)"),
+	N_("Thomas Nilsson (New titles and cleanups)"),
+	NULL,
  N_("Homepage and Graphics:"),
 	N_("Thomas Nilsson"),
 	NULL,
  N_("Support and Docs:"),
-/* for languages that can't display 'a diaeresis' (ä) replace it with "ae" */
-	N_("Olle Hällnäs"),
+	/* I18N: UTF-8 translation: "Olle H\303\244lln\303\244s" */
+	N_("Olle Hallnas"),
 	NULL, NULL};
 
 static const char *translators[] =
 {
-	N_("Afrikaans:"),
-	/* for languages that can't display 'e acute' (é) replace it with "e" */
-	N_("Schalk W. Cronjé "), NULL,
-	N_("Azerbaijani:"), N_("Vasif Ismailoglu"), NULL,
-	N_("Basque:"), N_("Iñigo Salvador Azurmendi"), NULL,
-	N_("Brazilian Portuguese:"), N_("Juan Carlos Castro y Castro"),	NULL,
-	N_("Bulgarian:"), N_("Yovko D. Lambrev"), NULL,
-	N_("Catalan:"), N_("Quico Llach"), NULL,
-	N_("Chinese:"), N_("Chun-Chung Chen"), N_("Jouston Huang"),
-	N_("Andrew Lee"), N_("Chih-Wei Huang"), N_("Danny Zeng"), NULL,
-	N_("Croatian:"), N_("Vlatko Kosturjak"), N_("Vladimir Vuksan"), NULL,
-	N_("Czech:"),
-	/* for languages that can't display 'i acute' (í) replace it with "i" */
-	N_("Vladimír Marek"),
+ N_("Afrikaans:"),
+	/* I18N: UTF-8 translation: "Schalk W. Cronj\303\251" */
+	N_("Schalk W. Cronje"), NULL,
+ N_("Albanian:"),
+	N_("Naim Daka"), NULL,
+ N_("Azerbaijani:"),
+	/* I18N: UTF-8 translation: "M\311\231tin \306\217mirov" */
+	N_("Metin Amiroff"),
+	/* I18N: UTF-8 translation: "Vasif \304\260smay\304\261lo\304\237lu" */
+	N_("Vasif Ismailoglu"), NULL,
+ N_("Basque:"),
+	/* I18N: UTF-8 translation: "I\303\261igo Salvador Azurmendi" */
+	N_("Inigo Salvador Azurmendi"), NULL,
+ N_("Belarusian:"),
+	N_("Smaliakou Zmicer"), NULL,
+ N_("Bosnian:"),
+	/* I18N: UTF-8 translation: "Amila Akagi\304\207" */
+	N_("Amila Akagic"),
+	N_("Grabovica Eldin"), N_("Vedran Ljubovic"), NULL,
+ N_("Brazilian Portuguese:"),
+	N_("Juan Carlos Castro y Castro"), NULL,
+ N_("Bulgarian:"),
+	N_("Boyan Ivanov"), N_("Yovko D. Lambrev"), NULL,
+ N_("Catalan:"),
+	N_("Albert Astals Cid"), N_("Quico Llach"), N_("Jordi Mallach"), NULL,
+ N_("Chinese:"),
+	N_("Chun-Chung Chen"), N_("Jouston Huang"), N_("Andrew Lee"),
+	N_("Chih-Wei Huang"), N_("Shiyu Tang"), N_("Danny Zeng"), NULL,
+ N_("Croatian:"),
+	N_("Vlatko Kosturjak"), N_("Vladimir Vuksan"), NULL,
+ N_("Czech:"),
+	/* I18N: UTF-8 translation: "Vladim\303\255r Marek" */
+	N_("Vladimir Marek"),
 	N_("Radek Vybiral"), NULL,
-	N_("Danish:"), N_("Nikolaj Berg Amondsen"), N_("Troels Liebe Bentsen"),
+ N_("Danish:"),
+	N_("Nikolaj Berg Amondsen"), N_("Troels Liebe Bentsen"),
 	N_("Kenneth Christiansen"), N_("Keld Simonsen"), NULL,
-	N_("Dutch:"), N_("Jorn Baayen"), N_("Wilmer van der Gaast"),
+ N_("Dutch:"),
+	N_("Jorn Baayen"), N_("Bart Coppens"), N_("Wilmer van der Gaast"),
 	N_("Tom Laermans"), NULL,
-	N_("Esperanto:"), N_("D. Dale Gulledge"), NULL,
-	N_("German:"), N_("Colin Marquardt"), N_("Stefan Siegel"), NULL,
-	N_("Greek:"), N_("Kyritsis Athanasios"), NULL,
-	N_("French:"), N_("Arnaud Boissinot"), N_("Eric Fernandez-Bellot"), NULL,
-	N_("Galician:"),
-	/* for languages that can't display 'i acute' (í) replace it with "i" */
-	N_("Alberto García"),
-	/* for languages that can't display 'a acute' (á) replace it with "a" */
-	N_("David Fernández Vaamonde"), NULL,
-	N_("Hungarian:"), N_("Arpad Biro"), NULL,
-	N_("Indonesian:"), N_("Budi Rachmanto"), NULL,
-	N_("Irish:"), N_("Alastair McKinstry"), NULL,
-	N_("Italian:"), N_("Paolo Lorenzin"), NULL,
-	N_("Japanese:"), N_("Hiroshi Takekawa"), NULL,
-	N_("Korean:"), N_("Jaegeum Choe"), N_("Sang-Jin Hwang"),
-	N_("Byeong-Chan Kim"), N_("Man-Yong Lee"), NULL,
-	N_("Lithuanian:"), N_("Gediminas Paulauskas"), NULL,
-	N_("Latvian:"),
-	/* I18N: The "n" should be replaced with 'n cedilla' (ò) if it
-           can be displayed */
-	/* I18N: The last "s" should be replaced with 's caron' (ð) if
-           it can be displayed */
+ N_("Esperanto:"),
+	N_("D. Dale Gulledge"), NULL,
+ N_("Estonian:"),
+	N_("Marek Laane"), NULL,
+ N_("Finnish:"),
+	N_("Thomas Backlund"), N_("Matias Griese"), NULL,
+ N_("French:"),
+	N_("Arnaud Boissinot"), N_("Eric Fernandez-Bellot"), NULL,
+ N_("Galician:"),
+	/* I18N: UTF-8 translation: "Alberto Garc\303\255a" */
+	N_("Alberto Garcia"),
+	/* I18N: UTF-8 translation: "David Fern\303\241ndez Vaamonde" */
+	N_("David Fernandez Vaamonde"), NULL,
+ N_("Georgian:"),
+	N_("Aiet Kolkhi"), NULL,
+ N_("German:"),
+	N_("Colin Marquardt"), N_("Stefan Siegel"), NULL,
+ N_("Greek:"),
+	N_("Kyritsis Athanasios"), NULL,
+ N_("Hungarian:"),
+	N_("Arpad Biro"), NULL,
+ N_("Indonesian:"),
+	N_("Budi Rachmanto"), NULL,
+ N_("Irish:"),
+	N_("Alastair McKinstry"), NULL,
+ N_("Italian:"),
+	N_("Paolo Lorenzin"), N_("Daniele Pighin"), NULL,
+ N_("Japanese:"),
+	N_("Hiroshi Takekawa"), NULL,
+ N_("Korean:"),
+	N_("Jaegeum Choe"), N_("Sang-Jin Hwang"), N_("Byeong-Chan Kim"),
+	N_("Man-Yong Lee"), NULL,
+ N_("Lithuanian:"),
+	N_("Gediminas Paulauskas"), NULL,
+ N_("Latvian:"),
+	/* I18N: UTF-8 translation: "Juris Kudi\305\206\305\241" */
 	N_("Juris Kudins"),
 	N_("Vitauts Stochka"), NULL,
-	N_("Norwegian:"),
-	/* for languages that can't display 'o slash' (ø) replace it with "oe" */
-	N_("Andreas Bergstrøm"),
-	N_("Terje Bjerkelia"), N_("Håvard Kvålen"), N_("Roy-Magne Mo"),
+ N_("Malay:"),
+	N_("Muhammad Najmi Ahmad Zabidi"), NULL,
+ N_("Norwegian:"),
+	/* I18N: UTF-8 translation: "Andreas Bergstr\303\270m" */
+	N_("Andreas Bergstrom"),
+	N_("Terje Bjerkelia"), N_("Haavard Kvaalen"), N_("Roy-Magne Mo"),
 	N_("Espen Skoglund"), NULL,
-	N_("Polish:"), N_("Grzegorz Kowal"), NULL,
-	N_("Portuguese:"), N_("Jorge Costa"), NULL,
-	N_("Romanian:"), N_("Florin Grad"),
-	/* I18N: The "s" should be replaced with 's cedilla' (º) if it
-           can be displayed */
+ N_("Polish:"),
+	N_("Grzegorz Kowal"), NULL,
+ N_("Portuguese:"),
+	N_("Jorge Costa"), NULL,
+ N_("Romanian:"),
+	N_("Florin Grad"),
+	/* I18N: UTF-8 translation: "Mi\305\237u Moldovan" */
 	N_("Misu Moldovan"), NULL,
-	N_("Russian:"), N_("Valek Filippov"), N_("Alexandr P. Kovalenko"),
+ N_("Russian:"),
+	N_("Valek Filippov"), N_("Alexandr P. Kovalenko"),
 	N_("Maxim Koshelev"), N_("Aleksey Smirnov"), NULL,
-	N_("Serbian:"), N_("Tomislav Jankovic"), NULL,
-	N_("Slovak:"), N_("Pavol Cvengros"),
-	N_("Tomas Hornocek"), N_("Jan Matis"), NULL,
-	N_("Spanish:"), N_("Fabian Mandelbaum"), N_("Jordi Mallach"),
-	/* for languages that can't display 'i acute' (í) replace it with "i" */
-	N_("Juan Manuel García Molina"), NULL,
-	N_("Swedish:"), N_("David Hedbor"), N_("Olle Hällnäs"),
-	N_("Thomas Nilsson"),	N_("Christian Rose"), N_("Fuad Sabanovic"), NULL,
-	N_("Tajik:"), N_("Trinh Minh Thanh"), NULL,
-	N_("Thai:"), N_("Supphachoke Suntiwichaya"), NULL, 
-	N_("Turkish:"), N_("Nazmi Savga"),
-	/* I18N: The "i" should be replaced with 'dotless i' (ý) if it
-           can be displayed */
-	/* for languages that can't display 'O diaeresis' (Ö) replace it with "O" */
-	N_("Ömer Fadil Usta"), NULL,
-	N_("Ukrainian:"), N_("Dmytro Koval'ov"), NULL,
-	N_("Vietnamese:"), N_("Roger Kovacs"), N_("Dilshod Marupov"), NULL,
-	N_("Walloon:"), N_("Lucyin Mahin"), N_("Pablo Saratxaga"), NULL,
+ N_("Serbian:"),
+	N_("Tomislav Jankovic"), NULL,
+ N_("Slovak:"),
+	N_("Pavol Cvengros"), NULL,
+ N_("Slovenian:"),
+	N_("Tadej Panjtar"), N_("Tomas Hornocek"), N_("Jan Matis"), NULL,
+ N_("Spanish:"),
+	N_("Fabian Mandelbaum"), N_("Jordi Mallach"),
+	/* I18N: UTF-8 translation: "Juan Manuel Garc\303\255a Molina" */
+	N_("Juan Manuel Garcia Molina"), NULL,
+ N_("Swedish:"),
+	N_("David Hedbor"), N_("Olle Hallnas"),
+	N_("Thomas Nilsson"), N_("Christian Rose"), N_("Fuad Sabanovic"), NULL,
+ N_("Tajik:"),
+	N_("Roger Kovacs"), N_("Dilshod Marupov"), NULL,
+ N_("Thai:"),
+	N_("Pramote Khuwijitjaru"), N_("Supphachoke Suntiwichaya"), NULL,
+ N_("Turkish:"),
+	N_("Nazmi Savga"),
+	/* I18N: UTF-8 translation: "\303\226mer Fad\304\261l Usta" */
+	N_("Omer Fadil Usta"), NULL,
+ N_("Ukrainian:"),
+	N_("Dmytro Koval'ov"), NULL,
+ N_("Uzbek:"),
+	N_("Mashrab Kuvatov"), NULL,
+ N_("Vietnamese:"),
+	N_("Trinh Minh Thanh"), NULL,
+ N_("Walloon:"),
+	N_("Lucyin Mahin"), N_("Pablo Saratxaga"), NULL,
+ N_("Welsh:"),
+	N_("Rhoslyn Prys"), NULL,
 	NULL
 };
 
@@ -202,7 +269,6 @@ static GtkWidget* generate_credit_list(const char *text[], gboolean sec_space)
 	return scrollwin;
 }
 
-
 void show_about_window(void)
 {
 	static GtkWidget *about_window = NULL;
@@ -218,12 +284,14 @@ void show_about_window(void)
 	if (about_window)
 		return;
 	
-	about_window = gtk_window_new(GTK_WINDOW_DIALOG);
+	about_window = gtk_window_new(GDK_WINDOW_DIALOG);
 	gtk_window_set_title(GTK_WINDOW(about_window), _("About XMMS"));
 	gtk_window_set_policy(GTK_WINDOW(about_window), FALSE, TRUE, FALSE);
 	gtk_container_set_border_width(GTK_CONTAINER(about_window), 10);
 	gtk_signal_connect(GTK_OBJECT(about_window), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &about_window);
+	gtk_signal_connect(GTK_OBJECT(about_window), "key_press_event",
+			   util_dialog_keypress_cb, NULL);
 	gtk_widget_realize(about_window);
 	
 	about_vbox = gtk_vbox_new(FALSE, 5);
@@ -256,7 +324,8 @@ void show_about_window(void)
 	
 	gtk_box_pack_start(GTK_BOX(about_vbox), label, FALSE, FALSE, 0);
 	
-	label = gtk_label_new(_("Copyright (C) 1997-2001 4front Technologies"));
+	label = gtk_label_new(_("Copyright (C) 1997-2004 4Front Technologies "
+				"and The XMMS Team"));
 	gtk_box_pack_start(GTK_BOX(about_vbox), label, FALSE, FALSE, 0);
 	
 	about_notebook = gtk_notebook_new();

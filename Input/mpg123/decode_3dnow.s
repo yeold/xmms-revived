@@ -15,7 +15,7 @@
 / by KIMURA Takuhiro <kim@hannah.ipc.miyakyo-u.ac.jp> - until 31.Mar.1999
 /                    <kim@comtec.co.jp>               - after  1.Apr.1999
 /
-/ porting xmms-0.9.1 by Osamu kayasono <kayasono@mb.infoweb.ne.jp>
+/ porting xmms-0.9.1 by Osamu kayasono <jacobi@jcom.home.ne.jp>
 / - rename function name for xmms
 / - disable equalizer for mpg123
 

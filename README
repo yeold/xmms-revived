@@ -1,4 +1,4 @@
-XMMS - X Multimedia System (c)1997-2001
+XMMS - X Multimedia System (C) 1997-2004
 
 A Cross platform Multimedia Player
 
@@ -21,24 +21,26 @@ TABLE OF CONTENTS
    3.4 Menu
    3.5 Preferences
       3.5.1 Audio I/O Plugins
-      3.5.2 Effect/General Plugins
-      3.5.3 Visualization Plugins
-      3.5.4 Options
-      3.5.5 Fonts
-      3.5.6 Title
+      3.5.2 Effect Plugins
+      3.5.3 General Plugins
+      3.5.4 Visualization Plugins
+      3.5.5 Options
+      3.5.6 Fonts
+      3.5.7 Title
    3.6 Plugins
       3.6.1 Input plugins
             3.6.1.1 Cd Audio Player
-            3.6.1.2 Id Software .cin player
-            3.6.1.3 Mikmod player
-            3.6.1.4 MPEG Layer 1/2/3 player
-            3.6.1.5 Tone Generator
-            3.6.1.6 Ogg Vorbis player
-            3.6.1.7 Wave player
+            3.6.1.2 Mikmod player
+            3.6.1.3 MPEG Layer 1/2/3 player
+            3.6.1.4 Tone Generator
+            3.6.1.5 Ogg Vorbis player
+            3.6.1.6 Wave player
       3.6.2 Output plugins
             3.6.2.1 OSS Driver
             3.6.2.2 Disk Writer
             3.6.2.3 eSound Output
+            3.6.2.4 BSD Sun Output
+            3.6.2.5 ALSA Output
       3.6.3 Effect plugins
             3.6.3.1 Echo
             3.6.3.2 Extra Stereo
@@ -95,7 +97,7 @@ For libc5 users, you also need to obtain,
 If you want XMMS to play mod/s3m/med and formats supported by mikmod
 you need to install libmikmod before running ./configure on XMMS.
 
-   http://www.mikmod.org/download.html
+   http://www.ibiblio.org/pub/linux/apps/sound/libs/
 
 For the OpenGL plugin you'll need Mesa 3.0 or better.
 
@@ -108,7 +110,7 @@ To compile the Ogg Vorbis plugin you'll need libvorbis from:
 2.1 Basic Installation
 ----------------------
 
-cd xmms-1.2.5
+cd xmms-1.2.8
 ./configure
 make
 make install
@@ -120,7 +122,7 @@ This will put the binary in /usr/local/bin and plugins in
 ---------------------------
 
 As far as I know most WM's accepts GTK decoration hints so it will
-not have borders.  But some WM's can't handle this so you have to
+not have borders. But some WM's can't handle this so you have to
 set in manually.
 
 AfterStep 1.0 ~/.steprc
@@ -188,7 +190,7 @@ setenv SKINSDIR /path/to/Skins:/more/paths/to/other/locations/of/Skins
 3. Documentation
 ----------------
 
-This file or http://www.xmms.org/documentation.html
+This file or http://www.xmms.org/docs/readme.php
 
 3.1 Controlling XMMS
 --------------------
@@ -300,15 +302,19 @@ Playlist window:
   Arrow key up    = up one step in playlist
   Arrow key down  = Down one step in playlist
 
-  Delete         = Remove selected songs from playlist
-  Page Up        = Move one page up
-  Page Down      = Move one page down
-  Home           = Go to the first song
-  End            = Go to the last song
-  Enter          = Play selected song
-  Insert         = Add file dialog
-  Shift + Insert = Add directory dialog
-  Alt + Insert   = Add url dialog
+  Delete          = Remove selected songs from playlist
+  Control+ Delete = Keeps the selected tracks and removes the rest
+  Q               = Queue/Dequeue the tracks selected
+  Shift + Q       = Clear the queue list
+  Alt + Q         = Queue manager
+  Page Up         = Move one page up
+  Page Down       = Move one page down
+  Home            = Go to the first song
+  End             = Go to the last song
+  Enter           = Play selected song
+  Insert          = Add file dialog
+  Shift + Insert  = Add directory dialog
+  Alt + Insert    = Add url dialog
 
 Equalizer shade mode:
 
@@ -411,16 +417,16 @@ Delete
 Configure Equalizer     : Change the default names of directory based
                           preset files.
 
-3.4. Menu
----------
+3.4 Menu
+--------
 
 There are several menu hot spots on the XMMS window. One place is at the left
 hand side of the visual window described in sections 3.1 If you click the right
 mouse button in the main window, the menus will also pop up (same as clicking
 the button on the top left corner).
 
-3.5. Preferences
-----------------
+3.5 Preferences
+---------------
 
 Use the menu to open Options / Preferences or press CTRL-P to bring the
 preferences dialog up.
@@ -429,8 +435,8 @@ The first three tabs are for different types of plugins, the plugins specific
 configuration and usage will be explained in the plugins section of this
 manual.
 
-3.5.1. Audio I/O Plugins
-------------------------
+3.5.1 Audio I/O Plugins
+-----------------------
 
 In the 'Audio I/O' tab you control the heart of XMMS, which would be the Input
 and Output plugins.
@@ -444,23 +450,25 @@ Today you can only have one 'Output Plugin' active at a time. So you can't
 both listen to the music through the 'OSS Driver' and save the music to disk
 with 'Disk Writer'.
 
-3.5.2. Effect/General Plugins
------------------------------
+3.5.2 Effect Plugins
+--------------------
 
-The 'Effect/General' tab controls the 'Effect' and 'General' plugins. Effect
-plugins can alter the sound in different ways. You can only use one Effect
-plugin at a time just like the 'Output' plugins. General plugins are mostly
-used to control XMMS.
+Effect plugins can alter the sound in different ways.
 
-3.5.3. Visualization Plugins
-----------------------------
+3.5.3 General Plugins
+---------------------
+
+General plugins are mostly for controling XMMS.
+
+3.5.4 Visualization Plugins
+---------------------------
 
 The 'Visualization' tab controls which visual effects you want to see when XMMS
 is playing your music. See section 3.6.5 for the plugins shipped with XMMS.
 
 
-3.5.4. Options
---------------
+3.5.5 Options
+-------------
 
 Here you change most of XMMS's behavior and settings.
 
@@ -471,10 +479,6 @@ Here you change most of XMMS's behavior and settings.
    playlist. Having 'Load' turned on when loading a 6000 song playlist might
    not be a good idea. If both options are turned off XMMS will only load
    the information when the song is currently playing.
-
-'Reverse file order in file selector'
-   Will cause the files selected in the fileselector to be added in reverse
-   order in the playlist.
 
 'Convert %20 to space'
    This will convert "%20" to " " when the filename is displayed in the
@@ -501,7 +505,7 @@ Here you change most of XMMS's behavior and settings.
 'Pause between song for [ ] seconds'
    Will make a defined pause between each song.
 
-'Do not hide windowmanager decorations'
+'Show windowmanager decorations'
    Enables the windowmanager borders around XMMS.
 
 'Mouse Wheel adjust Volume by (%)'
@@ -522,11 +526,6 @@ Here you change most of XMMS's behavior and settings.
 'Show numbers in playlist'
    Enables the display of the internal track number in the playlist.
 
-'Save playlist position'
-   This saves the Playlist windows position and tells XMMS where to place it,
-   instead of letting your windowmanager choose position. This has no effect
-   if the playlist is docked to the Main window of XMMS.
-
 'Equalizer doublesize linked'
    Will display the Equalizer in doublesize if you make XMMS doublesize.
 
@@ -541,14 +540,13 @@ Here you change most of XMMS's behavior and settings.
    This will come in handy if you are using playlist files from a windows
    player, so XMMS will treat \ as /.
 
-'Save extended playlist info'
-   When enabled, all M3U format playlists will be saved in "Extended
-   Format", which includes the entry title and length in addition to the
-   filename or URL of the track.
+'Use meta data in playlists'
+   When enabled, all playlists will be saved with the configured 'Title'
+   string for quick loading of information when you load a playlist.
 
 
-3.5.5. Fonts
-------------
+3.5.6 Fonts
+-----------
 
 Here you can change the fonts XMMS use.
 
@@ -562,8 +560,8 @@ Here you can change the fonts XMMS use.
    Makes XMMS use a font for the scrolling title in the main window.
 
 
-3.5.6. Title
-------------
+3.5.7 Title
+-----------
 
 The 'Title format:' box allows you to alter in which order the information
 about the current song is displayed.
@@ -571,7 +569,7 @@ about the current song is displayed.
 Example: %p - %t (%a) [%y]
 will display something like "Laibach - Alle Gegen Alle (Nato) [1994]"
 
-available fields are:
+Available fields are:
 
 %p - Artist          (ex: Laibach)
 %a - Album           (ex: Nato)
@@ -589,7 +587,10 @@ available fields are:
 These fields makes use of normal printf(3) formatting codes.
 
 Examples:
-  %0.3n    Will pad the track number with 0's until it's 3 chars long.
+  %0.3n     Will pad the track number with 0's until it's 3 chars long.
+  %30p      Prefix-pads the artist name to 30 chars length with spaces.
+  %-30      Same as previous, but suffix instead.
+  %-30.30p  Suffix-pad to 30 chars and "cut" to 30 too.
 
 
 3.6 Plugins
@@ -607,55 +608,98 @@ The input plugins is what you use to play mp3, mod, wav and even movies with.
 
 3.6.1.1 Cd Audio Player
 -----------------------
-Plays audio cd's on Linux, FreeBSD and Solaris. This plugin does not pass
-the sound through XMMS, so no visualization can be made nor will the
-equalizer settings have any effect.
-
 Before I explain the usage we better have a look on the configuration
 first.
 
-In the device tab you should set Device to your cdrom unit. /dev/cdrom
-is generally a good choice on Linux systems. Set 'Directory' to where a
-directory which will be used by XMMS to present the available cd tracks in.
-Using the normal mount point for the cdrom is recommended unless the
-cdrom is automounted if it contains a data track.
+Device tab
+----------
 
-  Example:
-  --------
-     Device: /dev/cdrom (which on my system is symlinked to /dev/hdc)
-  Directory: /mnt/cdrom
+Device:
+	Device
+		The actual device of your CD-ROM unit. On my system
+		I use /dev/cdrom which is a symlink to /dev/hdc.
+			
+	Directory
+		This is where XMMS will "hijack" the filerequester and present
+		the content of the CD. On my system I have it set to
+		/mnt/cdrom, but if you're using some sort of automounter or
+		simmilar I suggest you change it to something like
+		/mnt/audio_cd and make sure the directory exists.
 
-The next setting is used to decide what volume is to be changed, it's either
-the OSS Mixer for CD Audio or the actual volume on the CDROM.
+Play mode:
+	Analog
+		Analog playback requires that you have a cable connected
+		between the CD-ROM and the soundcard. Also it will not be
+		passed through any effect or visualization plugins.
 
-In the CD Info tab you can choose if the plugin should try and get the
-track names from a Internet database server.
+	Digital audio extraction
+		This allows XMMS to pass the sounddata through the effect and
+		visualization plugins. 
 
-You can either use the CDDB protocol or CD Index. CDDB defaults to a free
-version of CDDB, but it will work with the infamous cddb servers as well.
+Volume control:
+	This section is only active when you're using analog playback.
+	
+	No mixer
+		You can't control the volume at all.
+		
+	CDROM drive
+		The volume is controled directly on the CDROM, not all drives
+		support this though.
+	OSS mixer
+		The volume is controled through the OSS mixer
 
-Show network window will display some useful information if something goes
-wrong, but you'll have to close and re-open it to update the content of it.
+Check drive:
+	Makes a rudimentary check if everything is properly configured.
 
-If a CDDB server is too slow for your taste, you can press 'Get server list'
-to receive a list of alternate servers.
+Remove drive:
+	If you have more than 1 drives configured this will remove the current
+	one.
 
-CD Index is another type of database, but works in a similar manner. If
-you don't have libxml installed when you compiled the plugin, this will be
-grayed out.
+Add drive:
+	If you have more than 1 drives on your system you can add another to
+	the plugin settings.
 
-In the "Track names" box you can decide on how the plugin presents the
-tracks to you. This is normally handled by the 'Title' (section 3.5.6) setting
-in the main preferences, but you can choose to override them here.
 
-Available variables are:
+CD Info tab
+-----------
 
-   %p = Performer/Artist   %t = Track name
-   %a = Album              %n = Track number
+CDDB:
+	CDDB is used to get track information for your CD from a CDDB
+	compatible database.
 
-So "%n. %t / %p (%a)" would display something like:
+	You can set the enviroment variable "XMMS_CDDB_CLIENT_NAME" to change
+	how XMMS presents itself to the CDDB server. Default value is
+	"XMMS 1.2.8"
+	
+	Use CDDB:
+		Enable CDDB use.
+		
+	Show network window:
+		Will open up a window containing useful debug information when
+		XMMS tries to do a CDDB lookup. 
+		
+	Get server list:
+		Press this button to get a list of alternative servers from the
+		server you've configured below.
+	
+	CDDB server:
+		The CDDB server XMMS will use, default is 'freedb.freedb.org'
+	
+Track names:
 
-  1. New Life / Depeche Mode (Speak & Spell)
+	Override generic titles:
+		By enabling this, the plugin will ignore the 'Title' settings
+		from XMMS (section 3.5.6).
+	
+	Name format:
+		Works as explained in section 3.5.6 but you only have 4
+		available variables.
+
+		%p = Performer/Artist   %t = Track name
+		%a = Album              %n = Track number
+
+Using the CD Audio Player plugin
+--------------------------------
 
 Now to add your CDROM tracks to the playlist. Insert an audio cd into the
 CDROM drive and press the Eject button. Go to the directory which you defined
@@ -667,23 +711,13 @@ configuration.
 
 Now, that wasn't hard now was it?
 
-If you want XMMS to identify as something else when speaking with servers, you
-can set the environmental variable "XMMS_CDDB_CLIENT_NAME", and XMMS will use
-that instead.
 
-
-3.6.1.2 Id Software .cin player
--------------------------------
-This plugin plays the movies from Id Software's Quake II which normally
-are named .cin.
-
-
-3.6.1.3 Mikmod player
+3.6.1.2 Mikmod player
 ---------------------
-This plugin will play a numerous older "module" formats supported by the
-MikMod library (libmikmod). MikMod can be found at
-http://mikmod.online.fr/download.html and you'll need 3.1.6 or better to be
-able to build this plugin.
+This plugin will play a numerous older "module" formats supported by
+the MikMod library (libmikmod). MikMod can be found at
+http://www.ibiblio.org/pub/linux/apps/sound/libs/ and you'll need
+3.1.6 or better to be able to build this plugin.
 
 In the first configuration tab you can choose in which quality mikmod
 should play the modules. If you have an older soundcard you might want to
@@ -709,16 +743,16 @@ modules, unless you're really out for that old crispy retro feeling. :)
 'Default panning separation' "The original Amiga formats had an implicit
 channel allocation (because the Amiga's hardware had same), 100% left or 100%
 right depending on the track number (left right right left, or right left left
-right, I forget).  That sounded OK when they were written because most monitors
+right, I forget). That sounded OK when they were written because most monitors
 had only a single speaker, and the flash monitors didn't separate the speakers
 more than about a foot, but when you try something like that with your speakers
-in opposite corners of the room it drives you to distraction.  That control
+in opposite corners of the room it drives you to distraction. That control
 lessens the annoyance for file formats that don't specify the balance."
 
 - Simon Hosie
 
 
-3.6.1.4 MPEG Layer 1/2/3 player
+3.6.1.3 MPEG Layer 1/2/3 player
 -------------------------------
 The main reason why this player exists today is mp3 files, so what could be
 better than a plugin that plays them?.
@@ -730,11 +764,12 @@ The first configuration tab is just like the MikMod one, and again, if you
 have an older soundcard and the music is going half speed, change the
 'Resolution' setting.
 
-If you have mp3 files named something else than .mp3, you might want to enable
-'Detect files by content' so XMMS will know that they are supported. Although
-I'd recommend that you rename the files (or just beat the person who burned his
-high-school bands music with in proper file extensions into giving you a new
-cd) since this is rather slow.
+In the 'Options' section you can tell XMMS how to handle the files you feed it.
+You can tell the plugin to dectect files by extension, content and both. The
+reason why this option exists is to make XMMS less demanding when you add a lot
+of MP3 files with the extension .mp3. If you use both then XMMS will first look
+at the extension and then try to detect by content. This is useful if you have
+CDs with music that aren't correctly named.
 
 In the streaming tab you can choose a 'Buffer size' in kilobytes which XMMS
 will keep while streaming. This ranges from 4 -> 4096kb (which should be
@@ -794,7 +829,7 @@ available fields are:
 %c - Comment         (ex: Cover of D.A.F)
 
 
-3.6.1.5 Tone Generator
+3.6.1.4 Tone Generator
 ----------------------
 Will generate a sinus tone or a mix of several sinus tones. To use it add a
 URL: tone://frequency1;frequency2;frequency3;...
@@ -805,21 +840,21 @@ will play a 2000Hz tone.
 
 Example: tone://2000;2005
 
-will play a 2000Hz tone and a 2005Hz tone at the same time.  Notice the 5Hz
+will play a 2000Hz tone and a 2005Hz tone at the same time. Notice the 5Hz
 beats between the two tones.
 
 The use of this baffles me, but at least I can use it to annoy my neighbors
 dog.
 
 
-3.6.1.6 Ogg Vorbis Player
+3.6.1.5 Ogg Vorbis Player
 -------------------------
 
-Plays OGG Vorbis encoded files, see http://www.xiph.org/ogg/vorbis/index.html
+Plays OGG Vorbis encoded files, see http://www.xiph.org/ogg/vorbis/
 for more information.
 
 
-3.6.1.7 Wave player
+3.6.1.6 Wave player
 -------------------
 This plugin plays as suggested, wave files. It supports 16bit and 8bit PCM wave
 files.
@@ -876,6 +911,40 @@ the audio data is sent uncompressed to the remote ESD.
 The 'Buffering' tab works just like the 'OSS Driver' one.
 
 
+3.6.2.4 BSD Sun Output
+----------------------
+The 'Sun' output plugin will use the native audio(4) interface provided
+by OpenBSD and NetBSD for playback and mixing.
+
+The $AUDIODEVICE and $MIXERDEVICE environment variables will override the
+current configuration settings. Defaults are /dev/audio and /dev/mixer.
+
+In the 'Devices' tab you can change the audio, audioctl and mixer devices
+XMMS is going to use. The audioctl device is used for ioctl(2) calls
+independent of audio data I/O.
+
+In the 'Buffering' tab you can change how much data the Sun plugin will
+buffer. The 'Buffer size' ranges from 200 - 10000ms. If you want the plugin
+to wait for the buffer to be filled before it starts playing the music,
+change the 'Pre-buffer' value, this ranges from 0% - 90% of the 'Buffer size'
+value.
+
+In the 'Mixer' tab you can select the volume device to be affected when you
+alter the volume from XMMS. `XMMS uses mixer exclusively' causes XMMS to
+keep the mixer device open instead of re-opening it for each operation.
+
+There may also be some more options depending on what your audio mixer
+device supports (eg. loudness, spatial, surround, preamp).
+
+In the 'Status' tab you can see audio device information and real-time
+playback status.
+
+
+3.6.2.5 ALSA Output
+-------------------
+Undocumented.
+
+
 3.6.3 Effect plugins
 --------------------
 Effect plugins can alter the sound of the music you are listening to.
@@ -913,6 +982,65 @@ control XMMS. To set the functions on the remote control, open the
 configuration screen and choose on which device the IRman is on. Press the
 function you want to assign and then press the button on the remote which
 you want it to use for the current function.
+
+Device
+	Device
+		The serial device your IRman is plugged into.
+		(COM1 = /dev/ttyS0, COM2 = /dev/ttyS1)
+
+	IR code length
+		Undocumented
+
+Controls
+
+	Play - Repeat
+		These will effectively press the appropriate corresponding
+		button in XMMS and cause that action to immediately take
+		effect.
+
+	+100
+		Allows you to specify a number between 100 & 199. To properly
+		enter one of these numbers, you first press the corresponding
+		button on your remote control for the +100 action. Then within
+		2 seconds, you must press the next number and so on.
+
+		Example:
+
+		To enter 115 you press the +100 button, then within 2 seconds
+		press the 1 button, then within 2 seconds press the 5 button.	
+
+	Playlist
+		This tells the XMMS IRman plugin that you are about to enter
+		in a number for the playlist you'd like to load. You have 2
+		seconds after pressing the corresponding playlist button on
+		your remote control to enter in the appropriate number.
+
+	0-9
+		These are used to either jump to a certain track number in a
+		loaded playlist, or to load a specific playlist. To jump to a
+		track, simply press the corresponding number and it will begin
+		playing the specified track number. To enter numbers larger
+		than 9, you have 2 seconds between each number press to enter
+		the next number. 
+
+		Example:
+
+		To jump to track 54, you must press the 4 button within 2
+		seconds after pressing the 5 button.
+
+Playlists:
+	0-99
+		Here you may specify up to 100 different playlists you have
+		already saved on your harddrive. Simply type in the absolute
+		path to the playlist (m3u) file for as many entries as you
+		need. The number associated with the path you specify is the
+		number that you will use to load that playlist.
+
+		Example:
+
+		To load playlist number 0, you first press the corresponding
+		"playlist" button on your remote control, then within 2
+		seconds you must press the 0 button.
 
 
 3.6.4.2 Joystick Control
@@ -984,17 +1112,29 @@ Usage: xmms [options] [files] ...
 Options:
 --------
 
--h, --help              Display this text and exit.
--n, --session           Select XMMS session (Default: 0)
--r, --rew               Skip backwards in playlist
--p, --play              Start playing current playlist
--u, --pause             Pause current song
--s, --stop              Stop current song
--t, --play-pause        Pause if playing, play otherwise
--f, --fwd               Skip forward in playlist
--e, --enqueue           Don't clear the playlist
--m, --show-main-window  Show the main window
--v, --version           Print version number and exit.
+  -h, --help                    Display this text and exit.
+  -n, --session                 Select XMMS session (Default: 0)
+  -r, --rew                     Skip backwards in playlist
+  -p, --play                    Start playing current playlist
+  -u, --pause                   Pause current song
+  -s, --stop                    Stop current song
+  -t, --play-pause              Pause if playing, play otherwise
+  -f, --fwd                     Skip forward in playlist
+  -e, --enqueue                 Don't clear the playlist
+  -Q, --queue                   Add file(s) to playlist and queue
+
+  -S, --toggle-shuffle[=SWITCH] Toggle the 'shuffle' flag.
+  -R, --toggle-repeat[=SWITCH]  Toggle the 'repeat' flag.
+  -A, --toggle-advance[=SWITCH] Toggle the 'no playlist advance' flag.
+
+                                SWITCH may be either 'on' or 'off'
+
+  -m, --show-main-window        Show the main window.
+  -i, --sm-client-id            Previous session ID
+  -v, --version                 Print version number and exit.
+  -q, --quit                    Close remote session.
+
+Report bugs to http://bugs.xmms.org
 
 You can specify files on the command line, e.g:
 xmms file1.mp3 file2.mp3 file3.mp3
@@ -1005,7 +1145,8 @@ If you do this while XMMS is running the current playlist
 will be cleared and the files/playlist specified on the command
 line will be used instead.
 
-To keep the current playlist intact use the -e option.
+To keep the current playlist intact use the -e option. For more
+information type 'man xmms'.
 
 5. Features
 -----------
@@ -1024,8 +1165,7 @@ gdm, imf, m15, mtm
 stm, stx, ult, uni
 
 others:
-cin movies, cd audio
-shout/icecast
+cd audio, shout/icecast
 
 
 5.2 Supported Features
@@ -1062,16 +1202,15 @@ Proxy authentication support
 -------------------
 How do I get it?
 
-XMMS is mainly distributed on http://www.xmms.org/download.html
+XMMS is mainly distributed on http://www.xmms.org/download.php
 
 FTP Mirrors:
-   ftp.xmms.org/xmms
-   ftp.sunet.se/pub/multimedia/xmms
-   ftp.stealth.net/xmms
+   ftp://ftp.xmms.org/pub/xmms/
+   ftp://ftp.sunet.se/pub/multimedia/xmms/
 
 Want some skins made by linux users?
-   http://www.xmms.org/skins.html
-   http://themes.org/skins/xmms
+   http://www.xmms.org/skins.php
+   http://themes.freshmeat.net/browse/966/
 
 
 7. Misc
@@ -1123,5 +1262,3 @@ Peter Alm      (developer)     peter at xmms.org
 Håvard Kvålen  (developer)     havardk at xmms.org
 Thomas Nilsson (docs, support) thomas at xmms.org
 Olle Hällnäs   (docs, support) olle at xmms.org
-
-For more information please visit http://www.xmms.org/contact.html

@@ -205,7 +205,7 @@ static void show_error_message(gchar *error)
 	if(!error_dialog)
 	{
 		GDK_THREADS_ENTER();
-		error_dialog = xmms_show_message(_("Error"), error, _("Ok"), FALSE,
+		error_dialog = xmms_show_message(_("Error"), error, _("OK"), FALSE,
 						 NULL, NULL);
 		gtk_signal_connect(GTK_OBJECT(error_dialog),
 				   "destroy",
@@ -284,11 +284,17 @@ static void *http_buffer_loop(void *arg)
 	gchar line[1024], *user, *pass, *host, *filename,
 	     *status, *url, *temp, *file;
 	gchar *chost;
-	gint cnt, written, error, err_len, port, cport;
+	gint cnt, written, error, port, cport;
+	socklen_t err_len;
 	gboolean redirect;
 	fd_set set;
+#ifdef USE_IPV6
+	struct addrinfo hints, *res, *res0;
+	char service[6];
+#else
 	struct hostent *hp;
 	struct sockaddr_in address;
+#endif
 	struct timeval tv;
 
 	url = (gchar *) arg;
@@ -310,6 +316,44 @@ static void *http_buffer_loop(void *arg)
 		chost = vorbis_cfg.use_proxy ? vorbis_cfg.proxy_host : host;
 		cport = vorbis_cfg.use_proxy ? vorbis_cfg.proxy_port : port;
 
+#ifdef USE_IPV6
+		g_snprintf(service, 6, "%d", cport);
+		memset(&hints, 0, sizeof(hints));
+		hints.ai_socktype = SOCK_STREAM;
+		if (! getaddrinfo(chost, service, &hints, &res0)) {
+			eof = TRUE;
+			for (res = res0; res; res = res->ai_next) {
+				if ((sock = socket (res->ai_family, res->ai_socktype, res->ai_protocol)) < 0)
+					continue;
+				fcntl(sock, F_SETFL, O_NONBLOCK);
+				status = g_strdup_printf(_("CONNECTING TO %s:%d"), chost, cport);
+				vorbis_ip.set_info_text(status);
+				g_free(status);
+				((struct sockaddr_in6 *)res->ai_addr)->sin6_port = htons(cport);
+				if (connect(sock, res->ai_addr, res->ai_addrlen) < 0) {
+					if (errno != EINPROGRESS) {
+						close(sock);
+						continue;
+					}
+				}
+				eof = FALSE;
+				break;
+			}
+			freeaddrinfo(res0);
+			if (eof) {
+				status = g_strdup_printf(_("Couldn't connect to host %s:%d"), chost, cport);
+				vorbis_ip.set_info_text(status);
+				g_free(status);
+				eof = TRUE;
+				break;
+			}
+		} else {
+			status = g_strdup_printf(_("Couldn't look up host %s"), chost);
+			vorbis_ip.set_info_text(status);
+			g_free(status);
+			eof = TRUE;
+		}
+#else
 		sock = socket(AF_INET, SOCK_STREAM, 0);
 		fcntl(sock, F_SETFL, O_NONBLOCK);
 		address.sin_family = AF_INET;
@@ -327,9 +371,11 @@ static void *http_buffer_loop(void *arg)
 			vorbis_ip.set_info_text(NULL);
 			eof = TRUE;
 		}
+#endif
 
 		if (!eof)
 		{
+#ifndef USE_IPV6
 			memcpy(&address.sin_addr.s_addr, *(hp->h_addr_list), sizeof (address.sin_addr.s_addr));
 			address.sin_port = g_htons(cport);
 
@@ -348,6 +394,7 @@ static void *http_buffer_loop(void *arg)
 					eof = TRUE;
 				}
 			}
+#endif
 			while (going)
 			{
 				tv.tv_sec = 0;
@@ -500,18 +547,28 @@ static void *http_buffer_loop(void *arg)
 	
 	if (vorbis_cfg.save_http_stream)
 	{
-		gchar *output_name;
+		gchar *output_name, *fname, *temp;
+        int i = 1;
+
 		file = vorbis_http_get_title(url);
-		output_name = file;
-		if (!strncasecmp(output_name, "http://", 7))
-			output_name += 7;
-		temp = strrchr(output_name, '.');
+		fname = file;
+		if (!strncasecmp(fname, "http://", 7))
+			fname += 7;
+		temp = strrchr(fname, '.');
 		if (temp && !strcasecmp(temp, ".ogg"))
 			*temp = '\0';
 
-		while ((temp = strchr(output_name, '/')))
+		while ((temp = strchr(fname, '/')))
 			*temp = '_';
-		output_name = g_strdup_printf("%s/%s.ogg", vorbis_cfg.save_http_path, output_name);
+		output_name = g_strdup_printf("%s/%s.ogg",
+                                      vorbis_cfg.save_http_path, fname);
+		while (!access(output_name, F_OK) && i < 100000)
+		{
+			g_free(output_name);
+			output_name = g_strdup_printf("%s/%s-%d.ogg",
+						      vorbis_cfg.save_http_path,
+						      fname, i++);
+		}
 
 		g_free(file);
 

@@ -260,7 +260,7 @@ void vis_send_data(gint16 pcm_data[2][512], int nch, int length)
 	gboolean mono_freq_calced = FALSE, stereo_freq_calced = FALSE;
 	gint16 mono_pcm[2][512], stereo_pcm[2][512];
 	gboolean mono_pcm_calced = FALSE, stereo_pcm_calced = FALSE;
-	gchar intern_vis_data[512];
+	gint8 intern_vis_data[512];
 	gint i;
 
 	if (!pcm_data || nch < 1)

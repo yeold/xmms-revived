@@ -18,18 +18,28 @@
 
 #include "OSS.h"
 
-void* oss_get_convert_buffer(size_t size)
+struct buffer {
+	void *buffer;
+	int size;
+} format_buffer, stereo_buffer;
+
+
+static void* oss_get_convert_buffer(struct buffer *buffer, size_t size)
 {
-	static size_t length;
-	static void *buffer;
+	if (size > 0 && size <= buffer->size)
+		return buffer->buffer;
 
-	if (size > 0 && size <= length)
-		return buffer;
-
-	length = size;
-	buffer = g_realloc(buffer, size);
-	return buffer;
+	buffer->size = size;
+	buffer->buffer = g_realloc(buffer->buffer, size);
+	return buffer->buffer;
 }
+
+void oss_free_convert_buffer(void)
+{
+	oss_get_convert_buffer(&format_buffer, 0);
+	oss_get_convert_buffer(&stereo_buffer, 0);
+}
+
 
 static int convert_swap_endian(void **data, int length)
 {
@@ -131,7 +141,7 @@ static int convert_to_16_native_endian(void **data, int length)
 	guint8 *input = *data;
 	guint16 *output;
 	int i;
-	*data = oss_get_convert_buffer(length * 2);
+	*data = oss_get_convert_buffer(&format_buffer, length * 2);
 	output = *data;
 	for (i = 0; i < length; i++)
 		*output++ = *input++ << 8;
@@ -144,7 +154,7 @@ static int convert_to_16_native_endian_swap_sign(void **data, int length)
 	guint8 *input = *data;
 	guint16 *output;
 	int i;
-	*data = oss_get_convert_buffer(length * 2);
+	*data = oss_get_convert_buffer(&format_buffer, length * 2);
 	output = *data;
 	for (i = 0; i < length; i++)
 		*output++ = (*input++ << 8) ^ (1 << 15);
@@ -158,7 +168,7 @@ static int convert_to_16_alien_endian(void **data, int length)
 	guint8 *input = *data;
 	guint16 *output;
 	int i;
-	*data = oss_get_convert_buffer(length * 2);
+	*data = oss_get_convert_buffer(&format_buffer, length * 2);
 	output = *data;
 	for (i = 0; i < length; i++)
 		*output++ = *input++;
@@ -171,7 +181,7 @@ static int convert_to_16_alien_endian_swap_sign(void **data, int length)
 	guint8 *input = *data;
 	guint16 *output;
 	int i;
-	*data = oss_get_convert_buffer(length * 2);
+	*data = oss_get_convert_buffer(&format_buffer, length * 2);
 	output = *data;
 	for (i = 0; i < length; i++)
 		*output++ = *input++ ^ (1 << 7);
@@ -282,5 +292,151 @@ int (*oss_get_convert_func(int output, int input))(void **, int)
 
 	g_warning("Translation needed, but not available.\n"
 		  "Input: %d; Output %d.", input, output);
+	return NULL;
+}
+
+static int convert_mono_to_stereo(void **data, int length, int fmt)
+{
+	int i;
+	void *outbuf = oss_get_convert_buffer(&stereo_buffer, length * 2);
+
+	if (fmt == AFMT_U8 || fmt ==  AFMT_S8)
+	{
+		guint8 *output = outbuf, *input = *data;
+		for (i = 0; i < length; i++)
+		{
+			*output++ = *input;
+			*output++ = *input;
+			input++;
+		}
+	}
+	else 
+	{
+		guint16 *output = outbuf, *input = *data;
+		for (i = 0; i < length / 2; i++)
+		{
+			*output++ = *input;
+			*output++ = *input;
+			input++;
+		}
+	}
+	*data = outbuf;
+
+	return length * 2;
+}
+
+static int convert_stereo_to_mono(void **data, int length, int fmt)
+{
+	int i;
+
+	switch (fmt)
+	{
+		case AFMT_U8:
+		{
+			guint8 *output = *data, *input = *data;
+			for (i = 0; i < length / 2; i++)
+			{
+				guint16 tmp;
+				tmp = *input++;
+				tmp += *input++;
+				*output++ = tmp / 2;
+			}
+		}
+		break;
+		case AFMT_S8:
+		{
+			gint8 *output = *data, *input = *data;
+			for (i = 0; i < length / 2; i++)
+			{
+				gint16 tmp;
+				tmp = *input++;
+				tmp += *input++;
+				*output++ = tmp / 2;
+			}
+		}
+		break;
+		case AFMT_U16_LE:
+		{
+			guint16 *output = *data, *input = *data;
+			for (i = 0; i < length / 4; i++)
+			{
+				guint32 tmp;
+				guint16 stmp;
+				tmp = GUINT16_FROM_LE(*input);
+				input++;
+				tmp += GUINT16_FROM_LE(*input);
+				input++;
+				stmp = tmp / 2;
+				*output++ = GUINT16_TO_LE(stmp);
+			}
+		}
+		break;
+		case AFMT_U16_BE:
+		{
+			guint16 *output = *data, *input = *data;
+			for (i = 0; i < length / 4; i++)
+			{
+				guint32 tmp;
+				guint16 stmp;
+				tmp = GUINT16_FROM_BE(*input);
+				input++;
+				tmp += GUINT16_FROM_BE(*input);
+				input++;
+				stmp = tmp / 2;
+				*output++ = GUINT16_TO_BE(stmp);
+			}
+		}
+		break;
+		case AFMT_S16_LE:
+		{
+			gint16 *output = *data, *input = *data;
+			for (i = 0; i < length / 4; i++)
+			{
+				gint32 tmp;
+				gint16 stmp;
+				tmp = GINT16_FROM_LE(*input);
+				input++;
+				tmp += GINT16_FROM_LE(*input);
+				input++;
+				stmp = tmp / 2;
+				*output++ = GINT16_TO_LE(stmp);
+			}
+		}
+		break;
+		case AFMT_S16_BE:
+		{
+			gint16 *output = *data, *input = *data;
+			for (i = 0; i < length / 4; i++)
+			{
+				gint32 tmp;
+				gint16 stmp;
+				tmp = GINT16_FROM_BE(*input);
+				input++;
+				tmp += GINT16_FROM_BE(*input);
+				input++;
+				stmp = tmp / 2;
+				*output++ = GINT16_TO_BE(stmp);
+			}
+		}
+		break;
+		default:
+			g_error("unknown format");
+	}
+
+	return length / 2;
+}
+
+int (*oss_get_stereo_convert_func(int output, int input))(void **, int, int)
+{
+	if (output == input)
+		return NULL;
+
+	if (input == 1 && output == 2)
+		return convert_mono_to_stereo;
+	if (input == 2 && output == 1)
+		return convert_stereo_to_mono;
+
+	g_warning("Input has %d channels, soundcard uses %d channels\n"
+		  "No conversion is available", input, output);
 	return NULL;
 }

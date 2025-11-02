@@ -89,7 +89,7 @@ void joy_configure(void)
 
 	if (!joyconf_mainwin)
 	{
-		joyconf_mainwin = gtk_window_new(GTK_WINDOW_DIALOG);
+		joyconf_mainwin = gtk_window_new(GDK_WINDOW_DIALOG);
 		gtk_signal_connect(GTK_OBJECT(joyconf_mainwin), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &joyconf_mainwin);
 		gtk_window_set_title(GTK_WINDOW(joyconf_mainwin), _("XMMS Joystick Configuration"));
 		gtk_window_set_policy(GTK_WINDOW(joyconf_mainwin), FALSE, FALSE, FALSE);
@@ -269,7 +269,7 @@ void joy_configure(void)
 		gtk_button_box_set_spacing(GTK_BUTTON_BOX(box), 5);
 		gtk_box_pack_start(GTK_BOX(vbox), box, FALSE, FALSE, 0);
 
-		button = gtk_button_new_with_label(_("Ok"));
+		button = gtk_button_new_with_label(_("OK"));
 		gtk_signal_connect(GTK_OBJECT(button), "clicked", GTK_SIGNAL_FUNC(joyconf_ok_cb), NULL);
 		GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 		gtk_box_pack_start(GTK_BOX(box), button, TRUE, TRUE, 0);

@@ -1,7 +1,7 @@
-
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2000  Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies
- *  Copyright (C) 1999,2000  Håvard Kvålen
+ *  Copyright (C) 1998-2002  Peter Alm, Mikael Alm, Olle Hallnas,
+ *                           Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1999-2002  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,7 +25,9 @@
 #define EQUALIZER_WIDTH ( 275 * (EQUALIZER_DOUBLESIZE + 1))
 
 void equalizerwin_set_doublesize(gboolean ds);
+void equalizerwin_set_shade_menu_cb(gboolean shaded);
 void equalizerwin_set_shade(gboolean shaded);
+void equalizerwin_shade_toggle(void);
 void equalizerwin_raise(void);
 void equalizerwin_move(gint x, gint y);
 void draw_equalizer_window(gboolean force);

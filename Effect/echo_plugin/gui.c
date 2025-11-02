@@ -20,7 +20,7 @@ void echo_about(void)
 		return;
 
 	echo_about_dialog = xmms_show_message(_("About Echo Plugin"),
-					      _(echo_about_text), _("Ok"),
+					      _(echo_about_text), _("OK"),
 					      FALSE, NULL, NULL);
 	gtk_signal_connect(GTK_OBJECT(echo_about_dialog), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed),
@@ -132,7 +132,7 @@ void echo_configure(void)
 			   bbox, TRUE, TRUE, 0);
 
 
-	button = gtk_button_new_with_label(_("Ok"));
+	button = gtk_button_new_with_label(_("OK"));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
 	gtk_signal_connect(GTK_OBJECT(button), "clicked",

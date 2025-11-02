@@ -63,6 +63,8 @@ static GtkWidget *Res_16, *Res_8, *Chan_ST, *Chan_MO;
 
 static GtkWidget *Sample_44, *Sample_22, *Sample_11, *Curious_Check, *Surrond_Check, *Fadeout_Check, *Interp_Check;
 
+static GtkWidget *Titles_Check;
+
 static GtkObject *pansep_adj;
 
 static GtkWidget *mikmod_conf_window = NULL, *about_window = NULL;
@@ -120,7 +122,7 @@ static void aboutbox()
 		gtk_widget_show(dialog_action_area1);
 		gtk_container_border_width(GTK_CONTAINER(dialog_action_area1), 10);
 
-		about_exit = gtk_button_new_with_label(_("Ok"));
+		about_exit = gtk_button_new_with_label(_("OK"));
 		gtk_signal_connect_object(GTK_OBJECT(about_exit), "clicked",
 					  GTK_SIGNAL_FUNC
 					  (gtk_widget_destroy),
@@ -198,8 +200,8 @@ static void init(void)
 	mikmod_cfg.hidden_patterns = 0;
 	mikmod_cfg.force_mono = 0;
 	mikmod_cfg.interpolation = TRUE;
+	mikmod_cfg.filename_titles = 0;
 	mikmod_cfg.def_pansep = 64;
-
 	if ((cfg = xmms_cfg_open_default_file()) != NULL)
 	{
 		xmms_cfg_read_int(cfg, "MIKMOD", "mixing_freq", &mikmod_cfg.mixing_freq);
@@ -209,7 +211,7 @@ static void init(void)
 		xmms_cfg_read_int(cfg, "MIKMOD", "hidden_patterns", &mikmod_cfg.hidden_patterns);
 		xmms_cfg_read_int(cfg, "MIKMOD", "force_mono", &mikmod_cfg.force_mono);
 		xmms_cfg_read_int(cfg, "MIKMOD", "interpolation", &mikmod_cfg.interpolation);
-
+		xmms_cfg_read_int(cfg, "MIKMOD", "filename_titles", &mikmod_cfg.filename_titles);
 		xmms_cfg_read_int(cfg, "MIKMOD", "default_panning", &mikmod_cfg.def_pansep);
 		xmms_cfg_free(cfg);
 	}
@@ -269,12 +271,13 @@ static int is_our_file(char *filename)
 	return 0;
 }
 
+
 static gchar *get_title(gchar *filename)
 {
 	TitleInput *input;
 	gchar *temp, *ext, *title;
-
-	if((temp = Player_LoadTitle(filename)) != NULL)
+	if(((temp = Player_LoadTitle(filename)) != NULL) &&
+	    (mikmod_cfg.filename_titles == 0))
 		title = g_strdup(temp);
 	else
 	{
@@ -313,6 +316,8 @@ static void play_file(char *filename)
 	int channelcnt = 1;
 	int format = FMT_U8;
 	FILE *f;
+	
+	gchar *titletemp;
 	
 	if(!(f = fopen(filename,"rb")))
 	{
@@ -383,7 +388,12 @@ static void play_file(char *filename)
 /* mods are in pattrens .. you need to be able to seek
    back the forth from pattrens */
 
-	mikmod_ip.set_info(mf->songname, -1, ((mf->bpm * 1000)), md_mixfreq, channelcnt);
+	/* We still need to check if we want filename titles */
+	titletemp = get_title(filename);
+        /* Supply the info */
+	mikmod_ip.set_info(titletemp, -1, ((mf->bpm * 1000)), md_mixfreq, channelcnt);
+	free(titletemp);
+	
 	pthread_create(&decode_thread, NULL, play_loop, NULL);
 	return;
 
@@ -409,33 +419,19 @@ static void *play_loop(void *arg)
 	pthread_exit(NULL);
 }
 
-static void
-     configure()
+static void configure()
 {
-	GtkWidget *notebook1;
-	GtkWidget *vbox;
-	GtkWidget *vbox1;
-	GtkWidget *hbox1;
-	GtkWidget *Resolution_Frame;
-	GtkWidget *vbox4;
-	GSList *resolution_group = NULL;
-	GtkWidget *Channels_Frame;
-	GtkWidget *vbox5;
-	GSList *vbox5_group = NULL;
-	GtkWidget *Downsample_Frame;
-	GtkWidget *vbox3;
+	GtkWidget *notebook1, *vbox, *vbox1, *hbox1, *Resolution_Frame, *vbox4;
+	GSList *resolution_group = NULL, *vbox5_group = NULL;
+	GtkWidget *Channels_Frame, *vbox5, *Downsample_Frame, *vbox3;
 	GSList *sample_group = NULL;
-	GtkWidget *vbox6;
-	GtkWidget *Quality_Label;
-	GtkWidget *Options_Label;
+	GtkWidget *vbox6, *Quality_Label, *Options_Label;
 	GtkWidget *pansep_label, *pansep_hscale;
-	GtkWidget *bbox;
-	GtkWidget *ok;
-	GtkWidget *cancel;
+	GtkWidget *bbox, *ok, *cancel;
 
 	if (!mikmod_conf_window)
 	{
-		mikmod_conf_window = gtk_window_new(GTK_WINDOW_DIALOG);
+		mikmod_conf_window = gtk_window_new(GDK_WINDOW_DIALOG);
 		gtk_object_set_data(GTK_OBJECT(mikmod_conf_window), "mikmod_conf_window", mikmod_conf_window);
 		gtk_window_set_title(GTK_WINDOW(mikmod_conf_window), _("MikMod Configuration"));
 		gtk_window_set_policy(GTK_WINDOW(mikmod_conf_window), FALSE, FALSE, FALSE);
@@ -515,7 +511,7 @@ static void
 		if (mikmod_cfg.force_mono == 1)
 			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(Chan_MO), TRUE);
 
-		Downsample_Frame = gtk_frame_new(_("Down sample:"));
+		Downsample_Frame = gtk_frame_new(_("Downsample:"));
 		gtk_object_set_data(GTK_OBJECT(mikmod_conf_window), "Downsample_Frame", Downsample_Frame);
 		gtk_widget_show(Downsample_Frame);
 		gtk_box_pack_start(GTK_BOX(vbox1), Downsample_Frame, TRUE, TRUE, 0);
@@ -583,6 +579,13 @@ static void
 		if (mikmod_cfg.interpolation == 1)
 			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(Interp_Check), TRUE);
 
+		Titles_Check = gtk_check_button_new_with_label(_("Always use filename as title"));
+		gtk_object_set_data(GTK_OBJECT(mikmod_conf_window), "Titles_Check", Titles_Check);
+		gtk_widget_show(Titles_Check);
+		gtk_box_pack_start(GTK_BOX(vbox6), Titles_Check, TRUE, TRUE, 0);
+		if (mikmod_cfg.filename_titles == 1)
+			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(Titles_Check), TRUE);
+		
 		pansep_label = gtk_label_new(_("Default panning separation"));
 		gtk_widget_show(pansep_label);
 		gtk_box_pack_start(GTK_BOX(vbox6), pansep_label, TRUE, TRUE, 0);
@@ -610,7 +613,7 @@ static void
 		gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
 		gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
-		ok = gtk_button_new_with_label(_("Ok"));
+		ok = gtk_button_new_with_label(_("OK"));
 		gtk_signal_connect(GTK_OBJECT(ok), "clicked", GTK_SIGNAL_FUNC(config_ok), NULL);
 		GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
 		gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);
@@ -662,6 +665,7 @@ static void config_ok(GtkWidget * widget, gpointer data)
 	mikmod_cfg.surround = GTK_TOGGLE_BUTTON(Surrond_Check)->active;
 	mikmod_cfg.volumefadeout = GTK_TOGGLE_BUTTON(Fadeout_Check)->active;
 	mikmod_cfg.interpolation = GTK_TOGGLE_BUTTON(Interp_Check)->active;
+	mikmod_cfg.filename_titles = GTK_TOGGLE_BUTTON(Titles_Check)->active;
 
 	mikmod_cfg.def_pansep = (guchar)GTK_ADJUSTMENT(pansep_adj)->value;
 	md_pansep = mikmod_cfg.def_pansep;

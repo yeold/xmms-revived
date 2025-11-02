@@ -1,6 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2001  Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies
- *  Copyright (C) 1999-2001  Håvard Kvålen
+ *  Copyright (C) 1998-2003  Peter Alm, Mikael Alm, Olle Hallnas,
+ *                           Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1999-2003  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,17 +20,18 @@
 #include "xmms.h"
 #include "fft.h"
 #include "libxmms/titlestring.h"
+#include "libxmms/util.h"
+#include "libxmms/xentry.h"
 
 static pthread_mutex_t vis_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-typedef struct
+struct vis_node
 {
-	gint time;
-	gint nch;
-	gint length; /* number of samples per channel */
+	int time;
+	int nch;
+	int length; /* number of samples per channel */
 	gint16 data[2][512];
-}
-VisNode;
+};
 
 
 struct InputPluginData *ip_data;
@@ -73,12 +75,13 @@ static void free_vis_data(void)
 	pthread_mutex_unlock(&vis_mutex);
 }
 
-static void convert_to_s16_ne(AFormat fmt,gpointer ptr, gint16 *left, gint16 *right,gint nch,gint max)
+static void convert_to_s16_ne(AFormat fmt, gpointer ptr, gint16 *left, gint16 *right,
+			      int nch, int max)
 {
-	gint16 	*ptr16;
-	guint16	*ptru16;
-	guint8	*ptru8;
-	gint	i;
+	gint16 *ptr16;
+	guint16 *ptru16;
+	guint8 *ptru8;
+	int i;
 	
 	switch (fmt)
 	{
@@ -201,16 +204,16 @@ void input_add_vis(int time, unsigned char *s, InputVisType type)
 
 void input_add_vis_pcm(int time, AFormat fmt, int nch, int length, void *ptr)
 {
-	VisNode *vis_node;
-	gint max;
-	
+	struct vis_node *vis_node;
+	int max;
+
 	max = length / nch;
 	if (fmt == FMT_U16_LE || fmt == FMT_U16_BE || fmt == FMT_U16_NE ||
 	    fmt == FMT_S16_LE || fmt == FMT_S16_BE || fmt == FMT_S16_NE)
 		max /= 2;
 	max = CLAMP(max, 0, 512);
 
-	vis_node = g_malloc0(sizeof(VisNode));
+	vis_node = g_malloc0(sizeof(*vis_node));
 	vis_node->time = time;
 	vis_node->nch = nch;
 	vis_node->length = max;
@@ -244,24 +247,33 @@ void input_play(char *filename)
 	InputPlugin *ip;
 
 	node = get_input_list();
+	if (get_current_output_plugin() == NULL)
+	{
+		xmms_show_message(_("No output plugin"),
+				  _("No output plugin has been selected"),
+				  _("OK"), FALSE, NULL, NULL);
+		mainwin_stop_pushed();
+		return;
+	}
+
+	/* We set the playing flag even if no inputplugin
+	   recognizes the file. This way we are sure it will be skipped. */
+	ip_data->playing = TRUE;
+
 	while (node)
 	{
-		ip = (InputPlugin *) node->data;
+		ip = node->data;
 		if (ip && !g_list_find(disabled_iplugins, ip) &&
 		    ip->is_our_file(filename))
 		{
 			set_current_input_plugin(ip);
 			ip->output = get_current_output_plugin();
 			ip->play_file(filename);
-			ip_data->playing = TRUE;
 			return;
 
 		}
 		node = node->next;
 	}
-	/* We set the playing flag even if no inputplugin
-	   recognizes the file. This way we are sure it will be skipped. */
-	ip_data->playing = TRUE;
 	set_current_input_plugin(NULL);
 }
 
@@ -368,6 +380,66 @@ void input_get_song_info(gchar * filename, gchar ** title, gint * length)
 	}
 }
 
+static void input_general_file_info_box(char *filename, InputPlugin *ip)
+{
+	GtkWidget *window, *vbox;
+	GtkWidget *label, *filename_hbox, *filename_entry;
+	GtkWidget *bbox, *cancel;
+
+	char *title, *iplugin;
+		
+	window = gtk_window_new(GDK_WINDOW_DIALOG);
+	gtk_window_set_policy(GTK_WINDOW(window), FALSE, TRUE, FALSE);
+	title = g_strdup_printf(_("File Info - %s"), g_basename(filename));
+	gtk_window_set_title(GTK_WINDOW(window), title);
+	g_free(title);
+	gtk_container_set_border_width(GTK_CONTAINER(window), 10);
+
+	vbox = gtk_vbox_new(FALSE, 10);
+	gtk_container_add(GTK_CONTAINER(window), vbox);
+
+	filename_hbox = gtk_hbox_new(FALSE, 5);
+	gtk_box_pack_start(GTK_BOX(vbox), filename_hbox, FALSE, TRUE, 0);
+
+	label = gtk_label_new(_("Filename:"));
+	gtk_box_pack_start(GTK_BOX(filename_hbox), label, FALSE, TRUE, 0);
+	filename_entry = xmms_entry_new();
+	gtk_entry_set_text(GTK_ENTRY(filename_entry), filename);
+	gtk_editable_set_editable(GTK_EDITABLE(filename_entry), FALSE);
+	gtk_box_pack_start(GTK_BOX(filename_hbox), filename_entry, TRUE, TRUE, 0);
+
+	if (ip)
+		if (ip->description)
+			iplugin = ip->description;
+		else
+			iplugin = ip->filename;
+	else
+		iplugin = _("No input plugin recognized this file");
+
+	title = g_strdup_printf(_("Input plugin: %s"), iplugin);
+
+	label = gtk_label_new(title);
+	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+	gtk_label_set_justify(GTK_LABEL(label), GTK_JUSTIFY_LEFT);
+	g_free(title);
+	gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, TRUE, 0);
+
+	bbox = gtk_hbutton_box_new();
+	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
+	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
+
+	cancel = gtk_button_new_with_label(_("Close"));
+	gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked",
+				  GTK_SIGNAL_FUNC(gtk_widget_destroy),
+				  GTK_OBJECT(window));
+	GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
+	gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
+	gtk_signal_connect(GTK_OBJECT(window), "key_press_event",
+			   util_dialog_keypress_cb, NULL);
+
+	gtk_widget_show_all(window);
+}
+
 void input_file_info_box(gchar * filename)
 {
 	GList *node;
@@ -381,10 +453,13 @@ void input_file_info_box(gchar * filename)
 		{
 			if (ip->file_info_box)
 				ip->file_info_box(filename);
-			break;
+			else
+				input_general_file_info_box(filename, ip);
+			return;
 		}
 		node = node->next;
 	}
+	input_general_file_info_box(filename, NULL);
 }
 
 GList *input_scan_dir(gchar * dir)
@@ -444,37 +519,31 @@ gboolean get_input_paused(void)
 	return ip_data->paused;
 }
 
-void input_update_vis(gint time)
+void input_update_vis(int time)
 {
-	GList *node, *prev;
-	VisNode *vis = NULL;
-	gboolean found;
+	GList *node;
+	struct vis_node *vis = NULL;
+	gboolean found = FALSE;
 
 	pthread_mutex_lock(&vis_mutex);
 	node = vis_list;
-	found = FALSE;
 	while (g_list_next(node) && !found)
 	{
-		vis = (VisNode *) node->data;
-		if (((VisNode *) node->next->data)->time >= time &&
-		    vis->time < time)
+		struct vis_node *visnext = node->next->data;
+		vis = node->data;
+
+		if (!(vis->time < time))
+			break;
+
+		vis_list = g_list_remove_link(vis_list, node);
+		g_list_free_1(node);
+		if (visnext->time >= time)
 		{
-			prev = g_list_previous(node);
-			vis_list = g_list_remove_link(vis_list, node);
-			g_list_free_1(node);
-			node = prev;
 			found = TRUE;
-			while (node)
-			{
-				g_free(node->data);
-				prev = g_list_previous(node);
-				vis_list = g_list_remove_link(vis_list, node);
-				g_list_free_1(node);
-				node = prev;
-			}
+			break;
 		}
-		else
-			node = g_list_next(node);
+		g_free(vis);
+		node = vis_list;
 	}
 	pthread_mutex_unlock(&vis_mutex);
 	if (found)
@@ -520,8 +589,3 @@ void input_configure(gint index)
 	if (ip && ip->configure)
 		ip->configure();
 }
-
-
-
-
-

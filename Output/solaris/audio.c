@@ -19,6 +19,7 @@
 #include <sys/modctl.h>
 #include <glib.h>
 #include <libxmms/util.h>
+#include <pthread.h>
 
 
 /*****************************************************************************/
@@ -34,16 +35,16 @@ static char *buffer_end = NULL;
 static char *buffer_read = NULL;
 static char *buffer_write = NULL;
 static int buffer_len = 0;
-static int buffer_used = 0;
-static struct timespec min_wait;
+static pthread_mutex_t buflock = PTHREAD_MUTEX_INITIALIZER;
 
 static gint time_offset = 0;
 static gint byte_offset = 0;
 
 static gboolean paused = FALSE;
 static gboolean playing = FALSE;
-static gboolean filling = TRUE;
 static gboolean aopen = FALSE;
+static gboolean prebuffer, remove_prebuffer;
+static int prebuffer_size;
 static volatile gint flush = -1;
 
 static gint audiofd = -2;
@@ -161,8 +162,8 @@ static void audio_yield(void)
 
 	while (playing && (flush == -1) && ((info.play.eof + 10) < audio_scount))
 	{
-		nanosleep(&min_wait, NULL);
-		ioctl(audiofd, AUDIO_GETINFO, &info);
+	        xmms_usleep(10000);
+	        ioctl(audiofd, AUDIO_GETINFO, &info);
 	}
 }
 
@@ -176,6 +177,7 @@ static void audio_play(char *bufferP, int length)
 		if (written > 0)
 		{
 			length -= written;
+			bufferP += written;
 			if (write(audiofd, NULL, 0) == 0)
 			{
 				audio_scount++;
@@ -184,7 +186,7 @@ static void audio_play(char *bufferP, int length)
 		}
 		else
 		{
-			nanosleep(&min_wait, NULL);
+		        xmms_usleep(10000);
 		}
 	}
 }
@@ -209,17 +211,43 @@ gint abuffer_get_output_time(void)
 
 gint abuffer_used(void)
 {
-	return buffer_used;
+	int retval;
+	pthread_mutex_lock(&buflock);
+	if(buffer_write >= buffer_read)
+		retval = buffer_write - buffer_read;
+	else
+		retval = buffer_len - (buffer_read - buffer_write);
+	pthread_mutex_unlock(&buflock);
+	return retval;
 }
 
 /*
- * This is supposed to allow reclaim of unplayed music;
- * Requires mucking about with the buffer
+ * Doesn't free the buffer. Just returns the number of bytes
+ * in the buffer available to write.
  */
 gint abuffer_free(void)
 {
+	int retval;
+
+	/*
+	 * Two calls to this function without a write in between,
+	 * means we are at the end of the stream so stop prebuffering.
+	 */
+	if (remove_prebuffer && prebuffer)
+	{
+		prebuffer = FALSE;
+		remove_prebuffer = FALSE;
+	}
+	if (prebuffer)
+		remove_prebuffer = TRUE;
 	/* Find the amount of buffer free (circular buffer) */
-	return buffer_len - buffer_used;
+	pthread_mutex_lock(&buflock);
+	if(buffer_write >= buffer_read)
+		retval = buffer_len - (buffer_write - buffer_read) - 1;
+	else
+		retval = buffer_read - buffer_write - 1;
+	pthread_mutex_unlock(&buflock);
+	return retval;
 }
 
 /***************************************************************************/
@@ -313,26 +341,22 @@ gint abuffer_write_sub(void *ptr, gint length)
 	/* Update the byte offset */
 	byte_offset += amt;
 
-	/* Set the flag */
-	//FIXME: What is this flag good for?
-	filling = TRUE;
-
 	/* Fill the buffer */
 	if (bdiff < amt)
 	{
 		dsp_memcpy(buffer_write, ptr, bdiff);
 		dsp_memcpy(buffer_ptr, (char *) ptr + bdiff, amt - bdiff);
+		pthread_mutex_lock(&buflock);
 		buffer_write = buffer_ptr + amt - bdiff;
+		pthread_mutex_unlock(&buflock);
 	}
 	else
 	{
 		dsp_memcpy(buffer_write, ptr, amt);
+		pthread_mutex_lock(&buflock);
 		buffer_write += amt;
+		pthread_mutex_unlock(&buflock);
 	}
-	buffer_used += amt;
-
-	/* Clear the flag */
-	filling = FALSE;
 
 	/* Return the amount actually written */
 	return amt;
@@ -349,6 +373,8 @@ void abuffer_write(void *ptr, gint length)
 	AFormat new_format;
 	gint new_frequency, new_channels;
 	EffectPlugin *ep;
+
+	remove_prebuffer = FALSE;
 	
 	new_format = input_format;
 	new_frequency = stream_attrs.sample_rate;
@@ -374,7 +400,7 @@ void abuffer_write(void *ptr, gint length)
 /*  		close(fd); */
 /*  		fd = open(device_name,O_WRONLY); */
 /*  		oss_set_audio_params(); */
-		//FIXME: This is leaking memory
+		/* FIXME: This is leaking memory */
 		abuffer_open(new_format, new_frequency, new_channels);
 		
 	}
@@ -464,8 +490,7 @@ gint abuffer_startup(void)
 	/* Open audio device if it's not already open */
 	if (audiofd < 0)
 	{
-		if ((audiofd = open(get_audiodev(),
-				    (O_WRONLY | O_NONBLOCK))) == -1)
+		if ((audiofd = open(get_audiodev(), O_WRONLY )) == -1)
 		{
 			perror("xmms Solaris Output plugin");
 			return 1;
@@ -494,6 +519,9 @@ gint abuffer_startup(void)
 	/* We're open */
 	aopen = TRUE;
 
+	prebuffer = TRUE;
+	remove_prebuffer = FALSE;
+
 	/* We're at the beginning */
 	time_offset = 0;
 	byte_offset = 0;
@@ -507,7 +535,7 @@ void abuffer_shutdown(void)
 	if (audiofd >= 0)
 	{
 		/* Flush out the queue */
-		if (buffer_used > 0)
+		if (abuffer_used() > 0)
 			ioctl(audiofd, I_FLUSH, FLUSHW);
 
 		/* Close the stream */
@@ -521,22 +549,16 @@ void abuffer_shutdown(void)
 	/* Free the buffer */
 	g_free(buffer_ptr);
 	buffer_ptr = buffer_end = buffer_read = buffer_write = NULL;
-	buffer_used = 0;
-
-	/* Exit the play loop thread */
-	pthread_exit(NULL);
 }
 
 void * abuffer_loop(void *arg)
 {
 	gint length, bdiff = paused;
-	gint used;
 
-	/* FIXME: I don't think prebuffering works */
 	while (playing)
 	{
-		/* Find out how much buffer is used */
-		used = abuffer_used();
+		if (abuffer_used() > prebuffer_size)
+			prebuffer = FALSE;
 
 		/* If pause has changed status, go ahead and do it */
 		if (adinfo.play.pause ^ paused)
@@ -557,20 +579,10 @@ void * abuffer_loop(void *arg)
 		}
 
 		/* If we're not paused and have data, send it */
-		if ((used > 0) && !paused)
+		if (abuffer_used() > 0 && !paused && !prebuffer)
 		{
-			/* If we're filling, wait */
-			while (filling)
-			{
-				struct timespec mtime;
-                
-				mtime.tv_sec = 0;
-				mtime.tv_nsec = 1000000;
-				nanosleep(&mtime, NULL);
-			}
-
 			/* we have something in the buffer and we're not paused */
-			length = MIN(SUN_AUDIO_CACHE, used); 
+			length = MIN(SUN_AUDIO_CACHE, abuffer_used()); 
 			bdiff = buffer_end - buffer_read;
 
 			/* Write out the buffer */
@@ -578,19 +590,17 @@ void * abuffer_loop(void *arg)
 			{
 				audio_play(buffer_read, bdiff);
 				audio_play(buffer_ptr, length - bdiff);
+				pthread_mutex_lock(&buflock);
 				buffer_read = buffer_ptr + length - bdiff;
+				pthread_mutex_unlock(&buflock);
 			}
 			else
 			{
 				audio_play(buffer_read, length);
+				pthread_mutex_lock(&buflock);
 				buffer_read += length;
+				pthread_mutex_unlock(&buflock);
 			}
-			buffer_used -= length;
-
-			/* Sleep to the desired amount before resend */
-			if (length > SUN_AUDIO_CACHE)
-				nanosleep(&min_wait, NULL);
-
 		}
 		else if (flush != -1)
 		{
@@ -601,7 +611,13 @@ void * abuffer_loop(void *arg)
 			ioctl(audiofd, AUDIO_SETINFO, &info);
             
 			/* Flush out the queue */
+                        /* Yes this is voodoo magic. On my box, this works.
+                           But, if I remove the calls to xmms_usleep(), the
+                           I_FLUSH ioctl puts the audio into a screwy state
+                           about a quarter of the time. */
+			xmms_usleep(10000);
 			ioctl(audiofd, I_FLUSH, FLUSHW);
+			xmms_usleep(10000);
 
 			/* Make the structure harmless */
 			AUDIO_INITINFO(&info);
@@ -618,11 +634,10 @@ void * abuffer_loop(void *arg)
 
 			/* Force the time and byte offsets */
 			time_offset = flush;
-			byte_offset = (flush * stream_attrs.bps / 1000);
+			byte_offset = ((double)flush * stream_attrs.bps / 1000);
             
 			/* Reset the buffers */
 			buffer_write = buffer_read = buffer_ptr;
-			buffer_used = 0;
             
 			/* Finish the flush */
 			flush = -1;
@@ -744,7 +759,7 @@ gint abuffer_open(AFormat fmt, gint rate, gint nch)
 	/* Check the card's capabilities */
 	ctl_dev = g_strconcat(get_audiodev(), "ctl", NULL);
 	/* FIXME: Check if open fails */
-	audiofd = open(ctl_dev, O_RDONLY);
+	audiofd = open(ctl_dev, O_WRONLY);
 	g_free(ctl_dev);
 	ioctl(audiofd, AUDIO_GETDEV, &aud_dev);
 	close(audiofd);
@@ -762,6 +777,13 @@ gint abuffer_open(AFormat fmt, gint rate, gint nch)
 		/* 16 bit sound only           */
 		stream_attrs.output_precision=16;
 		stream_attrs.is_signed = TRUE;
+	}
+	else if (!strcmp(aud_dev.name, "SUNW,audioens"))
+	{
+		/* Ensoniq1371/1373 and Creative Labs 5880 audio controller */
+		stream_attrs.output_precision=stream_attrs.precision;
+		stream_attrs.is_signed = TRUE;
+		sun_cfg.channel_flags = 0;
 	}
 	else if (!strcmp(aud_dev.name, "SUNW,sb16") || !strcmp(aud_dev.name, "TOOLS,sbpci"))
 	{
@@ -790,6 +812,19 @@ gint abuffer_open(AFormat fmt, gint rate, gint nch)
 		/* 8 or 16 bit sound */
 		stream_attrs.output_precision = stream_attrs.precision;
 	}
+	else if (!strcmp(aud_dev.name, "SUNW,audio810"))
+	{
+		/* AMD8111 AC'97 audio (SunOS 5.10) */
+		stream_attrs.output_precision = stream_attrs.precision;
+		stream_attrs.is_signed = TRUE;
+		sun_cfg.channel_flags = 0;
+	}       
+	else if (!strcmp(aud_dev.name, "SUNW,oss"))
+	{
+		/* OSS emulating /dev/audio */
+		stream_attrs.output_precision=16;
+		stream_attrs.is_signed = TRUE;
+	}
 	else
 	{
 		g_warning("solaris output: Unknown sound card type: %s", aud_dev.name);
@@ -806,12 +841,9 @@ gint abuffer_open(AFormat fmt, gint rate, gint nch)
 
 	/* Define the length for the buffer */
 	buffer_len = (sun_cfg.buffer_size * stream_attrs.bps) / 1000;
-
-	/* Define the minimum time we wait after filling the buffer */
-	min_wait.tv_sec = 0;
-	min_wait.tv_nsec = (((100.0 - (float) sun_cfg.prebuffer)
-			     * SUN_AUDIO_CACHE * 10000000.0)
-			    / (float) stream_attrs.bps);
+	prebuffer_size = (buffer_len * sun_cfg.prebuffer) / 100;
+	if (buffer_len - prebuffer_size < 4096)
+		prebuffer_size = buffer_len - 4096;
 
 	buffer_ptr = g_malloc0(buffer_len);
 	buffer_write = buffer_ptr;
@@ -848,7 +880,6 @@ gint abuffer_open(AFormat fmt, gint rate, gint nch)
 
 /*
  * xmms expects 0<=volume<=100; Solaris audio is 0<=vol<=255
- * Have to translate using hideous amounts of casts
  */
 
 /*

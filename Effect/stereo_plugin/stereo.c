@@ -53,7 +53,7 @@ static void about(void)
 		return;
 
 	about_dialog = xmms_show_message(_("About Extra Stereo Plugin"),
-					 _(about_text), _("Ok"), FALSE,
+					 _(about_text), _("OK"), FALSE,
 					 NULL, NULL);
 	gtk_signal_connect(GTK_OBJECT(about_dialog), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed),
@@ -117,7 +117,7 @@ static void configure(void)
 	gtk_box_pack_start(GTK_BOX((GTK_DIALOG(conf_dialog)->action_area)),
 			   bbox, TRUE, TRUE, 0);
 
-	button = gtk_button_new_with_label(_("Ok"));
+	button = gtk_button_new_with_label(_("OK"));
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), button, TRUE, TRUE, 0);
 	gtk_signal_connect(GTK_OBJECT(button), "clicked",

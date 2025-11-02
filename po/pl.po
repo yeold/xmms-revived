@@ -1,4 +1,5 @@
-# Copyright (C) 2000-2001 Free Software Foundation, Inc.
+# translation of pl.po to 
+# Copyright (C) 2000-2001, 2005 Free Software Foundation, Inc.
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # Aktualn± wersjê tego pliku mo¿esz odnale¼æ w repozytorium cvs.gnome.pl
 # (:pserver:anonymous@cvs.gnome.pl:/home/cvs, puste has³o)
@@ -6,24 +7,26 @@
 # pomóc w jego rozwijaniu i pielêgnowaniu, napisz do nas na adres:
 # translators@gnome.pl
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# GNOME PL Team <translators@gnome.pl>, 2001
+# GNOME PL Team <translators@gnome.pl>, 2001.
 # Grzegorz Kowal <g_kowal@poczta.onet.pl>, 2000, 2001.
-#
+# Bartosz Kosiorek <gang65@poczta.onet.pl>, 2003-2005.
 msgid ""
 msgstr ""
 "Project-Id-Version: xmms\n"
-"POT-Creation-Date: 2002-01-08 17:20+0100\n"
-"PO-Revision-Date: 2001-12-07 20:19+0100\n"
-"Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
-"Language-Team: Polish <pl@li.org>\n"
+"Report-Msgid-Bugs-To: http://bugs.xmms.org\n"
+"POT-Creation-Date: 2007-11-16 23:53+0100\n"
+"PO-Revision-Date: 2005-01-15 11:10+0100\n"
+"Last-Translator: b\n"
+"Language-Team:  <pl@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Type: text/plain; charset=ISO-8859-2\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
 
 #: Effect/echo_plugin/echo.c:43
 #, c-format
 msgid "Echo Plugin %s"
-msgstr "Wtyczka echa %s"
+msgstr "Wtyczka echo %s"
 
 #: Effect/echo_plugin/gui.c:8
 msgid ""
@@ -32,39 +35,42 @@ msgid ""
 "\n"
 "Surround echo by Carl van Schaik 1999"
 msgstr ""
-"Wtyczka echa\n"
+"Wtyczka echo\n"
 "Napisana przez Johana Levina w 1999.\n"
 "\n"
 "Echo dookólne napisane prze Carla van Schaika w 1999"
 
 #: Effect/echo_plugin/gui.c:22
 msgid "About Echo Plugin"
-msgstr "Informacje o wtyczce echa"
+msgstr "Informacje o wtyczce echo"
 
 #: Effect/echo_plugin/gui.c:23 Effect/echo_plugin/gui.c:135
 #: Effect/stereo_plugin/stereo.c:56 Effect/stereo_plugin/stereo.c:120
 #: Effect/voice/about.c:35 General/ir/about.c:51 General/ir/configure.c:205
-#: General/ir/configure.c:377 General/joystick/about.c:35
-#: General/joystick/configure.c:272 General/song_change/song_change.c:209
-#: Input/cdaudio/cdindex.c:151 Input/cdaudio/configure.c:256
-#: Input/mikmod/plugin.c:123 Input/mikmod/plugin.c:613
-#: Input/mpg123/configure.c:633 Input/mpg123/fileinfo.c:118
-#: Input/mpg123/fileinfo.c:123 Input/mpg123/fileinfo.c:157
-#: Input/mpg123/fileinfo.c:161 Input/mpg123/fileinfo.c:167
-#: Input/mpg123/http.c:208 Input/mpg123/mpg123.c:1102
-#: Input/tonegen/tonegen.c:54 Input/vorbis/configure.c:347
-#: Input/vorbis/fileinfo.c:202 Input/vorbis/http.c:208
-#: Input/vorbis/vorbis.c:601 Output/OSS/about.c:45 Output/OSS/configure.c:308
-#: Output/disk_writer/disk_writer.c:130 Output/disk_writer/disk_writer.c:383
-#: Output/esd/about.c:44 Output/esd/configure.c:208 Output/solaris/about.c:24
-#: Output/solaris/configure.c:266 Visualization/blur_scope/config.c:101
-#: Visualization/opengl_spectrum/configure.c:73 libxmms/dirbrowser.c:294
-#: xmms/equalizer.c:1271 xmms/equalizer.c:1277 xmms/equalizer.c:1341
-#: xmms/equalizer.c:1350 xmms/equalizer.c:1600 xmms/main.c:2953
-#: xmms/playlistwin.c:1165 xmms/playlistwin.c:1218 xmms/prefswin.c:259
-#: xmms/prefswin.c:999 xmms/util.c:581
-msgid "Ok"
-msgstr "Ok"
+#: General/ir/configure.c:376 General/joystick/about.c:35
+#: General/joystick/configure.c:272 General/song_change/song_change.c:340
+#: Input/cdaudio/cddb.c:734 Input/cdaudio/cddb.c:742 Input/cdaudio/cddb.c:750
+#: Input/cdaudio/cddb.c:774 Input/cdaudio/configure.c:673
+#: Input/mikmod/plugin.c:125 Input/mikmod/plugin.c:616
+#: Input/mpg123/configure.c:586 Input/mpg123/fileinfo.c:138
+#: Input/mpg123/fileinfo.c:193 Input/mpg123/http.c:208
+#: Input/mpg123/mpg123.c:1151 Input/tonegen/tonegen.c:55
+#: Input/vorbis/configure.c:449 Input/vorbis/fileinfo.c:210
+#: Input/vorbis/http.c:208 Input/vorbis/vorbis.c:778 Output/OSS/about.c:45
+#: Output/OSS/configure.c:308 Output/disk_writer/disk_writer.c:145
+#: Output/disk_writer/disk_writer.c:438 Output/esd/about.c:44
+#: Output/esd/configure.c:208 Output/solaris/about.c:24
+#: Output/solaris/configure.c:266 Output/sun/about.c:36
+#: Output/sun/configure.c:557 Output/alsa/about.c:46
+#: Output/alsa/configure.c:437 Visualization/blur_scope/config.c:101
+#: Visualization/opengl_spectrum/configure.c:73 libxmms/dirbrowser.c:342
+#: xmms/equalizer.c:1371 xmms/equalizer.c:1377 xmms/equalizer.c:1441
+#: xmms/equalizer.c:1450 xmms/equalizer.c:1701 xmms/input.c:254
+#: xmms/main.c:3529 xmms/playlistwin.c:733 xmms/playlistwin.c:844
+#: xmms/playlistwin.c:1428 xmms/playlistwin.c:1481 xmms/prefswin.c:310
+#: xmms/prefswin.c:1158 xmms/util.c:582
+msgid "OK"
+msgstr ""
 
 #: Effect/echo_plugin/gui.c:74
 msgid "Configure Echo"
@@ -87,24 +93,26 @@ msgid "Surround echo"
 msgstr "Echo dookólne"
 
 #: Effect/echo_plugin/gui.c:143 Effect/stereo_plugin/stereo.c:129
-#: General/ir/configure.c:212 General/ir/configure.c:384
-#: General/joystick/configure.c:279 General/song_change/song_change.c:216
-#: Input/cdaudio/configure.c:262 Input/mikmod/plugin.c:620
-#: Input/mpg123/configure.c:639 Input/mpg123/fileinfo.c:332
-#: Input/vorbis/configure.c:353 Input/vorbis/fileinfo.c:615
-#: Output/OSS/configure.c:314 Output/disk_writer/disk_writer.c:390
-#: Output/esd/configure.c:215 Output/solaris/configure.c:278
-#: Visualization/blur_scope/config.c:109
-#: Visualization/opengl_spectrum/configure.c:80 libxmms/dirbrowser.c:302
-#: xmms/equalizer.c:1271 xmms/equalizer.c:1277 xmms/equalizer.c:1341
-#: xmms/equalizer.c:1350 xmms/equalizer.c:1604 xmms/main.c:1451
-#: xmms/playlistwin.c:1219 xmms/prefswin.c:1003 xmms/util.c:601
+#: General/ir/configure.c:212 General/ir/configure.c:383
+#: General/joystick/configure.c:279 General/song_change/song_change.c:346
+#: Input/cdaudio/cddb.c:778 Input/cdaudio/configure.c:682
+#: Input/mikmod/plugin.c:623 Input/mpg123/configure.c:592
+#: Input/mpg123/fileinfo.c:442 Input/vorbis/configure.c:455
+#: Input/vorbis/fileinfo.c:714 Output/OSS/configure.c:314
+#: Output/disk_writer/disk_writer.c:445 Output/esd/configure.c:215
+#: Output/solaris/configure.c:278 Output/sun/configure.c:565
+#: Output/alsa/configure.c:443 Visualization/blur_scope/config.c:109
+#: Visualization/opengl_spectrum/configure.c:80 libxmms/dirbrowser.c:351
+#: xmms/equalizer.c:1371 xmms/equalizer.c:1377 xmms/equalizer.c:1441
+#: xmms/equalizer.c:1450 xmms/equalizer.c:1705 xmms/main.c:1519
+#: xmms/playlistwin.c:791 xmms/playlistwin.c:1482 xmms/prefswin.c:1162
+#: xmms/util.c:602
 msgid "Cancel"
 msgstr "Anuluj"
 
 #: Effect/echo_plugin/gui.c:150 Effect/stereo_plugin/stereo.c:136
 #: General/joystick/configure.c:285 Output/solaris/configure.c:273
-#: xmms/equalizer.c:1610 xmms/prefswin.c:1007
+#: xmms/equalizer.c:1711 xmms/prefswin.c:1166
 msgid "Apply"
 msgstr "Zastosuj"
 
@@ -121,15 +129,15 @@ msgstr ""
 #: Effect/stereo_plugin/stereo.c:35
 #, c-format
 msgid "Extra Stereo Plugin %s"
-msgstr "Wtyczka dodaj±ca stereo %s"
+msgstr "Wtyczka stereo %s"
 
 #: Effect/stereo_plugin/stereo.c:55
 msgid "About Extra Stereo Plugin"
-msgstr "Informacje o wtyczce dodaj±cej stereo"
+msgstr "Informacje o wtyczce stereo"
 
 #: Effect/stereo_plugin/stereo.c:97
 msgid "Configure Extra Stereo"
-msgstr "Konfiguracja dodawania stereo"
+msgstr "Konfiguracja wtyczki stereo"
 
 #: Effect/stereo_plugin/stereo.c:99
 msgid "Effect intensity:"
@@ -137,7 +145,7 @@ msgstr "Intensywno¶æ efektu:"
 
 #: Effect/voice/about.c:31
 msgid "About Voice Removal Plugin"
-msgstr "Informacje o wtyczce usuwaj±cej szum"
+msgstr "Informacje o wtyczce usuwaj±cej g³os"
 
 #: Effect/voice/about.c:32
 msgid ""
@@ -145,18 +153,18 @@ msgid ""
 "\n"
 "A simple voice removal plugin by Anders Carlsson <andersca@gnu.org>"
 msgstr ""
-"XMMS - wtyczka usuwaj±ca szum\n"
+"XMMS - wtyczka usuwaj±ca g³os\n"
 "\n"
-"Prosta wtyczka usuwaj±ca szum, napisana przez\n"
-"Andersa Carlssona <anders.carlsson@tordata.se>"
+"Prosta wtyczka usuwaj±ca g³os ludzki,\n"
+"napisana przez Andersa Carlssona <anders.carlsson@gnu.org>"
 
 #: Effect/voice/voice.c:23
 #, c-format
 msgid "Voice removal plugin %s"
-msgstr "Wtyczka usuwaj±ca szum %s"
+msgstr "Wtyczka usuwaj±ca ludzki g³os %s"
 
-#: General/ir/about.c:27 xmms/prefswin.c:666 xmms/prefswin.c:699
-#: xmms/prefswin.c:736 xmms/prefswin.c:776 xmms/prefswin.c:823
+#: General/ir/about.c:27 xmms/prefswin.c:775 xmms/prefswin.c:808
+#: xmms/prefswin.c:850 xmms/prefswin.c:895 xmms/prefswin.c:945
 msgid "About"
 msgstr "Informacje"
 
@@ -174,7 +182,7 @@ msgstr ""
 "Sterowanie XMMS za pomoc± pilota TV/VCR/Stereo\n"
 "Strona IRman - http://www.evation.com/irman/"
 
-#: General/ir/configure.c:27
+#: General/ir/configure.c:27 xmms/util.c:885
 msgid "Play"
 msgstr "Odtwarzanie"
 
@@ -218,7 +226,7 @@ msgstr "Losowo"
 msgid "Repeat"
 msgstr "Powtarzanie"
 
-#: General/ir/configure.c:30 xmms/prefswin.c:930
+#: General/ir/configure.c:30 xmms/prefswin.c:1070
 msgid "Playlist"
 msgstr "Lista odtwarzania"
 
@@ -279,8 +287,8 @@ msgstr "Wprowad¼ kod lub u¿yj pilota"
 msgid "XMMS IRman Configuration"
 msgstr "XMMS IRman - konfiguracja"
 
-#: General/ir/configure.c:269 Input/cdaudio/configure.c:105
-#: Input/cdaudio/configure.c:114
+#: General/ir/configure.c:269 Input/cdaudio/configure.c:377
+#: Input/cdaudio/configure.c:385
 msgid "Device:"
 msgstr "Urz±dzenie:"
 
@@ -296,11 +304,11 @@ msgstr "D³ugo¶æ kodu IR:"
 msgid "Controls:"
 msgstr "Sterowanie:"
 
-#: General/ir/configure.c:340
+#: General/ir/configure.c:339
 msgid "Playlists:"
 msgstr "Listy odtwarzania:"
 
-#: General/ir/configure.c:369
+#: General/ir/configure.c:368
 msgid "General"
 msgstr "Ogólne"
 
@@ -334,8 +342,8 @@ msgstr ""
 " Stworzona przez Tima Fergusona <timf@dgs.monash.edu.au>.\n"
 " http://www.dgs.monash.edu.au/~timf/\n"
 "\n"
-"Obs³uga ponad piêciu przycisków autorstwa Justina Wake'a "
-"<justin@globalsoft.com.au>\n"
+"Obs³uga ponad piêciu przycisków autorstwa Justina Wake'a <justin@globalsoft."
+"com.au>\n"
 "\n"
 "Pozwala na sterowanie XMMS-em przy u¿yciu jednego lub dwóch joysticków.\n"
 
@@ -385,39 +393,32 @@ msgstr "Nic"
 
 #: General/joystick/configure.c:94
 msgid "XMMS Joystick Configuration"
-msgstr "XMMS - jonfiguracja joysticka"
+msgstr "XMMS - konfiguracja joysticka"
 
-#. --------------------------------------------------
 #: General/joystick/configure.c:118
 msgid "Devices:"
 msgstr "Urz±dzenia:"
 
-#. ------------------------------
 #: General/joystick/configure.c:128
 msgid "Joystick 1:"
 msgstr "Joystick 1:"
 
-#. ------------------------------
 #: General/joystick/configure.c:140
 msgid "Joystick 2:"
 msgstr "Joystick 2:"
 
-#. ------------------------------
 #: General/joystick/configure.c:152
 msgid "Sensitivity (10-32767):"
 msgstr "Czu³o¶æ (10-32767):"
 
-#. --------------------------------------------------
 #: General/joystick/configure.c:183
 msgid "Directionals:"
 msgstr "Kierunki:"
 
-#. --------------------------------------------------
 #: General/joystick/configure.c:208
 msgid "Directionals (alternate):"
 msgstr "Kierunki (alternatywne):"
 
-#. --------------------------------------------------
 #: General/joystick/configure.c:233
 msgid "Buttons:"
 msgstr "Przyciski:"
@@ -436,7 +437,7 @@ msgstr "Sterowanie joystickiem %s"
 msgid "Joystick Control"
 msgstr "Sterowanie joystickiem"
 
-#: General/joystick/joy.c:217 General/joystick/joy.c:267
+#: General/joystick/joy.c:220 General/joystick/joy.c:270
 msgid ""
 "\n"
 "Joystick Control: error reading"
@@ -444,174 +445,342 @@ msgstr ""
 "\n"
 "Sterowanie joystickiem: b³±d przy odczycie"
 
-#: General/song_change/song_change.c:46
+#: General/song_change/song_change.c:48
 #, c-format
 msgid "Song Change %s"
 msgstr "Zmiana utworu %s"
 
-#: General/song_change/song_change.c:129
+#: General/song_change/song_change.c:134 xmms/prefswin.c:301
+msgid "Warning"
+msgstr "Ostrze¿enie"
+
+#: General/song_change/song_change.c:145
+msgid ""
+"Filename and song title tags should be inside double quotes (\").  Not doing "
+"so might be a security risk.  Continue anyway?"
+msgstr ""
+"Nazwa pliku i piosenki powinny byæ w cudzys³owiu (\").  Niewykonanie tego "
+"mo¿e byæ przyczyn± utraty bezpieczeñstwa dzia³ania.  Kontynuowaæ?"
+
+#: General/song_change/song_change.c:158 Input/mpg123/fileinfo.c:283
+msgid "Yes"
+msgstr "Tak"
+
+#: General/song_change/song_change.c:168 Input/mpg123/fileinfo.c:282
+msgid "No"
+msgstr "Nie"
+
+#: General/song_change/song_change.c:231
 msgid "Song Change Configuration"
 msgstr "Konfiguracja zmiany utworu"
 
-#: General/song_change/song_change.c:137
-msgid "Song change"
-msgstr "Zmiana utworu"
+#: General/song_change/song_change.c:238
+#, fuzzy
+msgid "Commands"
+msgstr "Polecenie:"
 
-#: General/song_change/song_change.c:145
-msgid "Playlist end"
-msgstr "Koniec listy odtwarzania"
-
-#: General/song_change/song_change.c:154
-msgid ""
-"Shell-command to run when xmms changes song.  It can optionally include the "
-"string %%s which will be replaced by the new song title."
+#: General/song_change/song_change.c:245
+#, fuzzy
+msgid "Shell-command to run when xmms starts a new song."
 msgstr ""
-"Polecenie pow³oki, uruchamiane, gdy XMMS zmieni utwór. Mo¿e ono opcjonalnie "
-"zawieraæ %%s, które zostanie zast±pione tytu³em nowego utworu."
+"Polecenie pow³oki, uruchamiane, gdy XMMS osi±gnie koniec listy odtwarzania."
 
-#: General/song_change/song_change.c:168 General/song_change/song_change.c:192
+#: General/song_change/song_change.c:254 General/song_change/song_change.c:277
+#: General/song_change/song_change.c:300
 msgid "Command:"
 msgstr "Polecenie:"
 
-#: General/song_change/song_change.c:181
+#: General/song_change/song_change.c:268
+#, fuzzy
+msgid "Shell-command to run toward the end of a song."
+msgstr ""
+"Polecenie pow³oki, uruchamiane, gdy XMMS osi±gnie koniec listy odtwarzania."
+
+#: General/song_change/song_change.c:290
 msgid "Shell-command to run when xmms reaches the end of the playlist."
 msgstr ""
 "Polecenie pow³oki, uruchamiane, gdy XMMS osi±gnie koniec listy odtwarzania."
 
-#: Input/cdaudio/cdaudio.c:148
+#: General/song_change/song_change.c:313
+#, c-format
+msgid ""
+"You can use the following format strings which will be substituted before "
+"calling the command (not all are useful for the end-of-playlist command).\n"
+"\n"
+"%%F: Frequency (in hertz)\n"
+"%%c: Number of channels\n"
+"%%f: filename (full path)\n"
+"%%l: length (in milliseconds)\n"
+"%%n or %%s: Song name\n"
+"%%r: Rate (in bits per second)\n"
+"%%t: Playlist position (%%02d)\n"
+"%%p: Currently playing (1 or 0)"
+msgstr ""
+
+#: Input/cdaudio/cdaudio.c:162
 #, c-format
 msgid "CD Audio Player %s"
 msgstr "Odtwarzacz p³yt CD Audio %s"
 
-#: Input/cdaudio/cdaudio.c:373 Input/cdaudio/cdaudio.c:382
+#: Input/cdaudio/cdaudio.c:567 Input/cdaudio/cdaudio.c:576
 #, c-format
 msgid "CD Audio Track %02u"
 msgstr "¦cie¿ka %02u p³yty CD Audio"
 
-#: Input/cdaudio/cdindex.c:147 xmms/prefswin.c:252
-msgid "Warning"
-msgstr "Ostrze¿enie"
+#: Input/cdaudio/cddb.c:722 Output/esd/configure.c:161
+msgid "Server"
+msgstr "Serwer"
 
-#: Input/cdaudio/cdindex.c:148
+#: Input/cdaudio/cddb.c:723
+msgid "Latitude"
+msgstr "Szeroko¶æ geograficzna"
+
+#: Input/cdaudio/cddb.c:724
+msgid "Longitude"
+msgstr "D³ugo¶æ geograficzna"
+
+#: Input/cdaudio/cddb.c:725
+msgid "Description"
+msgstr "Opis"
+
+#: Input/cdaudio/cddb.c:732 Input/cdaudio/cddb.c:738 Input/cdaudio/cddb.c:748
+msgid "CDDB"
+msgstr "CDDB"
+
+#: Input/cdaudio/cddb.c:733
+msgid "Unable to connect to CDDB-server"
+msgstr "Nie mo¿na po³±czyæ siê z serwerem CDDB"
+
+#: Input/cdaudio/cddb.c:739
 msgid ""
-"The SHA-1 hash function failed to properly\n"
-"generate a test key.  As such, Xmms will\n"
-"not be able to contact a CD Index server.\n"
+"Can't get server list from the current CDDB-server\n"
+"Unsupported CDDB protocol level"
 msgstr ""
-"Funkcja mieszaj±ca SHA-1 nie mo¿e poprawnie\n"
-"wygenerowaæ klucza. W takim przypadku XMMS nie bêdzie\n"
-"móg³ nawi±zaæ po³±czenia z serwerem indeksu p³yt CD.\n"
+"Nie mo¿na pobraæ listy serwerów z bie¿±cego serwera CDDB\n"
+"Nieobs³ugiwany poziom protoko³u CDDB"
 
-#: Input/cdaudio/cdindex.c:175 Input/cdaudio/cdinfo.c:145
+#: Input/cdaudio/cddb.c:749
+msgid "No site information available"
+msgstr "Brak informacji o po³o¿eniu"
+
+#: Input/cdaudio/cddb.c:757
+msgid "CDDB servers"
+msgstr "Serwery CDDB:"
+
+#: Input/cdaudio/cddb.c:877 xmms/about.c:348 xmms/equalizer.c:1504
+#: xmms/equalizer.c:1508 xmms/input.c:431 xmms/main.c:1963 xmms/main.c:2346
+#: xmms/skinwin.c:86 xmms/util.c:873
+msgid "Close"
+msgstr "Zamknij"
+
 #: Input/cdaudio/cdinfo.c:146 Input/cdaudio/cdinfo.c:147
+#: Input/cdaudio/cdinfo.c:148
 msgid "(unknown)"
 msgstr "(nieznany)"
 
-#: Input/cdaudio/configure.c:88
-msgid "CD Audio Player Configuration"
-msgstr "Konfiguracja odtwarzacza CD Audio"
+#: Input/cdaudio/configure.c:187 Input/cdaudio/configure.c:202
+#: Input/cdaudio/configure.c:536
+#, c-format
+msgid "Drive %d"
+msgstr "Dysk %d"
 
-#: Input/cdaudio/configure.c:122
+#: Input/cdaudio/configure.c:249
+#, c-format
+msgid ""
+"Failed to open device %s\n"
+"Error: %s\n"
+"\n"
+msgstr ""
+"Nie mo¿na otworzyæ urz±dzenia %s\n"
+"B³±d: %s\n"
+"\n"
+
+#: Input/cdaudio/configure.c:257
+msgid ""
+"Failed to read \"Table of Contents\"\n"
+"Maybe no disc in the drive?\n"
+"\n"
+msgstr ""
+"Nie mo¿na odczytaæ \"Tablicy zawarto¶ci\"\n"
+"Sprawd¼ czy dysk jest w napêdzie.\n"
+"\n"
+
+#: Input/cdaudio/configure.c:262
+#, c-format
+msgid ""
+"Device %s OK.\n"
+"Disc has %d tracks"
+msgstr ""
+"Urz±dzenie %s jest OK.\n"
+"Dysk ma %d ¶cie¿ek"
+
+#: Input/cdaudio/configure.c:271
+#, c-format
+msgid " (%d data tracks)"
+msgstr " (%d ¶cie¿ek z danymi)"
+
+#: Input/cdaudio/configure.c:273
+#, c-format
+msgid ""
+"\n"
+"Total length: %d:%.2d\n"
+msgstr ""
+"\n"
+"Ca³kowita d³ugo¶æ: %d:%.2d\n"
+
+#: Input/cdaudio/configure.c:279
+msgid "Digital audio extraction not tested as the disc has no audio tracks\n"
+msgstr ""
+"¬ród³o d¼wiêku cyfrowego nie zosta³o przetestowane, poniewa¿ dysk nie "
+"zawiera ¶cie¿ek audio\n"
+
+#: Input/cdaudio/configure.c:296
+msgid ""
+"Digital audio extraction test: OK\n"
+"\n"
+msgstr ""
+"Testowanie ¼ród³a d¼wiêku cyfrowego: OK\n"
+"\n"
+
+#: Input/cdaudio/configure.c:300
+#, c-format
+msgid ""
+"Digital audio extraction test failed: %s\n"
+"\n"
+msgstr ""
+"Testowanie ¼ród³a d¼wiêku cyfrowego: Niepowodzenie %s\n"
+"\n"
+
+#: Input/cdaudio/configure.c:313
+#, c-format
+msgid ""
+"Failed to check directory %s\n"
+"Error: %s"
+msgstr ""
+"B³±d w sprawdzaniu katalogu %s\n"
+"B³±d: %s"
+
+#: Input/cdaudio/configure.c:321
+#, c-format
+msgid "Error: %s exists, but is not a directory"
+msgstr "B³±d: %s istnieje, lecz nie jest to katalog"
+
+#: Input/cdaudio/configure.c:326
+#, c-format
+msgid "Directory %s OK."
+msgstr "Katalog %s jest prawid³owy."
+
+#: Input/cdaudio/configure.c:330
+#, c-format
+msgid "Directory %s exists, but you do not have permission to access it."
+msgstr ""
+
+#: Input/cdaudio/configure.c:394
 msgid "Directory:"
 msgstr "Katalog:"
 
-#.
-#. * Volume config
-#.
-#: Input/cdaudio/configure.c:134
-msgid "Volume setting:"
-msgstr "Ustawienie g³o¶no¶ci:"
+#: Input/cdaudio/configure.c:403
+msgid "Play mode:"
+msgstr "Tryb odtwarzania:"
 
-#: Input/cdaudio/configure.c:140
-msgid "OSS Mixer"
-msgstr "Mikser OSS"
+#: Input/cdaudio/configure.c:409
+msgid "Analog"
+msgstr "Analogowy"
 
-#: Input/cdaudio/configure.c:148
-msgid "CDROM drive"
+#: Input/cdaudio/configure.c:412
+msgid "Digital audio extraction"
+msgstr "Cyfrowy"
+
+#: Input/cdaudio/configure.c:422
+msgid "Volume control:"
+msgstr "Zmiana g³o¶no¶ci:"
+
+#: Input/cdaudio/configure.c:428
+msgid "No mixer"
+msgstr "Brak miksera"
+
+#: Input/cdaudio/configure.c:431
+msgid "CD-ROM drive"
 msgstr "Napêd CD-ROM"
 
-#: Input/cdaudio/configure.c:153
+#: Input/cdaudio/configure.c:434
+msgid "OSS mixer"
+msgstr "Mikser OSS"
+
+#: Input/cdaudio/configure.c:458
+msgid "Check drive..."
+msgstr "Sprawdzanie dysku..."
+
+#: Input/cdaudio/configure.c:464
+msgid "Remove drive"
+msgstr "Usuñ dysk"
+
+#: Input/cdaudio/configure.c:512
+msgid "CD Audio Player Configuration"
+msgstr "Konfiguracja odtwarzacza CD Audio"
+
+#: Input/cdaudio/configure.c:548
+msgid "Add drive"
+msgstr "Dodaj dysk"
+
+#: Input/cdaudio/configure.c:556
 msgid "Device"
 msgstr "Urz±dzenie"
 
-#. CDDB
-#: Input/cdaudio/configure.c:163
+#: Input/cdaudio/configure.c:566
 msgid "CDDB:"
 msgstr "CDDB:"
 
-#: Input/cdaudio/configure.c:173
+#: Input/cdaudio/configure.c:577
 msgid "Use CDDB"
-msgstr "Korzystanie z CDDB"
+msgstr "Korzystaj z CDDB"
 
-#: Input/cdaudio/configure.c:176
+#: Input/cdaudio/configure.c:581
 msgid "Get server list"
 msgstr "Pobierz listê serwerów"
 
-#: Input/cdaudio/configure.c:178
+#: Input/cdaudio/configure.c:583
 msgid "Show network window"
 msgstr "Wy¶wietl okno sieciowe"
 
-#: Input/cdaudio/configure.c:185
+#: Input/cdaudio/configure.c:593
 msgid "CDDB server:"
 msgstr "Serwer CDDB:"
 
-#.
-#. * CDindex
-#.
-#: Input/cdaudio/configure.c:196
+#: Input/cdaudio/configure.c:608
 msgid "CD Index:"
 msgstr "Indeks p³yt CD:"
 
-#: Input/cdaudio/configure.c:203
+#: Input/cdaudio/configure.c:615
 msgid "Use CD Index"
-msgstr "Korzystanie z indeksu p³yt CD"
+msgstr "Korzystaj z indeksu p³yt CD"
 
-#: Input/cdaudio/configure.c:210
+#: Input/cdaudio/configure.c:622
 msgid "CD Index server:"
 msgstr "Serwer indeksu p³yt CD:"
 
-#.
-#. * Track names
-#.
-#: Input/cdaudio/configure.c:223
+#: Input/cdaudio/configure.c:637
 msgid "Track names:"
 msgstr "Nazwy ¶cie¿ek:"
 
-#: Input/cdaudio/configure.c:229 Input/mpg123/configure.c:607
-#: Input/vorbis/configure.c:320
+#: Input/cdaudio/configure.c:643 Input/mpg123/configure.c:560
+#: Input/vorbis/configure.c:371
 msgid "Override generic titles"
-msgstr "Uniewa¿nianie ogólnych tytu³ów"
+msgstr "Nie stosuj ogólnych tytu³ów"
 
-#: Input/cdaudio/configure.c:240
+#: Input/cdaudio/configure.c:656
 msgid "Name format:"
 msgstr "Format nazwy:"
 
-#: Input/cdaudio/configure.c:249
+#: Input/cdaudio/configure.c:666
 msgid "CD Info"
 msgstr "Informacje o p³ycie CD"
 
-#: Input/idcin/idcin.c:106
-msgid "Huffman decode error.\n"
-msgstr "B³±d dekodowania Huffmana.\n"
-
-#: Input/idcin/idcin.c:200
-#, c-format
-msgid "Id Software .cin player %s"
-msgstr "Odtwarzacz plików .cin firmy Id Software %s"
-
-#: Input/idcin/idcin.c:409
-msgid "Error opening audio for idcin.\n"
-msgstr "B³±d przy otwieraniu strumienia d¼wiêku zwi±zanego idcin.\n"
-
-#: Input/idcin/idcin.c:418
-msgid "IDCin Play"
-msgstr "Odtwarzanie IDCin"
-
-#: Input/mikmod/plugin.c:89
+#: Input/mikmod/plugin.c:91
 msgid "About mikmod plugin"
 msgstr "Informacje o wtyczce mikmod"
 
-#: Input/mikmod/plugin.c:113
+#: Input/mikmod/plugin.c:115
 msgid ""
 "Mikmod Plugin\n"
 "http://www.multimania.com/miodrag/mikmod/\n"
@@ -621,347 +790,377 @@ msgstr ""
 "http://www.multimania.com/miodrag/mikmod/\n"
 "Przeniesiona do XMMS-a przez J. Nicka Kostona"
 
-#: Input/mikmod/plugin.c:182
+#: Input/mikmod/plugin.c:184
 #, c-format
 msgid "MikMod Player %s"
 msgstr "Odtwarzacz MikMod %s"
 
-#: Input/mikmod/plugin.c:368
+#: Input/mikmod/plugin.c:373
 msgid "Couldn't load mod"
 msgstr "Nie mo¿na wczytaæ modu³u"
 
-#: Input/mikmod/plugin.c:440
+#: Input/mikmod/plugin.c:436
 msgid "MikMod Configuration"
 msgstr "Konfiguracja MikMod"
 
-#: Input/mikmod/plugin.c:464 Input/mpg123/configure.c:303
+#: Input/mikmod/plugin.c:460 Input/mpg123/configure.c:262
 msgid "Resolution:"
 msgstr "Rozdzielczo¶æ:"
 
-#: Input/mikmod/plugin.c:475 Input/mpg123/configure.c:310
+#: Input/mikmod/plugin.c:471 Input/mpg123/configure.c:269
 msgid "16 bit"
 msgstr "16 bitów"
 
-#: Input/mikmod/plugin.c:483 Input/mpg123/configure.c:315
+#: Input/mikmod/plugin.c:479 Input/mpg123/configure.c:274
 msgid "8 bit"
 msgstr "8 bitów"
 
-#: Input/mikmod/plugin.c:491 Input/mpg123/configure.c:331
+#: Input/mikmod/plugin.c:487 Input/mpg123/configure.c:280
 msgid "Channels:"
 msgstr "Kana³y:"
 
-#: Input/mikmod/plugin.c:502 Input/mpg123/fileinfo.c:182
+#: Input/mikmod/plugin.c:498 Input/mpg123/fileinfo.c:213
 msgid "Stereo"
 msgstr "Stereo"
 
-#: Input/mikmod/plugin.c:510 Input/mpg123/configure.c:344
+#: Input/mikmod/plugin.c:506 Input/mpg123/configure.c:293
 msgid "Mono"
 msgstr "Mono"
 
-#: Input/mikmod/plugin.c:518 Input/mpg123/configure.c:360
-msgid "Down sample:"
+#: Input/mikmod/plugin.c:514
+msgid "Downsample:"
 msgstr "Obni¿enie próbkowania:"
 
-#: Input/mikmod/plugin.c:529 Input/mpg123/configure.c:367
+#: Input/mikmod/plugin.c:525 Input/mpg123/configure.c:306
 msgid "1:1 (44 kHz)"
 msgstr "1:1 (44 kHz)"
 
-#: Input/mikmod/plugin.c:538 Input/mpg123/configure.c:372
+#: Input/mikmod/plugin.c:534 Input/mpg123/configure.c:311
 msgid "1:2 (22 kHz)"
 msgstr "1:2 (22 kHz)"
 
-#: Input/mikmod/plugin.c:546 Input/mpg123/configure.c:377
+#: Input/mikmod/plugin.c:542 Input/mpg123/configure.c:316
 msgid "1:4 (11 kHz)"
 msgstr "1:4 (11 kHz)"
 
-#: Input/mikmod/plugin.c:558
+#: Input/mikmod/plugin.c:554
 msgid "Look for hidden patterns in modules "
-msgstr "Wyszukiwanie ukrytych sekwencji w modu³ach "
+msgstr "Wyszukuj ukryte sekwencje w modu³ach "
 
-#: Input/mikmod/plugin.c:565
+#: Input/mikmod/plugin.c:561
 msgid "Use surround mixing"
-msgstr "Miksowanie dookólne"
+msgstr "U¿yj miksowania dookólnego"
 
-#: Input/mikmod/plugin.c:572
+#: Input/mikmod/plugin.c:568
 msgid "Force volume fade at the end of the module"
-msgstr "Wymuszanie zmniejszenia g³o¶no¶ci na koñcu modu³u"
+msgstr "Wymuszaj zmniejszenie g³o¶no¶ci na koñcu modu³u"
 
-#: Input/mikmod/plugin.c:579
+#: Input/mikmod/plugin.c:575
 msgid "Use interpolation"
-msgstr "Interpolacja"
+msgstr "U¿yj interpolacji"
+
+#: Input/mikmod/plugin.c:582
+msgid "Always use filename as title"
+msgstr ""
 
 # FIXME
-#: Input/mikmod/plugin.c:586
+#: Input/mikmod/plugin.c:589
 msgid "Default panning separation"
 msgstr "Domy¶lna separacja panning"
 
-#: Input/mikmod/plugin.c:598
+#: Input/mikmod/plugin.c:601
 msgid "Quality"
 msgstr "Jako¶æ"
 
-#: Input/mikmod/plugin.c:603 Input/mpg123/configure.c:440
-#: xmms/equalizer.c:1552 xmms/equalizer.c:1588 xmms/prefswin.c:838
-#: xmms/prefswin.c:915 xmms/prefswin.c:922
+#: Input/mikmod/plugin.c:606 Input/mpg123/configure.c:367
+#: xmms/equalizer.c:1653 xmms/equalizer.c:1689 xmms/prefswin.c:960
+#: xmms/prefswin.c:1055 xmms/prefswin.c:1062
 msgid "Options"
 msgstr "Opcje"
 
-#: Input/mpg123/configure.c:231
+#: Input/mpg123/configure.c:190
 msgid "Select the directory where you want to store the MPEG streams:"
 msgstr "Wybór katalogu przechowuj±cego strumienie MPEG:"
 
-#: Input/mpg123/configure.c:286
+#: Input/mpg123/configure.c:245
 msgid "MPG123 Configuration"
 msgstr "Konfiguracja MPG123"
 
-#: Input/mpg123/configure.c:338
+#: Input/mpg123/configure.c:287
 msgid "Stereo (if available)"
 msgstr "Stereo (je¶li dostêpne)"
 
-#: Input/mpg123/configure.c:410
+#: Input/mpg123/configure.c:299
+msgid "Down sample:"
+msgstr "Obni¿enie próbkowania:"
+
+#: Input/mpg123/configure.c:327
 msgid "Decoder:"
 msgstr "Dekoder:"
 
-#: Input/mpg123/configure.c:417
-msgid "Enable Automatic detection"
+#: Input/mpg123/configure.c:334
+msgid "Automatic detection"
 msgstr "Automatyczne wykrywanie"
 
-#: Input/mpg123/configure.c:423
-msgid "use 3DNow! optimized decoder"
+#: Input/mpg123/configure.c:338
+msgid "3DNow! optimized decoder"
 msgstr "Dekoder zoptymalizowany pod k±tem 3DNow!"
 
-#: Input/mpg123/configure.c:431
-msgid "use FPU decoder"
+#: Input/mpg123/configure.c:342
+msgid "MMX optimized decoder"
+msgstr "Dekoder zoptymalizowany pod k±tem MMX"
+
+#: Input/mpg123/configure.c:346
+msgid "FPU decoder"
 msgstr "Dekoder u¿ywaj±cy FPU"
 
-#: Input/mpg123/configure.c:446
-msgid "Detect files by content (instead of file extention)"
-msgstr "Rozpoznawanie plików wed³ug zawarto¶ci (zamiast rozszerzenia)"
+#: Input/mpg123/configure.c:375
+msgid "Content"
+msgstr "Zawarto¶æ"
 
-#: Input/mpg123/configure.c:450
+#: Input/mpg123/configure.c:379
+msgid "Extension"
+msgstr "Rozszerzenie"
+
+#: Input/mpg123/configure.c:383
+msgid "Extension and content"
+msgstr "Rozszerzenie i zawarto¶æ"
+
+#: Input/mpg123/configure.c:403
 msgid "Decoder"
 msgstr "Dekoder"
 
-#: Input/mpg123/configure.c:454 Input/vorbis/configure.c:187
+#: Input/mpg123/configure.c:407 Input/vorbis/configure.c:238
 #: Output/OSS/configure.c:264 Output/esd/configure.c:163
-#: Output/solaris/configure.c:231
+#: Output/solaris/configure.c:231 Output/sun/configure.c:255
 msgid "Buffering:"
 msgstr "Buforowanie:"
 
-#: Input/mpg123/configure.c:465 Input/vorbis/configure.c:197
+#: Input/mpg123/configure.c:418 Input/vorbis/configure.c:248
 msgid "Buffer size (kb):"
 msgstr "Rozmiar bufora (KB):"
 
-#: Input/mpg123/configure.c:475 Input/vorbis/configure.c:206
+#: Input/mpg123/configure.c:428 Input/vorbis/configure.c:257
 #: Output/OSS/configure.c:285 Output/esd/configure.c:190
-#: Output/solaris/configure.c:252
+#: Output/solaris/configure.c:252 Output/sun/configure.c:286
 msgid "Pre-buffer (percent):"
 msgstr "Wstêpne wype³nienie bufora (procenty):"
 
-#.
-#. * Proxy config.
-#.
-#: Input/mpg123/configure.c:485 Input/vorbis/configure.c:216
+#: Input/mpg123/configure.c:438 Input/vorbis/configure.c:267
 msgid "Proxy:"
 msgstr "Po¶rednik:"
 
-#: Input/mpg123/configure.c:493 Input/vorbis/configure.c:224
+#: Input/mpg123/configure.c:446 Input/vorbis/configure.c:275
 msgid "Use proxy"
-msgstr "U¿ycie po¶rednika"
+msgstr "U¿ywaj serwera proxy"
 
-#: Input/mpg123/configure.c:502 Input/vorbis/configure.c:233
+#: Input/mpg123/configure.c:455 Input/vorbis/configure.c:284
 #: Output/esd/configure.c:105 Output/esd/configure.c:136
 msgid "Host:"
 msgstr "Serwer:"
 
-#: Input/mpg123/configure.c:509 Input/vorbis/configure.c:240
+#: Input/mpg123/configure.c:462 Input/vorbis/configure.c:291
 #: Output/esd/configure.c:145
 msgid "Port:"
 msgstr "Port:"
 
-#: Input/mpg123/configure.c:519 Input/vorbis/configure.c:250
+#: Input/mpg123/configure.c:472 Input/vorbis/configure.c:301
 msgid "Use authentication"
 msgstr "Uwierzytelnianie"
 
-#: Input/mpg123/configure.c:529 Input/vorbis/configure.c:260
+#: Input/mpg123/configure.c:482 Input/vorbis/configure.c:311
 msgid "Username:"
 msgstr "U¿ytkownik:"
 
-#: Input/mpg123/configure.c:537 Input/vorbis/configure.c:268
+#: Input/mpg123/configure.c:490 Input/vorbis/configure.c:319
 msgid "Password:"
 msgstr "Has³o:"
 
-#.
-#. * Save to disk config.
-#.
-#: Input/mpg123/configure.c:550 Input/vorbis/configure.c:281
+#: Input/mpg123/configure.c:503 Input/vorbis/configure.c:332
 msgid "Save stream to disk:"
 msgstr "Zapis strumienia na dysku:"
 
-#: Input/mpg123/configure.c:558 Input/vorbis/configure.c:289
+#: Input/mpg123/configure.c:511 Input/vorbis/configure.c:340
 msgid "Save stream to disk"
-msgstr "Zapis strumienia na dysku"
+msgstr "Zapisuj strumieñ na dysku"
 
-#: Input/mpg123/configure.c:567 Input/vorbis/configure.c:298
-#: Output/disk_writer/disk_writer.c:356
+#: Input/mpg123/configure.c:520 Input/vorbis/configure.c:349
+#: Output/disk_writer/disk_writer.c:403
 msgid "Path:"
 msgstr "¦cie¿ka:"
 
-#: Input/mpg123/configure.c:574 Input/vorbis/configure.c:305
-#: Output/disk_writer/disk_writer.c:367 xmms/prefswin.c:940
-#: xmms/prefswin.c:960
+#: Input/mpg123/configure.c:527 Input/vorbis/configure.c:356
+#: Output/disk_writer/disk_writer.c:414 xmms/prefswin.c:1080
+#: xmms/prefswin.c:1100
 msgid "Browse"
 msgstr "Przegl±daj"
 
-#: Input/mpg123/configure.c:578
+#: Input/mpg123/configure.c:531
 msgid "SHOUT/Icecast:"
 msgstr "SHOUT/Icecast:"
 
-#: Input/mpg123/configure.c:585
+#: Input/mpg123/configure.c:538
 msgid "Enable SHOUT/Icecast title streaming"
-msgstr "Strumieniowanie tytu³u SHOUT/Icecast"
+msgstr "Strumieniuj tytu³ SHOUT/Icecast"
 
-#: Input/mpg123/configure.c:589
+#: Input/mpg123/configure.c:542
 msgid "Enable Icecast Metadata UDP Channel"
-msgstr "Kana³ Icecast Metadata UDP"
+msgstr "W³±cz kana³ Icecast Metadata UDP"
 
-#: Input/mpg123/configure.c:593 Input/vorbis/configure.c:309
+#: Input/mpg123/configure.c:546 Input/vorbis/configure.c:360
 msgid "Streaming"
 msgstr "Strumieniowanie"
 
-#: Input/mpg123/configure.c:595
+#: Input/mpg123/configure.c:548
 msgid "ID3 Tags:"
 msgstr "Znaczniki ID3:"
 
-#: Input/mpg123/configure.c:602
+#: Input/mpg123/configure.c:555
 msgid "Disable ID3V2 tags"
-msgstr "Bez znaczników ID3V2"
+msgstr "Wy³±cz znaczniki ID3V2"
 
-#: Input/mpg123/configure.c:616
+#: Input/mpg123/configure.c:569
 msgid "ID3 format:"
 msgstr "Format ID3:"
 
-#.
-#. * Title page
-#.
-#: Input/mpg123/configure.c:626 Input/vorbis/configure.c:340
-#: xmms/prefswin.c:971 xmms/prefswin.c:987
+#: Input/mpg123/configure.c:579 Input/vorbis/configure.c:391
+#: xmms/prefswin.c:1111 xmms/prefswin.c:1146
 msgid "Title"
 msgstr "Tytu³"
 
-#: Input/mpg123/fileinfo.c:117 Input/mpg123/fileinfo.c:123
-#: Input/mpg123/fileinfo.c:156 Input/mpg123/fileinfo.c:161
-#: Input/mpg123/fileinfo.c:166
-msgid "File Info"
-msgstr "Informacje o pliku"
+#: Input/mpg123/fileinfo.c:126
+#, c-format
+msgid ""
+"%s\n"
+"Unable to write to file: %s"
+msgstr ""
+"%s\n"
+"Nie mo¿na zapisaæ do pliku: %s"
 
-#: Input/mpg123/fileinfo.c:117 Input/mpg123/fileinfo.c:123
+#: Input/mpg123/fileinfo.c:127 Input/mpg123/fileinfo.c:133
 msgid "Couldn't write tag!"
 msgstr "Nie mo¿na zapisaæ znacznika!"
 
-#: Input/mpg123/fileinfo.c:157 Input/mpg123/fileinfo.c:166
+#: Input/mpg123/fileinfo.c:132 Input/mpg123/fileinfo.c:187
+#, c-format
+msgid ""
+"%s\n"
+"Unable to open file: %s"
+msgstr ""
+"%s\n"
+"Nie mo¿na otworzyæ pliku: %s"
+
+#: Input/mpg123/fileinfo.c:137 Input/mpg123/fileinfo.c:192
+msgid "File Info"
+msgstr "Informacje o pliku"
+
+#: Input/mpg123/fileinfo.c:177
+#, c-format
+msgid ""
+"%s\n"
+"Unable to truncate file: %s"
+msgstr ""
+"%s\n"
+"Nie mo¿na obci±æ pliku: %s"
+
+#: Input/mpg123/fileinfo.c:179 Input/mpg123/fileinfo.c:188
 msgid "Couldn't remove tag!"
 msgstr "Nie mo¿na usun±æ znacznika!"
 
-#: Input/mpg123/fileinfo.c:161
+#: Input/mpg123/fileinfo.c:183
 msgid "No tag to remove!"
 msgstr "Brak znacznika do usuniêcia!"
 
-#: Input/mpg123/fileinfo.c:182
+#: Input/mpg123/fileinfo.c:213
 msgid "Joint stereo"
 msgstr "£±czone stereo"
 
-#: Input/mpg123/fileinfo.c:183
+#: Input/mpg123/fileinfo.c:214
 msgid "Dual channel"
 msgstr "Podwójny kana³"
 
-#: Input/mpg123/fileinfo.c:183
+#: Input/mpg123/fileinfo.c:214
 msgid "Single channel"
 msgstr "Pojedynczy kana³"
 
-#: Input/mpg123/fileinfo.c:196 Input/mpg123/fileinfo.c:490
+#: Input/mpg123/fileinfo.c:227 Input/mpg123/fileinfo.c:596
 #, c-format
 msgid "Bitrate: %d kb/s"
 msgstr "Szybko¶æ: %d Kb/s"
 
-#: Input/mpg123/fileinfo.c:197 Input/mpg123/fileinfo.c:492
+#: Input/mpg123/fileinfo.c:229 Input/mpg123/fileinfo.c:599
+#: Input/vorbis/fileinfo.c:853
 #, c-format
-msgid "Samplerate: %ld Hz"
-msgstr "Próbkowanie: %ld Hz"
+msgid "Samplerate: %d Hz"
+msgstr "Próbkowanie: %d Hz"
 
-#: Input/mpg123/fileinfo.c:211
+#: Input/mpg123/fileinfo.c:278
 msgid "None"
 msgstr "Brak"
 
-#: Input/mpg123/fileinfo.c:212
+#: Input/mpg123/fileinfo.c:279
 msgid "50/15 ms"
 msgstr "50/15 ms"
 
-#: Input/mpg123/fileinfo.c:214
-msgid "CCIT J.17"
+#: Input/mpg123/fileinfo.c:281
+#, fuzzy
+msgid "CCITT J.17"
 msgstr "CCIT J.17"
 
-#: Input/mpg123/fileinfo.c:215
-msgid "No"
-msgstr "Nie"
-
-#: Input/mpg123/fileinfo.c:216
-msgid "Yes"
-msgstr "Tak"
-
-#: Input/mpg123/fileinfo.c:236 Input/vorbis/fileinfo.c:429
+#: Input/mpg123/fileinfo.c:307 Input/vorbis/fileinfo.c:479 xmms/input.c:404
 msgid "Filename:"
 msgstr "Nazwa pliku:"
 
-#: Input/mpg123/fileinfo.c:248
+#: Input/mpg123/fileinfo.c:321
 msgid "ID3 Tag:"
 msgstr "Znacznik ID3:"
 
-#: Input/mpg123/fileinfo.c:255 Input/vorbis/fileinfo.c:451
+#: Input/mpg123/fileinfo.c:329 Input/vorbis/fileinfo.c:501
 msgid "Title:"
 msgstr "Tytu³:"
 
-#: Input/mpg123/fileinfo.c:262 Input/vorbis/fileinfo.c:461
+#: Input/mpg123/fileinfo.c:339 Input/vorbis/fileinfo.c:511
 msgid "Artist:"
 msgstr "Artysta:"
 
-#: Input/mpg123/fileinfo.c:269 Input/vorbis/fileinfo.c:471
+#: Input/mpg123/fileinfo.c:349 Input/vorbis/fileinfo.c:521
 msgid "Album:"
 msgstr "Album:"
 
-#: Input/mpg123/fileinfo.c:276 Input/vorbis/fileinfo.c:481
+#: Input/mpg123/fileinfo.c:359 Input/vorbis/fileinfo.c:531
 msgid "Comment:"
 msgstr "Komentarz:"
 
-#: Input/mpg123/fileinfo.c:283
+#: Input/mpg123/fileinfo.c:369
 msgid "Year:"
 msgstr "Rok:"
 
-#: Input/mpg123/fileinfo.c:291 Input/vorbis/fileinfo.c:502
+#: Input/mpg123/fileinfo.c:380 Input/vorbis/fileinfo.c:552
 msgid "Track number:"
 msgstr "Numer ¶cie¿ki:"
 
-#: Input/mpg123/fileinfo.c:299 Input/vorbis/fileinfo.c:513
+#: Input/mpg123/fileinfo.c:391 Input/vorbis/fileinfo.c:563
 msgid "Genre:"
 msgstr "Rodzaj:"
 
-#: Input/mpg123/fileinfo.c:321 Input/vorbis/fileinfo.c:601
+#: Input/mpg123/fileinfo.c:430 Input/vorbis/fileinfo.c:700
 msgid "Save"
 msgstr "Zapisz"
 
-#: Input/mpg123/fileinfo.c:327
+#: Input/mpg123/fileinfo.c:436
 msgid "Remove ID3"
 msgstr "Usuñ ID3"
 
-#: Input/mpg123/fileinfo.c:337
+#: Input/mpg123/fileinfo.c:448
 msgid "MPEG Info:"
 msgstr "Informacje MPEG:"
 
-#: Input/mpg123/fileinfo.c:376 Input/vorbis/fileinfo.c:759
+#: Input/mpg123/fileinfo.c:493 Input/vorbis/fileinfo.c:937 xmms/input.c:393
 #, c-format
 msgid "File Info - %s"
 msgstr "Informacje o pliku - %s"
 
-#: Input/mpg123/fileinfo.c:485
+#: Input/mpg123/fileinfo.c:586
 #, c-format
 msgid ""
 "Bitrate: Variable,\n"
@@ -970,7 +1169,7 @@ msgstr ""
 "Tempo bitowe: Zmienne,\n"
 "¶r. tempo bitowe: %d Kb/s"
 
-#: Input/mpg123/fileinfo.c:493
+#: Input/mpg123/fileinfo.c:601
 #, c-format
 msgid ""
 "%s\n"
@@ -985,7 +1184,7 @@ msgstr ""
 "Orygina³: %s\n"
 "Emfaza: %s"
 
-#: Input/mpg123/fileinfo.c:494
+#: Input/mpg123/fileinfo.c:608
 #, c-format
 msgid ""
 "%d frames\n"
@@ -995,36 +1194,43 @@ msgstr ""
 "Rozmiar pliku: %lu B"
 
 #: Input/mpg123/http.c:208 Input/vorbis/http.c:208
-#: Output/disk_writer/disk_writer.c:127
+#: Output/disk_writer/disk_writer.c:142
 msgid "Error"
 msgstr "B³±d"
 
-#: Input/mpg123/http.c:362 Input/vorbis/http.c:317
-#, c-format
-msgid "LOOKING UP %s"
-msgstr "WYSZUKIWANIE %s"
-
-#: Input/mpg123/http.c:368 Input/vorbis/http.c:323
-#, c-format
-msgid "Couldn't look up host %s"
-msgstr "Nie mo¿na odnale¼æ serwera %s"
-
-#: Input/mpg123/http.c:381 Input/vorbis/http.c:336
+#: Input/mpg123/http.c:374 Input/mpg123/http.c:428 Input/vorbis/http.c:329
+#: Input/vorbis/http.c:382
 #, c-format
 msgid "CONNECTING TO %s:%d"
 msgstr "£¡CZENIE SIÊ Z %s:%d"
 
-#: Input/mpg123/http.c:388 Input/mpg123/http.c:408 Input/vorbis/http.c:343
-#: Input/vorbis/http.c:363
+#: Input/mpg123/http.c:389 Input/vorbis/http.c:344
+#, c-format
+msgid "Couldn't connect to host %s:%d"
+msgstr "Nie mo¿na po³±czyæ siê z serwerem %s:%d"
+
+#: Input/mpg123/http.c:395 Input/mpg123/http.c:413 Input/vorbis/http.c:351
+#: Input/vorbis/http.c:367
+#, c-format
+msgid "Couldn't look up host %s"
+msgstr "Nie mo¿na odnale¼æ serwera %s"
+
+#: Input/mpg123/http.c:407 Input/vorbis/http.c:361
+#, c-format
+msgid "LOOKING UP %s"
+msgstr "WYSZUKIWANIE %s"
+
+#: Input/mpg123/http.c:435 Input/mpg123/http.c:456 Input/vorbis/http.c:389
+#: Input/vorbis/http.c:410
 #, c-format
 msgid "Couldn't connect to host %s"
 msgstr "Nie mo¿na po³±czyæ siê z serwerem %s"
 
-#: Input/mpg123/http.c:466 Input/vorbis/http.c:407
+#: Input/mpg123/http.c:514 Input/vorbis/http.c:454
 msgid "CONNECTED: WAITING FOR REPLY"
 msgstr "PO£¡CZENIE: OCZEKIWANIE NA ODPOWIED¬"
 
-#: Input/mpg123/http.c:507 Input/vorbis/http.c:448
+#: Input/mpg123/http.c:555 Input/vorbis/http.c:495
 #, c-format
 msgid ""
 "Couldn't connect to host %s\n"
@@ -1033,616 +1239,608 @@ msgstr ""
 "Nie mo¿na po³±czyæ siê z serwerem %s\n"
 "Serwer zwróci³: %s"
 
-#: Input/mpg123/http.c:628 Input/vorbis/http.c:559
+#: Input/mpg123/http.c:686 Input/vorbis/http.c:616
 #, c-format
 msgid "PRE-BUFFERING: %dKB/%dKB"
 msgstr "WSTÊPNE BUFOROWANIE: %dKB/%dKB"
 
-#: Input/mpg123/id3_frame_content.c:73
-msgid " (Remix)"
-msgstr " (Remix)"
-
-#: Input/mpg123/id3_frame_content.c:79
-msgid " (Cover)"
-msgstr " (Cover)"
-
-#: Input/mpg123/mpg123.c:24 Input/vorbis/fileinfo.c:67
+#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:79
 msgid "Blues"
 msgstr "Blues"
 
-#: Input/mpg123/mpg123.c:24 Input/vorbis/fileinfo.c:67
+#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:79
 msgid "Classic Rock"
 msgstr "Rock klasyczny"
 
-#: Input/mpg123/mpg123.c:24 Input/vorbis/fileinfo.c:67
+#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:79
 msgid "Country"
 msgstr "Country"
 
-#: Input/mpg123/mpg123.c:24 Input/vorbis/fileinfo.c:67
+#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:79
 msgid "Dance"
 msgstr "Dance"
 
-#: Input/mpg123/mpg123.c:25 Input/vorbis/fileinfo.c:68
+#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:80
 msgid "Disco"
 msgstr "Disco"
 
-#: Input/mpg123/mpg123.c:25 Input/vorbis/fileinfo.c:68
+#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:80
 msgid "Funk"
 msgstr "Funk"
 
-#: Input/mpg123/mpg123.c:25 Input/vorbis/fileinfo.c:68
+#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:80
 msgid "Grunge"
 msgstr "Grunge"
 
-#: Input/mpg123/mpg123.c:25 Input/vorbis/fileinfo.c:68
+#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:80
 msgid "Hip-Hop"
 msgstr "Hip-Hop"
 
-#: Input/mpg123/mpg123.c:26 Input/vorbis/fileinfo.c:69
+#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:81
 msgid "Jazz"
 msgstr "Jazz"
 
-#: Input/mpg123/mpg123.c:26 Input/vorbis/fileinfo.c:69
+#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:81
 msgid "Metal"
 msgstr "Metal"
 
-#: Input/mpg123/mpg123.c:26 Input/vorbis/fileinfo.c:69
+#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:81
 msgid "New Age"
 msgstr "New Age"
 
-#: Input/mpg123/mpg123.c:26 Input/vorbis/fileinfo.c:69
+#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:81
 msgid "Oldies"
 msgstr "Starsze"
 
-#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:70
+#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:82
 msgid "Other"
 msgstr "Inne"
 
-#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:70
+#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:82
 msgid "Pop"
 msgstr "Pop"
 
-#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:70
+#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:82
 msgid "R&B"
 msgstr "R&B"
 
-#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:70
+#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:82
 msgid "Rap"
 msgstr "Rap"
 
-#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:70
+#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:82
 msgid "Reggae"
 msgstr "Reggae"
 
-#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:71
+#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:83
 msgid "Rock"
 msgstr "Rock"
 
-#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:71
+#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:83
 msgid "Techno"
 msgstr "Techno"
 
-#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:71
+#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:83
 msgid "Industrial"
 msgstr "Industrial"
 
-#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:71
+#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:83
 msgid "Alternative"
 msgstr "Alternatywna"
 
-#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:72
+#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:84
 msgid "Ska"
 msgstr "Ska"
 
-#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:72
+#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:84
 msgid "Death Metal"
 msgstr "Death Metal"
 
-#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:72
+#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:84
 msgid "Pranks"
 msgstr "Psikusy"
 
-#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:72
+#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:84
 msgid "Soundtrack"
-msgstr "¦cie¿ka filmowa"
+msgstr "¦cie¿ka d¼wiêkowa"
 
-#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:73
+#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:85
 msgid "Euro-Techno"
 msgstr "Euro-Techno"
 
-#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:73
+#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:85
 msgid "Ambient"
 msgstr "Ambient"
 
-#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:73
+#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:85
 msgid "Trip-Hop"
 msgstr "Trip-Hop"
 
-#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:73
+#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:85
 msgid "Vocal"
-msgstr "Wokal"
+msgstr "Wokalna"
 
-#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:74
+#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:86
 msgid "Jazz+Funk"
 msgstr "Jazz+Funk"
 
-#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:74
+#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:86
 msgid "Fusion"
 msgstr "Fusion"
 
-#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:74
+#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:86
 msgid "Trance"
 msgstr "Trans"
 
-#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:74
+#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:86
 msgid "Classical"
 msgstr "Klasyczna"
 
-#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:75
+#: Input/mpg123/mpg123.c:35 Input/vorbis/fileinfo.c:87
 msgid "Instrumental"
 msgstr "Instrumentalna"
 
-#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:75
+#: Input/mpg123/mpg123.c:35 Input/vorbis/fileinfo.c:87
 msgid "Acid"
 msgstr "Acid"
 
-#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:75
+#: Input/mpg123/mpg123.c:35 Input/vorbis/fileinfo.c:87
 msgid "House"
 msgstr "House"
 
-#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:75
+#: Input/mpg123/mpg123.c:35 Input/vorbis/fileinfo.c:87
 msgid "Game"
-msgstr "Gra"
+msgstr "Z gier"
 
-#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:76
+#: Input/mpg123/mpg123.c:36 Input/vorbis/fileinfo.c:88
 msgid "Sound Clip"
 msgstr "Klip D¼wiêkowy"
 
-#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:76
+#: Input/mpg123/mpg123.c:36 Input/vorbis/fileinfo.c:88
 msgid "Gospel"
 msgstr "Gospel"
 
-#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:76
+#: Input/mpg123/mpg123.c:36 Input/vorbis/fileinfo.c:88
 msgid "Noise"
 msgstr "Szum"
 
-#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:76
-msgid "Alt"
-msgstr "Alt"
+#: Input/mpg123/mpg123.c:36 Input/vorbis/fileinfo.c:88
+msgid "AlternRock"
+msgstr "Rock Alternatywny"
 
-#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:77
+#: Input/mpg123/mpg123.c:37 Input/vorbis/fileinfo.c:89
 msgid "Bass"
 msgstr "Bass"
 
-#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:77
+#: Input/mpg123/mpg123.c:37 Input/vorbis/fileinfo.c:89
 msgid "Soul"
 msgstr "Soul"
 
-#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:77
+#: Input/mpg123/mpg123.c:37 Input/vorbis/fileinfo.c:89
 msgid "Punk"
 msgstr "Punk"
 
-#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:77
+#: Input/mpg123/mpg123.c:37 Input/vorbis/fileinfo.c:89
 msgid "Space"
 msgstr "Przestrzeñ"
 
-#: Input/mpg123/mpg123.c:35 Input/vorbis/fileinfo.c:78
+#: Input/mpg123/mpg123.c:38 Input/vorbis/fileinfo.c:90
 msgid "Meditative"
 msgstr "Medytacyjna"
 
-#: Input/mpg123/mpg123.c:35 Input/vorbis/fileinfo.c:78
+#: Input/mpg123/mpg123.c:38 Input/vorbis/fileinfo.c:90
 msgid "Instrumental Pop"
 msgstr "Instrumentalny Pop"
 
-#: Input/mpg123/mpg123.c:36 Input/vorbis/fileinfo.c:79
+#: Input/mpg123/mpg123.c:39 Input/vorbis/fileinfo.c:91
 msgid "Instrumental Rock"
 msgstr "Instrumentalny Rock"
 
-#: Input/mpg123/mpg123.c:36 Input/vorbis/fileinfo.c:79
+#: Input/mpg123/mpg123.c:39 Input/vorbis/fileinfo.c:91
 msgid "Ethnic"
 msgstr "Etniczna"
 
-#: Input/mpg123/mpg123.c:36 Input/vorbis/fileinfo.c:79
+#: Input/mpg123/mpg123.c:39 Input/vorbis/fileinfo.c:91
 msgid "Gothic"
 msgstr "Gotycka"
 
-#: Input/mpg123/mpg123.c:37 Input/vorbis/fileinfo.c:80
+#: Input/mpg123/mpg123.c:40 Input/vorbis/fileinfo.c:92
 msgid "Darkwave"
 msgstr "Darkwave"
 
-#: Input/mpg123/mpg123.c:37 Input/vorbis/fileinfo.c:80
+#: Input/mpg123/mpg123.c:40 Input/vorbis/fileinfo.c:92
 msgid "Techno-Industrial"
 msgstr "Techno-Industrial"
 
-#: Input/mpg123/mpg123.c:37 Input/vorbis/fileinfo.c:80
+#: Input/mpg123/mpg123.c:40 Input/vorbis/fileinfo.c:92
 msgid "Electronic"
 msgstr "Elektroniczna"
 
-#: Input/mpg123/mpg123.c:38 Input/vorbis/fileinfo.c:81
+#: Input/mpg123/mpg123.c:41 Input/vorbis/fileinfo.c:93
 msgid "Pop-Folk"
 msgstr "Pop-Folk"
 
-#: Input/mpg123/mpg123.c:38 Input/vorbis/fileinfo.c:81
+#: Input/mpg123/mpg123.c:41 Input/vorbis/fileinfo.c:93
 msgid "Eurodance"
 msgstr "Eurodance"
 
-#: Input/mpg123/mpg123.c:38 Input/vorbis/fileinfo.c:81
+#: Input/mpg123/mpg123.c:41 Input/vorbis/fileinfo.c:93
 msgid "Dream"
 msgstr "Sen"
 
-#: Input/mpg123/mpg123.c:39 Input/vorbis/fileinfo.c:82
+#: Input/mpg123/mpg123.c:42 Input/vorbis/fileinfo.c:94
 msgid "Southern Rock"
 msgstr "Po³udniowy Rock"
 
-#: Input/mpg123/mpg123.c:39 Input/vorbis/fileinfo.c:82
+#: Input/mpg123/mpg123.c:42 Input/vorbis/fileinfo.c:94
 msgid "Comedy"
 msgstr "Komediowa"
 
-#: Input/mpg123/mpg123.c:39 Input/vorbis/fileinfo.c:82
+#: Input/mpg123/mpg123.c:42 Input/vorbis/fileinfo.c:94
 msgid "Cult"
 msgstr "Kultowa"
 
-#: Input/mpg123/mpg123.c:40 Input/vorbis/fileinfo.c:83
+#: Input/mpg123/mpg123.c:43 Input/vorbis/fileinfo.c:95
 msgid "Gangsta Rap"
 msgstr "Gangsta Rap"
 
-#: Input/mpg123/mpg123.c:40 Input/vorbis/fileinfo.c:83
+#: Input/mpg123/mpg123.c:43 Input/vorbis/fileinfo.c:95
 msgid "Top 40"
 msgstr "Top 40"
 
-#: Input/mpg123/mpg123.c:40 Input/vorbis/fileinfo.c:83
+#: Input/mpg123/mpg123.c:43 Input/vorbis/fileinfo.c:95
 msgid "Christian Rap"
 msgstr "Rap Chrze¶cijañski"
 
-#: Input/mpg123/mpg123.c:41 Input/vorbis/fileinfo.c:84
+#: Input/mpg123/mpg123.c:44 Input/vorbis/fileinfo.c:96
 msgid "Pop/Funk"
 msgstr "Pop/Funk"
 
-#: Input/mpg123/mpg123.c:41 Input/vorbis/fileinfo.c:84
+#: Input/mpg123/mpg123.c:44 Input/vorbis/fileinfo.c:96
 msgid "Jungle"
 msgstr "Jungle"
 
-#: Input/mpg123/mpg123.c:41 Input/vorbis/fileinfo.c:84
+#: Input/mpg123/mpg123.c:44 Input/vorbis/fileinfo.c:96
 msgid "Native American"
 msgstr "Rdzennych Amerykanów"
 
-#: Input/mpg123/mpg123.c:42 Input/vorbis/fileinfo.c:85
+#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:97
 msgid "Cabaret"
 msgstr "Kabaretowa"
 
-#: Input/mpg123/mpg123.c:42 Input/vorbis/fileinfo.c:85
+#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:97
 msgid "New Wave"
 msgstr "New Wave"
 
-#: Input/mpg123/mpg123.c:42 Input/vorbis/fileinfo.c:85
+#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:97
 msgid "Psychedelic"
 msgstr "Psychodeliczna"
 
-#: Input/mpg123/mpg123.c:42 Input/vorbis/fileinfo.c:85
+#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:97
 msgid "Rave"
 msgstr "Rave"
 
-#: Input/mpg123/mpg123.c:43 Input/vorbis/fileinfo.c:86
+#: Input/mpg123/mpg123.c:46 Input/vorbis/fileinfo.c:98
 msgid "Showtunes"
 msgstr "Showtunes"
 
-#: Input/mpg123/mpg123.c:43 Input/vorbis/fileinfo.c:86
+#: Input/mpg123/mpg123.c:46 Input/vorbis/fileinfo.c:98
 msgid "Trailer"
-msgstr "Zwiastun"
+msgstr "Trailer"
 
-#: Input/mpg123/mpg123.c:43 Input/vorbis/fileinfo.c:86
+#: Input/mpg123/mpg123.c:46 Input/vorbis/fileinfo.c:98
 msgid "Lo-Fi"
 msgstr "Lo-Fi"
 
-#: Input/mpg123/mpg123.c:43 Input/vorbis/fileinfo.c:86
+#: Input/mpg123/mpg123.c:46 Input/vorbis/fileinfo.c:98
 msgid "Tribal"
 msgstr "Plemienna"
 
-#: Input/mpg123/mpg123.c:44 Input/vorbis/fileinfo.c:87
+#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:99
 msgid "Acid Punk"
 msgstr "Acid Punk"
 
-#: Input/mpg123/mpg123.c:44 Input/vorbis/fileinfo.c:87
+#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:99
 msgid "Acid Jazz"
 msgstr "Acid Jazz"
 
-#: Input/mpg123/mpg123.c:44 Input/vorbis/fileinfo.c:87
+#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:99
 msgid "Polka"
 msgstr "Polka"
 
-#: Input/mpg123/mpg123.c:44 Input/vorbis/fileinfo.c:87
+#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:99
 msgid "Retro"
 msgstr "Retro"
 
-#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:88
+#: Input/mpg123/mpg123.c:48 Input/vorbis/fileinfo.c:100
 msgid "Musical"
 msgstr "Musical"
 
-#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:88
+#: Input/mpg123/mpg123.c:48 Input/vorbis/fileinfo.c:100
 msgid "Rock & Roll"
 msgstr "Rock & Roll"
 
-#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:88
+#: Input/mpg123/mpg123.c:48 Input/vorbis/fileinfo.c:100
 msgid "Hard Rock"
 msgstr "Hard Rock"
 
-#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:88
+#: Input/mpg123/mpg123.c:48 Input/vorbis/fileinfo.c:100
 msgid "Folk"
 msgstr "Folk"
 
-#: Input/mpg123/mpg123.c:46 Input/vorbis/fileinfo.c:89
+#: Input/mpg123/mpg123.c:49 Input/vorbis/fileinfo.c:101
 msgid "Folk/Rock"
 msgstr "Folk/Rock"
 
-#: Input/mpg123/mpg123.c:46 Input/vorbis/fileinfo.c:89
+#: Input/mpg123/mpg123.c:49 Input/vorbis/fileinfo.c:101
 msgid "National Folk"
 msgstr "Folk Narodowy"
 
-#: Input/mpg123/mpg123.c:46 Input/vorbis/fileinfo.c:89
+#: Input/mpg123/mpg123.c:49 Input/vorbis/fileinfo.c:101
 msgid "Swing"
 msgstr "Swing"
 
-#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:90
+#: Input/mpg123/mpg123.c:50 Input/vorbis/fileinfo.c:102
 msgid "Fast-Fusion"
 msgstr "Fast-Fusion"
 
-#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:90
+#: Input/mpg123/mpg123.c:50 Input/vorbis/fileinfo.c:102
 msgid "Bebob"
 msgstr "Bebob"
 
-#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:90
+#: Input/mpg123/mpg123.c:50 Input/vorbis/fileinfo.c:102
 msgid "Latin"
 msgstr "Latynoska"
 
-#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:90
+#: Input/mpg123/mpg123.c:50 Input/vorbis/fileinfo.c:102
 msgid "Revival"
 msgstr "O¿ywiaj±ca"
 
-#: Input/mpg123/mpg123.c:48 Input/vorbis/fileinfo.c:91
+#: Input/mpg123/mpg123.c:51 Input/vorbis/fileinfo.c:103
 msgid "Celtic"
 msgstr "Celtycka"
 
-#: Input/mpg123/mpg123.c:48 Input/vorbis/fileinfo.c:91
+#: Input/mpg123/mpg123.c:51 Input/vorbis/fileinfo.c:103
 msgid "Bluegrass"
 msgstr "Bluegrass"
 
-#: Input/mpg123/mpg123.c:48 Input/vorbis/fileinfo.c:91
+#: Input/mpg123/mpg123.c:51 Input/vorbis/fileinfo.c:103
 msgid "Avantgarde"
 msgstr "Awangardowa"
 
-#: Input/mpg123/mpg123.c:49 Input/vorbis/fileinfo.c:92
+#: Input/mpg123/mpg123.c:52 Input/vorbis/fileinfo.c:104
 msgid "Gothic Rock"
 msgstr "Rock Gotycki"
 
-#: Input/mpg123/mpg123.c:49 Input/vorbis/fileinfo.c:92
+#: Input/mpg123/mpg123.c:52 Input/vorbis/fileinfo.c:104
 msgid "Progressive Rock"
 msgstr "Rock Progresywny"
 
-#: Input/mpg123/mpg123.c:50 Input/vorbis/fileinfo.c:93
+#: Input/mpg123/mpg123.c:53 Input/vorbis/fileinfo.c:105
 msgid "Psychedelic Rock"
 msgstr "Rock Psychodeliczny"
 
-#: Input/mpg123/mpg123.c:50 Input/vorbis/fileinfo.c:93
+#: Input/mpg123/mpg123.c:53 Input/vorbis/fileinfo.c:105
 msgid "Symphonic Rock"
 msgstr "Rock Symfoniczny"
 
-#: Input/mpg123/mpg123.c:50 Input/vorbis/fileinfo.c:93
+#: Input/mpg123/mpg123.c:53 Input/vorbis/fileinfo.c:105
 msgid "Slow Rock"
 msgstr "Wolny Rock"
 
-#: Input/mpg123/mpg123.c:51 Input/vorbis/fileinfo.c:94
+#: Input/mpg123/mpg123.c:54 Input/vorbis/fileinfo.c:106
 msgid "Big Band"
 msgstr "Big Band"
 
-#: Input/mpg123/mpg123.c:51 Input/vorbis/fileinfo.c:94
+#: Input/mpg123/mpg123.c:54 Input/vorbis/fileinfo.c:106
 msgid "Chorus"
 msgstr "Chóralna"
 
-#: Input/mpg123/mpg123.c:51 Input/vorbis/fileinfo.c:94
+#: Input/mpg123/mpg123.c:54 Input/vorbis/fileinfo.c:106
 msgid "Easy Listening"
 msgstr "Lekka w s³uchaniu"
 
-#: Input/mpg123/mpg123.c:52 Input/vorbis/fileinfo.c:95
+#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:107
 msgid "Acoustic"
 msgstr "Akustyczna"
 
-#: Input/mpg123/mpg123.c:52 Input/vorbis/fileinfo.c:95
+#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:107
 msgid "Humour"
 msgstr "Humor"
 
-#: Input/mpg123/mpg123.c:52 Input/vorbis/fileinfo.c:95
+#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:107
 msgid "Speech"
 msgstr "Mowa"
 
-#: Input/mpg123/mpg123.c:52 Input/vorbis/fileinfo.c:95
+#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:107
 msgid "Chanson"
 msgstr "Chanson"
 
-#: Input/mpg123/mpg123.c:53 Input/vorbis/fileinfo.c:96
+#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:108
 msgid "Opera"
 msgstr "Opera"
 
-#: Input/mpg123/mpg123.c:53 Input/vorbis/fileinfo.c:96
+#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:108
 msgid "Chamber Music"
 msgstr "Muzyka ko¶cielna"
 
-#: Input/mpg123/mpg123.c:53 Input/vorbis/fileinfo.c:96
+#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:108
 msgid "Sonata"
 msgstr "Sonata"
 
-#: Input/mpg123/mpg123.c:53 Input/vorbis/fileinfo.c:96
+#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:108
 msgid "Symphony"
 msgstr "Symfonia"
 
-#: Input/mpg123/mpg123.c:54 Input/vorbis/fileinfo.c:97
+#: Input/mpg123/mpg123.c:57 Input/vorbis/fileinfo.c:109
 msgid "Booty Bass"
 msgstr "Booty Bass"
 
-#: Input/mpg123/mpg123.c:54 Input/vorbis/fileinfo.c:97
+#: Input/mpg123/mpg123.c:57 Input/vorbis/fileinfo.c:109
 msgid "Primus"
 msgstr "Primus"
 
-#: Input/mpg123/mpg123.c:54 Input/vorbis/fileinfo.c:97
+#: Input/mpg123/mpg123.c:57 Input/vorbis/fileinfo.c:109
 msgid "Porn Groove"
 msgstr "Porn Groove"
 
-#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:98
+#: Input/mpg123/mpg123.c:58 Input/vorbis/fileinfo.c:110
 msgid "Satire"
 msgstr "Satyryczna"
 
-#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:98
+#: Input/mpg123/mpg123.c:58 Input/vorbis/fileinfo.c:110
 msgid "Slow Jam"
-msgstr "Wolny Jam"
+msgstr "Slow Jam"
 
-#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:98
+#: Input/mpg123/mpg123.c:58 Input/vorbis/fileinfo.c:110
 msgid "Club"
 msgstr "Klubowa"
 
-#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:98
+#: Input/mpg123/mpg123.c:58 Input/vorbis/fileinfo.c:110
 msgid "Tango"
 msgstr "Tango"
 
-#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:99
+#: Input/mpg123/mpg123.c:59 Input/vorbis/fileinfo.c:111
 msgid "Samba"
 msgstr "Samba"
 
-#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:99
+#: Input/mpg123/mpg123.c:59 Input/vorbis/fileinfo.c:111
 msgid "Folklore"
 msgstr "Folklor"
 
-#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:99
+#: Input/mpg123/mpg123.c:59 Input/vorbis/fileinfo.c:111
 msgid "Ballad"
 msgstr "Ballada"
 
-#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:99
+#: Input/mpg123/mpg123.c:59 Input/vorbis/fileinfo.c:111
 msgid "Power Ballad"
-msgstr "Mocna Ballada"
+msgstr "Power Ballad"
 
-#: Input/mpg123/mpg123.c:57 Input/vorbis/fileinfo.c:100
+#: Input/mpg123/mpg123.c:60 Input/vorbis/fileinfo.c:112
 msgid "Rhythmic Soul"
-msgstr "Rytmiczny Soul"
+msgstr "Rhythmic Soul"
 
-#: Input/mpg123/mpg123.c:57 Input/vorbis/fileinfo.c:100
+#: Input/mpg123/mpg123.c:60 Input/vorbis/fileinfo.c:112
 msgid "Freestyle"
-msgstr "Styl Wolny"
+msgstr "Freestyle"
 
-#: Input/mpg123/mpg123.c:57 Input/vorbis/fileinfo.c:100
+#: Input/mpg123/mpg123.c:60 Input/vorbis/fileinfo.c:112
 msgid "Duet"
 msgstr "Duet"
 
-#: Input/mpg123/mpg123.c:58 Input/vorbis/fileinfo.c:101
+#: Input/mpg123/mpg123.c:61 Input/vorbis/fileinfo.c:113
 msgid "Punk Rock"
 msgstr "Punk Rock"
 
-#: Input/mpg123/mpg123.c:58 Input/vorbis/fileinfo.c:101
+#: Input/mpg123/mpg123.c:61 Input/vorbis/fileinfo.c:113
 msgid "Drum Solo"
-msgstr "Solo perkusyjne"
+msgstr "Drum Solo"
 
-#: Input/mpg123/mpg123.c:58 Input/vorbis/fileinfo.c:101
+#: Input/mpg123/mpg123.c:61 Input/vorbis/fileinfo.c:113
 msgid "A Cappella"
 msgstr "A Cappella"
 
-#: Input/mpg123/mpg123.c:59 Input/vorbis/fileinfo.c:102
+#: Input/mpg123/mpg123.c:62 Input/vorbis/fileinfo.c:114
 msgid "Euro-House"
 msgstr "Euro-House"
 
-#: Input/mpg123/mpg123.c:59 Input/vorbis/fileinfo.c:102
+#: Input/mpg123/mpg123.c:62 Input/vorbis/fileinfo.c:114
 msgid "Dance Hall"
 msgstr "Dance Hall"
 
-#: Input/mpg123/mpg123.c:59 Input/vorbis/fileinfo.c:102
+#: Input/mpg123/mpg123.c:62 Input/vorbis/fileinfo.c:114
 msgid "Goa"
 msgstr "Goa"
 
-#: Input/mpg123/mpg123.c:60 Input/vorbis/fileinfo.c:103
+#: Input/mpg123/mpg123.c:63 Input/vorbis/fileinfo.c:115
 msgid "Drum & Bass"
 msgstr "Drum & Bass"
 
-#: Input/mpg123/mpg123.c:60 Input/vorbis/fileinfo.c:103
+#: Input/mpg123/mpg123.c:63 Input/vorbis/fileinfo.c:115
 msgid "Club-House"
 msgstr "Club-House"
 
-#: Input/mpg123/mpg123.c:60 Input/vorbis/fileinfo.c:103
+#: Input/mpg123/mpg123.c:63 Input/vorbis/fileinfo.c:115
 msgid "Hardcore"
 msgstr "Hardcore"
 
-#: Input/mpg123/mpg123.c:61 Input/vorbis/fileinfo.c:104
+#: Input/mpg123/mpg123.c:64 Input/vorbis/fileinfo.c:116
 msgid "Terror"
 msgstr "Terror"
 
-#: Input/mpg123/mpg123.c:61 Input/vorbis/fileinfo.c:104
+#: Input/mpg123/mpg123.c:64 Input/vorbis/fileinfo.c:116
 msgid "Indie"
 msgstr "Indie"
 
-#: Input/mpg123/mpg123.c:61 Input/vorbis/fileinfo.c:104
+#: Input/mpg123/mpg123.c:64 Input/vorbis/fileinfo.c:116
 msgid "BritPop"
 msgstr "BritPop"
 
-#: Input/mpg123/mpg123.c:61 Input/vorbis/fileinfo.c:104
+#: Input/mpg123/mpg123.c:64 Input/vorbis/fileinfo.c:116
 msgid "Negerpunk"
 msgstr "Negerpunk"
 
-#: Input/mpg123/mpg123.c:62 Input/vorbis/fileinfo.c:105
+#: Input/mpg123/mpg123.c:65 Input/vorbis/fileinfo.c:117
 msgid "Polsk Punk"
 msgstr "Polsk Punk"
 
-#: Input/mpg123/mpg123.c:62 Input/vorbis/fileinfo.c:105
+#: Input/mpg123/mpg123.c:65 Input/vorbis/fileinfo.c:117
 msgid "Beat"
 msgstr "Beat"
 
-#: Input/mpg123/mpg123.c:62 Input/vorbis/fileinfo.c:105
+#: Input/mpg123/mpg123.c:65 Input/vorbis/fileinfo.c:117
 msgid "Christian Gangsta Rap"
 msgstr "Gangsta Rap Chrze¶cijañski"
 
-#: Input/mpg123/mpg123.c:63 Input/vorbis/fileinfo.c:106
+#: Input/mpg123/mpg123.c:66 Input/vorbis/fileinfo.c:118
 msgid "Heavy Metal"
 msgstr "Heavy Metal"
 
-#: Input/mpg123/mpg123.c:63 Input/vorbis/fileinfo.c:106
+#: Input/mpg123/mpg123.c:66 Input/vorbis/fileinfo.c:118
 msgid "Black Metal"
 msgstr "Black Metal"
 
-#: Input/mpg123/mpg123.c:63 Input/vorbis/fileinfo.c:106
+#: Input/mpg123/mpg123.c:66 Input/vorbis/fileinfo.c:118
 msgid "Crossover"
 msgstr "Crossover"
 
-#: Input/mpg123/mpg123.c:64 Input/vorbis/fileinfo.c:107
+#: Input/mpg123/mpg123.c:67 Input/vorbis/fileinfo.c:119
 msgid "Contemporary Christian"
 msgstr "Wspó³czesna Chrze¶cijañska"
 
-#: Input/mpg123/mpg123.c:64 Input/vorbis/fileinfo.c:107
+#: Input/mpg123/mpg123.c:67 Input/vorbis/fileinfo.c:119
 msgid "Christian Rock"
 msgstr "Rock Chrze¶cijañski"
 
-#: Input/mpg123/mpg123.c:65 Input/vorbis/fileinfo.c:108
+#: Input/mpg123/mpg123.c:68 Input/vorbis/fileinfo.c:120
 msgid "Merengue"
 msgstr "Merengue"
 
-#: Input/mpg123/mpg123.c:65 Input/vorbis/fileinfo.c:108
+#: Input/mpg123/mpg123.c:68 Input/vorbis/fileinfo.c:120
 msgid "Salsa"
 msgstr "Salsa"
 
-#: Input/mpg123/mpg123.c:65 Input/vorbis/fileinfo.c:108
+#: Input/mpg123/mpg123.c:68 Input/vorbis/fileinfo.c:120
 msgid "Thrash Metal"
 msgstr "Thrash Metal"
 
-#: Input/mpg123/mpg123.c:66 Input/vorbis/fileinfo.c:109
+#: Input/mpg123/mpg123.c:69 Input/vorbis/fileinfo.c:121
 msgid "Anime"
-msgstr "Zwierzêta"
+msgstr "Anime"
 
-#: Input/mpg123/mpg123.c:66 Input/vorbis/fileinfo.c:109
+#: Input/mpg123/mpg123.c:69 Input/vorbis/fileinfo.c:121
 msgid "JPop"
 msgstr "JPop"
 
-#: Input/mpg123/mpg123.c:66 Input/vorbis/fileinfo.c:109
+#: Input/mpg123/mpg123.c:69 Input/vorbis/fileinfo.c:121
 msgid "Synthpop"
 msgstr "Synthpop"
 
-#: Input/mpg123/mpg123.c:1099
+#: Input/mpg123/mpg123.c:1148
 msgid "About MPEG Layer 1/2/3 plugin"
 msgstr "Informacje o wtyczce MPEG Layer 1/2/3"
 
-#: Input/mpg123/mpg123.c:1100
+#: Input/mpg123/mpg123.c:1149
 msgid ""
 "mpg123 decoding engine by Michael Hipp <mh@mpg123.de>\n"
 "Plugin by The XMMS team"
@@ -1650,7 +1848,7 @@ msgstr ""
 "Mechanizm dekoduj±cy mpg123 autorstwa Michaela Hippa <mh@mpg123.de>\n"
 "Wtyczka stworzona przez zespó³ twórców XMMS-a"
 
-#: Input/mpg123/mpg123.c:1134
+#: Input/mpg123/mpg123.c:1183
 #, c-format
 msgid "MPEG Layer 1/2/3 Player %s"
 msgstr "Odtwarzacz MPEG Layer 1/2/3 %s"
@@ -1659,143 +1857,195 @@ msgstr "Odtwarzacz MPEG Layer 1/2/3 %s"
 msgid "About Tone Generator"
 msgstr "Informacje o generatorze tonów"
 
-#: Input/tonegen/tonegen.c:50
+#: Input/tonegen/tonegen.c:51
 msgid ""
-"Sinus tone generator by Håvard Kvålen <havardk@xmms.org>\n"
+"Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
 "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
 "\n"
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
 msgstr ""
-"Generator tonów sinusoidalnych, napisany przez Håvarda Kvålena "
-"<havardk@xmms.org>\n"
+"Generator tonów sinusoidalnych, napisany przez Håvarda Kvålena <havardk@xmms."
+"org>\n"
 "Zmodyfikowany przez Daniela J. Penga <danielpeng@bigfoot.com>\n"
 "\n"
-"Aby go u¿yæ, podaj URL w postaci: "
-"tone://czêstotliwo¶æ1;czêstotliwo¶æ2;czêstotliwo¶æ3;...\n"
+"Aby go u¿yæ, podaj URL w postaci: tone://czêstotliwo¶æ1;czêstotliwo¶æ2;"
+"czêstotliwo¶æ3;...\n"
 "np. tone://2000;2005, aby wygenerowaæ tony 2000 Hz i 2005Hz"
 
-#: Input/tonegen/tonegen.c:163
+#: Input/tonegen/tonegen.c:164
 msgid "Tone Generator: "
 msgstr "Generator tonów: "
 
-#: Input/tonegen/tonegen.c:263
+#: Input/tonegen/tonegen.c:264
 #, c-format
 msgid "Tone Generator %s"
 msgstr "Generator tonów: %s"
 
-#: Input/vorbis/configure.c:122
+#: Input/vorbis/configure.c:158
 msgid "Select the directory where you want to store the Ogg Vorbis streams:"
 msgstr "Wybór katalogu przechowuj±cego strumienie Ogg Vorbis:"
 
-#: Input/vorbis/configure.c:175
+#: Input/vorbis/configure.c:226
 msgid "Ogg Vorbis Configuration"
 msgstr "Konfiguracja Ogg Vorbis"
 
-#. Title config..
-#: Input/vorbis/configure.c:313
+#: Input/vorbis/configure.c:364
 msgid "Ogg Vorbis Tags:"
 msgstr "Znaczniki Ogg Vorbis:"
 
-#: Input/vorbis/configure.c:329 xmms/prefswin.c:979
+#: Input/vorbis/configure.c:380 xmms/prefswin.c:1120
 msgid "Title format:"
 msgstr "Format tytu³u:"
 
-#: Input/vorbis/fileinfo.c:197
+#: Input/vorbis/configure.c:395 Input/vorbis/fileinfo.c:645
+msgid "ReplayGain Settings:"
+msgstr "Ustawienia usuwania ró¿nic w g³o¶no¶ci:"
+
+#: Input/vorbis/configure.c:402
+msgid "Enable Clipping Prevention"
+msgstr "W³±cz zapobieganie obcinaniu"
+
+#: Input/vorbis/configure.c:406
+msgid "Enable ReplayGain"
+msgstr "W³±cz usuwanie ró¿nic w g³o¶no¶ci miêdzy utworam"
+
+#: Input/vorbis/configure.c:410
+msgid "ReplayGain Type:"
+msgstr "Typ powtarzania uzyskanego:"
+
+#: Input/vorbis/configure.c:419
+msgid "use Track Gain/Peak"
+msgstr "u¿yj ¶cie¿ki uzyskanej/szczytowej"
+
+#: Input/vorbis/configure.c:426
+msgid "use Album Gain/Peak"
+msgstr "u¿yj albumu uzyskanego/szczytowego"
+
+#: Input/vorbis/configure.c:436
+msgid "Enable 6dB Boost + Hard Limiting"
+msgstr "W³±cz 6dB wzmocnienie i twarde ograniczenie"
+
+#: Input/vorbis/configure.c:440
+msgid "ReplayGain"
+msgstr "Powtarzaj uzyskane"
+
+#: Input/vorbis/fileinfo.c:208
 #, c-format
 msgid ""
-"An error occured:\n"
+"An error occurred:\n"
 "%s"
 msgstr ""
 "Wyst±pi³ b³±d:\n"
 "%s"
 
-#: Input/vorbis/fileinfo.c:200
+#: Input/vorbis/fileinfo.c:210
 msgid "Error!"
 msgstr "B³±d!"
 
-#: Input/vorbis/fileinfo.c:229 Input/vorbis/fileinfo.c:276
-#: Input/vorbis/fileinfo.c:297 Input/vorbis/fileinfo.c:306
+#: Input/vorbis/fileinfo.c:238 Input/vorbis/fileinfo.c:293
+#: Input/vorbis/fileinfo.c:314 Input/vorbis/fileinfo.c:323
 msgid "Failed to modify tag"
 msgstr "Modyfikacja znacznika nie powiod³a siê"
 
-#: Input/vorbis/fileinfo.c:443
+#: Input/vorbis/fileinfo.c:493
 msgid "Ogg Vorbis Tag:"
 msgstr "Znacznik Ogg Vorbis:"
 
-#: Input/vorbis/fileinfo.c:491
+#: Input/vorbis/fileinfo.c:541
 msgid "Date:"
 msgstr "Data:"
 
-#: Input/vorbis/fileinfo.c:532
+#: Input/vorbis/fileinfo.c:582
 msgid "Description:"
 msgstr "Opis:"
 
-#: Input/vorbis/fileinfo.c:542
+#: Input/vorbis/fileinfo.c:592
 msgid "Location:"
 msgstr "Po³o¿enie:"
 
-#: Input/vorbis/fileinfo.c:552
+#: Input/vorbis/fileinfo.c:602
 msgid "Version:"
 msgstr "Wersja:"
 
-#: Input/vorbis/fileinfo.c:563
+#: Input/vorbis/fileinfo.c:613
 msgid "ISRC number:"
 msgstr "Numer ISRC:"
 
-#: Input/vorbis/fileinfo.c:574
+#: Input/vorbis/fileinfo.c:624
 msgid "Organization:"
 msgstr "Organizacja:"
 
-#: Input/vorbis/fileinfo.c:584
+#: Input/vorbis/fileinfo.c:634
 msgid "Copyright:"
 msgstr "Copyright:"
 
-#: Input/vorbis/fileinfo.c:608
+#: Input/vorbis/fileinfo.c:652
+msgid "Track gain:"
+msgstr "Uzyskana ¶cie¿ka:"
+
+#: Input/vorbis/fileinfo.c:662
+msgid "Track peak:"
+msgstr "¦cie¿ka szczytowa:"
+
+#: Input/vorbis/fileinfo.c:673
+msgid "Album gain:"
+msgstr "Album uzyskany:"
+
+#: Input/vorbis/fileinfo.c:683
+msgid "Album peak:"
+msgstr "Album szczytowy:"
+
+#: Input/vorbis/fileinfo.c:707
 msgid "Remove Tag"
 msgstr "Usuñ znacznik"
 
-#: Input/vorbis/fileinfo.c:623
+#: Input/vorbis/fileinfo.c:722
 msgid "Ogg Vorbis Info:"
 msgstr "Informacje Ogg Vorbis:"
 
-#: Input/vorbis/fileinfo.c:708
+#: Input/vorbis/fileinfo.c:851
 #, c-format
 msgid "Nominal bitrate: %d kbps"
-msgstr "Nominalne tempo bitowe: %d Kb/s"
+msgstr "Nominalne tempo bitowe: %d kb/s"
 
-#: Input/vorbis/fileinfo.c:709
-#, c-format
-msgid "Samplerate: %d Hz"
-msgstr "Próbkowanie: %d Hz"
+#: Input/vorbis/fileinfo.c:852
+#, fuzzy, c-format
+msgid "Average bitrate: %.1f kbps"
+msgstr "Nominalne tempo bitowe: %d kb/s"
 
-#: Input/vorbis/fileinfo.c:710
+#: Input/vorbis/fileinfo.c:854
 #, c-format
 msgid "Channels: %d"
 msgstr "Kana³y: %d"
 
-#: Input/vorbis/fileinfo.c:711
+#: Input/vorbis/fileinfo.c:855
 #, c-format
 msgid "Length: %d:%.2d"
 msgstr "D³ugo¶æ: %d:%.2d"
 
-#: Input/vorbis/fileinfo.c:712
+#: Input/vorbis/fileinfo.c:856
 #, c-format
 msgid "File size: %d B"
 msgstr "Rozmiar pliku: %d B"
 
-#: Input/vorbis/vorbis.c:117
+#: Input/vorbis/fileinfo.c:857
+#, c-format
+msgid "Vendor: %s"
+msgstr ""
+
+#: Input/vorbis/vorbis.c:130
 #, c-format
 msgid "Ogg Vorbis Player %s"
 msgstr "Odtwarzacz Ogg Vorbis %s"
 
-#: Input/vorbis/vorbis.c:589
+#: Input/vorbis/vorbis.c:761
 msgid "About Ogg Vorbis Plugin"
 msgstr "Informacje o wtyczce Ogg Vorbis"
 
-#: Input/vorbis/vorbis.c:590
+#: Input/vorbis/vorbis.c:766
 msgid ""
-"Ogg Vorbis Plugin by Xiphophorus\n"
+"Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
 "Original code by\n"
 "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
@@ -1805,11 +2055,12 @@ msgid ""
 "Michael Smith <msmith@labyrinth.edu.au>\n"
 "Jack Moffitt <jack@icecast.org>\n"
 "Jorn Baayen <jorn@nl.linux.org>\n"
-"Håvard Kvålen <havardk@xmms.org>\n"
+"Haavard Kvaalen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "\n"
-"Visit Xiphophorus at http://www.xiph.org/\n"
+"Visit the Xiph.org Foundation at http://www.xiph.org/\n"
 msgstr ""
-"Wtyczka Ogg Vorbis autorstwa Xiphophorus\n"
+"Wtyczka Ogg Vorbis autorstwa fundacji Xiph.org\n"
 "\n"
 "Autor oryginalnego kodu:\n"
 "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
@@ -1819,11 +2070,12 @@ msgstr ""
 "Michael Smith <msmith@labyrinth.edu.au>\n"
 "Jack Moffitt <jack@icecast.org>\n"
 "Jorn Baayen <jorn@nl.linux.org>\n"
-"Håvard Kvålen <havardk@xmms.org>\n"
+"Haavard Kvaalen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "\n"
-"Odwied¼ Xiphophorus na stronie http://www.xiph.org/\n"
+"Odwied¼ fundacjê Xiph.org na stronie http://www.xiph.org/\n"
 
-#: Input/wav/wav.c:57
+#: Input/wav/wav.c:82
 #, c-format
 msgid "Wave Player %s"
 msgstr "Odtwarzacz wave %s"
@@ -1885,29 +2137,32 @@ msgstr "Domy¶lne"
 msgid "OSS Driver configuration"
 msgstr "Konfiguracja sterownika OSS"
 
-#: Output/OSS/configure.c:194
+#: Output/OSS/configure.c:194 Output/sun/configure.c:179
+#: Output/alsa/configure.c:289
 msgid "Audio device:"
 msgstr "Urz±dzenie d¼wiêkowe:"
 
 #: Output/OSS/configure.c:212 Output/OSS/configure.c:246
 msgid "Use alternate device:"
-msgstr "U¿ycie alternatywnego urz±dzenia:"
+msgstr "U¿yj alternatywnego urz±dzenia:"
 
-#: Output/OSS/configure.c:228
+#: Output/OSS/configure.c:228 Output/sun/configure.c:216
+#: Output/alsa/configure.c:334
 msgid "Mixer device:"
 msgstr "Urz±dzenie miksera:"
 
 #: Output/OSS/configure.c:262 Output/solaris/configure.c:229
+#: Output/sun/configure.c:244
 msgid "Devices"
 msgstr "Urz±dzenia:"
 
 #: Output/OSS/configure.c:276 Output/esd/configure.c:176
-#: Output/solaris/configure.c:243
+#: Output/solaris/configure.c:243 Output/sun/configure.c:268
 msgid "Buffer size (ms):"
 msgstr "Rozmiar bufora (ms):"
 
 #: Output/OSS/configure.c:292 Output/esd/configure.c:201
-#: Output/solaris/configure.c:259
+#: Output/solaris/configure.c:259 Output/sun/configure.c:300
 msgid "Buffering"
 msgstr "Buforowanie"
 
@@ -1917,18 +2172,18 @@ msgstr "Ustawienia miksera:"
 
 #: Output/OSS/configure.c:298
 msgid "Volume controls Master not PCM"
-msgstr "Zmiany g³o¶no¶ci poprzez kana³ zbiorczy, nie PCM"
+msgstr "Zmianiaj g³o¶no¶æ poprzez kana³ zbiorczy, nie PCM"
 
-#: Output/OSS/configure.c:301
+#: Output/OSS/configure.c:301 Output/sun/configure.c:390
 msgid "Mixer"
 msgstr "Mikser"
 
-#: Output/disk_writer/disk_writer.c:96
+#: Output/disk_writer/disk_writer.c:112
 #, c-format
 msgid "Disk Writer Plugin %s"
 msgstr "Wtyczka zapisu na dysk %s"
 
-#: Output/disk_writer/disk_writer.c:128
+#: Output/disk_writer/disk_writer.c:143
 msgid ""
 "You cannot use the Disk Writer plugin\n"
 "when you're running in realtime mode."
@@ -1936,13 +2191,17 @@ msgstr ""
 "Nie mo¿na u¿ywaæ wtyczki zapisu na dysk,\n"
 "w trybie czasu rzeczywistego."
 
-#: Output/disk_writer/disk_writer.c:301
+#: Output/disk_writer/disk_writer.c:344
 msgid "Select the directory where you want to store the output files:"
 msgstr "Wybór katalogu przechowuj±cego pliki wyj¶ciowe:"
 
-#: Output/disk_writer/disk_writer.c:345
+#: Output/disk_writer/disk_writer.c:392
 msgid "Disk Writer Configuration"
 msgstr "Konfiguracja zapisu na dysk"
+
+#: Output/disk_writer/disk_writer.c:421
+msgid "Don't strip file name extension"
+msgstr ""
 
 #: Output/esd/about.c:29
 msgid "About ESounD Plugin"
@@ -1989,15 +2248,11 @@ msgstr "Konfiguracja wtyczki ESD"
 
 #: Output/esd/configure.c:117
 msgid "Use remote host"
-msgstr "U¿ycie zdalnego serwera"
+msgstr "U¿yj zdalnego serwera"
 
 #: Output/esd/configure.c:124
 msgid "Volume controls OSS mixer"
 msgstr "Zmiany g³o¶no¶ci poprzez mikser OSS"
-
-#: Output/esd/configure.c:161
-msgid "Server"
-msgstr "Serwer"
 
 #: Output/esd/esd.c:45
 #, c-format
@@ -2041,7 +2296,7 @@ msgstr "Konfiguracja sterownika d¼wiêkowego dla Solaris"
 
 #: Output/solaris/configure.c:190
 msgid "Always use AUDIODEV environment variable"
-msgstr "Korzystanie zawsze ze zmiennej ¶rodowiskowej AUDIODEV"
+msgstr "Zawsze u¿ywaj zmiennej ¶rodowiskowej AUDIODEV"
 
 #: Output/solaris/configure.c:196
 msgid "Output ports:"
@@ -2058,6 +2313,143 @@ msgstr "S³uchawki"
 #: Output/solaris/configure.c:208
 msgid "Internal speaker"
 msgstr "G³o¶nik wewnêtrzny"
+
+#: Output/sun/about.c:32
+msgid "About the Sun Driver"
+msgstr "Informacje o sterowniku Sun"
+
+#: Output/sun/about.c:33
+msgid ""
+"XMMS BSD Sun Driver\n"
+"\n"
+"Copyright (c) 2001 CubeSoft Communications, Inc.\n"
+"Maintainer: <vedge at csoft.org>.\n"
+msgstr ""
+"Sterownik XMMS BSD Sun\n"
+"\n"
+"Copyright (c) 2001 CubeSoft Communications, Inc.\n"
+"Maintainer: <vedge at csoft.org>.\n"
+
+#: Output/sun/configure.c:197
+msgid "Audio control device:"
+msgstr "Urz±dzenie kontroli d¼wiêku:"
+
+#: Output/sun/configure.c:346
+msgid "Volume controls device:"
+msgstr "Urz±dzenie zmiany g³o¶no¶ci:"
+
+#: Output/sun/configure.c:359
+msgid "XMMS uses mixer exclusively."
+msgstr "XMMS u¿ywa wy³±cznie miksera"
+
+#: Output/sun/configure.c:486
+msgid "Status"
+msgstr "Status"
+
+#: Output/sun/configure.c:536
+msgid "Sun driver configuration"
+msgstr "Konfiguracja sterownika Sun"
+
+#: Output/sun/sun.c:52
+#, c-format
+msgid "BSD Sun Driver %s"
+msgstr "Sterownik BSD Sun %s"
+
+#: Output/alsa/about.c:30
+msgid "About ALSA Driver"
+msgstr "Informacje o sterowniku ALSA"
+
+#: Output/alsa/about.c:31
+msgid ""
+"XMMS ALSA Driver\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
+"USA.\n"
+"Author: Matthieu Sozeau (mattam@altern.org)"
+msgstr ""
+"XMMS - sterownik OSS\n"
+"\n"
+"Jest to program darmowy; mo¿esz go rozprowadzaæ i/lub modyfikowaæ\n"
+"zgodnie z zasadami GNU General Public License opublikowanymi przez\n"
+"Free Software Foundation; zarówno licencji w wersji 2, jak i w\n"
+"wersji pó¼niejszej (jako opcja).\n"
+"\n"
+"Program ten jest rozprowadzany z nadziej±, ¿e bêdzie u¿yteczny,\n"
+"ale BEZ ¯ADNEJ GWARANCJI; nie zawieraj±cej nawet gwarancji\n"
+"HANDLOWEJ lub ZASTOSOWANIA DO SZCZEGÓLNEGO CELU. Zobacz do\n"
+"GNU General Public License, aby uzyskaæ wiêcej informacji.\n"
+"\n"
+"Powiniene¶ otrzymaæ kopiê GNU General Public License razem\n"
+"z tym programem; je¶li nie, napisz do Free Software Foundation,\n"
+"Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.\n"
+"Author: Matthieu Sozeau (mattam@altern.org)"
+
+#: Output/alsa/alsa.c:44
+#, c-format
+msgid "ALSA %s output plugin"
+msgstr "%s wtyczka wyj¶ciowa ALSA"
+
+#: Output/alsa/configure.c:153
+msgid "Unknown soundcard"
+msgstr "Nieznana karta d¼wiêkowa"
+
+#: Output/alsa/configure.c:208
+#, c-format
+msgid "Default PCM device (%s)"
+msgstr "Domy¶lne urz±dzenie PCM (%s)"
+
+#: Output/alsa/configure.c:275
+msgid "ALSA Driver configuration"
+msgstr "Konfiguracja sterownika ALSA"
+
+#: Output/alsa/configure.c:303
+msgid "Mixer:"
+msgstr "Mikser:"
+
+#: Output/alsa/configure.c:311
+msgid "Use software volume control"
+msgstr "U¿yj programowej zmian g³o¶no¶ci"
+
+#: Output/alsa/configure.c:321
+msgid "Mixer card:"
+msgstr "Karta miksera:"
+
+#: Output/alsa/configure.c:354
+msgid "Device settings"
+msgstr "Ustawienia urz±dzenia:"
+
+#: Output/alsa/configure.c:360
+#, fuzzy
+msgid "Soundcard:"
+msgstr "Karta d¼wiêkowa #%d - %s"
+
+#: Output/alsa/configure.c:373 Output/alsa/configure.c:415
+msgid "Buffer time (ms):"
+msgstr "Rozmiar bufora (ms):"
+
+#: Output/alsa/configure.c:387
+msgid "Period time (ms):"
+msgstr "D³ugo¶æ okresu (ms):"
+
+#: Output/alsa/configure.c:402
+msgid "XMMS:"
+msgstr ""
+
+#: Output/alsa/configure.c:430
+msgid "Advanced settings"
+msgstr "Zaawansowane ustawienia"
 
 #: Visualization/blur_scope/blur_scope.c:62
 #, c-format
@@ -2104,69 +2496,47 @@ msgstr "Prosty analizator widma %s"
 msgid "Spectrum analyzer"
 msgstr "Analizator widma"
 
-#: gnomexmms/gnomexmms.c:537
-msgid "xmms applet"
-msgstr "aplet xmms"
-
-#: gnomexmms/gnomexmms.c:538
-msgid "Copyright (C) Anders Carlsson 1999), Hiroshi Takekawa 2001"
-msgstr "Copyright (C) Anders Carlsson 1999, Hiroshi Takekawa 2001"
-
-#: gnomexmms/gnomexmms.c:540
-msgid ""
-"A simple xmms gnome panel applet by Anders Carlsson.\n"
-"Some code is from wmxmms by Mikael Alm.\n"
-"Tooltip support by Hiroshi Takekawa."
-msgstr ""
-"Prosty aplet XMMS dla panelu GNOME, napisany przez Andersa Carlssona.\n"
-"Czê¶æ kodu pochodzi z wmxmms napisanego przez Mikaela Alma.\n"
-"Obs³uga podpowiedzi autorstwa Hiroshi Takekawy."
-
-#: gnomexmms/gnomexmms.c:568
-msgid "About..."
-msgstr "Informacje o..."
-
-#: libxmms/titlestring.c:277
+#: libxmms/titlestring.c:283
 msgid "Performer/Artist"
 msgstr "Wykonawca/Artysta"
 
-#: libxmms/titlestring.c:278
+#: libxmms/titlestring.c:284
 msgid "Album"
 msgstr "Album"
 
-#: libxmms/titlestring.c:279
+#: libxmms/titlestring.c:285
 msgid "Genre"
 msgstr "Rodzaj"
 
-#: libxmms/titlestring.c:280
+#: libxmms/titlestring.c:286
 msgid "File name"
 msgstr "Nazwa pliku"
 
-#: libxmms/titlestring.c:281
+#: libxmms/titlestring.c:287
 msgid "File path"
 msgstr "¦cie¿ka pliku"
 
-#: libxmms/titlestring.c:282
+#: libxmms/titlestring.c:288
 msgid "File extension"
 msgstr "Rozszerzenie pliku"
 
-#: libxmms/titlestring.c:283
+#: libxmms/titlestring.c:289
 msgid "Track name"
 msgstr "Nazwa ¶cie¿ki"
 
-#: libxmms/titlestring.c:284
+#: libxmms/titlestring.c:290
 msgid "Track number"
 msgstr "Numer ¶cie¿ki"
 
-#: libxmms/titlestring.c:285
+#: libxmms/titlestring.c:291
 msgid "Date"
 msgstr "Data"
 
-#: libxmms/titlestring.c:286
+#: libxmms/titlestring.c:292
 msgid "Year"
 msgstr "Rok"
 
-#: libxmms/titlestring.c:287
+#: libxmms/titlestring.c:293
 msgid "Comment"
 msgstr "Komentarz"
 
@@ -2190,19 +2560,16 @@ msgstr "%s: opcja \"%c%s\" nie pozwala na u¿ycie argumentu\n"
 msgid "%s: option `%s' requires an argument\n"
 msgstr "%s: opcja \"%s\" wymaga argumentu\n"
 
-#. --option
 #: wmxmms/getopt.c:707 xmms/getopt.c:707
 #, c-format
 msgid "%s: unrecognized option `--%s'\n"
 msgstr "%s: nierozpoznana opcja \"--%s\"\n"
 
-#. +option or -option
 #: wmxmms/getopt.c:711 xmms/getopt.c:711
 #, c-format
 msgid "%s: unrecognized option `%c%s'\n"
 msgstr "%s: nierozpoznana opcja \"%c%s\"\n"
 
-#. 1003.2 specifies the format of this message.
 #: wmxmms/getopt.c:737 xmms/getopt.c:737
 #, c-format
 msgid "%s: illegal option -- %c\n"
@@ -2213,7 +2580,6 @@ msgstr "%s: niepoprawna opcja -- %c\n"
 msgid "%s: invalid option -- %c\n"
 msgstr "%s: niepoprawna opcja -- %c\n"
 
-#. 1003.2 specifies the format of this message.
 #: wmxmms/getopt.c:770 wmxmms/getopt.c:900 xmms/getopt.c:770 xmms/getopt.c:900
 #, c-format
 msgid "%s: option requires an argument -- %c\n"
@@ -2229,12 +2595,12 @@ msgstr "%s: opcja \"-W %s\" jest niejednoznaczna\n"
 msgid "%s: option `-W %s' doesn't allow an argument\n"
 msgstr "%s: opcja \"-W %s\" nie pozwala na u¿ycie argumentu\n"
 
-#: wmxmms/wmxmms.c:617
+#: wmxmms/wmxmms.c:667
 #, c-format
 msgid "ERROR: Couldn't find %s\n"
 msgstr "B£¡D: Nie mo¿na odnale¼æ %s\n"
 
-#: wmxmms/wmxmms.c:652
+#: wmxmms/wmxmms.c:705
 #, c-format
 msgid ""
 "Usage: %s [options]\n"
@@ -2279,10 +2645,9 @@ msgstr "Peter Alm"
 msgid "Additional Programming:"
 msgstr "Pozostali programi¶ci:"
 
-#. for languages that can't display 'a ring' (å) replace it with "aa"
-#: xmms/about.c:33 xmms/about.c:130
-msgid "Håvard Kvålen"
-msgstr "Håvard Kvålen"
+#: xmms/about.c:33 xmms/about.c:181
+msgid "Haavard Kvaalen"
+msgstr "Haavard Kvaalen"
 
 #: xmms/about.c:34
 msgid "Derrik Pates"
@@ -2293,640 +2658,781 @@ msgid "With Additional Help:"
 msgstr "Z dodatkow± pomoc±:"
 
 #: xmms/about.c:37
+msgid "Tony Arcieri"
+msgstr "Tony Arcieri"
+
+#: xmms/about.c:38
 msgid "Sean Atkinson"
 msgstr "Sean Atkinson"
 
-#: xmms/about.c:38 xmms/about.c:101
+#: xmms/about.c:39 xmms/about.c:136
 msgid "Jorn Baayen"
 msgstr "Jorn Baayen"
 
-#: xmms/about.c:39
+#: xmms/about.c:40
 msgid "James M. Cape"
 msgstr "James M. Cape"
 
-#: xmms/about.c:40
+#: xmms/about.c:41
 msgid "Anders Carlsson (effect plugins)"
 msgstr "Anders Carlsson (wtyczki efektów)"
 
-#: xmms/about.c:41
+#: xmms/about.c:42
 msgid "Chun-Chung Chen (xfont patch)"
 msgstr "Chun-Chung Chen (³atka dla xfont)"
 
-#: xmms/about.c:42
+#: xmms/about.c:43
 msgid "Tim Ferguson (joystick plugin)"
 msgstr "Tim Ferguson (wtyczka joysticka)"
 
-#: xmms/about.c:43
+#: xmms/about.c:44
 msgid "Ben Gertzfield"
 msgstr "Ben Gertzfield"
 
-#: xmms/about.c:44
+#: xmms/about.c:45
 msgid "Vesa Halttunen"
 msgstr "Vesa Halttunen"
 
-#: xmms/about.c:45
+#: xmms/about.c:46
 msgid "Logan Hanks"
 msgstr "Logan Hanks"
 
-#: xmms/about.c:46
+#: xmms/about.c:47
 msgid "Eric L. Hernes (FreeBSD patches)"
 msgstr "Eric L. Hernes (³atky dla FreeBSD)"
 
-#: xmms/about.c:47
+#: xmms/about.c:48
 msgid "Ville Herva"
 msgstr "Ville Herva"
 
-#: xmms/about.c:48
+#: xmms/about.c:49
+msgid "Ian 'Hixie' Hickson"
+msgstr ""
+
+#: xmms/about.c:50
+msgid "higway (MMX)"
+msgstr "zaawansowane MMX"
+
+#: xmms/about.c:51
 msgid "Michael Hipp and others (MPG123 engine)"
 msgstr "Michael Hipp i inni (mechanizm MPG123)"
 
-#. for languages that can't display 'a diaeresis' (ä) replace it with "ae"
-#: xmms/about.c:50
-msgid "Olle Hällnäs (compiling fixes)"
-msgstr "Olle Hällnäs (poprawki kompilacji)"
+#: xmms/about.c:53
+msgid "Olle Hallnas (compiling fixes)"
+msgstr "Olle Hallnas (poprawki kompilacji)"
 
-#: xmms/about.c:51
+#: xmms/about.c:55
+msgid "Matti Hamalainen"
+msgstr ""
+
+#: xmms/about.c:56
 msgid "David Jacoby"
 msgstr "David Jacoby"
 
-#: xmms/about.c:52
-msgid "Osamu Kayasono (3DNow!)"
-msgstr "Osamu Kayasono (3DNow!)"
+#: xmms/about.c:57
+msgid "Osamu Kayasono (3DNow!/MMX)"
+msgstr "Osamu Kayasono (3DNow!/MMX)"
 
-#: xmms/about.c:53
+#: xmms/about.c:58
 msgid "Lyle B Kempler"
 msgstr "Lyle B Kempler"
 
-#: xmms/about.c:54
+#: xmms/about.c:59
 msgid "J. Nick Koston (MikMod plugin)"
 msgstr "J. Nick Koston (wtyczka MikMod)"
 
-#: xmms/about.c:55
+#: xmms/about.c:60
 msgid "Aaron Lehmann"
 msgstr "Aaron Lehmann"
 
-#: xmms/about.c:56
+#: xmms/about.c:61
 msgid "Johan Levin (echo + stereo plugin)"
-msgstr "Johan Levin (wtyczka echoa + stereo)"
+msgstr "Johan Levin (wtyczka echa i stereo)"
 
-#: xmms/about.c:57
+#: xmms/about.c:62
 msgid "Eric Lindvall"
 msgstr "Eric Lindvall"
 
-#: xmms/about.c:58 xmms/about.c:104
+#: xmms/about.c:63 xmms/about.c:154
 msgid "Colin Marquardt"
 msgstr "Colin Marquardt"
 
-#: xmms/about.c:59
+#: xmms/about.c:64
 msgid "Willem Monsuwe"
 msgstr "Willem Monsuwe"
 
-#: xmms/about.c:60
+#: xmms/about.c:65
+msgid "Heikki Orsila"
+msgstr ""
+
+#: xmms/about.c:66
+msgid "Gian-Carlo Pascutto"
+msgstr "Gian-Carlo Pascutto"
+
+#: xmms/about.c:67
 msgid "John Riddoch (Solaris plugin)"
 msgstr "John Riddoch (wtyczka dla Solarisa)"
 
-#: xmms/about.c:61
+#: xmms/about.c:68
+msgid "Josip Rodin"
+msgstr "Josip Rodin"
+
+#: xmms/about.c:69
 msgid "Pablo Saratxaga (i18n)"
 msgstr "Pablo Saratxaga (i18n)"
 
-#: xmms/about.c:62
+#: xmms/about.c:70
 msgid "Carl van Schaik (pro logic plugin)"
 msgstr "Carl van Schaik (wtyczka pro logic)"
 
-#. for languages that can't display 'o diaeresis' (ö) replace it with "oe"
-#: xmms/about.c:64
-msgid "Jörg Schuler"
-msgstr "Jörg Schuler"
+#: xmms/about.c:72
+msgid "Joerg Schuler"
+msgstr "Joerg Schuler"
 
-#: xmms/about.c:65
+#: xmms/about.c:73
 msgid "Charles Sielski (irman plugin)"
 msgstr "Charles Sielski (wtyczka IRMan)"
 
-#: xmms/about.c:66 xmms/about.c:131
+#: xmms/about.c:74 xmms/about.c:182
 msgid "Espen Skoglund"
 msgstr "Espen Skoglund"
 
-#: xmms/about.c:67
+#: xmms/about.c:75
+msgid "Matthieu Sozeau (ALSA plugin)"
+msgstr "Matthieu Sozeau (wtyczka ALSA)"
+
+#: xmms/about.c:76
 msgid "Kimura Takuhiro (3DNow!)"
 msgstr "Kimura Takuhiro (3DNow!)"
 
-#: xmms/about.c:68
+#: xmms/about.c:77
 msgid "Zinx Verituse"
 msgstr "Zinx Verituse"
 
-#: xmms/about.c:69
+#: xmms/about.c:78
 msgid "Ryan Weaver (RPMs among other things)"
 msgstr "Ryan Weaver (RPM-y oraz inne rzeczy)"
 
-#: xmms/about.c:70
+#: xmms/about.c:79
 msgid "Chris Wilson"
 msgstr "Chris Wilson"
 
-#: xmms/about.c:71
+#: xmms/about.c:80
 msgid "Dave Yearke"
 msgstr "Dave Yearke"
 
-#: xmms/about.c:72
+#: xmms/about.c:81
 msgid "Stephan K. Zitz"
 msgstr "Stephan K. Zitz"
 
-#: xmms/about.c:74
+#: xmms/about.c:83
+msgid "Default skin:"
+msgstr "Domy¶lna skóra:"
+
+#: xmms/about.c:84
+msgid "Leonard \"Blayde\" Tan"
+msgstr "Leonard \"Blayde\" Tan"
+
+#: xmms/about.c:85
+msgid "Robin Sylvestre (Equalizer and Playlist)"
+msgstr "Robin Sylvestre (Korektor graficzny i lista odtwarzania)"
+
+#: xmms/about.c:86
+msgid "Thomas Nilsson (New titles and cleanups)"
+msgstr "Thomas Nilsson (nowe skóry)"
+
+#: xmms/about.c:88
 msgid "Homepage and Graphics:"
 msgstr "Witryna domowa i grafika:"
 
-#: xmms/about.c:75 xmms/about.c:147
+#: xmms/about.c:89 xmms/about.c:206
 msgid "Thomas Nilsson"
 msgstr "Thomas Nilsson"
 
-#: xmms/about.c:77
+#: xmms/about.c:91
 msgid "Support and Docs:"
 msgstr "Wsparcie i dokumentacja:"
 
-#. for languages that can't display 'a diaeresis' (ä) replace it with "ae"
-#: xmms/about.c:79 xmms/about.c:146
-msgid "Olle Hällnäs"
-msgstr "Olle Hällnäs"
+#: xmms/about.c:93 xmms/about.c:205
+msgid "Olle Hallnas"
+msgstr "Olle Hallnas"
 
-#: xmms/about.c:84
+#: xmms/about.c:98
 msgid "Afrikaans:"
 msgstr "Afrykanerski:"
 
-#. for languages that can't display 'e acute' (é) replace it with "e"
-#: xmms/about.c:86
-msgid "Schalk W. Cronjé "
-msgstr "Schalk W. Cronjé "
+#: xmms/about.c:100
+msgid "Schalk W. Cronje"
+msgstr "Schalk W. Cronje"
 
-#: xmms/about.c:87
+#: xmms/about.c:101
+msgid "Albanian:"
+msgstr "Albañski:"
+
+#: xmms/about.c:102
+msgid "Naim Daka"
+msgstr "Naim Daka"
+
+#: xmms/about.c:103
 msgid "Azerbaijani:"
 msgstr "Azerbejd¿añski:"
 
-#: xmms/about.c:87
+#: xmms/about.c:105
+msgid "Metin Amiroff"
+msgstr "Metin Amiroff"
+
+#: xmms/about.c:107
 msgid "Vasif Ismailoglu"
 msgstr "Vasif Ismailoglu"
 
-#: xmms/about.c:88
+#: xmms/about.c:108
 msgid "Basque:"
 msgstr "Baskijski:"
 
-#: xmms/about.c:88
-msgid "Iñigo Salvador Azurmendi"
-msgstr "Iñigo Salvador Azurmendi"
+#: xmms/about.c:110
+msgid "Inigo Salvador Azurmendi"
+msgstr "Inigo Salvador Azurmendi"
 
-#: xmms/about.c:89
+#: xmms/about.c:111
+msgid "Belarusian:"
+msgstr "Bia³oruski:"
+
+#: xmms/about.c:112
+msgid "Smaliakou Zmicer"
+msgstr "Smaliakou Zmicer"
+
+#: xmms/about.c:113
+msgid "Bosnian:"
+msgstr "Bo¶niacki:"
+
+#: xmms/about.c:115
+msgid "Amila Akagic"
+msgstr "Amila Akagic"
+
+#: xmms/about.c:116
+msgid "Grabovica Eldin"
+msgstr "Grabovica Eldin"
+
+#: xmms/about.c:116
+msgid "Vedran Ljubovic"
+msgstr "Vedran Ljubovic"
+
+#: xmms/about.c:117
 msgid "Brazilian Portuguese:"
 msgstr "Brazylijski Portugalski:"
 
-#: xmms/about.c:89
+#: xmms/about.c:118
 msgid "Juan Carlos Castro y Castro"
 msgstr "Juan Carlos Castro y Castro"
 
-#: xmms/about.c:90
+#: xmms/about.c:119
 msgid "Bulgarian:"
 msgstr "Bu³garski:"
 
-#: xmms/about.c:90
+#: xmms/about.c:120
+msgid "Boyan Ivanov"
+msgstr "Boyan Ivanov"
+
+#: xmms/about.c:120
 msgid "Yovko D. Lambrev"
 msgstr "Yovko D. Lambrev"
 
-#: xmms/about.c:91
+#: xmms/about.c:121
 msgid "Catalan:"
 msgstr "Kataloñski:"
 
-#: xmms/about.c:91
+#: xmms/about.c:122
+msgid "Albert Astals Cid"
+msgstr "Albert Astals Cid"
+
+#: xmms/about.c:122
 msgid "Quico Llach"
 msgstr "Quico Llach"
 
-#: xmms/about.c:92
-msgid "Chinese:"
-msgstr "Chiñski:"
-
-#: xmms/about.c:92
-msgid "Chun-Chung Chen"
-msgstr "Chun-Chung Chen"
-
-#: xmms/about.c:92
-msgid "Jouston Huang"
-msgstr "Jouston Huang"
-
-#: xmms/about.c:93
-msgid "Andrew Lee"
-msgstr "Andrew Lee"
-
-#: xmms/about.c:93
-msgid "Chih-Wei Huang"
-msgstr "Chih-Wei Huang"
-
-#: xmms/about.c:93
-msgid "Danny Zeng"
-msgstr "Danny Zeng"
-
-#: xmms/about.c:94
-msgid "Croatian:"
-msgstr "Chorwacki:"
-
-#: xmms/about.c:94
-msgid "Vlatko Kosturjak"
-msgstr "Vlatko Kosturjak"
-
-#: xmms/about.c:94
-msgid "Vladimir Vuksan"
-msgstr "Vladimir Vuksan"
-
-#: xmms/about.c:95
-msgid "Czech:"
-msgstr "Czeski:"
-
-#. for languages that can't display 'i acute' (í) replace it with "i"
-#: xmms/about.c:97
-msgid "Vladimír Marek"
-msgstr "Vladimír Marek"
-
-#: xmms/about.c:98
-msgid "Radek Vybiral"
-msgstr "Radek Vybiral"
-
-#: xmms/about.c:99
-msgid "Danish:"
-msgstr "Duñski:"
-
-#: xmms/about.c:99
-msgid "Nikolaj Berg Amondsen"
-msgstr "Nikolaj Berg Amondsen"
-
-#: xmms/about.c:99
-msgid "Troels Liebe Bentsen"
-msgstr "Troels Liebe Bentsen"
-
-#: xmms/about.c:100
-msgid "Kenneth Christiansen"
-msgstr "Kenneth Christiansen"
-
-#: xmms/about.c:100
-msgid "Keld Simonsen"
-msgstr "Keld Simonsen"
-
-#: xmms/about.c:101
-msgid "Dutch:"
-msgstr "Holenderski:"
-
-#: xmms/about.c:101
-msgid "Wilmer van der Gaast"
-msgstr "Wilmer van der Gaast"
-
-#: xmms/about.c:102
-msgid "Tom Laermans"
-msgstr "Tom Laermans"
-
-#: xmms/about.c:103
-msgid "Esperanto:"
-msgstr "Esperanto:"
-
-#: xmms/about.c:103
-msgid "D. Dale Gulledge"
-msgstr "D. Dale Gulledge"
-
-#: xmms/about.c:104
-msgid "German:"
-msgstr "Niemiecki:"
-
-#: xmms/about.c:104
-msgid "Stefan Siegel"
-msgstr "Stefan Siegel"
-
-#: xmms/about.c:105
-msgid "Greek:"
-msgstr "Grecki:"
-
-#: xmms/about.c:105
-msgid "Kyritsis Athanasios"
-msgstr "Kyritsis Athanasios"
-
-#: xmms/about.c:106
-msgid "French:"
-msgstr "Francuski:"
-
-#: xmms/about.c:106
-msgid "Arnaud Boissinot"
-msgstr "Arnaud Boissinot"
-
-#: xmms/about.c:106
-msgid "Eric Fernandez-Bellot"
-msgstr "Eric Fernandez-Bellot"
-
-#: xmms/about.c:107
-msgid "Galician:"
-msgstr "Galicyjski:"
-
-#. for languages that can't display 'i acute' (í) replace it with "i"
-#: xmms/about.c:109
-msgid "Alberto García"
-msgstr "Alberto García"
-
-#. for languages that can't display 'a acute' (á) replace it with "a"
-#: xmms/about.c:111
-msgid "David Fernández Vaamonde"
-msgstr "David Fernández Vaamonde"
-
-#: xmms/about.c:112
-msgid "Hungarian:"
-msgstr "Wêgierski:"
-
-#: xmms/about.c:112
-msgid "Arpad Biro"
-msgstr "Arpad Biro"
-
-#: xmms/about.c:113
-msgid "Indonesian:"
-msgstr "Indonezyjski:"
-
-#: xmms/about.c:113
-msgid "Budi Rachmanto"
-msgstr "Budi Rachmanto"
-
-#: xmms/about.c:114
-msgid "Irish:"
-msgstr "Irlandzki:"
-
-#: xmms/about.c:114
-msgid "Alastair McKinstry"
-msgstr "Alastair McKinstry"
-
-#: xmms/about.c:115
-msgid "Italian:"
-msgstr "W³oski:"
-
-#: xmms/about.c:115
-msgid "Paolo Lorenzin"
-msgstr "Paolo Lorenzin"
-
-#: xmms/about.c:116
-msgid "Japanese:"
-msgstr "Japoñski:"
-
-#: xmms/about.c:116
-msgid "Hiroshi Takekawa"
-msgstr "Hiroshi Takekawa"
-
-#: xmms/about.c:117
-msgid "Korean:"
-msgstr "Koreañski:"
-
-#: xmms/about.c:117
-msgid "Jaegeum Choe"
-msgstr "Jaegeum Choe"
-
-#: xmms/about.c:117
-msgid "Sang-Jin Hwang"
-msgstr "Sang-Jin Hwang"
-
-#: xmms/about.c:118
-msgid "Byeong-Chan Kim"
-msgstr "Byeong-Chan Kim"
-
-#: xmms/about.c:118
-msgid "Man-Yong Lee"
-msgstr "Man-Yong Lee"
-
-#: xmms/about.c:119
-msgid "Lithuanian:"
-msgstr "Litewski:"
-
-#: xmms/about.c:119
-msgid "Gediminas Paulauskas"
-msgstr "Gediminas Paulauskas"
-
-#: xmms/about.c:120
-msgid "Latvian:"
-msgstr "£otewski"
-
-#. I18N: The "n" should be replaced with 'n cedilla' (ò) if it
-#. can be displayed
-#. I18N: The last "s" should be replaced with 's caron' (ð) if
-#. it can be displayed
-#: xmms/about.c:125
-msgid "Juris Kudins"
-msgstr "Juris Kudins"
-
-#: xmms/about.c:126
-msgid "Vitauts Stochka"
-msgstr "Vitauts Stochka"
-
-#: xmms/about.c:127
-msgid "Norwegian:"
-msgstr "Norweski:"
-
-#. for languages that can't display 'o slash' (ø) replace it with "oe"
-#: xmms/about.c:129
-msgid "Andreas Bergstrøm"
-msgstr "Andreas Bergstrøm"
-
-#: xmms/about.c:130
-msgid "Terje Bjerkelia"
-msgstr "Terje Bjerkelia"
-
-#: xmms/about.c:130
-msgid "Roy-Magne Mo"
-msgstr "Roy-Magne Mo"
-
-#: xmms/about.c:132
-msgid "Polish:"
-msgstr "Polski:"
-
-#: xmms/about.c:132
-msgid "Grzegorz Kowal"
-msgstr "GNOME PL Team"
-
-#: xmms/about.c:133
-msgid "Portuguese:"
-msgstr "Portugalski:"
-
-#: xmms/about.c:133
-msgid "Jorge Costa"
-msgstr "Jorge Costa"
-
-#: xmms/about.c:134
-msgid "Romanian:"
-msgstr "Rumuñski:"
-
-#: xmms/about.c:134
-msgid "Florin Grad"
-msgstr "Florin Grad"
-
-#. I18N: The "s" should be replaced with 's cedilla' (º) if it
-#. can be displayed
-#: xmms/about.c:137
-msgid "Misu Moldovan"
-msgstr "Misu Moldovan"
-
-#: xmms/about.c:138
-msgid "Russian:"
-msgstr "Rosyjski:"
-
-#: xmms/about.c:138
-msgid "Valek Filippov"
-msgstr "Valek Filippov"
-
-#: xmms/about.c:138
-msgid "Alexandr P. Kovalenko"
-msgstr "Alexandr P. Kovalenko"
-
-#: xmms/about.c:139
-msgid "Maxim Koshelev"
-msgstr "Maxim Koshelev"
-
-#: xmms/about.c:139
-msgid "Aleksey Smirnov"
-msgstr "Aleksey Smirnov"
-
-#: xmms/about.c:140
-msgid "Serbian:"
-msgstr "Serbski:"
-
-#: xmms/about.c:140
-msgid "Tomislav Jankovic"
-msgstr "Tomislav Jankovic"
-
-#: xmms/about.c:141
-msgid "Slovak:"
-msgstr "S³owacki:"
-
-#: xmms/about.c:141
-msgid "Pavol Cvengros"
-msgstr "Pavol Cvengros"
-
-#: xmms/about.c:142
-msgid "Tomas Hornocek"
-msgstr "Tomas Hornocek"
-
-#: xmms/about.c:142
-msgid "Jan Matis"
-msgstr "Jan Matis"
-
-#: xmms/about.c:143
-msgid "Spanish:"
-msgstr "Hiszpañski:"
-
-#: xmms/about.c:143
-msgid "Fabian Mandelbaum"
-msgstr "Fabian Mandelbaum"
-
-#: xmms/about.c:143
+#: xmms/about.c:122 xmms/about.c:201
 msgid "Jordi Mallach"
 msgstr "Jordi Mallach"
 
-#. for languages that can't display 'i acute' (í) replace it with "i"
+#: xmms/about.c:123
+msgid "Chinese:"
+msgstr "Chiñski:"
+
+#: xmms/about.c:124
+msgid "Chun-Chung Chen"
+msgstr "Chun-Chung Chen"
+
+#: xmms/about.c:124
+msgid "Jouston Huang"
+msgstr "Jouston Huang"
+
+#: xmms/about.c:124
+msgid "Andrew Lee"
+msgstr "Andrew Lee"
+
+#: xmms/about.c:125
+msgid "Chih-Wei Huang"
+msgstr "Chih-Wei Huang"
+
+#: xmms/about.c:125
+msgid "Shiyu Tang"
+msgstr "Shiyu Tang"
+
+#: xmms/about.c:125
+msgid "Danny Zeng"
+msgstr "Danny Zeng"
+
+#: xmms/about.c:126
+msgid "Croatian:"
+msgstr "Chorwacki:"
+
+#: xmms/about.c:127
+msgid "Vlatko Kosturjak"
+msgstr "Vlatko Kosturjak"
+
+#: xmms/about.c:127
+msgid "Vladimir Vuksan"
+msgstr "Vladimir Vuksan"
+
+#: xmms/about.c:128
+msgid "Czech:"
+msgstr "Czeski:"
+
+#: xmms/about.c:130
+msgid "Vladimir Marek"
+msgstr "Vladimir Marek"
+
+#: xmms/about.c:131
+msgid "Radek Vybiral"
+msgstr "Radek Vybiral"
+
+#: xmms/about.c:132
+msgid "Danish:"
+msgstr "Duñski:"
+
+#: xmms/about.c:133
+msgid "Nikolaj Berg Amondsen"
+msgstr "Nikolaj Berg Amondsen"
+
+#: xmms/about.c:133
+msgid "Troels Liebe Bentsen"
+msgstr "Troels Liebe Bentsen"
+
+#: xmms/about.c:134
+msgid "Kenneth Christiansen"
+msgstr "Kenneth Christiansen"
+
+#: xmms/about.c:134
+msgid "Keld Simonsen"
+msgstr "Keld Simonsen"
+
+#: xmms/about.c:135
+msgid "Dutch:"
+msgstr "Holenderski:"
+
+#: xmms/about.c:136
+msgid "Bart Coppens"
+msgstr "Bart Coppens"
+
+#: xmms/about.c:136
+msgid "Wilmer van der Gaast"
+msgstr "Wilmer van der Gaast"
+
+#: xmms/about.c:137
+msgid "Tom Laermans"
+msgstr "Tom Laermans"
+
+#: xmms/about.c:138
+msgid "Esperanto:"
+msgstr "Esperanto:"
+
+#: xmms/about.c:139
+msgid "D. Dale Gulledge"
+msgstr "D. Dale Gulledge"
+
+#: xmms/about.c:140
+msgid "Estonian:"
+msgstr "Estoñski:"
+
+#: xmms/about.c:141
+msgid "Marek Laane"
+msgstr "Marek Laane"
+
+#: xmms/about.c:142
+msgid "Finnish:"
+msgstr "Fiñski:"
+
+#: xmms/about.c:143
+msgid "Thomas Backlund"
+msgstr "Thomas Backlund"
+
+#: xmms/about.c:143
+msgid "Matias Griese"
+msgstr "Matias Griese"
+
+#: xmms/about.c:144
+msgid "French:"
+msgstr "Francuski:"
+
 #: xmms/about.c:145
-msgid "Juan Manuel García Molina"
-msgstr "Juan Manuel García Molina"
+msgid "Arnaud Boissinot"
+msgstr "Arnaud Boissinot"
+
+#: xmms/about.c:145
+msgid "Eric Fernandez-Bellot"
+msgstr "Eric Fernandez-Bellot"
 
 #: xmms/about.c:146
+msgid "Galician:"
+msgstr "Galicyjski:"
+
+#: xmms/about.c:148
+msgid "Alberto Garcia"
+msgstr "Alberto Garcia"
+
+#: xmms/about.c:150
+msgid "David Fernandez Vaamonde"
+msgstr "David Fernandez Vaamonde"
+
+#: xmms/about.c:151
+msgid "Georgian:"
+msgstr "Gruziñski:"
+
+#: xmms/about.c:152
+msgid "Aiet Kolkhi"
+msgstr "Aiet Kolkhi"
+
+#: xmms/about.c:153
+msgid "German:"
+msgstr "Niemiecki:"
+
+#: xmms/about.c:154
+msgid "Stefan Siegel"
+msgstr "Stefan Siegel"
+
+#: xmms/about.c:155
+msgid "Greek:"
+msgstr "Grecki:"
+
+#: xmms/about.c:156
+msgid "Kyritsis Athanasios"
+msgstr "Kyritsis Athanasios"
+
+#: xmms/about.c:157
+msgid "Hungarian:"
+msgstr "Wêgierski:"
+
+#: xmms/about.c:158
+msgid "Arpad Biro"
+msgstr "Arpad Biro"
+
+#: xmms/about.c:159
+msgid "Indonesian:"
+msgstr "Indonezyjski:"
+
+#: xmms/about.c:160
+msgid "Budi Rachmanto"
+msgstr "Budi Rachmanto"
+
+#: xmms/about.c:161
+msgid "Irish:"
+msgstr "Irlandzki:"
+
+#: xmms/about.c:162
+msgid "Alastair McKinstry"
+msgstr "Alastair McKinstry"
+
+#: xmms/about.c:163
+msgid "Italian:"
+msgstr "W³oski:"
+
+#: xmms/about.c:164
+msgid "Paolo Lorenzin"
+msgstr "Paolo Lorenzin"
+
+#: xmms/about.c:164
+msgid "Daniele Pighin"
+msgstr "Daniele Pighin"
+
+#: xmms/about.c:165
+msgid "Japanese:"
+msgstr "Japoñski:"
+
+#: xmms/about.c:166
+msgid "Hiroshi Takekawa"
+msgstr "Hiroshi Takekawa"
+
+#: xmms/about.c:167
+msgid "Korean:"
+msgstr "Koreañski:"
+
+#: xmms/about.c:168
+msgid "Jaegeum Choe"
+msgstr "Jaegeum Choe"
+
+#: xmms/about.c:168
+msgid "Sang-Jin Hwang"
+msgstr "Sang-Jin Hwang"
+
+#: xmms/about.c:168
+msgid "Byeong-Chan Kim"
+msgstr "Byeong-Chan Kim"
+
+#: xmms/about.c:169
+msgid "Man-Yong Lee"
+msgstr "Man-Yong Lee"
+
+#: xmms/about.c:170
+msgid "Lithuanian:"
+msgstr "Litewski:"
+
+#: xmms/about.c:171
+msgid "Gediminas Paulauskas"
+msgstr "Gediminas Paulauskas"
+
+#: xmms/about.c:172
+msgid "Latvian:"
+msgstr "£otewski"
+
+#: xmms/about.c:174
+msgid "Juris Kudins"
+msgstr "Juris Kudins"
+
+#: xmms/about.c:175
+msgid "Vitauts Stochka"
+msgstr "Vitauts Stochka"
+
+#: xmms/about.c:176
+msgid "Malay:"
+msgstr "Malajski:"
+
+#: xmms/about.c:177
+msgid "Muhammad Najmi Ahmad Zabidi"
+msgstr "Muhammad Najmi Ahmad Zabidi"
+
+#: xmms/about.c:178
+msgid "Norwegian:"
+msgstr "Norweski:"
+
+#: xmms/about.c:180
+msgid "Andreas Bergstrom"
+msgstr "Andreas Bergstrom"
+
+#: xmms/about.c:181
+msgid "Terje Bjerkelia"
+msgstr "Terje Bjerkelia"
+
+#: xmms/about.c:181
+msgid "Roy-Magne Mo"
+msgstr "Roy-Magne Mo"
+
+#: xmms/about.c:183
+msgid "Polish:"
+msgstr "Polski:"
+
+#: xmms/about.c:184
+msgid "Grzegorz Kowal"
+msgstr "Grzegorz Kowal , Bartosz Kosiorek"
+
+#: xmms/about.c:185
+msgid "Portuguese:"
+msgstr "Portugalski:"
+
+#: xmms/about.c:186
+msgid "Jorge Costa"
+msgstr "Jorge Costa"
+
+#: xmms/about.c:187
+msgid "Romanian:"
+msgstr "Rumuñski:"
+
+#: xmms/about.c:188
+msgid "Florin Grad"
+msgstr "Florin Grad"
+
+#: xmms/about.c:190
+msgid "Misu Moldovan"
+msgstr "Misu Moldovan"
+
+#: xmms/about.c:191
+msgid "Russian:"
+msgstr "Rosyjski:"
+
+#: xmms/about.c:192
+msgid "Valek Filippov"
+msgstr "Valek Filippov"
+
+#: xmms/about.c:192
+msgid "Alexandr P. Kovalenko"
+msgstr "Alexandr P. Kovalenko"
+
+#: xmms/about.c:193
+msgid "Maxim Koshelev"
+msgstr "Maxim Koshelev"
+
+#: xmms/about.c:193
+msgid "Aleksey Smirnov"
+msgstr "Aleksey Smirnov"
+
+#: xmms/about.c:194
+msgid "Serbian:"
+msgstr "Serbski:"
+
+#: xmms/about.c:195
+msgid "Tomislav Jankovic"
+msgstr "Tomislav Jankovic"
+
+#: xmms/about.c:196
+msgid "Slovak:"
+msgstr "S³owacki:"
+
+#: xmms/about.c:197
+msgid "Pavol Cvengros"
+msgstr "Pavol Cvengros"
+
+#: xmms/about.c:198
+msgid "Slovenian:"
+msgstr "S³oweñski:"
+
+#: xmms/about.c:199
+msgid "Tadej Panjtar"
+msgstr "Tadej Panjtar"
+
+#: xmms/about.c:199
+msgid "Tomas Hornocek"
+msgstr "Tomas Hornocek"
+
+#: xmms/about.c:199
+msgid "Jan Matis"
+msgstr "Jan Matis"
+
+#: xmms/about.c:200
+msgid "Spanish:"
+msgstr "Hiszpañski:"
+
+#: xmms/about.c:201
+msgid "Fabian Mandelbaum"
+msgstr "Fabian Mandelbaum"
+
+#: xmms/about.c:203
+msgid "Juan Manuel Garcia Molina"
+msgstr "Juan Manuel Garcia Molina"
+
+#: xmms/about.c:204
 msgid "Swedish:"
 msgstr "Szwedzki:"
 
-#: xmms/about.c:146
+#: xmms/about.c:205
 msgid "David Hedbor"
 msgstr "David Hedbor"
 
-#: xmms/about.c:147
+#: xmms/about.c:206
 msgid "Christian Rose"
 msgstr "Christian Rose"
 
-#: xmms/about.c:147
+#: xmms/about.c:206
 msgid "Fuad Sabanovic"
 msgstr "Fuad Sabanovic"
 
-#: xmms/about.c:148
+#: xmms/about.c:207
 msgid "Tajik:"
 msgstr "Tad¿ycki:"
 
-#: xmms/about.c:148
-msgid "Trinh Minh Thanh"
-msgstr "Trinh Minh Thanh"
-
-#: xmms/about.c:149
-msgid "Thai:"
-msgstr "Tajski:"
-
-#: xmms/about.c:149
-msgid "Supphachoke Suntiwichaya"
-msgstr "Supphachoke Suntiwichaya"
-
-#: xmms/about.c:150
-msgid "Turkish:"
-msgstr "Turecki:"
-
-#: xmms/about.c:150
-msgid "Nazmi Savga"
-msgstr "Nazmi Savga"
-
-#. I18N: The "i" should be replaced with 'dotless i' (ý) if it
-#. can be displayed
-#. for languages that can't display 'O diaeresis' (Ö) replace it with "O"
-#: xmms/about.c:154
-msgid "Ömer Fadil Usta"
-msgstr "Ömer Fadil Usta"
-
-#: xmms/about.c:155
-msgid "Ukrainian:"
-msgstr "Ukraiñski:"
-
-#: xmms/about.c:155
-msgid "Dmytro Koval'ov"
-msgstr "Dmytro Koval'ov"
-
-#: xmms/about.c:156
-msgid "Vietnamese:"
-msgstr "Wietnamski:"
-
-#: xmms/about.c:156
+#: xmms/about.c:208
 msgid "Roger Kovacs"
 msgstr "Roger Kovacs"
 
-#: xmms/about.c:156
+#: xmms/about.c:208
 msgid "Dilshod Marupov"
 msgstr "Dilshod Marupov"
 
-#: xmms/about.c:157
-msgid "Walloon:"
-msgstr "Walloon:"
+#: xmms/about.c:209
+msgid "Thai:"
+msgstr "Tajski:"
 
-#: xmms/about.c:157
+#: xmms/about.c:210
+msgid "Pramote Khuwijitjaru"
+msgstr "Pramote Khuwijitjaru"
+
+#: xmms/about.c:210
+msgid "Supphachoke Suntiwichaya"
+msgstr "Supphachoke Suntiwichaya"
+
+#: xmms/about.c:211
+msgid "Turkish:"
+msgstr "Turecki:"
+
+#: xmms/about.c:212
+msgid "Nazmi Savga"
+msgstr "Nazmi Savga"
+
+#: xmms/about.c:214
+msgid "Omer Fadil Usta"
+msgstr "Omer Fadil Usta"
+
+#: xmms/about.c:215
+msgid "Ukrainian:"
+msgstr "Ukraiñski:"
+
+#: xmms/about.c:216
+msgid "Dmytro Koval'ov"
+msgstr "Dmytro Koval'ov"
+
+#: xmms/about.c:217
+msgid "Uzbek:"
+msgstr "Uzbekistañski:"
+
+#: xmms/about.c:218
+msgid "Mashrab Kuvatov"
+msgstr "Mashrab Kuvatov"
+
+#: xmms/about.c:219
+msgid "Vietnamese:"
+msgstr "Wietnamski:"
+
+#: xmms/about.c:220
+msgid "Trinh Minh Thanh"
+msgstr "Trinh Minh Thanh"
+
+#: xmms/about.c:221
+msgid "Walloon:"
+msgstr "Waloñski:"
+
+#: xmms/about.c:222
 msgid "Lucyin Mahin"
 msgstr "Lucyin Mahin"
 
-#: xmms/about.c:157
+#: xmms/about.c:222
 msgid "Pablo Saratxaga"
 msgstr "Pablo Saratxaga"
 
-#: xmms/about.c:222
+#: xmms/about.c:223
+msgid "Welsh:"
+msgstr "Walijski:"
+
+#: xmms/about.c:224
+msgid "Rhoslyn Prys"
+msgstr "Rhoslyn Prys"
+
+#: xmms/about.c:288
 msgid "About XMMS"
 msgstr "Informacje o XMMS"
 
-#: xmms/about.c:252
+#: xmms/about.c:320
 #, c-format
 msgid "XMMS %s - Cross platform multimedia player"
 msgstr "XMMS %s - wieloplatformowy odtwarzacz multimedialny"
 
-#: xmms/about.c:259
-msgid "Copyright (C) 1997-2001 4front Technologies"
-msgstr "Copyright (C) 1997-2001 4front Technologies"
+#: xmms/about.c:327
+msgid "Copyright (C) 1997-2004 4Front Technologies and The XMMS Team"
+msgstr "Copyright (C) 1997-2004 4Front Technologies oraz zespó³ XMMS"
 
-#: xmms/about.c:268
+#: xmms/about.c:337
 msgid "Credits"
 msgstr "Zas³ugi"
 
-#: xmms/about.c:273
+#: xmms/about.c:342
 msgid "Translators"
 msgstr "T³umacze"
-
-#.
-#. * This is ugly.
-#. * Change the Cancel buttons caption to Close.
-#.
-#: xmms/about.c:279 xmms/equalizer.c:1404 xmms/equalizer.c:1408
-#: xmms/main.c:1757 xmms/skinwin.c:86 xmms/util.c:844
-msgid "Close"
-msgstr "Zamknij"
 
 #: xmms/eq_slider.c:61
 msgid "PREAMP"
@@ -2972,151 +3478,151 @@ msgstr "14kHz"
 msgid "16KHZ"
 msgstr "16kHz"
 
-#: xmms/equalizer.c:79
+#: xmms/equalizer.c:80
 msgid "/Load"
 msgstr "/Wczytaj"
 
-#: xmms/equalizer.c:80
-msgid "/Load/Preset"
-msgstr "/Wczytaj/Ustawienie"
-
 #: xmms/equalizer.c:81
-msgid "/Load/Auto-load preset"
-msgstr "/Wczytaj/Automatycznie wczytane ustawienie"
+msgid "/Load/Preset"
+msgstr "/Wczytaj/Ustawienie korektora"
 
 #: xmms/equalizer.c:82
+msgid "/Load/Auto-load preset"
+msgstr "/Wczytaj/Automatyczne ustawienie korektora"
+
+#: xmms/equalizer.c:83
 msgid "/Load/Default"
 msgstr "/Wczytaj/Domy¶lne"
 
-#: xmms/equalizer.c:83 xmms/equalizer.c:85
+#: xmms/equalizer.c:84 xmms/equalizer.c:86
 msgid "/Load/-"
 msgstr "/Wczytaj/-"
 
-#: xmms/equalizer.c:84
+#: xmms/equalizer.c:85
 msgid "/Load/Zero"
 msgstr "/Wczytaj/Wyzeruj"
 
-#: xmms/equalizer.c:86
+#: xmms/equalizer.c:87
 msgid "/Load/From file"
 msgstr "/Wczytaj/Z pliku"
 
-#: xmms/equalizer.c:87
+#: xmms/equalizer.c:88
 msgid "/Load/From WinAMP EQF file"
 msgstr "/Wczytaj/Z pliku WinAMP EQF"
 
-#: xmms/equalizer.c:88
-msgid "/Import"
-msgstr "/Zaimportuj"
-
 #: xmms/equalizer.c:89
-msgid "/Import/WinAMP Presets"
-msgstr "/Zaimportuj/Ustawienia WinAMP-a"
+msgid "/Import"
+msgstr "/Importuj"
 
 #: xmms/equalizer.c:90
+msgid "/Import/WinAMP Presets"
+msgstr "/Importuj/Ustawienia WinAMP-a"
+
+#: xmms/equalizer.c:91
 msgid "/Save"
 msgstr "/Zapisz"
 
-#: xmms/equalizer.c:91
-msgid "/Save/Preset"
-msgstr "/Zapisz/Ustawienie"
-
 #: xmms/equalizer.c:92
-msgid "/Save/Auto-load preset"
-msgstr "/Zapisz/Automatycznie wczytywane ustawienie"
+msgid "/Save/Preset"
+msgstr "/Zapisz/Ustawienie korektora"
 
 #: xmms/equalizer.c:93
+msgid "/Save/Auto-load preset"
+msgstr "/Zapisz/Automatyczne ustawienie korektora"
+
+#: xmms/equalizer.c:94
 msgid "/Save/Default"
 msgstr "/Zapisz/Domy¶lne"
 
-#: xmms/equalizer.c:94
+#: xmms/equalizer.c:95
 msgid "/Save/-"
 msgstr "/Zapisz/-"
 
-#: xmms/equalizer.c:95
+#: xmms/equalizer.c:96
 msgid "/Save/To file"
 msgstr "/Zapisz/Do pliku"
 
-#: xmms/equalizer.c:96
+#: xmms/equalizer.c:97
 msgid "/Save/To WinAMP EQF file"
 msgstr "/Zapisz/Do pliku WinAMP EQF"
 
-#: xmms/equalizer.c:97
+#: xmms/equalizer.c:98
 msgid "/Delete"
 msgstr "/Usuñ"
 
-#: xmms/equalizer.c:98
-msgid "/Delete/Preset"
-msgstr "/Usuñ/Ustawienie"
-
 #: xmms/equalizer.c:99
-msgid "/Delete/Auto-load preset"
-msgstr "/Usuñ/Automatycznie wczytywane ustawienie"
+msgid "/Delete/Preset"
+msgstr "/Usuñ/Ustawienie korektora"
 
 #: xmms/equalizer.c:100
-msgid "/Configure Equalizer"
-msgstr "/Skonfiguruj korektor"
+msgid "/Delete/Auto-load preset"
+msgstr "/Usuñ/Automatyczne ustawienie korektora"
 
-#: xmms/equalizer.c:649
+#: xmms/equalizer.c:101
+msgid "/Configure Equalizer"
+msgstr "/Konfiguruj korektor"
+
+#: xmms/equalizer.c:747
 msgid "XMMS Equalizer"
 msgstr "XMMS - korektor"
 
-#: xmms/equalizer.c:1204
+#: xmms/equalizer.c:1304
 msgid "Presets"
-msgstr "Ustawienie"
+msgstr "Ustawienie korektora"
 
-#: xmms/equalizer.c:1271
+#: xmms/equalizer.c:1371
 msgid "Load preset"
-msgstr "Wczytaj ustawienie"
+msgstr "Wczytaj ustawienie korektora"
 
-#: xmms/equalizer.c:1277
+#: xmms/equalizer.c:1377
 msgid "Load auto-preset"
 msgstr "Odczyt automatycznego ustawienia"
 
-#: xmms/equalizer.c:1300 xmms/equalizer.c:1315
+#: xmms/equalizer.c:1400 xmms/equalizer.c:1415
 msgid "Load equalizer preset"
 msgstr "Odczyt ustawienia korektora"
 
-#: xmms/equalizer.c:1330
+#: xmms/equalizer.c:1430
 msgid "Import equalizer presets"
 msgstr "Import ustawienia korektora"
 
-#: xmms/equalizer.c:1341
+#: xmms/equalizer.c:1441
 msgid "Save preset"
-msgstr "Zapis ustawienie"
+msgstr "Zapis ustawienia"
 
-#: xmms/equalizer.c:1350
+#: xmms/equalizer.c:1450
 msgid "Save auto-preset"
 msgstr "Zapis automatycznego ustawienia"
 
-#: xmms/equalizer.c:1371 xmms/equalizer.c:1394
+#: xmms/equalizer.c:1471 xmms/equalizer.c:1494
 msgid "Save equalizer preset"
 msgstr "Zapis ustawienia korektora"
 
-#: xmms/equalizer.c:1404
+#: xmms/equalizer.c:1504
 msgid "Delete preset"
 msgstr "Usuniêcie ustawienia"
 
-#: xmms/equalizer.c:1404 xmms/equalizer.c:1408
+#: xmms/equalizer.c:1504 xmms/equalizer.c:1508
 msgid "Delete"
 msgstr "Usuñ"
 
-#: xmms/equalizer.c:1408
+#: xmms/equalizer.c:1508
 msgid "Delete auto-preset"
 msgstr "Usuniêcie automatycznego ustawienia"
 
-#: xmms/equalizer.c:1540
+#: xmms/equalizer.c:1641
 msgid "Configure Equalizer"
 msgstr "Konfiguracja korektora"
 
-#: xmms/equalizer.c:1561
+#: xmms/equalizer.c:1662
 msgid "Directory preset file:"
 msgstr "Katalog pliku ustawieñ:"
 
-#: xmms/equalizer.c:1569
+#: xmms/equalizer.c:1670
 msgid "File preset extension:"
 msgstr "Rozszerzenie pliku ustawieñ:"
 
-#: xmms/equalizer.c:1576
+#: xmms/equalizer.c:1677
 msgid ""
 "If \"Auto\" is enabled on the equalizer, xmms will try to load equalizer "
 "presets like this:\n"
@@ -3126,464 +3632,517 @@ msgid ""
 "3: Look for a preset saved with the \"auto-load\" feature\n"
 "4: Finally, try to load the \"default\" preset"
 msgstr ""
-"Je¶li w korektorze w³±czone jest \"Auto\", xmms bêdzie próbowa³ wczytaæ "
+"Je¶li w korektorze w³±czone jest \"Auto\", XMMS bêdzie próbowa³ wczytaæ "
 "ustawienia korektora w nastêpuj±cy sposób:\n"
 "1: Spróbuje odszukaæ plik ustawieñ w katalogu aktualnie odtwarzanego pliku.\n"
 "2: Spróbuje odszukaæ katalog pliku ustawieñ w tym samym katalogu.\n"
 "3: Spróbuje odszukaæ ustawienia zapisane z w³asno¶ci± \"auto-load\"\n"
 "4: Ostatecznie, spróbuje za³adowaæ \"domy¶lne\" ustawienia"
 
-#: xmms/main.c:125
+#: xmms/input.c:252
+msgid "No output plugin"
+msgstr "Brak wtyczki wyj¶ciowej"
+
+#: xmms/input.c:253
+msgid "No output plugin has been selected"
+msgstr "Brak zaznaczonej wtyczki wyj¶ciowej"
+
+#: xmms/input.c:417
+msgid "No input plugin recognized this file"
+msgstr "Nie rozpoznano wtyczki wej¶ciowej w tym pliku"
+
+#: xmms/input.c:419
+#, c-format
+msgid "Input plugin: %s"
+msgstr "Wtyczka wej¶ciowa: %s"
+
+#: xmms/main.c:128
 msgid "/Preferences"
 msgstr "/Ustawienia"
 
-#: xmms/main.c:126
+#: xmms/main.c:129
 msgid "/Skin Browser"
-msgstr "/Przegl±darka skór"
+msgstr "/Zmieñ skórê"
 
-#: xmms/main.c:127
+#: xmms/main.c:130
 msgid "/Reload skin"
 msgstr "/Prze³aduj skórê"
 
-#. "<control>3"
-#: xmms/main.c:128 xmms/main.c:132 xmms/main.c:135 xmms/main.c:269
-#: xmms/main.c:274 xmms/main.c:278 xmms/main.c:297 xmms/playlistwin.c:85
-#: xmms/playlistwin.c:114
+#: xmms/main.c:131 xmms/main.c:135 xmms/main.c:139 xmms/main.c:273
+#: xmms/main.c:278 xmms/main.c:282 xmms/main.c:302 xmms/playlistwin.c:161
 msgid "/-"
 msgstr "/-"
 
-#: xmms/main.c:129
+#: xmms/main.c:132
 msgid "/Repeat"
-msgstr "/Powtarzanie"
+msgstr "/Powtarzaj"
 
-#: xmms/main.c:130
+#: xmms/main.c:133
 msgid "/Shuffle"
 msgstr "/Losowo"
 
-#: xmms/main.c:131
+#: xmms/main.c:134
 msgid "/No Playlist Advance"
-msgstr "/Odtwarzanie pojedynczego pliku"
+msgstr "/Odtwarzaj pliki pojedyñczo"
 
-#: xmms/main.c:133
+#: xmms/main.c:136
 msgid "/Time Elapsed"
 msgstr "/Miniony czas"
 
-#: xmms/main.c:134
+#: xmms/main.c:137
 msgid "/Time Remaining"
 msgstr "/Pozosta³y czas"
 
-#: xmms/main.c:136
+#: xmms/main.c:138
+msgid "/Time Display (MMM:SS)"
+msgstr ""
+
+#: xmms/main.c:140
 msgid "/Always On Top"
 msgstr "/Zawsze na wierzchu"
 
-#: xmms/main.c:137
-msgid "/Sticky"
-msgstr "/Przypiêty"
-
-#: xmms/main.c:138
-msgid "/WindowShade Mode"
-msgstr "/Zwiniête okno"
-
-#: xmms/main.c:139
-msgid "/Playlist WindowShade Mode"
-msgstr "/Zwiniêta lista odtwarzania"
-
-#: xmms/main.c:140
-msgid "/Equalizer WindowShade Mode"
-msgstr "/Zwiniêty korektor"
-
 #: xmms/main.c:141
+msgid "/Show on all desktops"
+msgstr "/Poka¿ na wszystkich pulpitach"
+
+#: xmms/main.c:142
+msgid "/WindowShade Mode"
+msgstr "/Zwiñ okno g³ówne"
+
+#: xmms/main.c:143
+msgid "/Playlist WindowShade Mode"
+msgstr "/Zwiñ listê odtwarzania"
+
+#: xmms/main.c:144
+msgid "/Equalizer WindowShade Mode"
+msgstr "/Zwiñ korektor graficzny"
+
+#: xmms/main.c:145
 msgid "/DoubleSize"
 msgstr "/Podwójny rozmiar"
 
-#: xmms/main.c:142
+#: xmms/main.c:146
 msgid "/Easy Move"
 msgstr "/£atwe przesuwanie"
 
-#: xmms/main.c:158
+#: xmms/main.c:162
 msgid "/File Info"
 msgstr "/Informacje o pliku"
 
-#: xmms/main.c:159
+#: xmms/main.c:163
 msgid "/Jump To File"
-msgstr "/Skok do pliku"
+msgstr "/Skocz do utworu"
 
-#: xmms/main.c:160
+#: xmms/main.c:164
 msgid "/Jump To Time"
-msgstr "/Skok do czasu"
+msgstr "/Skocz do czasu"
 
-#: xmms/main.c:161
-msgid "/Autoscroll Songname"
-msgstr "/Przewijanie nazwy utworu"
+#: xmms/main.c:165
+msgid "/Autoscroll Song Name"
+msgstr "/Przewijaj nazwê utworu"
 
-#: xmms/main.c:185
+#: xmms/main.c:189
 msgid "/Visualization Mode"
 msgstr "/Tryb wizualizacji"
 
-#: xmms/main.c:186
+#: xmms/main.c:190
 msgid "/Visualization Mode/Analyzer"
 msgstr "/Tryb wizualizacji/Analizator"
 
-#: xmms/main.c:187
+#: xmms/main.c:191
 msgid "/Visualization Mode/Scope"
 msgstr "/Tryb wizualizacji/Sygna³"
 
-#: xmms/main.c:188
+#: xmms/main.c:192
 msgid "/Visualization Mode/Off"
 msgstr "/Tryb wizualizacji/Brak"
 
-#: xmms/main.c:189
+#: xmms/main.c:193
 msgid "/Analyzer Mode"
 msgstr "/Tryb analizatora"
 
-#: xmms/main.c:190
+#: xmms/main.c:194
 msgid "/Analyzer Mode/Normal"
 msgstr "/Tryb analizatora/Zwyk³y"
 
-#: xmms/main.c:191
+#: xmms/main.c:195
 msgid "/Analyzer Mode/Fire"
 msgstr "/Tryb analizatora/Ogieñ"
 
-#: xmms/main.c:192
+#: xmms/main.c:196
 msgid "/Analyzer Mode/Vertical Lines"
 msgstr "/Tryb analizatora/Linie pionowe"
 
-#: xmms/main.c:193 xmms/main.c:196
+#: xmms/main.c:197 xmms/main.c:200
 msgid "/Analyzer Mode/-"
 msgstr "/Tryb analizatora/-"
 
-#: xmms/main.c:194
+#: xmms/main.c:198
 msgid "/Analyzer Mode/Lines"
 msgstr "/Tryb analizatora/Linie"
 
-#: xmms/main.c:195
+#: xmms/main.c:199
 msgid "/Analyzer Mode/Bars"
 msgstr "/Tryb analizatora/S³upki"
 
-#: xmms/main.c:197
+#: xmms/main.c:201
 msgid "/Analyzer Mode/Peaks"
 msgstr "/Tryb analizatora/Piki"
 
-#: xmms/main.c:198
+#: xmms/main.c:202
 msgid "/Scope Mode"
 msgstr "/Tryb sygna³u"
 
-#: xmms/main.c:199
+#: xmms/main.c:203
 msgid "/Scope Mode/Dot Scope"
 msgstr "/Tryb sygna³u/Sygna³ punktowany"
 
-#: xmms/main.c:200
+#: xmms/main.c:204
 msgid "/Scope Mode/Line Scope"
 msgstr "/Tryb sygna³u/Sygna³ liniowany"
 
-#: xmms/main.c:201
+#: xmms/main.c:205
 msgid "/Scope Mode/Solid Scope"
 msgstr "/Tryb sygna³u/Sygna³ ci±g³y"
 
-#: xmms/main.c:202
+#: xmms/main.c:206
 msgid "/WindowShade VU Mode"
 msgstr "/Wska¼nik sygna³u"
 
-#: xmms/main.c:203
+#: xmms/main.c:207
 msgid "/WindowShade VU Mode/Normal"
 msgstr "/Wska¼nik sygna³u/Normalny"
 
-#: xmms/main.c:204
+#: xmms/main.c:208
 msgid "/WindowShade VU Mode/Smooth"
 msgstr "/Wska¼nik sygna³u/G³adki"
 
-#: xmms/main.c:205
+#: xmms/main.c:209
 msgid "/Refresh Rate"
 msgstr "/Czêsto¶æ od¶wie¿ania"
 
-#: xmms/main.c:206
+#: xmms/main.c:210
 msgid "/Refresh Rate/Full (~50 fps)"
 msgstr "/Czêsto¶æ od¶wie¿ania/Pe³na (~50 fps)"
 
-#: xmms/main.c:207
+#: xmms/main.c:211
 msgid "/Refresh Rate/Half (~25 fps)"
 msgstr "/Czêsto¶æ od¶wie¿ania/Po³owa (~25 fps)"
 
-#: xmms/main.c:208
+#: xmms/main.c:212
 msgid "/Refresh Rate/Quarter (~13 fps)"
 msgstr "/Czêsto¶æ od¶wie¿ania/Æwiartka (~13 fps)"
 
-#: xmms/main.c:209
+#: xmms/main.c:213
 msgid "/Refresh Rate/Eighth (~6 fps)"
 msgstr "/Czêsto¶æ od¶wie¿ania/Ósemka (~6 fps)"
 
-#: xmms/main.c:210
+#: xmms/main.c:214
 msgid "/Analyzer Falloff"
 msgstr "/Zanik analizatora"
 
-#: xmms/main.c:211
+#: xmms/main.c:215
 msgid "/Analyzer Falloff/Slowest"
 msgstr "/Zanik analizatora/Najwolniejszy"
 
-#: xmms/main.c:212
+#: xmms/main.c:216
 msgid "/Analyzer Falloff/Slow"
 msgstr "/Zanik analizatora/Wolny"
 
-#: xmms/main.c:213
+#: xmms/main.c:217
 msgid "/Analyzer Falloff/Medium"
 msgstr "/Zanik analizatora/¦redni"
 
-#: xmms/main.c:214
+#: xmms/main.c:218
 msgid "/Analyzer Falloff/Fast"
 msgstr "/Zanik analizatora/Szybki"
 
-#: xmms/main.c:215
+#: xmms/main.c:219
 msgid "/Analyzer Falloff/Fastest"
 msgstr "/Zanik analizatora/Najszybszy"
 
-#: xmms/main.c:216
+#: xmms/main.c:220
 msgid "/Peaks Falloff"
 msgstr "/Zanik pików"
 
-#: xmms/main.c:217
+#: xmms/main.c:221
 msgid "/Peaks Falloff/Slowest"
 msgstr "/Zanik pików/Najwolniejszy"
 
-#: xmms/main.c:218
+#: xmms/main.c:222
 msgid "/Peaks Falloff/Slow"
 msgstr "/Zanik pików/Wolny"
 
-#: xmms/main.c:219
+#: xmms/main.c:223
 msgid "/Peaks Falloff/Medium"
 msgstr "/Zanik pików/¦redni"
 
-#: xmms/main.c:220
+#: xmms/main.c:224
 msgid "/Peaks Falloff/Fast"
 msgstr "/Zanik pików/Szybki"
 
-#: xmms/main.c:221
+#: xmms/main.c:225
 msgid "/Peaks Falloff/Fastest"
 msgstr "/Zanik pików/Najszybszy"
 
-#: xmms/main.c:222
+#: xmms/main.c:226
 msgid "/Visualization plugins"
 msgstr "/Wtyczki wizualizacji"
 
-#: xmms/main.c:268
+#: xmms/main.c:272
 msgid "/About XMMS"
 msgstr "/Informacje o XMMS"
 
-#: xmms/main.c:270
+#: xmms/main.c:274
 msgid "/Play File"
-msgstr "/Odtwórz plik"
-
-#: xmms/main.c:271
-msgid "/Play Directory"
-msgstr "/Odtwórz katalog"
-
-#: xmms/main.c:272
-msgid "/Play Location"
-msgstr "/Odtwórz po³o¿enie"
-
-#: xmms/main.c:273 xmms/playlistwin.c:113
-msgid "/View File Info"
-msgstr "/Wy¶wietl informacje o pliku"
+msgstr "/Otwórz plik"
 
 #: xmms/main.c:275
+msgid "/Play Directory"
+msgstr "/Otwórz katalog"
+
+#: xmms/main.c:276
+msgid "/Play Location"
+msgstr "/Otwórz po³o¿enie"
+
+#: xmms/main.c:277 xmms/playlistwin.c:158
+msgid "/View File Info"
+msgstr "/Informacje o pliku"
+
+#: xmms/main.c:279
 msgid "/Main Window"
 msgstr "/Okno g³ówne"
 
-#: xmms/main.c:276
+#: xmms/main.c:280
 msgid "/Playlist Editor"
-msgstr "/Edytor listy odtwarzania"
+msgstr "/Lista odtwarzania"
 
-#: xmms/main.c:277
+#: xmms/main.c:281
 msgid "/Graphical EQ"
 msgstr "/Korektor graficzny"
 
-#: xmms/main.c:279
+#: xmms/main.c:283
 msgid "/Options"
 msgstr "/Opcje"
 
-#: xmms/main.c:280
+#: xmms/main.c:284
 msgid "/Playback"
 msgstr "/Odtwarzanie"
 
-#: xmms/main.c:281
+#: xmms/main.c:285
 msgid "/Playback/Previous"
 msgstr "/Odtwarzanie/Poprzedni"
 
-#: xmms/main.c:282
+#: xmms/main.c:286
 msgid "/Playback/Play"
-msgstr "/Odtwarzanie/Odtwórz"
+msgstr "/Odtwarzanie/Graj"
 
-#: xmms/main.c:283
+#: xmms/main.c:287
 msgid "/Playback/Pause"
 msgstr "/Odtwarzanie/Wstrzymaj"
 
-#: xmms/main.c:284
+#: xmms/main.c:288
 msgid "/Playback/Stop"
 msgstr "/Odtwarzanie/Zatrzymaj"
 
-#: xmms/main.c:285
+#: xmms/main.c:289
 msgid "/Playback/Next"
 msgstr "/Odtwarzanie/Nastêpny"
 
-#: xmms/main.c:286 xmms/main.c:293
+#: xmms/main.c:290 xmms/main.c:297
 msgid "/Playback/-"
 msgstr "/Odtwarzanie/-"
 
-#. {N_("/Playback/Stop with Fadeout"),"<Shift>V",mainwin_general_menu_callback,MAINWIN_GENERAL_STOPFADE,"<Item>"},
-#: xmms/main.c:288
+#: xmms/main.c:292
 msgid "/Playback/Back 5 Seconds"
 msgstr "/Odtwarzanie/Cofnij o 5 sek"
 
-#: xmms/main.c:289
+#: xmms/main.c:293
 msgid "/Playback/Fwd 5 Seconds"
 msgstr "/Odtwarzanie/Przewiñ o 5 sek"
 
-#: xmms/main.c:290
+#: xmms/main.c:294
 msgid "/Playback/Start of List"
 msgstr "/Odtwarzanie/Pocz±tek listy"
 
-#: xmms/main.c:291
+#: xmms/main.c:295
 msgid "/Playback/10 Tracks Back"
 msgstr "/Odtwarzanie/Cofnij o 10 ¶cie¿ek"
 
-#: xmms/main.c:292
+#: xmms/main.c:296
 msgid "/Playback/10 Tracks Fwd"
 msgstr "/Odtwarzanie/Przewiñ o 10 ¶cie¿ek"
 
-#: xmms/main.c:294
+#: xmms/main.c:298
 msgid "/Playback/Jump to Time"
-msgstr "/Odtwarzanie/Skok do czasu"
+msgstr "/Odtwarzanie/Skocz do czasu"
 
-#: xmms/main.c:295
+#: xmms/main.c:299
 msgid "/Playback/Jump to File"
-msgstr "/Odtwarzanie/Skok do pliku"
+msgstr "/Odtwarzanie/Skocz do utworu"
 
-#: xmms/main.c:296
+#: xmms/main.c:300
+msgid "/Playback/Clear Queue"
+msgstr "/Odtwarzanie/Czy¶æ kolejkê"
+
+#: xmms/main.c:301
 msgid "/Visualization"
 msgstr "/Wizualizacja"
 
-#: xmms/main.c:298
+#: xmms/main.c:303
 msgid "/Exit"
 msgstr "/Zakoñcz"
 
-#: xmms/main.c:1050 xmms/main.c:2811
-msgid "XMMS"
-msgstr "XMMS"
-
-#: xmms/main.c:1399
+#: xmms/main.c:1466
 msgid "Jump to time"
-msgstr "Skok do czasu"
+msgstr "Skocz do czasu"
 
-#: xmms/main.c:1409
+#: xmms/main.c:1477
 msgid "Jump to:"
 msgstr "Skocz do:"
 
-#: xmms/main.c:1425
+#: xmms/main.c:1493
 msgid "minutes:seconds"
 msgstr "minut:sekund"
 
-#: xmms/main.c:1432
+#: xmms/main.c:1500
 msgid "Track length:"
 msgstr "D³ugo¶æ ¶cie¿ki:"
 
-#: xmms/main.c:1446 xmms/main.c:1750
+#: xmms/main.c:1514 xmms/main.c:1949
 msgid "Jump"
 msgstr "Skocz"
 
-#: xmms/main.c:1702
-msgid "Jump to file"
-msgstr "Skok do pliku"
+#: xmms/main.c:1553 xmms/main.c:1892 xmms/main.c:2226
+msgid "Queue"
+msgstr "Kolejka"
 
-#: xmms/main.c:1713
+#: xmms/main.c:1562
+msgid "Unqueue"
+msgstr "Usuñ z kolejki"
+
+#: xmms/main.c:1880 xmms/main.c:2202
+msgid "Jump to file"
+msgstr "Skocz do utworu"
+
+#: xmms/main.c:1894 xmms/main.c:2228
+msgid "Q"
+msgstr ""
+
+#: xmms/main.c:1895 xmms/main.c:2229
 msgid "Files"
 msgstr "Pliki"
 
-#: xmms/main.c:1722
+#: xmms/main.c:1911 xmms/main.c:2297
 msgid "Search: "
 msgstr "Szukaj: "
 
-#: xmms/main.c:1868 xmms/playlistwin.c:573
+#: xmms/main.c:2232
+msgid "Queued files: "
+msgstr ""
+
+#: xmms/main.c:2260
+msgid "Move up"
+msgstr ""
+
+#: xmms/main.c:2267
+#, fuzzy
+msgid "Move down"
+msgstr "¦ciszenie"
+
+#: xmms/main.c:2274
+#, fuzzy
+msgid "Remove"
+msgstr "/Usuñ"
+
+#: xmms/main.c:2445 xmms/playlistwin.c:640
 msgid "Select directory to add:"
-msgstr "Wybór dodawanego katalogu:"
+msgstr "Wybierz katalog do dodania:"
 
-#: xmms/main.c:1905
+#: xmms/main.c:2494
 msgid "Enter location to play:"
-msgstr "Wybór odtwarzanego po³o¿enia:"
+msgstr "Wybierz lokacjê do odtwarzania:"
 
-#: xmms/main.c:2016
+#: xmms/main.c:2622
+#, c-format
 msgid "SEEK TO: %d:%-2.2d/%d:%-2.2d (%d%%)"
-msgstr "PRZESKOK DO: %d:%-2.2d/%d:%-2.2d (%d%%)"
+msgstr "SKOK DO: %d:%-2.2d/%d:%-2.2d (%d%%)"
 
-#: xmms/main.c:2041 xmms/main.c:2584
+#: xmms/main.c:2647 xmms/main.c:3207
+#, c-format
 msgid "VOLUME: %d%%"
 msgstr "G£O¦NO¦Æ: %d%%"
 
-#: xmms/main.c:2070 xmms/main.c:2589
+#: xmms/main.c:2676 xmms/main.c:3212
+#, c-format
 msgid "BALANCE: %d%% LEFT"
 msgstr "BALANS: %d%% LEWY"
 
-#: xmms/main.c:2075 xmms/main.c:2592
+#: xmms/main.c:2681 xmms/main.c:3215
 msgid "BALANCE: CENTER"
 msgstr "BALANS: ¦RODEK"
 
-#: xmms/main.c:2080 xmms/main.c:2595
+#: xmms/main.c:2686 xmms/main.c:3218
+#, c-format
 msgid "BALANCE: %d%% RIGHT"
 msgstr "BALANS: %d%% PRAWY"
 
-#: xmms/main.c:2456
+#: xmms/main.c:3079
 msgid "OPTIONS MENU"
 msgstr "MENU OPCJI"
 
-#: xmms/main.c:2462
+#: xmms/main.c:3085
 msgid "DISABLE ALWAYS ON TOP (N/A)"
 msgstr "WY£¡CZENIE ZAWSZE NA WIERZCHU (N/D)"
 
-#: xmms/main.c:2464
+#: xmms/main.c:3087
 msgid "ENABLE ALWAYS ON TOP (N/A)"
 msgstr "ZAWSZE NA WIERZCHU (N/D)"
 
-#: xmms/main.c:2467
+#: xmms/main.c:3090
 msgid "DISABLE ALWAYS ON TOP"
 msgstr "WY£¡CZENIE ZAWSZE NA WIERZCHU"
 
-#: xmms/main.c:2469
+#: xmms/main.c:3092
 msgid "ENABLE ALWAYS ON TOP"
 msgstr "ZAWSZE NA WIERZCHU"
 
-#: xmms/main.c:2472
+#: xmms/main.c:3095
 msgid "FILE INFO BOX"
 msgstr "OKNO INFORMACJI PLIKU"
 
-#: xmms/main.c:2476
+#: xmms/main.c:3099
 msgid "DISABLE DOUBLESIZE"
 msgstr "BEZ PODWÓJNEGO ROZMIARU"
 
-#: xmms/main.c:2478
+#: xmms/main.c:3101
 msgid "ENABLE DOUBLESIZE"
 msgstr "PODWÓJNY ROZMIAR"
 
-#: xmms/main.c:2481
+#: xmms/main.c:3104
 msgid "VISUALIZATION MENU"
 msgstr "MENU WIZUALIZACJI"
 
-#: xmms/main.c:2948
+#: xmms/main.c:3524
 msgid "Couldn't open audio"
 msgstr "Nie mo¿na otworzyæ wyj¶cia d¼wiêku"
 
-#: xmms/main.c:2949
+#: xmms/main.c:3525
 msgid ""
 "Please check that:\n"
 "\n"
-"1. You have the correct output plugin selected\n"
-"2. No other programs is blocking the soundcard\n"
-"3. Your soundcard is configured properly"
+"Your soundcard is configured properly\n"
+"You have the correct output plugin selected\n"
+"No other program is blocking the soundcard"
 msgstr ""
 "Sprawd¼, czy:\n"
 "\n"
-"1. Wybra³e¶ odpowiedni± wtyczkê wyj¶ciow±\n"
-"2. ¯aden inny program nie blokuje karty d¼wiêkowej\n"
-"3. Twoja karta d¼wiêkowa jest skonfigurowana prawid³owo"
+"Twoja karta d¼wiêkowa jest skonfigurowana prawid³owo\n"
+"Wybra³e¶ odpowiedni± wtyczkê wyj¶ciow±\n"
+"¯aden inny program nie blokuje karty d¼wiêkowej"
 
-#: xmms/main.c:3093
+#: xmms/main.c:3760
+#, c-format
 msgid ""
 "Usage: xmms [options] [files] ...\n"
 "\n"
@@ -3595,62 +4154,107 @@ msgstr ""
 "Opcje:\n"
 "--------\n"
 
-#. -h, --help switch
-#: xmms/main.c:3098
+#: xmms/main.c:3765
+#, c-format
 msgid "Display this text and exit."
 msgstr "Wypisuje ten tekst i koñczy dzia³anie programu."
 
-#. -n, --session switch
-#: xmms/main.c:3101
+#: xmms/main.c:3768
+#, c-format
 msgid "Select XMMS session (Default: 0)"
 msgstr "Ustawia u¿ywan± sesjê xmms (Domy¶lnie: 0)"
 
-#. -r, --rew switch
-#: xmms/main.c:3104
+#: xmms/main.c:3771
+#, c-format
 msgid "Skip backwards in playlist"
 msgstr "Przeskakuje wstecz na li¶cie odtwarzania"
 
-#. -p, --play switch
-#: xmms/main.c:3107
+#: xmms/main.c:3774
+#, c-format
 msgid "Start playing current playlist"
 msgstr "Rozpoczyna odtwarzanie bie¿±cej listy odtwarzania"
 
-#. -u, --pause switch
-#: xmms/main.c:3110
+#: xmms/main.c:3777
+#, c-format
 msgid "Pause current song"
 msgstr "Wstrzymuje bie¿±cy utwór"
 
-#. -s, --stop switch
-#: xmms/main.c:3113
+#: xmms/main.c:3780
+#, c-format
 msgid "Stop current song"
 msgstr "Zatrzymuje bie¿±cy utwór"
 
-#. -t, --play-pause switch
-#: xmms/main.c:3116
+#: xmms/main.c:3783
+#, c-format
 msgid "Pause if playing, play otherwise"
 msgstr "Wstrzymuje, je¶li trwa odtwarzanie, w przeciwnym wypadku odtwarza"
 
-#. -f, --fwd switch
-#: xmms/main.c:3119
+#: xmms/main.c:3786
+#, c-format
 msgid "Skip forward in playlist"
 msgstr "Przeskakuje naprzód na li¶cie odtwarzania"
 
-#. -e, --enqueue switch
-#: xmms/main.c:3122
+#: xmms/main.c:3789
+#, c-format
 msgid "Don't clear the playlist"
 msgstr "Nie czy¶ci listy odtwarzania"
 
-#. -m, --show-main-window switch
-#: xmms/main.c:3125
+#: xmms/main.c:3792
+#, c-format
+msgid "Add file(s) to playlist and queue"
+msgstr ""
+
+#: xmms/main.c:3793 xmms/main.c:3797 xmms/main.c:3801
+msgid "[=SWITCH]"
+msgstr ""
+
+#: xmms/main.c:3795
+#, c-format
+msgid "Toggle the 'shuffle' flag."
+msgstr ""
+
+#: xmms/main.c:3799
+#, c-format
+msgid "Toggle the 'repeat' flag."
+msgstr ""
+
+#: xmms/main.c:3803
+#, c-format
+msgid "Toggle the 'no playlist advance' flag."
+msgstr ""
+
+#: xmms/main.c:3806
+#, c-format
+msgid "SWITCH may be either 'on' or 'off'\n"
+msgstr ""
+
+#: xmms/main.c:3809
+#, c-format
 msgid "Show the main window."
 msgstr "Wy¶wietla g³ówne okno."
 
-#. -v, --version switch
-#: xmms/main.c:3128
-msgid "Print version number and exit."
-msgstr "Wypisuje numer wersji i koñczy dzia³anie programu."
+#: xmms/main.c:3812
+#, c-format
+msgid "Previous session ID"
+msgstr "ID poprzedniej sesji"
 
-#: xmms/main.c:3246
+#: xmms/main.c:3815
+#, c-format
+msgid "Print version number and exit."
+msgstr "Wy¶wietla numer wersji i koñczy dzia³anie programu."
+
+#: xmms/main.c:3818
+#, fuzzy, c-format
+msgid "Close remote session."
+msgstr "U¿yj zdalnego serwera"
+
+#: xmms/main.c:3994 xmms/main.c:4018 xmms/main.c:4042
+#, c-format
+msgid "Value '%s' not understood, must be either 'on' or 'off'.\n"
+msgstr ""
+
+#: xmms/main.c:4057
+#, c-format
 msgid ""
 "\n"
 "Segmentation fault\n"
@@ -3665,22 +4269,11 @@ msgstr ""
 "Prawdopodobnie znalaz³e¶ b³±d w XMMS, odwied¼ wiêc\n"
 "stronê http://bugs.xmms.org i wype³nij zg³oszenie b³êdu.\n"
 
-#: xmms/main.c:3386
-msgid ""
-"Sorry, threads isn't supported on your platform.\n"
-"\n"
-"If you're on a libc5 based linux system and installed GLIB & GTK+ before "
-"you\n"
-"installed LinuxThreads you need to recompile GLIB & GTK+\n"
-msgstr ""
-"Niestety, twoja platforma nie obs³uguje w±tków.\n"
-"\n"
-"Je¶li twój system linux opiera siê na libc5 i zainstalowa³e¶ GLIB i GTK+ "
-"przed\n"
-"zainstalowaniem LinuxThreads, to musisz ponownie przekompilowaæ GLIB i "
-"GTK+.\n"
+#: xmms/main.c:4198
+msgid "GLib does not support threads."
+msgstr "GLib nie obs³uguje w±tków."
 
-#: xmms/main.c:3433
+#: xmms/main.c:4255
 #, c-format
 msgid ""
 "Sorry, your GTK+ version (%d.%d.%d) doesn't work with XMMS.\n"
@@ -3689,417 +4282,513 @@ msgstr ""
 "Niestety, twoja wersja GTK+ (%d.%d.%d) nie dzia³a z XMMS.\n"
 "U¿yj GTK+ %s lub nowszego.\n"
 
-#. xmms.desktop comment
-#: xmms/main.c:3503
+#: xmms/main.c:4325
 msgid "X Multimedia System"
 msgstr "X Multimedia System"
 
-#: xmms/playlistwin.c:75
+#: xmms/playlistwin.c:95
 msgid "/Sort List"
-msgstr "/Sortowanie listy"
+msgstr "/Sortuj listê"
 
-#: xmms/playlistwin.c:76
+#: xmms/playlistwin.c:96
 msgid "/Sort List/By Title"
-msgstr "/Sortowanie listy/Wed³ug tytu³u"
+msgstr "/Sortuj listê/Wed³ug tytu³u"
 
-#: xmms/playlistwin.c:77
+#: xmms/playlistwin.c:98
 msgid "/Sort List/By Filename"
-msgstr "/Sortowanie listy/Wed³ug nazwy pliku"
+msgstr "/Sortuj listê/Wed³ug nazwy pliku"
 
-#: xmms/playlistwin.c:78
+#: xmms/playlistwin.c:100
 msgid "/Sort List/By Path + Filename"
-msgstr "/Sortowanie listy/Wed³ug ¶cie¿ki i nazwy pliku"
+msgstr "/Sortuj listê/Wed³ug ¶cie¿ki i nazwy pliku"
 
-#: xmms/playlistwin.c:79
+#: xmms/playlistwin.c:102
 msgid "/Sort List/By Date"
-msgstr "/Sortowanie listy/Wed³ug daty"
+msgstr "/Sortuj listê/Wed³ug daty"
 
-#: xmms/playlistwin.c:80
-msgid "/Sort Selection"
-msgstr "/Sortowanie zaznaczenia"
+#: xmms/playlistwin.c:104 xmms/playlistwin.c:173
+msgid "/Selection"
+msgstr "/Zaznacz"
 
-#: xmms/playlistwin.c:81
-msgid "/Sort Selection/By Title"
-msgstr "/Sortowanie zaznaczenia/Wed³ug tytu³u"
+#: xmms/playlistwin.c:105
+#, fuzzy
+msgid "/Selection/Sort By Title"
+msgstr "/Sortuj zaznaczone/Wed³ug tytu³u"
 
-#: xmms/playlistwin.c:82
-msgid "/Sort Selection/By Filename"
-msgstr "/Sortowanie zaznaczenia/Wed³ug nazwy pliku"
+#: xmms/playlistwin.c:107
+#, fuzzy
+msgid "/Selection/Sort By Filename"
+msgstr "/Sortuj zaznaczone/Wed³ug nazwy pliku"
 
-#: xmms/playlistwin.c:83
-msgid "/Sort Selection/By Path + Filename"
-msgstr "/Sortowanie zaznaczenia/Wed³ug ¶cie¿ki i nazwy pliku"
+#: xmms/playlistwin.c:109
+#, fuzzy
+msgid "/Selection/Sort By Path + Filename"
+msgstr "/Sortuj zaznaczone/Wed³ug ¶cie¿ki i nazwy pliku"
 
-#: xmms/playlistwin.c:84
-msgid "/Sort Selection/By Date"
-msgstr "/Sortowanie zaznaczenia/Wed³ug daty"
+#: xmms/playlistwin.c:111
+#, fuzzy
+msgid "/Selection/Sort By Date"
+msgstr "/Sortuj zaznaczone/Wed³ug daty"
 
-#: xmms/playlistwin.c:86
+#: xmms/playlistwin.c:113
+#, fuzzy
+msgid "/Selection/Randomize"
+msgstr "/Zaznacz/-"
+
+#: xmms/playlistwin.c:116
 msgid "/Randomize List"
 msgstr "/Wymieszaj listê"
 
-#: xmms/playlistwin.c:87
+#: xmms/playlistwin.c:118
 msgid "/Reverse List"
 msgstr "/Odwróæ listê"
 
-#: xmms/playlistwin.c:101
+#: xmms/playlistwin.c:131
+msgid "/By extension"
+msgstr "/Wed³ug rozszerzenia"
+
+#: xmms/playlistwin.c:148
 msgid "/Remove Dead Files"
 msgstr "/Usuñ martwe pliki"
 
-#: xmms/playlistwin.c:102
+#: xmms/playlistwin.c:149
 msgid "/Physically Delete Files"
 msgstr "/Fizycznie usuñ pliki"
 
-#: xmms/playlistwin.c:115
+#: xmms/playlistwin.c:159
+msgid "/Queue - Unqueue"
+msgstr "/Do Kolejki - Z kolejki"
+
+#: xmms/playlistwin.c:160
+#, fuzzy
+msgid "/Queue manager"
+msgstr "/Do Kolejki - Z kolejki"
+
+#: xmms/playlistwin.c:162
 msgid "/Add"
 msgstr "/Dodaj"
 
-#: xmms/playlistwin.c:116
+#: xmms/playlistwin.c:163
 msgid "/Add/File"
 msgstr "/Dodaj/Plik"
 
-#: xmms/playlistwin.c:117
+#: xmms/playlistwin.c:164
 msgid "/Add/Directory"
 msgstr "/Dodaj/Katalog"
 
-#: xmms/playlistwin.c:118
+#: xmms/playlistwin.c:165
 msgid "/Add/Url"
 msgstr "/Dodaj/URL"
 
-#: xmms/playlistwin.c:120
+#: xmms/playlistwin.c:167
 msgid "/Remove"
 msgstr "/Usuñ"
 
-#: xmms/playlistwin.c:121
+#: xmms/playlistwin.c:168
 msgid "/Remove/Selected"
 msgstr "/Usuñ/Zaznaczone"
 
-#: xmms/playlistwin.c:122
+#: xmms/playlistwin.c:169
 msgid "/Remove/Crop"
 msgstr "/Usuñ/Przytnij"
 
-#: xmms/playlistwin.c:123
+#: xmms/playlistwin.c:170
 msgid "/Remove/All"
 msgstr "/Usuñ/Wszystkie"
 
-#: xmms/playlistwin.c:124
+#: xmms/playlistwin.c:171
 msgid "/Remove/Misc"
 msgstr "/Usuñ/Ró¿ne"
 
-#: xmms/playlistwin.c:126
-msgid "/Selection"
-msgstr "/Zaznaczenie"
-
-#: xmms/playlistwin.c:127
+#: xmms/playlistwin.c:174
 msgid "/Selection/Select All"
-msgstr "/Zaznaczenie/Zaznacz wszystko"
+msgstr "/Zaznacz/Zaznacz wszystko"
 
-#: xmms/playlistwin.c:128
+#: xmms/playlistwin.c:175
 msgid "/Selection/Select None"
-msgstr "/Zaznaczenie/Odznacz wszystko"
+msgstr "/Zaznacz/Odznacz wszystko"
 
-#: xmms/playlistwin.c:129
+#: xmms/playlistwin.c:176
 msgid "/Selection/Invert Selection"
-msgstr "/Zaznaczenie/Odwróæ zaznaczenie"
+msgstr "/Zaznacz/Odwróæ zaznaczenie"
 
-#: xmms/playlistwin.c:130
+#: xmms/playlistwin.c:177
 msgid "/Selection/-"
-msgstr "/Zaznaczenie/-"
+msgstr "/Zaznacz/-"
 
-#: xmms/playlistwin.c:131
+#: xmms/playlistwin.c:178
 msgid "/Selection/Read Extended Info"
-msgstr "/Zaznaczenie/Odczytaj rozszerzone informacje"
+msgstr "/Zaznacz/Odczytaj rozszerzone informacje"
 
-#: xmms/playlistwin.c:133
+#: xmms/playlistwin.c:180
 msgid "/Sort"
-msgstr "/Sortowanie"
+msgstr "/Sortuj"
 
-#: xmms/playlistwin.c:135
+#: xmms/playlistwin.c:182
 msgid "/Playlist"
 msgstr "/Lista odtwarzania"
 
-#: xmms/playlistwin.c:136
+#: xmms/playlistwin.c:183
 msgid "/Playlist/Load List"
 msgstr "/Lista odtwarzania/Wczytaj listê"
 
-#: xmms/playlistwin.c:137
+#: xmms/playlistwin.c:184
 msgid "/Playlist/Save List"
 msgstr "/Lista odtwarzania/Zapisz listê"
 
-#: xmms/playlistwin.c:138
+#: xmms/playlistwin.c:185
 msgid "/Playlist/New List"
 msgstr "/Lista odtwarzania/Nowa lista"
 
-#: xmms/playlistwin.c:551
+#: xmms/playlistwin.c:618
 msgid "Enter URL to add:"
 msgstr "Wprowad¼ URL do dodania:"
 
-#: xmms/playlistwin.c:695
+#: xmms/playlistwin.c:718
+msgid "Unable to write playlist!"
+msgstr "Nie mo¿na zapisaæ listy utworów!"
+
+#: xmms/playlistwin.c:721
+#, c-format
+msgid "Error writing playlist \"%s\": %s"
+msgstr "B³±d zapisu listy utworów \"%s\": %s"
+
+#: xmms/playlistwin.c:768
+msgid "File exists!"
+msgstr "Plik istnieje!"
+
+#: xmms/playlistwin.c:771
+#, c-format
+msgid "%s already exists."
+msgstr "%s ju¿ istnieje."
+
+#: xmms/playlistwin.c:782
+msgid "Overwrite"
+msgstr "Nadpisz"
+
+#: xmms/playlistwin.c:839
+#, c-format
+msgid ""
+"Unknown file type for %s.\n"
+"The filename of the playlist should end in either \".m3u\" or \".pls\"."
+msgstr ""
+
+#: xmms/playlistwin.c:843
+msgid "Unable to save playlist"
+msgstr "Nie mo¿na zapisaæ listy utworów"
+
+#: xmms/playlistwin.c:916
 msgid "Load playlist"
 msgstr "Odczyt listy odtwarzania"
 
-#: xmms/playlistwin.c:721
+#: xmms/playlistwin.c:953
 msgid "Save playlist"
 msgstr "Zapis listy odtwarzania"
 
-#: xmms/playlistwin.c:1145
+#: xmms/playlistwin.c:971
+msgid "Save options"
+msgstr "Zapisz opcje"
+
+#: xmms/playlistwin.c:975
+msgid "Determine file type:"
+msgstr "Ustalony typ pliku:"
+
+#: xmms/playlistwin.c:1408
 #, c-format
 msgid "Failed to delete \"%s\": %s."
 msgstr "Usuniêcie \"%s\" nie powiod³o siê: %s."
 
-#: xmms/playlistwin.c:1161
+#: xmms/playlistwin.c:1424
 #, c-format
 msgid "%d of %d files successfully deleted."
-msgstr "Pomy¶lnie usuniêto %d z %d plików."
+msgstr "Usuniêto %d z %d plików."
 
-#: xmms/playlistwin.c:1165
+#: xmms/playlistwin.c:1428
 msgid "XMMS: Files deleted"
 msgstr "XMMS: Usuniête pliki"
 
-#: xmms/playlistwin.c:1196
+#: xmms/playlistwin.c:1459
 msgid "XMMS: Delete files?"
 msgstr "XMMS: Usun±æ pliki?"
 
-#: xmms/playlistwin.c:1205
+#: xmms/playlistwin.c:1468
 #, c-format
 msgid "Really delete %d files?"
 msgstr "Czy rzeczywi¶cie usun±æ %d plików?"
 
-#: xmms/playlistwin.c:1207
+#: xmms/playlistwin.c:1470
 #, c-format
 msgid "Really delete: \"%s\"?"
 msgstr "Czy rzeczywi¶cie usun±æ: \"%s\"?"
 
-#: xmms/playlistwin.c:1650
+#: xmms/playlistwin.c:1930
 msgid "XMMS Playlist"
 msgstr "XMMS - lista odtwarzania"
 
-#: xmms/prefswin.c:253
+#: xmms/prefswin.c:302
 msgid ""
-"Realtime priority is a way for XMMS to make sure it always\n"
-"get as much CPU time as needed for decoding audio files without\n"
-"any \"skips\".\n"
+"Realtime priority is a way for XMMS to get a higher\n"
+"priority  for CPU time.  This might give less \"skips\".\n"
 "\n"
 "This requires that XMMS is run with root privileges and\n"
-"may, although it's very unusal, lock up your computer.\n"
+"may, although it's very unusual, lock up your computer.\n"
+"Running XMMS with root privileges might also have other\n"
+"security implications.\n"
 "\n"
-"You have been warned, to activate this you need to\n"
-"restart XMMS."
+"Using this feature is not recommended.\n"
+"To activate this you need to restart XMMS."
 msgstr ""
 "Priorytet czasu rzeczywistego jest sposobem, dziêki któremu system\n"
 "przydziela wystarczaj±co du¿o czasu procesora na dekodowanie, dziêki\n"
 "czemu XMMS odtwarza pliki bez niepotrzebnych trzasków i przeskoków.\n"
 "\n"
 "Opcja ta wymaga, aby XMMS by³ uruchamiany z prawami u¿ytkownika root i\n"
-"mo¿e, chocia¿ zdarza siê to bardzo rzadko, zablokowaæ twój komputer.\n"
+"mo¿e, (chocia¿ zdarza siê to bardzo rzadko), zablokowaæ twój komputer.\n"
 "\n"
-"Zosta³e¶ ostrze¿ony, aby uaktywniæ tê opcjê musisz ponownie uruchomiæ XMMS."
+"Nie jest zalecane u¿ywanie tej opcji.\n"
+"Aby uaktywniæ t± opcjê musisz ponownie uruchomiæ XMMS."
 
-#: xmms/prefswin.c:389
+#: xmms/prefswin.c:439
 msgid "Select playlist font:"
-msgstr "WYbó czcionki listy odtwarzania:"
+msgstr "Wybór czcionki listy odtwarzania:"
 
-#: xmms/prefswin.c:416
+#: xmms/prefswin.c:466
 msgid "Select main window font:"
 msgstr "Wybór czcionki okna g³ównego:"
 
-#: xmms/prefswin.c:611
+#: xmms/prefswin.c:719
 msgid "Preferences"
 msgstr "Ustawienia"
 
-#.
-#. * Input plugins
-#.
-#: xmms/prefswin.c:633
+#: xmms/prefswin.c:742
 msgid "Input Plugins"
 msgstr "Wtyczki wej¶ciowe"
 
-#: xmms/prefswin.c:641
+#: xmms/prefswin.c:750
 msgid "Input plugins"
 msgstr "Wtyczki wej¶ciowe"
 
-#: xmms/prefswin.c:663 xmms/prefswin.c:695 xmms/prefswin.c:732
-#: xmms/prefswin.c:772 xmms/prefswin.c:819
+#: xmms/prefswin.c:772 xmms/prefswin.c:804 xmms/prefswin.c:846
+#: xmms/prefswin.c:891 xmms/prefswin.c:941
 msgid "Configure"
-msgstr "Skonfiguruj"
+msgstr "Konfiguruj"
 
-#: xmms/prefswin.c:670 xmms/prefswin.c:780 xmms/prefswin.c:827
+#: xmms/prefswin.c:779 xmms/prefswin.c:854 xmms/prefswin.c:899
+#: xmms/prefswin.c:949
 msgid "Enable plugin"
-msgstr "Wtyczka aktywna"
+msgstr "W³±cz wtyczkê"
 
-#.
-#. * Output plugin
-#.
-#: xmms/prefswin.c:678
+#: xmms/prefswin.c:787
 msgid "Output Plugin"
 msgstr "Wtyczka wyj¶ciowa"
 
-#: xmms/prefswin.c:703
+#: xmms/prefswin.c:812
 msgid "Audio I/O Plugins"
 msgstr "Wtyczki we/wy d¼wiêku"
 
-#.
-#. * Effect plugins
-#.
-#: xmms/prefswin.c:715
-msgid "Effect Plugins"
+#: xmms/prefswin.c:818 xmms/prefswin.c:858
+msgid "Effects Plugins"
 msgstr "Wtyczki efektów"
 
-#: xmms/prefswin.c:740
-msgid "Use plugins"
-msgstr "U¿ycie wtyczek"
+#: xmms/prefswin.c:825
+msgid "Effects plugins"
+msgstr "Wtyczki efektów"
 
-#.
-#. * General plugins
-#.
-#: xmms/prefswin.c:747
+#: xmms/prefswin.c:864 xmms/prefswin.c:903
 msgid "General Plugins"
 msgstr "Wtyczki ogólne"
 
-#: xmms/prefswin.c:754
+#: xmms/prefswin.c:870
 msgid "General plugins"
 msgstr "Wtyczki ogólne"
 
-#: xmms/prefswin.c:784
-msgid "Effect/General Plugins"
-msgstr "Wtyczki efektów/ogólne"
-
-#: xmms/prefswin.c:792 xmms/prefswin.c:831
+#: xmms/prefswin.c:911 xmms/prefswin.c:953
 msgid "Visualization Plugins"
 msgstr "Wtyczki wizualizacji"
 
-#: xmms/prefswin.c:800
+#: xmms/prefswin.c:919
 msgid "Visualization plugins"
 msgstr "Wtyczki wizualizacji"
 
-#: xmms/prefswin.c:846
+#: xmms/prefswin.c:968
 msgid "Read info on"
-msgstr "Odczyt informacji"
+msgstr "Odczytuj informacje"
 
-#: xmms/prefswin.c:848
+#: xmms/prefswin.c:970
+msgid "play"
+msgstr "przy odtwarzaniu"
+
+#: xmms/prefswin.c:971
+msgid "Read song title and length only when starting to play"
+msgstr "Wczytaj tylko nazwê i d³ugo¶æ utworu, podczas rozpoczêcia odtwarzania "
+
+#: xmms/prefswin.c:973
 msgid "demand"
 msgstr "na ¿±danie"
 
-#: xmms/prefswin.c:850
+#: xmms/prefswin.c:974
+msgid "Read song title and length when the song is visible in the playlist"
+msgstr ""
+"Wczytaj nazwê i d³ugo¶æ utworu, kiedy piosenka  jest widoczna na li¶cie "
+"odtwarzania"
+
+#: xmms/prefswin.c:976
 msgid "load"
 msgstr "przy odczycie"
 
-#: xmms/prefswin.c:853
+#: xmms/prefswin.c:977
+msgid ""
+"Read song title and length as soon as the song is loaded to the playlist"
+msgstr ""
+"Wczytuj nazwê i d³ugo¶æ utworu doputy, dopóki piosenka jest wczytywana do "
+"listy utworów"
+
+#: xmms/prefswin.c:980
 msgid "Allow multiple instances"
-msgstr "Dopuszczanie uruchomienia wielu kopii"
+msgstr "Dopuszczaj uruchomienie wielu kopii"
 
-#: xmms/prefswin.c:855
-msgid "Reverse file order in fileselector"
-msgstr "Odwrócony porz±dek przy wyborze plików"
-
-#: xmms/prefswin.c:856
-msgid "Always show clutterbar"
-msgstr "Sta³e wy¶wietlanie bocznego pasku wy¶wietlacza"
-
-#: xmms/prefswin.c:858
+#: xmms/prefswin.c:982
 msgid "Convert %20 to space"
-msgstr "Konwertowanie wyst±pieñ %20 na odstêpy"
+msgstr "Konwertuj %20 miejsca na odstêpy"
 
-#: xmms/prefswin.c:859
-msgid "Save window positions"
-msgstr "Zapis po³o¿eñ okien"
+#: xmms/prefswin.c:983
+msgid "Always show clutterbar"
+msgstr "Zawsze wy¶wietlaj boczny pasek wy¶wietlacza"
 
-#: xmms/prefswin.c:861
+#: xmms/prefswin.c:984
+msgid ""
+"The \"clutterbar\" is the row of buttons at the left side of the main window"
+msgstr ""
+"\"Boczny pasek wy¶wietlacza\" jest to rz±d przycisków z prawej strony "
+"g³ównego okna"
+
+#: xmms/prefswin.c:986
 msgid "Convert underscore to space"
-msgstr "Konwertowanie podkre¶leñ na odstêpy"
+msgstr "Konwertuj podkre¶lenia na odstêpy"
 
-#: xmms/prefswin.c:862
-msgid "Show numbers in playlist"
-msgstr "Wy¶wietlanie numerów na li¶cie odtwarzania"
+#: xmms/prefswin.c:987
+msgid "Save window positions"
+msgstr "Zapisuj po³o¿enia okien"
 
-#: xmms/prefswin.c:864
+#: xmms/prefswin.c:989
 msgid "Dim titlebar when inactive"
-msgstr "Przyciemnianie nieaktywnego paska tytu³u"
+msgstr "Przyciemniaj nieaktywy pasek tytu³u"
 
-#: xmms/prefswin.c:865
-msgid "Save playlist position"
-msgstr "Zapis po³o¿enia na li¶cie odtwarzania"
+#: xmms/prefswin.c:990
+msgid "Show numbers in playlist"
+msgstr "Wy¶wietlaj numery utworów na li¶cie odtwarzania"
 
-#: xmms/prefswin.c:867
-msgid "Sort \"Jump to file\" alphabetical"
-msgstr "Alfabetyczne sortowanie pozycji \"Skocz do pliku\""
+#: xmms/prefswin.c:992
+msgid "Sort \"Jump to file\" alphabetically"
+msgstr "Sortuj alfabetycznie pozycje \"Skocz do utworu\""
 
-#: xmms/prefswin.c:868
+#: xmms/prefswin.c:993
 msgid "Equalizer doublesize linked"
-msgstr "Przy³±czanie korektora, je¶li ma podwójny rozmiar"
+msgstr "Powiêksz korektor, je¶li XMMS ma podwójny rozmiar"
 
-#: xmms/prefswin.c:870
+#: xmms/prefswin.c:995
 msgid "Use realtime priority when available"
-msgstr "U¿ywanie priorytetu czasu rzeczywistego (je¶li to mo¿liwe)"
+msgstr "U¿ywaj priorytetu czasu rzeczywistego (je¶li to mo¿liwe)"
 
-#: xmms/prefswin.c:872
+#: xmms/prefswin.c:996
+msgid "Run XMMS with higher priority (not recommended)"
+msgstr "Uruchom XMMS z wy¿szym priorytetem (nie zalecane)"
+
+#: xmms/prefswin.c:998
 msgid "Smooth title scroll"
-msgstr "P³ynne przewijanie tytu³u"
+msgstr "Przewijaj nazwê utworu w oknie g³ównym"
 
-#: xmms/prefswin.c:876
+#: xmms/prefswin.c:1002
 msgid "Pause between songs for"
-msgstr "Przerwa pomiêdzy utworami"
+msgstr "Pauza pomiêdzy utworami na"
 
-#. I18N: s = seconds
-#: xmms/prefswin.c:882
-msgid "s"
-msgstr "s"
+#: xmms/prefswin.c:1007
+msgid "seconds"
+msgstr "sekundy"
 
-#: xmms/prefswin.c:888
+#: xmms/prefswin.c:1013
+msgid ""
+"When moving windows around, snap them together, and towards screen edges at "
+"this distance"
+msgstr ""
+
+#: xmms/prefswin.c:1017
 msgid "Snap windows at"
-msgstr "Przyci±ganie okien z odleg³o¶ci"
+msgstr "Przyci±gaj okna z odleg³o¶ci"
 
-#: xmms/prefswin.c:893
+#: xmms/prefswin.c:1022
 msgid "pixels"
 msgstr "pikseli"
 
-#: xmms/prefswin.c:898
-msgid "Do not hide windowmanager decorations"
-msgstr "Bez ukrywania dekoracji mened¿era okien"
+#: xmms/prefswin.c:1028
+msgid "Show window manager decorations"
+msgstr "Poka¿ dekoracje mened¿era okien"
 
-#: xmms/prefswin.c:899
+#: xmms/prefswin.c:1032
 msgid "Use '\\' as a directory delimiter"
-msgstr "Rozdzielanie katalogów przy u¿yciu \"\\\""
+msgstr "Rozdzielaj katalogi przy u¿yciu \"\\\""
 
-#: xmms/prefswin.c:902
-msgid "Transparent playlist window"
-msgstr "Przezroczyste okno listy odtwarzania"
+#: xmms/prefswin.c:1035
+#, fuzzy
+msgid ""
+"Recommended if you want to load playlists that were created in MS Windows"
+msgstr ""
+"Zalecane jest w³±czenie tej opcji, je¿eli chcesz odtwarzaæ listê stworzon± "
+"pod systemem MS Windows"
 
-#: xmms/prefswin.c:905
+#: xmms/prefswin.c:1039
 msgid "Mouse Wheel adjusts Volume by (%)"
-msgstr "Zmiana g³o¶no¶ci kó³kiem myszy co (%)"
+msgstr "Zmieniaj g³o¶no¶æ kó³kiem myszy co (%)"
 
-#: xmms/prefswin.c:913
-msgid "Read meta data from playlists"
-msgstr "Odczyt metadanych z list odtwarzania"
+#: xmms/prefswin.c:1048
+msgid "Use meta-data in playlists"
+msgstr "U¿yj metadanych w li¶cie odtwarzania"
 
-#: xmms/prefswin.c:927
+#: xmms/prefswin.c:1051
+msgid "Store information such as song title and length to playlists"
+msgstr ""
+
+#: xmms/prefswin.c:1067
 msgid "Use fontsets (Enable for multi-byte charset support)"
-msgstr "U¿ywanie zbiorów czcionek (przydatne przy czcionkach wielobajtowych)"
+msgstr "U¿ywaj zbiorów czcionek (przydatne przy czcionkach wielobajtowych)"
 
-#: xmms/prefswin.c:946
+#: xmms/prefswin.c:1086
 msgid "Main Window"
 msgstr "Okno g³ówne"
 
-#: xmms/prefswin.c:953
+#: xmms/prefswin.c:1093
 msgid "Use X font"
-msgstr "U¿ywanie czcionek X"
+msgstr "U¿ywaj czcionek X"
 
-#: xmms/prefswin.c:965
+#: xmms/prefswin.c:1105
 msgid "Fonts"
 msgstr "Czcionki"
 
-#: xmms/prefswin.c:1183 xmms/prefswin.c:1213
+#: xmms/prefswin.c:1129
+#, fuzzy
+msgid "Advanced Title Options"
+msgstr "Zaawansowane ustawienia"
+
+#: xmms/prefswin.c:1137
+#, c-format
+msgid ""
+"%0.2n - Display a 0 padded 2 char long tracknumber\n"
+"\n"
+"For more details, please read the included README or http://www.xmms.org/"
+"docs/readme.php"
+msgstr ""
+
+#: xmms/prefswin.c:1269 xmms/prefswin.c:1299 xmms/prefswin.c:1329
 msgid " (enabled)"
 msgstr " (aktywna) "
 
-#: xmms/prefswin.c:1242
+#: xmms/prefswin.c:1358
 msgid " (disabled)"
 msgstr " (nieaktywna) "
 
 #: xmms/skinwin.c:50
 msgid "Skin selector"
-msgstr "Przegl±darka skór"
+msgstr "Wybierz skórê"
 
 #: xmms/skinwin.c:58
 msgid "Skins"
@@ -4107,25 +4796,60 @@ msgstr "Skóry"
 
 #: xmms/skinwin.c:77
 msgid "Select random skin on play"
-msgstr "Wybór losowej skóry przy odtwarzaniu"
+msgstr "Wybierz losow± skórê przy odtwarzaniu"
 
 #: xmms/skinwin.c:195
 msgid "(none)"
 msgstr "(brak)"
 
-#. I18N note: "Enqueue" here means "Add to playlist"
-#: xmms/util.c:593
+#: xmms/util.c:594
 msgid "Enqueue"
-msgstr "Dodaj do listy"
+msgstr "Usuñ z kolejki"
 
-#: xmms/util.c:808
-msgid "Load file(s)"
-msgstr "Odczyt plików"
+#: xmms/util.c:830
+msgid "Play files"
+msgstr "Odtwórz pliki"
 
-#: xmms/util.c:827
+#: xmms/util.c:832
+msgid "Load files"
+msgstr "Wczytaj pliki"
+
+#: xmms/util.c:859
 msgid "Add selected files"
 msgstr "Dodaj zaznaczone pliki"
 
-#: xmms/util.c:832
+#: xmms/util.c:863
 msgid "Add all files in directory"
-msgstr "Dodaj wszystkie pliki w katalogu"
+msgstr "Dodaj wszystkie pliki z katalogu"
+
+#: xmms/util.c:887 xmms/util.c:905
+msgid "Add"
+msgstr "Dodaj"
+
+#~ msgid "Ok"
+#~ msgstr "Ok"
+
+#~ msgid "Song change"
+#~ msgstr "Zmiana utworu"
+
+#~ msgid "Playlist end"
+#~ msgstr "Koniec listy odtwarzania"
+
+#~ msgid ""
+#~ "Shell-command to run when xmms changes song.  It can optionally include "
+#~ "the string %%s which will be replaced by the new song title."
+#~ msgstr ""
+#~ "Polecenie pow³oki, uruchamiane, gdy XMMS zmieni utwór. Mo¿e ono "
+#~ "opcjonalnie zawieraæ %%s, które zostanie zast±pione tytu³em nowego utworu."
+
+#~ msgid "Advanced settings:"
+#~ msgstr "Zaawansowane ustawienia:"
+
+#~ msgid "Mmap mode"
+#~ msgstr "Tryb Mmap"
+
+#~ msgid "/Sort Selection"
+#~ msgstr "/Sortuj zaznaczone"
+
+#~ msgid "Unknown file type for %s"
+#~ msgstr "Nieznany typ pliku %s"

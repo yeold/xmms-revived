@@ -1,5 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2000  Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1998-2002  Peter Alm, Mikael Alm, Olle Hallnas,
+ *                           Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1999-2002  Haavard Kvaalen		 
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,14 +19,23 @@
  */
 #include "xmms.h"
 
-typedef struct tagRGBQUAD
+#if HAVE_STDINT_H
+#include <stdint.h>
+#elif !defined(UINT32_MAX)
+#define UINT32_MAX 0xffffffffU
+#endif
+
+struct rgb_quad
 {
 	guchar rgbBlue;
 	guchar rgbGreen;
 	guchar rgbRed;
 	guchar rgbReserved;
-}
-RGBQuad;
+};
+
+struct bitfieldmask {
+	guint32 r, g, b;
+};
 
 #define BI_RGB        0L
 #define BI_RLE8       1L
@@ -33,7 +44,7 @@ RGBQuad;
 
 static GdkGC *bmp_gc = NULL;
 
-int read_le_short(FILE * file, guint16 * ret)
+static int read_le_short(FILE * file, guint16 * ret)
 {
 	guint16 tmp;
 
@@ -44,7 +55,7 @@ int read_le_short(FILE * file, guint16 * ret)
 	return 1;
 }
 
-int read_le_long(FILE * file, guint32 * ret)
+static int read_le_long(FILE * file, guint32 * ret)
 {
 	guint32 tmp;
 
@@ -55,13 +66,48 @@ int read_le_long(FILE * file, guint32 * ret)
 	return 1;
 }
 
-static void read_1b_rgb(guint8 *input, gint input_size, guint8 *output, guint32 w, guint32 h, RGBQuad palette[]);
-static void read_4b_rgb(guint8 *input, gint input_size, guint8 *output, guint32 w, guint32 h, RGBQuad palette[]);
-static void read_4b_rle(guint8 *input, guint32 compr_size, guint8 *output, guint32 w, guint32 h, RGBQuad palette[]);
-static void read_8b_rgb(guint8 *input, gint input_size, guint8 *output, guint32 w, guint32 h, RGBQuad palette[]);
-static void read_8b_rle(guint8 *input, guint32 compr_size, guint8 *output, guint32 w, guint32 h, RGBQuad palette[]);
-static void read_16b_rgb(guint8 *input, gint input_size, guint8 *output, guint32 w, guint32 h);
+static int find_first_set(guint32 v)
+{
+	int i;
+	if (v == 0)
+		return -1;
+	for (i = 0; !(v & 1); i++)
+		v >>= 1;
+	return i;
+}
+
+static int find_last_set(guint32 v, int s)
+{
+	int i;
+	v >>= s;
+	for (i = 0; (v & 1) && i + s < 32; i++)
+		v >>= 1;
+	return i;
+}
+
+static void get_shift(guint32 v, int *r, int *l)
+{
+	int w;
+	*r = find_first_set(v);
+	*l = 0;
+	w = find_last_set(v, *r);
+	/* Limit to 8 bits */
+	if (w > 8)
+		*r += w - 8;
+	else
+		*l = 8 - w;
+}
+
+static void read_1b_rgb(guint8 *input, gint input_size, guint8 *output, guint32 w, guint32 h, struct rgb_quad *palette);
+static void read_4b_rgb(guint8 *input, gint input_size, guint8 *output, guint32 w, guint32 h, struct rgb_quad *palette);
+static void read_4b_rle(guint8 *input, guint32 compr_size, guint8 *output, guint32 w, guint32 h, struct rgb_quad *palette);
+static void read_8b_rgb(guint8 *input, gint input_size, guint8 *output, guint32 w, guint32 h, struct rgb_quad *palette);
+static void read_8b_rle(guint8 *input, guint32 compr_size, guint8 *output, guint32 w, guint32 h, struct rgb_quad *palette);
+static void read_16b_rgb(guint8 *input, int input_size, guint8 *output,
+			 guint32 w, guint32 h, struct bitfieldmask *mask);
 static void read_24b_rgb(guint8 *input, gint input_size, guint8 *output, guint32 w, guint32 h);
+static void read_32b_rgb(guint8 *input, int input_size, guint8 *output,
+			 guint32 w, guint32 h, struct bitfieldmask *mask);
 
 
 GdkPixmap *read_bmp(gchar * filename)
@@ -73,8 +119,9 @@ GdkPixmap *read_bmp(gchar * filename)
 	guint8 *data, *buffer;
 	struct stat statbuf;
 
-	RGBQuad rgb_quads[256];
-	GdkPixmap *ret;
+	struct rgb_quad rgb_quads[256];
+	struct bitfieldmask mask = {0};
+	GdkPixmap *ret = NULL;
 
 	if (stat(filename, &statbuf) == -1)
 		return NULL;
@@ -85,29 +132,27 @@ GdkPixmap *read_bmp(gchar * filename)
 		return NULL;
 
 	if (fread(type, 1, 2, file) != 2)
-	{
-		fclose(file);
-		return NULL;
-	}
+		goto failure;
 	if (strncmp(type, "BM", 2))
 	{
 		g_warning("read_bmp(): Error in BMP file: wrong type");
-		fclose(file);
-		return NULL;
+		goto failure;
 	}
 	fseek(file, 8, SEEK_CUR);
-	read_le_long(file, &offset);
-	read_le_long(file, &headSize);
+	if (!read_le_long(file, &offset) ||
+	    !read_le_long(file, &headSize))
+		goto failure;
 	if (headSize == 12) /* BITMAPCOREINFO */
 	{
-		guint16 tmp;
+		guint16 tmpw, tmph, dummy;
 		
-		read_le_short(file, &tmp);
-		w = tmp;
-		read_le_short(file, &tmp);
-		h = tmp;
-		read_le_short(file, &tmp); /* planes */
-		read_le_short(file, &bitcount);
+		if (!read_le_short(file, &tmpw) ||
+		    !read_le_short(file, &tmph) ||
+		    !read_le_short(file, &dummy) ||
+		    !read_le_short(file, &bitcount))
+			goto failure;
+		w = tmpw;
+		h = tmph;
 		imgsize = size - offset;
 		comp = BI_RGB;
 	}
@@ -115,46 +160,64 @@ GdkPixmap *read_bmp(gchar * filename)
 	{
 		guint16 tmp;
 		
-		read_le_long(file, &w);
-		read_le_long(file, &h);
-		read_le_short(file, &tmp); /* planes */
-		read_le_short(file, &bitcount);
-		read_le_long(file, &comp);
-		read_le_long(file, &imgsize);
+		if (!read_le_long(file, &w) ||
+		    !read_le_long(file, &h) ||
+		    !read_le_short(file, &tmp) ||
+		    !read_le_short(file, &bitcount) ||
+		    !read_le_long(file, &comp) ||
+		    !read_le_long(file, &imgsize))
+			goto failure;
 		imgsize = size - offset;
 
 		fseek(file, 16, SEEK_CUR);
 	}
 	else
 	{
-		g_warning("read_bmp(): Error in BMP file: Unknown header size");
-		fclose(file);
-		return NULL;
+		g_warning("read_bmp(): Error in BMP file: Invalid header size: %d (%s)",
+			  headSize, filename);
+		goto failure;
 	}
-	if (bitcount != 24 && bitcount != 16)
+	if ((bitcount == 16 || bitcount == 32) && comp == BI_BITFIELDS)
 	{
-		gint ncols, i;
+		if (offset - headSize - 14 >= 12)
+		{
+			if (!read_le_long(file, &mask.r) ||
+			    !read_le_long(file, &mask.g) ||
+			    !read_le_long(file, &mask.b))
+				goto failure;
+		}
+	}
+	else if (bitcount != 24 && bitcount != 16 && bitcount != 32)
+	{
+		guint32 ncols, i;
 
-		ncols = (offset - headSize - 14);
+		ncols = offset - headSize - 14;
 		if (headSize == 12)
 		{
-			ncols /= 3;
+			ncols = MIN(ncols / 3, 256);
 			for (i = 0; i < ncols; i++)
-			{
-				fread(&rgb_quads[i], 3, 1, file);
-			}
+				if (fread(&rgb_quads[i], 3, 1, file) != 1)
+					goto failure;
 		}
 		else
 		{
-			ncols /= 4;
-			fread(rgb_quads, 4, ncols, file);
+			ncols = MIN(ncols / 4, 256);
+			if (fread(rgb_quads, 4, ncols, file) != ncols)
+				goto failure;
 		}
 	}
 	fseek(file, offset, SEEK_SET);
+	/* verify buffer size */
+	if (!h || !w ||
+	    w > (((UINT32_MAX - 3) / 3) / h) ||
+	    h > (((UINT32_MAX - 3) / 3) / w)) {
+		g_warning("read_bmp(): width(%u)*height(%u) too large", w, h);
+		fclose(file);
+		return NULL;
+	}
+	data = g_malloc0((w * 3 * h) + 3);	/* +3 is just for safety */
 	buffer = g_malloc(imgsize);
 	fread(buffer, imgsize, 1, file);
-	fclose(file);
-	data = g_malloc0((w * 3 * h) + 3);	/* +3 is just for safety */
 
 	if (bitcount == 1)
 		read_1b_rgb(buffer, imgsize, data, w, h, rgb_quads);
@@ -177,9 +240,11 @@ GdkPixmap *read_bmp(gchar * filename)
 			g_warning("read_bmp(): Invalid compression (%d)", comp);
 	}
 	else if (bitcount == 16)
-		read_16b_rgb(buffer, imgsize, data, w, h);
+		read_16b_rgb(buffer, imgsize, data, w, h, &mask);
 	else if (bitcount == 24)
 		read_24b_rgb(buffer, imgsize, data, w, h);
+	else if (bitcount == 32)
+		read_32b_rgb(buffer, imgsize, data, w, h, &mask);
 	else
 		g_warning("read_bmp(): Unsupported bitdepth: %d", bitcount);
 
@@ -193,11 +258,13 @@ GdkPixmap *read_bmp(gchar * filename)
 	g_free(data);
 	g_free(buffer);
 
+ failure:
+	fclose(file);
 	return ret;
 }
 
 
-static void read_1b_rgb(guint8 *input, gint input_size, guint8 *output, guint32 w, guint32 h, RGBQuad palette[])
+static void read_1b_rgb(guint8 *input, gint input_size, guint8 *output, guint32 w, guint32 h, struct rgb_quad *palette)
 {
 	guint8 *input_end = input + input_size;
 	guint8 *output_ptr = output + ((h - 1) * w * 3);
@@ -221,7 +288,7 @@ static void read_1b_rgb(guint8 *input, gint input_size, guint8 *output, guint32 
 	}
 }
 
-static void read_4b_rle(guint8 *input, guint32 compr_size, guint8 *output, guint32 w, guint32 h, RGBQuad palette[])
+static void read_4b_rle(guint8 *input, guint32 compr_size, guint8 *output, guint32 w, guint32 h, struct rgb_quad *palette)
 {
 	gboolean at_end = 0;
 	gint j;
@@ -324,7 +391,7 @@ static void read_4b_rle(guint8 *input, guint32 compr_size, guint8 *output, guint
 	}
 }
 
-static void read_4b_rgb(guint8 *input, gint input_size, guint8 *output, guint32 w, guint32 h, RGBQuad palette[])
+static void read_4b_rgb(guint8 *input, gint input_size, guint8 *output, guint32 w, guint32 h, struct rgb_quad *palette)
 {
 	guint8 *input_end = input + input_size;
 	guint8 *output_ptr = output + ((h - 1) * w * 3);
@@ -354,7 +421,7 @@ static void read_4b_rgb(guint8 *input, gint input_size, guint8 *output, guint32 
 }
 
 
-static void read_8b_rle(guint8 *input, guint32 compr_size, guint8 *output, guint32 w, guint32 h, RGBQuad palette[])
+static void read_8b_rle(guint8 *input, guint32 compr_size, guint8 *output, guint32 w, guint32 h, struct rgb_quad *palette)
 {
 	gboolean at_end = 0;
 	gint j;
@@ -448,7 +515,7 @@ static void read_8b_rle(guint8 *input, guint32 compr_size, guint8 *output, guint
 	}
 }
 
-static void read_8b_rgb(guint8 *input, gint input_size, guint8 *output, guint32 w, guint32 h, RGBQuad palette[])
+static void read_8b_rgb(guint8 *input, gint input_size, guint8 *output, guint32 w, guint32 h, struct rgb_quad *palette)
 {
 	guint8 *input_end = input + input_size;
 	guint8 *output_ptr = output + ((h - 1) * w * 3);
@@ -471,13 +538,24 @@ static void read_8b_rgb(guint8 *input, gint input_size, guint8 *output, guint32 
 }
 
 
-static void read_16b_rgb(guint8 *input, gint input_size, guint8 *output, guint32 w, guint32 h)
+static void read_16b_rgb(guint8 *input, int input_size, guint8 *output, guint32 w, guint32 h, struct bitfieldmask *mask)
 {
 	guint8 *input_end = input + input_size;
 	guint8 *output_ptr = output + ((h - 1) * w * 3);
-	gint padding = (4 - ((w * 2) % 4)) & 3;
+	int padding = (4 - ((w * 2) % 4)) & 3;
 	guint16 rgb16;
 	guint x, y;
+	int rsr, rsl, gsr, gsl, bsr, bsl;
+
+	if (mask->r == 0)
+		mask->r = 0x7C00;
+	if (mask->g == 0)
+		mask->g = 0x03E0;
+	if (mask->b == 0)
+		mask->b = 0x001F;
+	get_shift(mask->r, &rsr, &rsl);
+	get_shift(mask->g, &gsr, &gsl);
+	get_shift(mask->b, &bsr, &bsl);
 
 	for (y = 0; y < h; y++)
 	{
@@ -485,10 +563,10 @@ static void read_16b_rgb(guint8 *input, gint input_size, guint8 *output, guint32
 		{
 			rgb16 = ((*(input + 1)) << 8) | (*input);
 			input += 2;
-			*output_ptr++ = (rgb16 & 0x7C00) >> 7;
-			*output_ptr++ = (rgb16 & 0x03E0) >> 2;				
-			*output_ptr++ = (rgb16 & 0x001F) << 3;
-		}			
+			*output_ptr++ = ((rgb16 & mask->r) >> rsr) << rsl;
+			*output_ptr++ = ((rgb16 & mask->g) >> gsr) << gsl;
+			*output_ptr++ = ((rgb16 & mask->b) >> bsr) << bsl;
+		}
 		output_ptr -= w * 6; /* Back up two scanlines */
 		input += padding;
 	}
@@ -517,3 +595,36 @@ static void read_24b_rgb(guint8 *input, gint input_size, guint8 *output, guint32
 		input += padding;
 	}
 }
+
+static void read_32b_rgb(guint8 *input, int input_size, guint8 *output, guint32 w, guint32 h, struct bitfieldmask *mask)
+{
+	guint8 *input_end = input + input_size;
+	guint8 *output_ptr = output + ((h - 1) * w * 3);
+	guint x, y;
+	int rsr, rsl, gsr, gsl, bsr, bsl;
+
+	if (mask->r == 0)
+		mask->r = 0x00FF0000;
+	if (mask->g == 0)
+		mask->g = 0x0000FF00;
+	if (mask->b == 0)
+		mask->b = 0x000000FF;
+	get_shift(mask->r, &rsr, &rsl);
+	get_shift(mask->g, &gsr, &gsl);
+	get_shift(mask->b, &bsr, &bsl);
+
+	for (y = 0; y < h; y++)
+	{
+		for (x = 0; x < w && input < (input_end - 3); x++)
+		{
+			guint32 rgb = *(input + 3) << 24 | *(input + 2) << 16 |
+				*(input + 1) << 8 | *input;
+			input += 4;
+			*output_ptr++ = ((rgb & mask->r) >> rsr) << rsl;
+			*output_ptr++ = ((rgb & mask->g) >> gsr) << gsl;
+			*output_ptr++ = ((rgb & mask->b) >> bsr) << bsl;
+		}
+		output_ptr -= w * 6;
+	}
+}
+

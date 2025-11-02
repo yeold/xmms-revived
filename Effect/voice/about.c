@@ -32,7 +32,7 @@ void voice_about(void)
 		_("XMMS Voice Removal Plugin\n\n"
 		  "A simple voice removal plugin by "
 		  "Anders Carlsson <andersca@gnu.org>"),
-		_("Ok"), FALSE, NULL, NULL);
+		_("OK"), FALSE, NULL, NULL);
 
 	gtk_signal_connect(GTK_OBJECT(dialog), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed),

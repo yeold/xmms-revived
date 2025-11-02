@@ -37,7 +37,7 @@ static void configure_ok(GtkWidget *w, gpointer data)
 
 static void configure_cancel(GtkWidget *w, gpointer data)
 {
-	bscope_cfg.color = (guint32)data;
+	bscope_cfg.color = GPOINTER_TO_UINT(data);
 	generate_cmap();
 	gtk_widget_destroy(configure_win);
 }
@@ -63,7 +63,7 @@ void bscope_configure (void)
 	color[1]=((gdouble)((bscope_cfg.color %0x10000)/0x100))/256;
 	color[2]=((gdouble)(bscope_cfg.color %0x100))/256;
 	
-	configure_win = gtk_window_new(GTK_WINDOW_DIALOG);
+	configure_win = gtk_window_new(GDK_WINDOW_DIALOG);
 	gtk_container_set_border_width(GTK_CONTAINER(configure_win), 10);
 	gtk_window_set_title(GTK_WINDOW(configure_win), _("Color Entry"));
 	gtk_window_set_policy(GTK_WINDOW(configure_win), FALSE, FALSE, FALSE);
@@ -98,7 +98,7 @@ void bscope_configure (void)
 	gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
-	ok = gtk_button_new_with_label(_("Ok"));
+	ok = gtk_button_new_with_label(_("OK"));
 	gtk_signal_connect(GTK_OBJECT(ok), "clicked",
 			   GTK_SIGNAL_FUNC(configure_ok), NULL);
 	GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
@@ -109,7 +109,7 @@ void bscope_configure (void)
 	cancel = gtk_button_new_with_label(_("Cancel"));
 	gtk_signal_connect(GTK_OBJECT(cancel), "clicked",
 			   GTK_SIGNAL_FUNC(configure_cancel),
-			   (gpointer)bscope_cfg.color);
+			   GUINT_TO_POINTER(bscope_cfg.color));
 	GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
 	gtk_widget_show(cancel);

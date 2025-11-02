@@ -1,7 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
  *  Copyright (C) 1998-2001  Peter Alm, Mikael Alm, Olle Hallnas,
  *                           Thomas Nilsson and 4Front Technologies
- *  Copyright (C) 1999-2001  Haavard Kvaalen
+ *  Copyright (C) 1999-2003  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -24,22 +24,23 @@
 static GtkWidget *prefswin, *prefswin_notebook, *prefswin_ok;
 static GtkWidget *prefswin_audio_ie_cbox;
 static GtkWidget *prefswin_audio_iconfig, *prefswin_audio_iabout;
-static GtkWidget *prefswin_egplugins_gconfig, *prefswin_egplugins_gabout;
-static GtkWidget *prefswin_egplugins_guse_cbox;
+static GtkWidget *prefswin_gplugins_config, *prefswin_gplugins_about;
+static GtkWidget *prefswin_gplugins_use_cbox;
 static GtkWidget *prefswin_vplugins_use_cbox, *prefswin_vplugins_list;
 static GtkWidget *prefswin_vplugins_config, *prefswin_vplugins_about;
 static GtkWidget *prefswin_audio_oconfig, *prefswin_audio_oabout;
-static GtkWidget *prefswin_egplugins_elist, *prefswin_egplugins_econfig;
-static GtkWidget *prefswin_egplugins_eabout, *prefswin_egplugins_euse_cbox;
+static GtkWidget *prefswin_eplugins_list, *prefswin_eplugins_config;
+static GtkWidget *prefswin_eplugins_about, *prefswin_eplugins_use_cbox;
 
 static GtkWidget *prefswin_options_sd_entry, *prefswin_options_pbs_entry;
 	
 static GtkWidget *prefswin_options_font_entry, *prefswin_options_font_browse;
 static GtkWidget *prefswin_options_fontset, *prefswin_mainwin_font_entry;
 static GtkWidget *prefswin_mainwin_xfont, *prefswin_options_mouse_spin;
-static gboolean updating_ilist = FALSE, updating_glist = FALSE, updating_vlist = FALSE;
+static gboolean updating_ilist = FALSE, updating_glist = FALSE, updating_vlist = FALSE, updating_elist = FALSE;
 
 static GtkWidget *prefswin_title_entry;
+static GtkTooltips *prefswin_tooltips;
 
 extern MenuRow *mainwin_menurow;
 
@@ -49,15 +50,15 @@ extern TextBox *mainwin_info;
 extern gboolean mainwin_focus, equalizerwin_focus, playlistwin_focus;
 
 static gboolean is_opening = FALSE;
-static gint selected_oplugin, selected_eplugin;
+static gint selected_oplugin;
 
 static GList *option_list = NULL;
 
 void add_input_plugins(GtkCList *clist);
 void add_general_plugins(GtkCList *clist);
 void add_vis_plugins(GtkCList *clist);
+void add_effect_plugins(GtkCList *clist);
 void add_output_plugins(GtkOptionMenu *omenu);
-void add_effect_plugins(GtkOptionMenu *emenu);
 static void prefswin_options_write_data(void);
 
 gint prefswin_delete_event(GtkWidget * widget, GdkEvent * event, gpointer data)
@@ -98,8 +99,9 @@ void prefswin_ilist_clicked(GtkCList *clist, gint row, gint column, GdkEventButt
 	}
 	else
 	{
-		gtk_widget_set_sensitive(prefswin_audio_iconfig, 0);
-		gtk_widget_set_sensitive(prefswin_audio_iabout, 0);
+		gtk_widget_set_sensitive(prefswin_audio_iconfig, FALSE);
+		gtk_widget_set_sensitive(prefswin_audio_iabout, FALSE);
+		gtk_widget_set_sensitive(prefswin_audio_ie_cbox, FALSE);
 	}
 }
 
@@ -125,16 +127,6 @@ void prefswin_oconfigure(GtkWidget * w, gpointer data)
 void prefswin_oabout(GtkWidget * w, gpointer data)
 {
 	output_about(selected_oplugin);
-}
-
-void prefswin_econfigure(GtkButton * w, gpointer data)
-{
-	effect_configure(selected_eplugin);
-}
-
-void prefswin_eabout(GtkButton * w, gpointer data)
-{
-	effect_about(selected_eplugin);
 }
 
 void prefswin_gconfigure(GtkButton * w, gpointer data)
@@ -165,28 +157,29 @@ void prefswin_glist_clicked(GtkCList * clist, gint row, gint column, GdkEventBut
 		index = GPOINTER_TO_INT(clist->selection->data);
 		gp = g_list_nth(gplist, index)->data;
 
-		gtk_widget_set_sensitive(prefswin_egplugins_guse_cbox, 1);
+		gtk_widget_set_sensitive(prefswin_gplugins_use_cbox, 1);
 		updating_glist = TRUE;
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefswin_egplugins_guse_cbox), general_enabled(index));
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefswin_gplugins_use_cbox), general_enabled(index));
 		updating_glist = FALSE;
 
 		if (gp && gp->configure)
-			gtk_widget_set_sensitive(prefswin_egplugins_gconfig, 1);
+			gtk_widget_set_sensitive(prefswin_gplugins_config, 1);
 		else
-			gtk_widget_set_sensitive(prefswin_egplugins_gconfig, 0);
+			gtk_widget_set_sensitive(prefswin_gplugins_config, 0);
 
 		if (gp && gp->about)
-			gtk_widget_set_sensitive(prefswin_egplugins_gabout, 1);
+			gtk_widget_set_sensitive(prefswin_gplugins_about, 1);
 		else
-			gtk_widget_set_sensitive(prefswin_egplugins_gabout, 0);
+			gtk_widget_set_sensitive(prefswin_gplugins_about, 0);
 
 		if (event && event->type == GDK_2BUTTON_PRESS)
-			gtk_signal_emit_by_name(GTK_OBJECT(prefswin_egplugins_gconfig), "clicked");
+			gtk_signal_emit_by_name(GTK_OBJECT(prefswin_gplugins_config), "clicked");
 	}
 	else
 	{
-		gtk_widget_set_sensitive(prefswin_egplugins_gconfig, FALSE);
-		gtk_widget_set_sensitive(prefswin_egplugins_gabout, FALSE);
+		gtk_widget_set_sensitive(prefswin_gplugins_config, FALSE);
+		gtk_widget_set_sensitive(prefswin_gplugins_about, FALSE);
+		gtk_widget_set_sensitive(prefswin_gplugins_use_cbox, FALSE);
 	}
 }
 
@@ -240,24 +233,81 @@ void prefswin_vlist_clicked(GtkCList * clist, gint row, gint column, GdkEventBut
 	{
 		gtk_widget_set_sensitive(prefswin_vplugins_config, FALSE);
 		gtk_widget_set_sensitive(prefswin_vplugins_about, FALSE);
+		gtk_widget_set_sensitive(prefswin_vplugins_use_cbox, FALSE);
+	}
+}
+
+void prefswin_econfigure(GtkButton * w, gpointer data)
+{
+	GtkCList *clist = GTK_CLIST(data);
+	gint sel = GPOINTER_TO_INT(clist->selection->data);
+
+	effect_configure(sel);
+}
+
+void prefswin_eabout(GtkButton * w, gpointer data)
+{
+	GtkCList *clist = GTK_CLIST(data);
+	gint sel = GPOINTER_TO_INT(clist->selection->data);
+
+	effect_about(sel);
+}
+
+void prefswin_elist_clicked(GtkCList * clist, gint row, gint column, GdkEventButton *event, gpointer data)
+{
+	EffectPlugin *ep;
+	gint index;
+	GList *eplist;
+
+	if (clist->selection)
+	{
+		eplist = get_effect_list();
+		index = GPOINTER_TO_INT(clist->selection->data);
+		ep = g_list_nth(eplist, index)->data;
+
+		gtk_widget_set_sensitive(prefswin_eplugins_use_cbox, 1);
+		updating_elist = TRUE;
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefswin_eplugins_use_cbox), effect_enabled(index));
+		updating_elist = FALSE;
+
+		if (ep && ep->configure)
+			gtk_widget_set_sensitive(prefswin_eplugins_config, 1);
+		else
+			gtk_widget_set_sensitive(prefswin_eplugins_config, 0);
+
+		if (ep && ep->about)
+			gtk_widget_set_sensitive(prefswin_eplugins_about, 1);
+		else
+			gtk_widget_set_sensitive(prefswin_eplugins_about, 0);
+
+		if (event && event->type == GDK_2BUTTON_PRESS)
+			gtk_signal_emit_by_name(GTK_OBJECT(prefswin_eplugins_config), "clicked");
+	}
+	else
+	{
+		gtk_widget_set_sensitive(prefswin_eplugins_config, FALSE);
+		gtk_widget_set_sensitive(prefswin_eplugins_about, FALSE);
+		gtk_widget_set_sensitive(prefswin_eplugins_use_cbox, FALSE);
 	}
 }
 
 
 void prefswin_rt_callback(GtkToggleButton * w, gpointer data)
 {
-	if (gtk_toggle_button_get_active(w) && !is_opening)
-	{
-		xmms_show_message(
-			_("Warning"),
-			_("Realtime priority is a way for XMMS to make sure it always\n"
-			  "get as much CPU time as needed for decoding audio files without\n"
-			  "any \"skips\".\n\n"
-			  "This requires that XMMS is run with root privileges and\n"
-			  "may, although it's very unusal, lock up your computer.\n\n"
-			  "You have been warned, to activate this you need to\n"
-			  "restart XMMS."), _("Ok"), FALSE, NULL, NULL);
-	}
+	if (!gtk_toggle_button_get_active(w) || is_opening)
+		return;
+
+	xmms_show_message(
+		_("Warning"),
+		_("Realtime priority is a way for XMMS to get a higher\n"
+		  "priority  for CPU time.  This might give less \"skips\".\n\n"
+		  "This requires that XMMS is run with root privileges and\n"
+		  "may, although it's very unusual, lock up your computer.\n"
+		  "Running XMMS with root privileges might also have other\n"
+		  "security implications.\n\n"
+		  "Using this feature is not recommended.\n"
+		  "To activate this you need to restart XMMS."),
+		_("OK"), FALSE, NULL, NULL);
 }
 
 static void prefswin_toggle_wm_decorations(void)
@@ -299,11 +349,9 @@ void prefswin_apply_changes(void)
 	cfg.mainwin_font = g_strdup(gtk_entry_get_text(GTK_ENTRY(prefswin_mainwin_font_entry)));
 	cfg.gentitle_format = g_strdup(gtk_entry_get_text(GTK_ENTRY(prefswin_title_entry)));
 	cfg.pause_between_songs_time = CLAMP(atoi(gtk_entry_get_text(GTK_ENTRY(prefswin_options_pbs_entry))), 0, 1000);
-	cfg.use_eplugins = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(prefswin_egplugins_euse_cbox));
 	cfg.mouse_change = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(prefswin_options_mouse_spin));
 
 	set_current_output_plugin(selected_oplugin);
-	set_current_effect_plugin(selected_eplugin);
 
 	equalizerwin_set_doublesize(cfg.doublesize && cfg.eq_doublesize_linked);
 
@@ -327,6 +375,7 @@ void prefswin_apply_changes(void)
 		playlistwin_shade->pb_allow_draw = TRUE;
 		playlistwin_close->pb_allow_draw = TRUE;
 	}
+	
 	if (cfg.get_info_on_load)
 		playlist_start_get_info_scan();
 
@@ -342,6 +391,7 @@ void prefswin_apply_changes(void)
 	textbox_set_xfont(mainwin_info, cfg.mainwin_use_xfont, cfg.mainwin_font);
 	playlist_list_set_font(cfg.playlist_font);
 	playlistwin_update_list();
+	mainwin_set_info_text();
 
 	draw_main_window(TRUE);
 	draw_playlist_window(TRUE);
@@ -422,7 +472,7 @@ void prefswin_mainwin_font_browse_cb(GtkWidget * w, gpointer data)
 	}
 }
 
-void prefswin_egplugins_guse_cb(GtkToggleButton * w, gpointer data)
+void prefswin_gplugins_use_cb(GtkToggleButton * w, gpointer data)
 {
 	gint sel;
 	GtkAdjustment *adj;
@@ -478,6 +528,37 @@ void prefswin_vplugins_use_cb(GtkToggleButton * w, gpointer data)
 	prefswin_vplugins_rescan();
 }
 
+void prefswin_eplugins_rescan(void)
+{
+	gint sel;
+	GtkAdjustment *adj;
+	gfloat pos;
+	GtkCList *clist = GTK_CLIST(prefswin_eplugins_list);
+
+	if (clist->selection)
+		sel = GPOINTER_TO_INT(clist->selection->data);
+	else
+		sel = -1;
+	adj = gtk_clist_get_vadjustment(clist);
+	pos = adj->value;
+	add_effect_plugins(clist);
+	gtk_adjustment_set_value(adj, pos);
+	gtk_clist_set_vadjustment(clist, adj);
+	if(sel != -1)
+		gtk_clist_select_row(clist, sel, 0);
+}
+		
+void prefswin_eplugins_use_cb(GtkToggleButton * w, gpointer data)
+{
+	gint sel;
+	GtkCList *clist = GTK_CLIST(data);
+
+	if (!clist->selection || updating_elist)
+		return;
+	sel = GPOINTER_TO_INT(clist->selection->data);
+	enable_effect_plugin(sel, gtk_toggle_button_get_active(w));
+	prefswin_eplugins_rescan();
+}
 
 void prefswin_ip_toggled(GtkToggleButton * w, gpointer data)
 {
@@ -517,7 +598,7 @@ static GtkWidget * prefswin_option_new(gboolean * cfg)
 	return info->button;
 }
 
-static GtkWidget * prefswin_option_new_with_label(gboolean * cfg, gchar * label)
+static GtkWidget * prefswin_option_new_with_label(gboolean * cfg, char * label)
 {
 	GtkWidget *buttonw, *labelw;
 	buttonw = prefswin_option_new(cfg);
@@ -528,7 +609,7 @@ static GtkWidget * prefswin_option_new_with_label(gboolean * cfg, gchar * label)
 	return buttonw;
 }
 
-static GtkWidget * prefswin_option_new_with_label_to_table(gboolean * cfg, gchar * label, GtkTable * table, gint x, gint y)
+static GtkWidget * prefswin_option_new_with_label_to_table(gboolean * cfg, char * label, GtkTable * table, int x, int y)
 {
 	GtkWidget *buttonw;
 	buttonw = prefswin_option_new_with_label(cfg, label);
@@ -537,11 +618,37 @@ static GtkWidget * prefswin_option_new_with_label_to_table(gboolean * cfg, gchar
 	return buttonw;
 }
 
-static GtkWidget * prefswin_option_new_to_table(gboolean * cfg, GtkTable * table, gint x, gint y)
+static GtkWidget * prefswin_option_new_to_table(gboolean * cfg, GtkTable * table, int x, int y)
 {
 	GtkWidget *buttonw;
 	buttonw = prefswin_option_new(cfg);
 	gtk_table_attach_defaults(table, buttonw, x, x + 1, y, y + 1);
+
+	return buttonw;
+}
+
+static GtkWidget * prefswin_radio_new(gboolean *cfg, GtkRadioButton *group)
+{
+	struct option_info *info;
+	GtkWidget *button = gtk_radio_button_new_from_widget(group);
+	if (cfg != NULL)
+	{
+		info = g_malloc(sizeof(struct option_info));
+		info->button = button;
+		info->cfg = cfg;
+		option_list = g_list_prepend(option_list, info);
+	}
+
+	return button;
+}
+
+static GtkWidget * prefswin_radio_new_with_label(gboolean *cfg, GtkRadioButton *group, char *label)
+{
+	GtkWidget *buttonw, *labelw;
+	buttonw = prefswin_radio_new(cfg, group);
+	labelw = gtk_label_new(label);
+	gtk_misc_set_alignment(GTK_MISC(labelw), 0.0, 0.5);
+	gtk_container_add(GTK_CONTAINER(buttonw), labelw);
 
 	return buttonw;
 }
@@ -574,14 +681,15 @@ void create_prefs_window(void)
 	GtkWidget *prefswin_audio_ilist, *prefswin_audio_iframe, *prefswin_audio_ivbox;
 	GtkWidget *prefswin_audio_ihbox, *prefswin_audio_ihbbox;
 	GtkWidget *prefswin_audio_oframe, *prefswin_audio_ovbox, *prefswin_audio_olist;
-	GtkWidget *prefswin_audio_ohbox, *prefswin_egplugins_vbox;
-	GtkWidget *prefswin_egplugins_eframe, *prefswin_egplugins_evbox;
-	GtkWidget *prefswin_egplugins_ehbox;
-	GtkWidget *prefswin_egplugins_gframe, *prefswin_egplugins_gvbox;
-	GtkWidget *prefswin_egplugins_ghbox, *prefswin_egplugins_glist;
+	GtkWidget *prefswin_audio_ohbox, *prefswin_eplugins_vbox;
+	GtkWidget *prefswin_eplugins_frame, *prefswin_eplugins_hbox;
+	GtkWidget *prefswin_eplugins_hbbox, *prefswin_gplugins_hbbox;
+	GtkWidget *prefswin_gplugins_frame, *prefswin_gplugins_vbox;
+	GtkWidget *prefswin_gplugins_hbox, *prefswin_gplugins_list;
 	
 	GtkWidget *prefswin_vplugins_box, *prefswin_vplugins_vbox;
 	GtkWidget *prefswin_vplugins_frame, *prefswin_vplugins_hbox;
+	GtkWidget *prefswin_vplugins_hbbox;
 	
 	GtkWidget *prefswin_options_frame, *prefswin_options_vbox;
 	GtkWidget *prefswin_mainwin_frame, *prefswin_mainwin_vbox;
@@ -591,11 +699,11 @@ void create_prefs_window(void)
 	GtkWidget *scrolled_win;
 	GtkWidget *prefswin_vbox, *prefswin_hbox, *prefswin_cancel, *prefswin_apply;
 
-	GtkWidget *prefswin_title_frame;
-	GtkWidget *prefswin_title_box, *prefswin_title_vbox;
+	GtkWidget *prefswin_title_frame, *prefswin_title_vbox;
+	GtkWidget *prefswin_title_hbox, *prefswin_title_vbox2;
 
 	GtkWidget *options_table;
-	GtkWidget *options_giod, *options_giol, *options_rt;
+	GtkWidget *options_giop, *options_giod, *options_giol, *options_rt;
 	GtkWidget *options_sw, *options_sw_box, *options_sw_label;
 	GtkWidget *options_pbs, *options_pbs_box, *options_pbs_label;
 	GtkWidget *options_pbs_label2, *options_sd_label;
@@ -603,17 +711,18 @@ void create_prefs_window(void)
 	GtkWidget *options_font_hbox, *options_font_vbox;
 	GtkWidget *options_mouse_box, *options_mouse_label;
 	GtkObject *options_mouse_adj;
-	GtkWidget *prefswin_title_desc, *prefswin_title_label;
+	GtkWidget *prefswin_title_desc, *prefswin_title_label, *prefswin_moreinfo_label, *opt;
 
 	char *titles[1];
 
-	prefswin = gtk_window_new(GTK_WINDOW_DIALOG);
+	prefswin = gtk_window_new(GDK_WINDOW_DIALOG);
 	gtk_window_set_title(GTK_WINDOW(prefswin), _("Preferences"));
-/*  	gtk_window_set_position(GTK_WINDOW(prefswin), GTK_WIN_POS_CENTER); */
 	gtk_window_set_policy(GTK_WINDOW(prefswin), FALSE, FALSE, FALSE);
 	gtk_window_set_transient_for(GTK_WINDOW(prefswin), GTK_WINDOW(mainwin));
 	gtk_signal_connect(GTK_OBJECT(prefswin), "delete_event", GTK_SIGNAL_FUNC(prefswin_delete_event), NULL);
 	gtk_container_border_width(GTK_CONTAINER(prefswin), 10);
+
+	prefswin_tooltips = gtk_tooltips_new();
 
 	prefswin_vbox = gtk_vbox_new(FALSE, 10);
 	gtk_container_add(GTK_CONTAINER(prefswin), prefswin_vbox);
@@ -690,7 +799,7 @@ void create_prefs_window(void)
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(prefswin_audio_ohbox), GTK_BUTTONBOX_START);
 	gtk_button_box_set_spacing(GTK_BUTTON_BOX(prefswin_audio_ohbox), 10);
 	gtk_button_box_set_child_size(GTK_BUTTON_BOX(prefswin_audio_ohbox), 85, 17);
-	gtk_box_pack_start(GTK_BOX(prefswin_audio_ovbox), prefswin_audio_ohbox, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(prefswin_audio_ovbox), prefswin_audio_ohbox, FALSE, FALSE, 6);
 
 	prefswin_audio_oconfig = gtk_button_new_with_label(_("Configure"));
 	gtk_signal_connect(GTK_OBJECT(prefswin_audio_oconfig), "clicked", GTK_SIGNAL_FUNC(prefswin_oconfigure), NULL);
@@ -703,85 +812,95 @@ void create_prefs_window(void)
 	gtk_notebook_append_page(GTK_NOTEBOOK(prefswin_notebook), prefswin_audio_vbox, gtk_label_new(_("Audio I/O Plugins")));
 
 	/*
-	 * Plugins page
-	 */
-
-	prefswin_egplugins_vbox = gtk_vbox_new(FALSE, 0);
-
-	/*
 	 * Effect plugins
 	 */
 
-	prefswin_egplugins_eframe = gtk_frame_new(_("Effect Plugins"));
-	gtk_container_border_width(GTK_CONTAINER(prefswin_egplugins_eframe), 5);
-	gtk_box_pack_start(GTK_BOX(prefswin_egplugins_vbox), prefswin_egplugins_eframe, FALSE, FALSE, 0);
+	prefswin_eplugins_frame = gtk_frame_new(_("Effects Plugins"));
+	gtk_container_border_width(GTK_CONTAINER(prefswin_eplugins_frame), 5);
 
-	prefswin_egplugins_evbox = gtk_vbox_new(FALSE, 10);
-	gtk_container_border_width(GTK_CONTAINER(prefswin_egplugins_evbox), 5);
-	gtk_container_add(GTK_CONTAINER(prefswin_egplugins_eframe), prefswin_egplugins_evbox);
+	prefswin_eplugins_vbox = gtk_vbox_new(FALSE, 10);
+	gtk_container_border_width(GTK_CONTAINER(prefswin_eplugins_vbox), 5);
+	gtk_container_add(GTK_CONTAINER(prefswin_eplugins_frame), prefswin_eplugins_vbox);
 
-	prefswin_egplugins_elist = gtk_option_menu_new();
-	gtk_box_pack_start(GTK_BOX(prefswin_egplugins_evbox), prefswin_egplugins_elist, TRUE, TRUE, 0);
+	titles[0] = _("Effects plugins");
+	prefswin_eplugins_list = gtk_clist_new_with_titles(1, titles);
+	gtk_clist_column_titles_passive(GTK_CLIST(prefswin_eplugins_list));
+	gtk_clist_set_selection_mode(GTK_CLIST(prefswin_eplugins_list), GTK_SELECTION_SINGLE);
+	gtk_signal_connect(GTK_OBJECT(prefswin_eplugins_list), "select_row", GTK_SIGNAL_FUNC(prefswin_elist_clicked), NULL);
+	gtk_signal_connect(GTK_OBJECT(prefswin_eplugins_list), "unselect_row", GTK_SIGNAL_FUNC(prefswin_elist_clicked), NULL);
+	scrolled_win = gtk_scrolled_window_new(NULL, NULL);
+	gtk_container_add(GTK_CONTAINER(scrolled_win), prefswin_eplugins_list);
+	gtk_container_border_width(GTK_CONTAINER(scrolled_win), 5);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_win), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+	gtk_box_pack_start(GTK_BOX(prefswin_eplugins_vbox), scrolled_win, TRUE, TRUE, 0);
 
-	prefswin_egplugins_ehbox = gtk_hbutton_box_new();
-	gtk_button_box_set_layout(GTK_BUTTON_BOX(prefswin_egplugins_ehbox), GTK_BUTTONBOX_START);
-	gtk_button_box_set_spacing(GTK_BUTTON_BOX(prefswin_egplugins_ehbox), 10);
-	gtk_button_box_set_child_size(GTK_BUTTON_BOX(prefswin_egplugins_ehbox), 85, 17);
-	gtk_box_pack_start(GTK_BOX(prefswin_egplugins_evbox), prefswin_egplugins_ehbox, FALSE, FALSE, 0);
+	prefswin_eplugins_hbox = gtk_hbox_new(FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(prefswin_eplugins_vbox), prefswin_eplugins_hbox, FALSE, FALSE, 5);	
 
-	prefswin_egplugins_econfig = gtk_button_new_with_label(_("Configure"));
-	gtk_signal_connect(GTK_OBJECT(prefswin_egplugins_econfig), "clicked", GTK_SIGNAL_FUNC(prefswin_econfigure), NULL);
-	gtk_box_pack_start(GTK_BOX(prefswin_egplugins_ehbox), prefswin_egplugins_econfig, TRUE, TRUE, 0);
+	prefswin_eplugins_hbbox = gtk_hbutton_box_new();
+	gtk_button_box_set_layout(GTK_BUTTON_BOX(prefswin_eplugins_hbbox), GTK_BUTTONBOX_START);
+	gtk_button_box_set_spacing(GTK_BUTTON_BOX(prefswin_eplugins_hbbox), 10);
+	gtk_button_box_set_child_size(GTK_BUTTON_BOX(prefswin_eplugins_hbbox), 85, 17);
+	gtk_box_pack_start(GTK_BOX(prefswin_eplugins_hbox), prefswin_eplugins_hbbox, TRUE, TRUE, 0);
 
-	prefswin_egplugins_eabout = gtk_button_new_with_label(_("About"));
-	gtk_signal_connect(GTK_OBJECT(prefswin_egplugins_eabout), "clicked", GTK_SIGNAL_FUNC(prefswin_eabout), NULL);
-	gtk_box_pack_start(GTK_BOX(prefswin_egplugins_ehbox), prefswin_egplugins_eabout, TRUE, TRUE, 0);
+	prefswin_eplugins_config = gtk_button_new_with_label(_("Configure"));
+	gtk_signal_connect(GTK_OBJECT(prefswin_eplugins_config), "clicked", GTK_SIGNAL_FUNC(prefswin_econfigure), prefswin_eplugins_list);
+	gtk_box_pack_start(GTK_BOX(prefswin_eplugins_hbbox), prefswin_eplugins_config, TRUE, TRUE, 0);
 
-	prefswin_egplugins_euse_cbox = gtk_check_button_new_with_label(_("Use plugins"));
-	gtk_box_pack_start(GTK_BOX(prefswin_egplugins_ehbox), prefswin_egplugins_euse_cbox, TRUE, TRUE, 0);
+	prefswin_eplugins_about = gtk_button_new_with_label(_("About"));
+	gtk_signal_connect(GTK_OBJECT(prefswin_eplugins_about), "clicked", GTK_SIGNAL_FUNC(prefswin_eabout), prefswin_eplugins_list);
+	gtk_box_pack_start(GTK_BOX(prefswin_eplugins_hbbox), prefswin_eplugins_about, TRUE, TRUE, 0);
+
+	prefswin_eplugins_use_cbox = gtk_check_button_new_with_label(_("Enable plugin"));
+	gtk_signal_connect(GTK_OBJECT(prefswin_eplugins_use_cbox), "toggled", GTK_SIGNAL_FUNC(prefswin_eplugins_use_cb), prefswin_eplugins_list);
+	gtk_box_pack_start(GTK_BOX(prefswin_eplugins_hbox), prefswin_eplugins_use_cbox, FALSE, FALSE, 10);
+
+	gtk_notebook_append_page(GTK_NOTEBOOK(prefswin_notebook), prefswin_eplugins_frame, gtk_label_new(_("Effects Plugins")));
 
 	/*
 	 * General plugins
 	 */
 
-	prefswin_egplugins_gframe = gtk_frame_new(_("General Plugins"));
-	gtk_container_border_width(GTK_CONTAINER(prefswin_egplugins_gframe), 5);
-	gtk_box_pack_start(GTK_BOX(prefswin_egplugins_vbox), prefswin_egplugins_gframe, TRUE, TRUE, 0);
+	prefswin_gplugins_frame = gtk_frame_new(_("General Plugins"));
+	gtk_container_border_width(GTK_CONTAINER(prefswin_gplugins_frame), 5);
 
-	prefswin_egplugins_gvbox = gtk_vbox_new(FALSE, 10);
-	gtk_container_border_width(GTK_CONTAINER(prefswin_egplugins_gvbox), 5);
-	gtk_container_add(GTK_CONTAINER(prefswin_egplugins_gframe), prefswin_egplugins_gvbox);
+	prefswin_gplugins_vbox = gtk_vbox_new(FALSE, 10);
+	gtk_container_border_width(GTK_CONTAINER(prefswin_gplugins_vbox), 5);
+	gtk_container_add(GTK_CONTAINER(prefswin_gplugins_frame), prefswin_gplugins_vbox);
 	titles[0] = _("General plugins");
-	prefswin_egplugins_glist = gtk_clist_new_with_titles(1, titles);
-	gtk_clist_column_titles_passive(GTK_CLIST(prefswin_egplugins_glist));
-	gtk_clist_set_selection_mode(GTK_CLIST(prefswin_egplugins_glist), GTK_SELECTION_SINGLE);
-	gtk_signal_connect(GTK_OBJECT(prefswin_egplugins_glist), "select_row", GTK_SIGNAL_FUNC(prefswin_glist_clicked), NULL);
-	gtk_signal_connect(GTK_OBJECT(prefswin_egplugins_glist), "unselect_row", GTK_SIGNAL_FUNC(prefswin_glist_clicked), NULL);
+	prefswin_gplugins_list = gtk_clist_new_with_titles(1, titles);
+	gtk_clist_column_titles_passive(GTK_CLIST(prefswin_gplugins_list));
+	gtk_clist_set_selection_mode(GTK_CLIST(prefswin_gplugins_list), GTK_SELECTION_SINGLE);
+	gtk_signal_connect(GTK_OBJECT(prefswin_gplugins_list), "select_row", GTK_SIGNAL_FUNC(prefswin_glist_clicked), NULL);
+	gtk_signal_connect(GTK_OBJECT(prefswin_gplugins_list), "unselect_row", GTK_SIGNAL_FUNC(prefswin_glist_clicked), NULL);
 	scrolled_win = gtk_scrolled_window_new(NULL, NULL);
-	gtk_container_add(GTK_CONTAINER(scrolled_win), prefswin_egplugins_glist);
+	gtk_container_add(GTK_CONTAINER(scrolled_win), prefswin_gplugins_list);
 	gtk_container_border_width(GTK_CONTAINER(scrolled_win), 5);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_win), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
-	gtk_box_pack_start(GTK_BOX(prefswin_egplugins_gvbox), scrolled_win, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(prefswin_gplugins_vbox), scrolled_win, TRUE, TRUE, 0);
 
-	prefswin_egplugins_ghbox = gtk_hbutton_box_new();
-	gtk_button_box_set_layout(GTK_BUTTON_BOX(prefswin_egplugins_ghbox), GTK_BUTTONBOX_START);
-	gtk_button_box_set_spacing(GTK_BUTTON_BOX(prefswin_egplugins_ghbox), 10);
-	gtk_button_box_set_child_size(GTK_BUTTON_BOX(prefswin_egplugins_ghbox), 85, 17);
-	gtk_box_pack_start(GTK_BOX(prefswin_egplugins_gvbox), prefswin_egplugins_ghbox, FALSE, FALSE, 0);
+	prefswin_gplugins_hbox = gtk_hbox_new(FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(prefswin_gplugins_vbox), prefswin_gplugins_hbox, FALSE, FALSE, 5);
 
-	prefswin_egplugins_gconfig = gtk_button_new_with_label(_("Configure"));
-	gtk_signal_connect(GTK_OBJECT(prefswin_egplugins_gconfig), "clicked", GTK_SIGNAL_FUNC(prefswin_gconfigure), prefswin_egplugins_glist);
-	gtk_box_pack_start(GTK_BOX(prefswin_egplugins_ghbox), prefswin_egplugins_gconfig, TRUE, TRUE, 0);
+	prefswin_gplugins_hbbox = gtk_hbutton_box_new();
+	gtk_button_box_set_layout(GTK_BUTTON_BOX(prefswin_gplugins_hbbox), GTK_BUTTONBOX_START);
+	gtk_button_box_set_spacing(GTK_BUTTON_BOX(prefswin_gplugins_hbbox), 10);
+	gtk_button_box_set_child_size(GTK_BUTTON_BOX(prefswin_gplugins_hbbox), 85, 17);
+	gtk_box_pack_start(GTK_BOX(prefswin_gplugins_hbox), prefswin_gplugins_hbbox, TRUE, TRUE, 0);
 
-	prefswin_egplugins_gabout = gtk_button_new_with_label(_("About"));
-	gtk_signal_connect(GTK_OBJECT(prefswin_egplugins_gabout), "clicked", GTK_SIGNAL_FUNC(prefswin_gabout), prefswin_egplugins_glist);
-	gtk_box_pack_start(GTK_BOX(prefswin_egplugins_ghbox), prefswin_egplugins_gabout, TRUE, TRUE, 0);
+	prefswin_gplugins_config = gtk_button_new_with_label(_("Configure"));
+	gtk_signal_connect(GTK_OBJECT(prefswin_gplugins_config), "clicked", GTK_SIGNAL_FUNC(prefswin_gconfigure), prefswin_gplugins_list);
+	gtk_box_pack_start(GTK_BOX(prefswin_gplugins_hbbox), prefswin_gplugins_config, TRUE, TRUE, 0);
 
-	prefswin_egplugins_guse_cbox = gtk_check_button_new_with_label(_("Enable plugin"));
-	gtk_signal_connect(GTK_OBJECT(prefswin_egplugins_guse_cbox), "toggled", GTK_SIGNAL_FUNC(prefswin_egplugins_guse_cb), prefswin_egplugins_glist);
-	gtk_box_pack_start(GTK_BOX(prefswin_egplugins_ghbox), prefswin_egplugins_guse_cbox, TRUE, TRUE, 0);
+	prefswin_gplugins_about = gtk_button_new_with_label(_("About"));
+	gtk_signal_connect(GTK_OBJECT(prefswin_gplugins_about), "clicked", GTK_SIGNAL_FUNC(prefswin_gabout), prefswin_gplugins_list);
+	gtk_box_pack_start(GTK_BOX(prefswin_gplugins_hbbox), prefswin_gplugins_about, TRUE, TRUE, 0);
 
-	gtk_notebook_append_page(GTK_NOTEBOOK(prefswin_notebook), prefswin_egplugins_vbox, gtk_label_new(_("Effect/General Plugins")));
+	prefswin_gplugins_use_cbox = gtk_check_button_new_with_label(_("Enable plugin"));
+	gtk_signal_connect(GTK_OBJECT(prefswin_gplugins_use_cbox), "toggled", GTK_SIGNAL_FUNC(prefswin_gplugins_use_cb), prefswin_gplugins_list);
+	gtk_box_pack_start(GTK_BOX(prefswin_gplugins_hbox), prefswin_gplugins_use_cbox, FALSE, FALSE, 10);
+
+	gtk_notebook_append_page(GTK_NOTEBOOK(prefswin_notebook), prefswin_gplugins_frame, gtk_label_new(_("General Plugins")));
 
 	/*
 	 * Visualization plugins page
@@ -810,23 +929,26 @@ void create_prefs_window(void)
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_win), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
 	gtk_box_pack_start(GTK_BOX(prefswin_vplugins_vbox), scrolled_win, TRUE, TRUE, 0);
 
-	prefswin_vplugins_hbox = gtk_hbutton_box_new();
-	gtk_button_box_set_layout(GTK_BUTTON_BOX(prefswin_vplugins_hbox), GTK_BUTTONBOX_START);
-	gtk_button_box_set_spacing(GTK_BUTTON_BOX(prefswin_vplugins_hbox), 10);
-	gtk_button_box_set_child_size(GTK_BUTTON_BOX(prefswin_vplugins_hbox), 85, 17);
-	gtk_box_pack_start(GTK_BOX(prefswin_vplugins_vbox), prefswin_vplugins_hbox, FALSE, FALSE, 0);
+	prefswin_vplugins_hbox = gtk_hbox_new(FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(prefswin_vplugins_vbox), prefswin_vplugins_hbox, FALSE, FALSE, 5);
+
+	prefswin_vplugins_hbbox = gtk_hbutton_box_new();
+	gtk_button_box_set_layout(GTK_BUTTON_BOX(prefswin_vplugins_hbbox), GTK_BUTTONBOX_START);
+	gtk_button_box_set_spacing(GTK_BUTTON_BOX(prefswin_vplugins_hbbox), 10);
+	gtk_button_box_set_child_size(GTK_BUTTON_BOX(prefswin_vplugins_hbbox), 85, 17);
+	gtk_box_pack_start(GTK_BOX(prefswin_vplugins_hbox), prefswin_vplugins_hbbox, TRUE, TRUE, 0);
 
 	prefswin_vplugins_config = gtk_button_new_with_label(_("Configure"));
 	gtk_signal_connect(GTK_OBJECT(prefswin_vplugins_config), "clicked", GTK_SIGNAL_FUNC(prefswin_vconfigure), prefswin_vplugins_list);
-	gtk_box_pack_start(GTK_BOX(prefswin_vplugins_hbox), prefswin_vplugins_config, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(prefswin_vplugins_hbbox), prefswin_vplugins_config, TRUE, TRUE, 0);
 
 	prefswin_vplugins_about = gtk_button_new_with_label(_("About"));
 	gtk_signal_connect(GTK_OBJECT(prefswin_vplugins_about), "clicked", GTK_SIGNAL_FUNC(prefswin_vabout), prefswin_vplugins_list);
-	gtk_box_pack_start(GTK_BOX(prefswin_vplugins_hbox), prefswin_vplugins_about, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(prefswin_vplugins_hbbox), prefswin_vplugins_about, TRUE, TRUE, 0);
 
 	prefswin_vplugins_use_cbox = gtk_check_button_new_with_label(_("Enable plugin"));
 	gtk_signal_connect(GTK_OBJECT(prefswin_vplugins_use_cbox), "toggled", GTK_SIGNAL_FUNC(prefswin_vplugins_use_cb), prefswin_vplugins_list);
-	gtk_box_pack_start(GTK_BOX(prefswin_vplugins_hbox), prefswin_vplugins_use_cbox, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(prefswin_vplugins_hbox), prefswin_vplugins_use_cbox, FALSE, FALSE, 10);
 
 	gtk_notebook_append_page(GTK_NOTEBOOK(prefswin_notebook), prefswin_vplugins_box, gtk_label_new(_("Visualization Plugins")));
 
@@ -842,48 +964,55 @@ void create_prefs_window(void)
 	gtk_container_add(GTK_CONTAINER(prefswin_options_frame), options_table);
 	gtk_container_border_width(GTK_CONTAINER(options_table), 5);
 
-	options_gi_box = gtk_hbox_new(FALSE, 5);
+	options_gi_box = gtk_hbox_new(FALSE, 3);
 	options_gi_label = gtk_label_new(_("Read info on"));
 	gtk_box_pack_start(GTK_BOX(options_gi_box), options_gi_label, FALSE, FALSE, 0);
-	options_giod = prefswin_option_new_with_label(&cfg.get_info_on_demand, _("demand"));
+	options_giop = prefswin_radio_new_with_label(NULL, NULL, _("play"));
+	gtk_tooltips_set_tip(prefswin_tooltips, options_giop, _("Read song title and length only when starting to play"), NULL);
+	gtk_box_pack_start(GTK_BOX(options_gi_box), options_giop, FALSE, FALSE, 0);
+	options_giod = prefswin_radio_new_with_label(&cfg.get_info_on_demand, GTK_RADIO_BUTTON(options_giop), _("demand"));
+	gtk_tooltips_set_tip(prefswin_tooltips, options_giod, _("Read song title and length when the song is visible in the playlist"), NULL);
 	gtk_box_pack_start(GTK_BOX(options_gi_box), options_giod, FALSE, FALSE, 0);
-	options_giol = prefswin_option_new_with_label(&cfg.get_info_on_load, _("load"));
+	options_giol = prefswin_radio_new_with_label(&cfg.get_info_on_load, GTK_RADIO_BUTTON(options_giop), _("load"));
+	gtk_tooltips_set_tip(prefswin_tooltips, options_giol, _("Read song title and length as soon as the song is loaded to the playlist"), NULL);
 	gtk_box_pack_start(GTK_BOX(options_gi_box), options_giol, FALSE, FALSE, 0);
 	gtk_table_attach_defaults(GTK_TABLE(options_table), options_gi_box, 0, 1, 0, 1);
 	prefswin_option_new_with_label_to_table(&cfg.allow_multiple_instances, _("Allow multiple instances"), GTK_TABLE(options_table), 1, 0);
 
-	prefswin_option_new_with_label_to_table(&cfg.open_rev_order, _("Reverse file order in fileselector"), GTK_TABLE(options_table), 0, 1);
-	prefswin_option_new_with_label_to_table(&cfg.always_show_cb, _("Always show clutterbar"), GTK_TABLE(options_table), 1, 1);
+	prefswin_option_new_with_label_to_table(&cfg.convert_twenty, _("Convert %20 to space"), GTK_TABLE(options_table), 0, 1);
+	opt = prefswin_option_new_with_label_to_table(&cfg.always_show_cb, _("Always show clutterbar"), GTK_TABLE(options_table), 1, 1);
+	gtk_tooltips_set_tip(prefswin_tooltips, opt, _("The \"clutterbar\" is the row of buttons at the left side of the main window"), NULL);
 
-	prefswin_option_new_with_label_to_table(&cfg.convert_twenty, _("Convert %20 to space"), GTK_TABLE(options_table), 0, 2);
+	prefswin_option_new_with_label_to_table(&cfg.convert_underscore, _("Convert underscore to space"), GTK_TABLE(options_table), 0, 2);
 	prefswin_option_new_with_label_to_table(&cfg.save_window_position, _("Save window positions"), GTK_TABLE(options_table), 1, 2);
 
-	prefswin_option_new_with_label_to_table(&cfg.convert_underscore, _("Convert underscore to space"), GTK_TABLE(options_table), 0, 3);
+	prefswin_option_new_with_label_to_table(&cfg.dim_titlebar, _("Dim titlebar when inactive"), GTK_TABLE(options_table), 0, 3);
 	prefswin_option_new_with_label_to_table(&cfg.show_numbers_in_pl, _("Show numbers in playlist"), GTK_TABLE(options_table), 1, 3);
 
-	prefswin_option_new_with_label_to_table(&cfg.dim_titlebar, _("Dim titlebar when inactive"), GTK_TABLE(options_table), 0, 4);
-	prefswin_option_new_with_label_to_table(&cfg.save_playlist_position, _("Save playlist position"), GTK_TABLE(options_table), 1, 4);
+	prefswin_option_new_with_label_to_table(&cfg.sort_jump_to_file, _("Sort \"Jump to file\" alphabetically"), GTK_TABLE(options_table), 0, 4);
+	prefswin_option_new_with_label_to_table(&cfg.eq_doublesize_linked, _("Equalizer doublesize linked"), GTK_TABLE(options_table), 1, 4);
 
-	prefswin_option_new_with_label_to_table(&cfg.sort_jump_to_file, _("Sort \"Jump to file\" alphabetical"), GTK_TABLE(options_table), 0, 5);
-	prefswin_option_new_with_label_to_table(&cfg.eq_doublesize_linked, _("Equalizer doublesize linked"), GTK_TABLE(options_table), 1, 5);
-
-	options_rt = prefswin_option_new_with_label_to_table(&cfg.use_realtime, _("Use realtime priority when available"), GTK_TABLE(options_table), 0, 6);
+	options_rt = prefswin_option_new_with_label_to_table(&cfg.use_realtime, _("Use realtime priority when available"), GTK_TABLE(options_table), 0, 5);
+	gtk_tooltips_set_tip(prefswin_tooltips, options_rt, _("Run XMMS with higher priority (not recommended)"), NULL);
 	gtk_signal_connect(GTK_OBJECT(options_rt), "toggled", GTK_SIGNAL_FUNC(prefswin_rt_callback), NULL);
-	prefswin_option_new_with_label_to_table(&cfg.smooth_title_scroll, _("Smooth title scroll"), GTK_TABLE(options_table), 1, 6);
+	prefswin_option_new_with_label_to_table(&cfg.smooth_title_scroll, _("Smooth title scroll"), GTK_TABLE(options_table), 1, 5);
 
-	options_pbs = prefswin_option_new_to_table(&cfg.pause_between_songs, GTK_TABLE(options_table), 0, 7);
+	options_pbs = prefswin_option_new_to_table(&cfg.pause_between_songs, GTK_TABLE(options_table), 0, 6);
 	options_pbs_box = gtk_hbox_new(FALSE, 5);
 	options_pbs_label = gtk_label_new(_("Pause between songs for"));
 	gtk_box_pack_start(GTK_BOX(options_pbs_box), options_pbs_label, FALSE, FALSE, 0);
 	prefswin_options_pbs_entry = gtk_entry_new_with_max_length(3);
 	gtk_widget_set_usize(prefswin_options_pbs_entry, 30, -1);
 	gtk_box_pack_start(GTK_BOX(options_pbs_box), prefswin_options_pbs_entry, FALSE, FALSE, 0);
-	/* I18N: s = seconds */
-	options_pbs_label2 = gtk_label_new(_("s"));
+	options_pbs_label2 = gtk_label_new(_("seconds"));
 	gtk_box_pack_start(GTK_BOX(options_pbs_box), options_pbs_label2, FALSE, FALSE, 0);
 	gtk_container_add(GTK_CONTAINER(options_pbs), options_pbs_box);
 
-	options_sw = prefswin_option_new_to_table(&cfg.snap_windows, GTK_TABLE(options_table), 1, 7);
+	options_sw = prefswin_option_new_to_table(&cfg.snap_windows, GTK_TABLE(options_table), 1, 6);
+	gtk_tooltips_set_tip(prefswin_tooltips, options_sw,
+			     _("When moving windows around, snap them "
+			       "together, and towards screen edges at "
+			       "this distance"), NULL);
 	options_sw_box = gtk_hbox_new(FALSE, 5);
 	options_sw_label = gtk_label_new(_("Snap windows at"));
 	gtk_box_pack_start(GTK_BOX(options_sw_box), options_sw_label, FALSE, FALSE, 0);
@@ -895,12 +1024,17 @@ void create_prefs_window(void)
 	gtk_container_add(GTK_CONTAINER(options_sw), options_sw_box);
 
 
-	prefswin_option_new_with_label_to_table(&cfg.show_wm_decorations, _("Do not hide windowmanager decorations"), GTK_TABLE(options_table), 0, 8);
-	prefswin_option_new_with_label_to_table(&cfg.use_backslash_as_dir_delimiter, _("Use \'\\\' as a directory delimiter"), GTK_TABLE(options_table), 1, 8);
+	prefswin_option_new_with_label_to_table(&cfg.show_wm_decorations,
+						_("Show window manager decorations"),
+						GTK_TABLE(options_table), 0, 7);
+	opt = prefswin_option_new_with_label_to_table(
+		&cfg.use_backslash_as_dir_delimiter,
+		_("Use \'\\\' as a directory delimiter"),
+		GTK_TABLE(options_table), 1, 7);
+	gtk_tooltips_set_tip(prefswin_tooltips, opt,
+			     _("Recommended if you want to load playlists "
+			       "that were created in MS Windows"), NULL);
 
-#if 0
-	prefswin_option_new_with_label_to_table(&cfg.playlist_transparent, _("Transparent playlist window"), GTK_TABLE(options_table), 0, 9);
-#endif
 	options_mouse_box = gtk_hbox_new(FALSE, 5);
 	options_mouse_label = gtk_label_new(_("Mouse Wheel adjusts Volume by (%)"));
 	gtk_box_pack_start(GTK_BOX(options_mouse_box), options_mouse_label, FALSE, FALSE, 0);
@@ -908,10 +1042,16 @@ void create_prefs_window(void)
 	prefswin_options_mouse_spin = gtk_spin_button_new(GTK_ADJUSTMENT(options_mouse_adj), 1, 0);
         gtk_widget_set_usize(prefswin_options_mouse_spin, 45, -1);
 	gtk_box_pack_start(GTK_BOX(options_mouse_box), prefswin_options_mouse_spin, FALSE, FALSE, 0);
-	gtk_table_attach_defaults(GTK_TABLE(options_table), options_mouse_box, 0, 1, 9, 10);
+	gtk_table_attach_defaults(GTK_TABLE(options_table), options_mouse_box, 0, 1, 8, 9);
 	
-	prefswin_option_new_with_label_to_table(&cfg.read_pl_metadata, _("Read meta data from playlists"), GTK_TABLE(options_table), 1, 9);
+	opt = prefswin_option_new_with_label_to_table(&cfg.use_pl_metadata,
+						      _("Use meta-data in playlists"),
+						      GTK_TABLE(options_table), 1, 8);
+	gtk_tooltips_set_tip(prefswin_tooltips, opt,
+			     _("Store information such as song title and "
+			       "length to playlists"), NULL);
 
+	
 	gtk_notebook_append_page(GTK_NOTEBOOK(prefswin_notebook), prefswin_options_vbox, gtk_label_new(_("Options")));
 
 	/*
@@ -967,28 +1107,47 @@ void create_prefs_window(void)
 	/*
 	 * Title page
 	 */
-
+	prefswin_title_vbox = gtk_vbox_new(FALSE, 0);
 	prefswin_title_frame = gtk_frame_new(_("Title"));
+	gtk_box_pack_start(GTK_BOX(prefswin_title_vbox), prefswin_title_frame, FALSE, FALSE, 0);
 	gtk_container_border_width(GTK_CONTAINER(prefswin_title_frame), 5);
-	prefswin_title_vbox = gtk_vbox_new(FALSE, 10);
-	gtk_container_add(GTK_CONTAINER(prefswin_title_frame), prefswin_title_vbox);
-	gtk_container_border_width(GTK_CONTAINER(prefswin_title_vbox), 5);
+	prefswin_title_vbox2 = gtk_vbox_new(FALSE, 10);
+	gtk_container_add(GTK_CONTAINER(prefswin_title_frame), prefswin_title_vbox2);
+	gtk_container_border_width(GTK_CONTAINER(prefswin_title_vbox2), 5);
 
-	prefswin_title_box = gtk_hbox_new(FALSE, 5);
-	gtk_box_pack_start(GTK_BOX(prefswin_title_vbox), prefswin_title_box, FALSE, FALSE, 0);
+	prefswin_title_hbox = gtk_hbox_new(FALSE, 5);
+	gtk_box_pack_start(GTK_BOX(prefswin_title_vbox2), prefswin_title_hbox, FALSE, FALSE, 0);
 	prefswin_title_label = gtk_label_new(_("Title format:"));
-	gtk_box_pack_start(GTK_BOX(prefswin_title_box), prefswin_title_label, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(prefswin_title_hbox), prefswin_title_label, FALSE, FALSE, 0);
 	prefswin_title_entry = gtk_entry_new();
-	gtk_box_pack_start(GTK_BOX(prefswin_title_box), prefswin_title_entry, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(prefswin_title_hbox), prefswin_title_entry, TRUE, TRUE, 0);
 
 	prefswin_title_desc = xmms_titlestring_descriptions("pagfFetndyc", 2);
-	gtk_box_pack_start(GTK_BOX(prefswin_title_vbox), prefswin_title_desc, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(prefswin_title_vbox2), prefswin_title_desc, FALSE, FALSE, 0);
 
-	gtk_notebook_append_page(GTK_NOTEBOOK(prefswin_notebook), prefswin_title_frame, gtk_label_new(_("Title")));
+
+	prefswin_title_frame = gtk_frame_new(_("Advanced Title Options"));
+	gtk_box_pack_start(GTK_BOX(prefswin_title_vbox), prefswin_title_frame, FALSE, FALSE, 0);
+	gtk_container_border_width(GTK_CONTAINER(prefswin_title_frame), 5);
+	prefswin_title_vbox2 = gtk_vbox_new(FALSE, 10);
+	gtk_container_add(GTK_CONTAINER(prefswin_title_frame), prefswin_title_vbox2);
+	gtk_container_border_width(GTK_CONTAINER(prefswin_title_vbox2), 5);
+
+	prefswin_moreinfo_label = gtk_label_new(_(
+	"%0.2n - Display a 0 padded 2 char long tracknumber\n"
+	"\n"
+	"For more details, please read the included README or "
+	"http://www.xmms.org/docs/readme.php"));
+
+	gtk_box_pack_start(GTK_BOX(prefswin_title_vbox2), prefswin_moreinfo_label, FALSE, FALSE, 0);
+	gtk_label_set_justify (GTK_LABEL(prefswin_moreinfo_label), GTK_JUSTIFY_LEFT);
+	gtk_misc_set_alignment(GTK_MISC(prefswin_moreinfo_label), 0.0, 0.5);
+
+	gtk_notebook_append_page(GTK_NOTEBOOK(prefswin_notebook), prefswin_title_vbox, gtk_label_new(_("Title")));
 
 
 	/* 
-	 * Ok, Cancel & Apply 
+	 * OK, Cancel & Apply 
 	 */
 
 	prefswin_hbox = gtk_hbutton_box_new();
@@ -996,7 +1155,7 @@ void create_prefs_window(void)
 	gtk_button_box_set_spacing(GTK_BUTTON_BOX(prefswin_hbox), 5);
 	gtk_box_pack_start(GTK_BOX(prefswin_vbox), prefswin_hbox, FALSE, FALSE, 0);
 
-	prefswin_ok = gtk_button_new_with_label(_("Ok"));
+	prefswin_ok = gtk_button_new_with_label(_("OK"));
 	gtk_signal_connect(GTK_OBJECT(prefswin_ok), "clicked", GTK_SIGNAL_FUNC(prefswin_ok_cb), NULL);
 	GTK_WIDGET_SET_FLAGS(prefswin_ok, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(prefswin_hbox), prefswin_ok, TRUE, TRUE, 0);
@@ -1011,29 +1170,9 @@ void create_prefs_window(void)
 
 	add_input_plugins(GTK_CLIST(prefswin_audio_ilist));
 	add_output_plugins(GTK_OPTION_MENU(prefswin_audio_olist));
-	add_general_plugins(GTK_CLIST(prefswin_egplugins_glist));
-	add_effect_plugins(GTK_OPTION_MENU(prefswin_egplugins_elist));
+	add_general_plugins(GTK_CLIST(prefswin_gplugins_list));
+	add_effect_plugins(GTK_CLIST(prefswin_eplugins_list));
 	add_vis_plugins(GTK_CLIST(prefswin_vplugins_list));
-}
-
-void prefswin_effect_cb(GtkWidget * w, gpointer item)
-{
-	EffectPlugin *cp;
-	GList *effect;
-
-	selected_eplugin = GPOINTER_TO_INT(item);
-	effect = get_effect_list();
-	cp = (EffectPlugin *) g_list_nth(effect, GPOINTER_TO_INT(item))->data;
-
-	if (cp->configure != NULL)
-		gtk_widget_set_sensitive(prefswin_egplugins_econfig, 1);
-	else
-		gtk_widget_set_sensitive(prefswin_egplugins_econfig, 0);
-
-	if (cp->about != NULL)
-		gtk_widget_set_sensitive(prefswin_egplugins_eabout, 1);
-	else
-		gtk_widget_set_sensitive(prefswin_egplugins_eabout, 0);
 }
 
 void prefswin_output_cb(GtkWidget * w, gpointer item)
@@ -1110,59 +1249,36 @@ void add_output_plugins(GtkOptionMenu *omenu)
 		gtk_widget_set_sensitive(prefswin_audio_oabout, TRUE);
 	else
 		gtk_widget_set_sensitive(prefswin_audio_oabout, FALSE);
-
 }
 
-void add_effect_plugins(GtkOptionMenu *emenu)
+void add_effect_plugins(GtkCList *clist)
 {
-	GList *elist = get_effect_list();
-	GtkWidget *menu, *item;
-	gchar *description;
-	EffectPlugin *ep, *cp = get_current_effect_plugin();
+	GList *glist = get_effect_list();
+	gchar *description, *temp;
+	EffectPlugin *ep;
 	gint i = 0;
 
-	if (!elist)
+	gtk_clist_clear(clist);
+
+	while (glist)
 	{
-		gtk_widget_set_sensitive(GTK_WIDGET(emenu), FALSE);
-		gtk_widget_set_sensitive(prefswin_egplugins_euse_cbox, FALSE);
-		gtk_widget_set_sensitive(prefswin_egplugins_econfig, FALSE);
-		gtk_widget_set_sensitive(prefswin_egplugins_eabout, FALSE);
-		return;
-	}
-
-	menu = gtk_menu_new();
-
-	while (elist)
-	{
-		ep = (EffectPlugin *) elist->data;
-
-		
+		ep = (EffectPlugin *) glist->data;
 		gen_module_description(ep->filename, ep->description, &description);
+		if (effect_enabled(i))
+		{
+			temp = g_strconcat(description, _(" (enabled)"), NULL);
+			g_free(description);
+			description = temp;
+		}
 
-		item = gtk_menu_item_new_with_label(_(description));
+		gtk_clist_append(clist, &description);
 		g_free(description);
-		gtk_signal_connect(GTK_OBJECT(item), "activate", GTK_SIGNAL_FUNC(prefswin_effect_cb), GINT_TO_POINTER(i));
-		gtk_widget_show(item);
-		gtk_menu_append(GTK_MENU(menu), item);
-		if (elist->data == cp)
-			selected_eplugin = i;
-		elist = elist->next;
+		glist = glist->next;
 		i++;
 	}
-
-	gtk_option_menu_remove_menu(emenu);
-	gtk_option_menu_set_menu(emenu, menu);
-	gtk_option_menu_set_history(emenu, selected_eplugin);
-
-	if (cp->configure != NULL)
-		gtk_widget_set_sensitive(prefswin_egplugins_econfig, 1);
-	else
-		gtk_widget_set_sensitive(prefswin_egplugins_econfig, 0);
-
-	if (cp->about != NULL)
-		gtk_widget_set_sensitive(prefswin_egplugins_eabout, 1);
-	else
-		gtk_widget_set_sensitive(prefswin_egplugins_eabout, 0);
+	gtk_widget_set_sensitive(prefswin_eplugins_use_cbox, 0);
+	gtk_widget_set_sensitive(prefswin_eplugins_config, 0);
+	gtk_widget_set_sensitive(prefswin_eplugins_about, 0);
 }
 
 void add_general_plugins(GtkCList *clist)
@@ -1190,9 +1306,9 @@ void add_general_plugins(GtkCList *clist)
 		glist = glist->next;
 		i++;
 	}
-	gtk_widget_set_sensitive(prefswin_egplugins_guse_cbox, 0);
-	gtk_widget_set_sensitive(prefswin_egplugins_gconfig, 0);
-	gtk_widget_set_sensitive(prefswin_egplugins_gabout, 0);
+	gtk_widget_set_sensitive(prefswin_gplugins_use_cbox, 0);
+	gtk_widget_set_sensitive(prefswin_gplugins_config, 0);
+	gtk_widget_set_sensitive(prefswin_gplugins_about, 0);
 }
 
 void add_vis_plugins(GtkCList *clist)
@@ -1274,8 +1390,6 @@ void show_prefs_window(void)
 	gtk_entry_set_text(GTK_ENTRY(prefswin_options_pbs_entry), temp);
 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(prefswin_options_mouse_spin), cfg.mouse_change);
 
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(prefswin_egplugins_euse_cbox), cfg.use_eplugins);
-
  	gtk_widget_show_all(prefswin);
 	gtk_widget_grab_default(prefswin_ok);
 
@@ -1288,7 +1402,7 @@ void show_prefs_window(void)
 
 void prefswin_show_vis_plugins_page(void)
 {
-	gtk_notebook_set_page(GTK_NOTEBOOK(prefswin_notebook), 2);
+	gtk_notebook_set_page(GTK_NOTEBOOK(prefswin_notebook), 3);
 }
 
 

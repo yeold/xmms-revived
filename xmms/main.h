@@ -1,7 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2001  Peter Alm, Mikael Alm, Olle Hallnas,
+ *  Copyright (C) 1998-2002  Peter Alm, Mikael Alm, Olle Hallnas,
  *                           Thomas Nilsson and 4Front Technologies
- *  Copyright (C) 1999-2001  Haavard Kvaalen
+ *  Copyright (C) 1999-2002  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -38,19 +38,17 @@ typedef struct
 	gboolean allow_multiple_instances, always_show_cb;
 	gboolean convert_underscore, convert_twenty;
 	gboolean show_numbers_in_pl, snap_windows, save_window_position;
-	gboolean dim_titlebar, save_playlist_position;
-	gboolean open_rev_order, get_info_on_load;
+	gboolean dim_titlebar, get_info_on_load;
 	gboolean get_info_on_demand, eq_doublesize_linked;
 	gboolean sort_jump_to_file, use_eplugins, always_on_top, sticky;
-	gboolean no_playlist_advance, smooth_title_scroll, read_pl_metadata;
+	gboolean no_playlist_advance, smooth_title_scroll, use_pl_metadata;
 	gboolean use_backslash_as_dir_delimiter;
 	gboolean random_skin_on_play, use_fontsets;
-	gboolean mainwin_use_xfont;
+	gboolean mainwin_use_xfont, timer_minutes_only;
 	gfloat equalizer_preamp, equalizer_bands[10];
 	gchar *skin, *outputplugin, *filesel_path, *playlist_path;
 	gchar *playlist_font, *mainwin_font;
-	gchar *effectplugin;
-	gchar *disabled_iplugins, *enabled_gplugins, *enabled_vplugins;
+	gchar *disabled_iplugins, *enabled_gplugins, *enabled_vplugins, *enabled_eplugins;
 	gchar *eqpreset_default_file, *eqpreset_extension;
 	GList *url_history;
 	gint timer_mode, vis_type, analyzer_mode, analyzer_type, scope_mode;
@@ -61,7 +59,7 @@ typedef struct
 	gboolean pause_between_songs, show_wm_decorations;
 	gint mouse_change;
 	gboolean playlist_transparent;
-	gchar *gentitle_format;
+        gchar *gentitle_format;
 }
 Config;
 
@@ -101,6 +99,8 @@ void mainwin_vis_set_type(VisType mode);
 
 void mainwin_set_info_text(void);
 void mainwin_set_song_info(gint rate, gint freq, gint nch);
+void mainwin_get_song_info(int *rate, int *freq, int *nch);
+void mainwin_clear_song_info(void);
 
 void mainwin_set_always_on_top(gboolean always);
 void mainwin_set_volume_diff(gint diff);
@@ -112,9 +112,14 @@ void mainwin_real_hide(void);
 void mainwin_move(gint x, gint y);
 void mainwin_shuffle_pushed(gboolean toggled);
 void mainwin_repeat_pushed(gboolean toggled);
+void mainwin_advance_pushed(gboolean toggled);
 void mainwin_disable_seekbar(void);
 void mainwin_set_shape_mask(void);
 void mainwin_recreate(void);
+void mainwin_set_shade_menu_cb(gboolean shaded);
+void mainwin_set_shade(gboolean shaded);
+void mainwin_shade_toggle(void);
+void mainwin_queue_manager(void);
 
 #define PLAYER_HEIGHT ((cfg.player_shaded ? 14 : 116) * (cfg.doublesize + 1))
 #define PLAYER_WIDTH (275 * (cfg.doublesize + 1))

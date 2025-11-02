@@ -1,10 +1,10 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2001  Peter Alm, Mikael Alm, Olle Hallnas,
+ *  Copyright (C) 1998-2003  Peter Alm, Mikael Alm, Olle Hallnas,
  *                           Thomas Nilsson and 4Front Technologies
- *  Copyright (C) 1999-2001  Haavard Kvaalen
+ *  Copyright (C) 1999-2004  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public Licensse as published by
+ *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  (at your option) any later version.
  *
@@ -26,6 +26,7 @@
 #include <getopt.h>
 #include <signal.h>
 #include <ctype.h>
+#include <fcntl.h>
 #ifdef HAVE_SCHED_H
 # include <sched.h>
 #elif defined HAVE_SYS_SCHED_H
@@ -37,8 +38,10 @@
 #include "libxmms/dirbrowser.h"
 #include "xmms_mini.xpm"
 
+#define RANDTABLE_SIZE 128
+
 GtkWidget *mainwin, *mainwin_url_window = NULL, *mainwin_dir_browser = NULL;
-GtkWidget *mainwin_jtt = NULL, *mainwin_jtf = NULL;
+GtkWidget *mainwin_jtt = NULL, *mainwin_jtf = NULL, *mainwin_qm = NULL;
 GtkItemFactory *mainwin_options_menu, *mainwin_songname_menu, *mainwin_vis_menu;
 GtkItemFactory *mainwin_general_menu;
 GdkPixmap *mainwin_bg = NULL, *mainwin_bg_dblsize;
@@ -52,18 +55,18 @@ gint mainwin_timeout_tag;
 
 PButton *mainwin_menubtn, *mainwin_minimize, *mainwin_shade, *mainwin_close;
 PButton *mainwin_rew, *mainwin_play, *mainwin_pause, *mainwin_stop, *mainwin_fwd,
-       *mainwin_eject;
+	*mainwin_eject;
 SButton *mainwin_srew, *mainwin_splay, *mainwin_spause, *mainwin_sstop,
-       *mainwin_sfwd, *mainwin_seject, *mainwin_about;
+	*mainwin_sfwd, *mainwin_seject, *mainwin_about;
 TButton *mainwin_shuffle, *mainwin_repeat, *mainwin_eq, *mainwin_pl;
 TextBox *mainwin_info, *mainwin_rate_text, *mainwin_freq_text, *mainwin_stime_min,
-       *mainwin_stime_sec;
+	*mainwin_stime_sec;
 MenuRow *mainwin_menurow;
 HSlider *mainwin_volume, *mainwin_balance, *mainwin_position, *mainwin_sposition = NULL;
 MonoStereo *mainwin_monostereo;
 PlayStatus *mainwin_playstatus;
 Number *mainwin_minus_num, *mainwin_10min_num, *mainwin_min_num, *mainwin_10sec_num,
-      *mainwin_sec_num;
+	*mainwin_sec_num;
 Vis *mainwin_vis;
 SVis *mainwin_svis;
 
@@ -72,7 +75,7 @@ GList *disabled_iplugins = NULL;
 
 GList *dock_window_list = NULL;
 
-gint bitrate = 0, frequency = 0, numchannels = 0;
+static int bitrate = 0, frequency = 0, numchannels = 0;
 
 Config cfg;
 
@@ -80,16 +83,15 @@ static gboolean mainwin_force_redraw = FALSE;
 static gchar *mainwin_title_text = NULL;
 static gboolean mainwin_info_text_locked = FALSE;
 
-#if 0
 /* For x11r5 session management */
-static gchar **restart_argv;
-static gint restart_argc;
-#endif
+static char **restart_argv;
+static int restart_argc;
 
 Vis *active_vis;
 static GdkBitmap *nullmask;
 static gint balance;
 gboolean pposition_broken = FALSE;
+static pthread_mutex_t title_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 extern gchar *plugin_dir_list[];
 
@@ -110,13 +112,14 @@ const GtkTargetEntry _xmms_drop_types[] =
 void mainwin_options_menu_callback(gpointer cb_data, guint action, GtkWidget * w);
 void mainwin_volume_motioncb(gint pos);
 static void set_timer_mode_menu_cb(TimerMode mode);
+static void mainwin_queue_manager_queue_refresh(GtkWidget * widget, gpointer userdata);
 
 enum
 {
 	MAINWIN_OPT_PREFS, MAINWIN_OPT_SKIN, MAINWIN_OPT_RELOADSKIN,
 	MAINWIN_OPT_REPEAT, MAINWIN_OPT_SHUFFLE, MAINWIN_OPT_NPA,
-	MAINWIN_OPT_TELAPSED, MAINWIN_OPT_TREMAINING, MAINWIN_OPT_ALWAYS,
-	MAINWIN_OPT_STICKY, MAINWIN_OPT_WS, MAINWIN_OPT_PWS,
+	MAINWIN_OPT_TELAPSED, MAINWIN_OPT_TREMAINING, MAINWIN_OPT_TDISPLAY,
+	MAINWIN_OPT_ALWAYS, MAINWIN_OPT_STICKY, MAINWIN_OPT_WS, MAINWIN_OPT_PWS,
 	MAINWIN_OPT_EQWS, MAINWIN_OPT_DOUBLESIZE, MAINWIN_OPT_EASY_MOVE
 };
 
@@ -132,9 +135,10 @@ GtkItemFactoryEntry mainwin_options_menu_entries[] =
 	{N_("/-"), NULL, NULL, 0, "<Separator>"},
 	{N_("/Time Elapsed"), "<control>E", mainwin_options_menu_callback, MAINWIN_OPT_TELAPSED, "<RadioItem>"},
 	{N_("/Time Remaining"), "<control>R", mainwin_options_menu_callback, MAINWIN_OPT_TREMAINING, "/Time Elapsed"},
+	{N_("/Time Display (MMM:SS)"), "<shift><control>L", mainwin_options_menu_callback, MAINWIN_OPT_TDISPLAY, "<ToggleItem>"},
 	{N_("/-"), NULL, NULL, 0, "<Separator>"},
 	{N_("/Always On Top"), "<control>A", mainwin_options_menu_callback, MAINWIN_OPT_ALWAYS, "<ToggleItem>"},
-	{N_("/Sticky"), "<control>S", mainwin_options_menu_callback, MAINWIN_OPT_STICKY, "<ToggleItem>"},
+	{N_("/Show on all desktops"), "<control>S", mainwin_options_menu_callback, MAINWIN_OPT_STICKY, "<ToggleItem>"},
 	{N_("/WindowShade Mode"), "<control>W", mainwin_options_menu_callback, MAINWIN_OPT_WS, "<ToggleItem>"},
 	{N_("/Playlist WindowShade Mode"), "<control><shift>W", mainwin_options_menu_callback, MAINWIN_OPT_PWS, "<ToggleItem>"},
 	{N_("/Equalizer WindowShade Mode"), "<control><alt>W", mainwin_options_menu_callback, MAINWIN_OPT_EQWS, "<ToggleItem>"},
@@ -142,8 +146,8 @@ GtkItemFactoryEntry mainwin_options_menu_entries[] =
 	{N_("/Easy Move"), "<control>E", mainwin_options_menu_callback, MAINWIN_OPT_EASY_MOVE, "<ToggleItem>"},
 };
 
-static gint mainwin_options_menu_entries_num = 
-	sizeof(mainwin_options_menu_entries) / 
+static gint mainwin_options_menu_entries_num =
+	sizeof(mainwin_options_menu_entries) /
 	sizeof(mainwin_options_menu_entries[0]);
 
 void mainwin_songname_menu_callback(gpointer cb_data, guint action, GtkWidget * w);
@@ -155,14 +159,14 @@ enum
 
 GtkItemFactoryEntry mainwin_songname_menu_entries[] =
 {
-	{N_("/File Info"), "<control>3", mainwin_songname_menu_callback, MAINWIN_SONGNAME_FILEINFO, "<Item>"},
+	{N_("/File Info"), NULL, mainwin_songname_menu_callback, MAINWIN_SONGNAME_FILEINFO, "<Item>"},
 	{N_("/Jump To File"), "J", mainwin_songname_menu_callback, MAINWIN_SONGNAME_JTF, "<Item>"},
 	{N_("/Jump To Time"), "<control>J", mainwin_songname_menu_callback, MAINWIN_SONGNAME_JTT, "<Item>"},
-	{N_("/Autoscroll Songname"), NULL, mainwin_songname_menu_callback, MAINWIN_SONGNAME_SCROLL, "<ToggleItem>"},
+	{N_("/Autoscroll Song Name"), NULL, mainwin_songname_menu_callback, MAINWIN_SONGNAME_SCROLL, "<ToggleItem>"},
 };
 
-static gint mainwin_songname_menu_entries_num = 
-	sizeof(mainwin_songname_menu_entries) / 
+static gint mainwin_songname_menu_entries_num =
+	sizeof(mainwin_songname_menu_entries) /
 	sizeof(mainwin_songname_menu_entries[0]);
 
 void mainwin_vis_menu_callback(gpointer cb_data, guint action, GtkWidget * w);
@@ -222,8 +226,8 @@ GtkItemFactoryEntry mainwin_vis_menu_entries[] =
 	{N_("/Visualization plugins"), "<control>V", mainwin_vis_menu_callback, MAINWIN_VIS_PLUGINS, "<Item>"}
 };
 
-static gint mainwin_vis_menu_entries_num = 
-	sizeof(mainwin_vis_menu_entries) / 
+static gint mainwin_vis_menu_entries_num =
+	sizeof(mainwin_vis_menu_entries) /
 	sizeof(mainwin_vis_menu_entries[0]);
 
 /*
@@ -258,7 +262,7 @@ enum
 	MAINWIN_GENERAL_STOPFADE, MAINWIN_GENERAL_BACK5SEC,
 	MAINWIN_GENERAL_FWD5SEC, MAINWIN_GENERAL_START, MAINWIN_GENERAL_BACK10,
 	MAINWIN_GENERAL_FWD10, MAINWIN_GENERAL_JTT, MAINWIN_GENERAL_JTF,
-	MAINWIN_GENERAL_EXIT
+	MAINWIN_GENERAL_CQUEUE, MAINWIN_GENERAL_EXIT
 };
 
 void mainwin_general_menu_callback(gpointer cb_data, guint action, GtkWidget * w);
@@ -268,9 +272,9 @@ GtkItemFactoryEntry mainwin_general_menu_entries[] =
 	{N_("/About XMMS"), NULL, mainwin_general_menu_callback, MAINWIN_GENERAL_ABOUT, "<Item>"},
 	{N_("/-"), NULL, NULL, 0, "<Separator>"},
 	{N_("/Play File"), "L", mainwin_general_menu_callback, MAINWIN_GENERAL_PLAYFILE, "<Item>"},
-	{N_("/Play Directory"), "<shift>L", mainwin_general_menu_callback, MAINWIN_GENERAL_PLAYDIRECTORY, "<Item>"},	
+	{N_("/Play Directory"), "<shift>L", mainwin_general_menu_callback, MAINWIN_GENERAL_PLAYDIRECTORY, "<Item>"},
 	{N_("/Play Location"), "<control>L", mainwin_general_menu_callback, MAINWIN_GENERAL_PLAYLOCATION, "<Item>"},
-	{N_("/View File Info"), NULL /*"<control>3" */ , mainwin_general_menu_callback, MAINWIN_GENERAL_FILEINFO, "<Item>"},
+	{N_("/View File Info"), "<control>3" , mainwin_general_menu_callback, MAINWIN_GENERAL_FILEINFO, "<Item>"},
 	{N_("/-"), NULL, NULL, 0, "<Separator>"},
 	{N_("/Main Window"), "<alt>W", mainwin_general_menu_callback, MAINWIN_GENERAL_SHOWMWIN, "<ToggleItem>"},
 	{N_("/Playlist Editor"), "<alt>E", mainwin_general_menu_callback, MAINWIN_GENERAL_SHOWPLWIN, "<ToggleItem>"},
@@ -293,13 +297,14 @@ GtkItemFactoryEntry mainwin_general_menu_entries[] =
 	{N_("/Playback/-"), NULL, NULL, 0, "<Separator>"},
 	{N_("/Playback/Jump to Time"), "<control>J", mainwin_general_menu_callback, MAINWIN_GENERAL_JTT, "<Item>"},
 	{N_("/Playback/Jump to File"), "J", mainwin_general_menu_callback, MAINWIN_GENERAL_JTF, "<Item>"},
+	{N_("/Playback/Clear Queue"), "<shift>Q", mainwin_general_menu_callback, MAINWIN_GENERAL_CQUEUE, "<Item>"},
 	{N_("/Visualization"), NULL, NULL, 0, "<Item>"},
 	{N_("/-"), NULL, NULL, 0, "<Separator>"},
-	{N_("/Exit"), NULL, mainwin_general_menu_callback, MAINWIN_GENERAL_EXIT, "<Item>"}
+	{N_("/Exit"), "<control>Q", mainwin_general_menu_callback, MAINWIN_GENERAL_EXIT, "<Item>"}
 };
 
-static const int mainwin_general_menu_entries_num = 
-	sizeof(mainwin_general_menu_entries) / 
+static const int mainwin_general_menu_entries_num =
+	sizeof(mainwin_general_menu_entries) /
 	sizeof(mainwin_general_menu_entries[0]);
 
 static void make_xmms_dir(void)
@@ -336,7 +341,6 @@ static void read_config(void)
 	cfg.snap_windows = TRUE;
 	cfg.save_window_position = TRUE;
 	cfg.dim_titlebar = TRUE;
-	cfg.open_rev_order = FALSE;
 	cfg.get_info_on_load = FALSE;
 	cfg.get_info_on_demand = TRUE;
 	cfg.eq_doublesize_linked = TRUE;
@@ -345,7 +349,7 @@ static void read_config(void)
 	cfg.smooth_title_scroll = TRUE;
 	cfg.random_skin_on_play = FALSE;
 	cfg.mainwin_use_xfont = FALSE;
-	cfg.read_pl_metadata = TRUE;
+	cfg.use_pl_metadata = TRUE;
 
 	cfg.playlist_x = 295;
 	cfg.playlist_y = 20;
@@ -377,7 +381,6 @@ static void read_config(void)
 
 	cfg.gentitle_format = NULL;
 
-
 	filename = g_strconcat(g_get_home_dir(), "/.xmms/config", NULL);
 	cfgfile = xmms_cfg_open_file(filename);
 	if (cfgfile)
@@ -391,14 +394,12 @@ static void read_config(void)
 		xmms_cfg_read_boolean(cfgfile, "xmms", "snap_windows", &cfg.snap_windows);
 		xmms_cfg_read_boolean(cfgfile, "xmms", "save_window_positions", &cfg.save_window_position);
 		xmms_cfg_read_boolean(cfgfile, "xmms", "dim_titlebar", &cfg.dim_titlebar);
-		xmms_cfg_read_boolean(cfgfile, "xmms", "save_playlist_position", &cfg.save_playlist_position);
-		xmms_cfg_read_boolean(cfgfile, "xmms", "open_rev_order", &cfg.open_rev_order);
 		xmms_cfg_read_boolean(cfgfile, "xmms", "get_info_on_load", &cfg.get_info_on_load);
 		xmms_cfg_read_boolean(cfgfile, "xmms", "get_info_on_demand", &cfg.get_info_on_demand);
 		xmms_cfg_read_boolean(cfgfile, "xmms", "eq_doublesize_linked", &cfg.eq_doublesize_linked);
 		xmms_cfg_read_boolean(cfgfile, "xmms", "no_playlist_advance", &cfg.no_playlist_advance);
 		xmms_cfg_read_boolean(cfgfile, "xmms", "sort_jump_to_file", &cfg.sort_jump_to_file);
-		xmms_cfg_read_boolean(cfgfile, "xmms", "read_pl_metadata", &cfg.read_pl_metadata);
+		xmms_cfg_read_boolean(cfgfile, "xmms", "use_pl_metadata", &cfg.use_pl_metadata);
 		xmms_cfg_read_boolean(cfgfile, "xmms", "smooth_title_scroll", &cfg.smooth_title_scroll);
 		xmms_cfg_read_boolean(cfgfile, "xmms", "use_backslash_as_dir_delimiter", &cfg.use_backslash_as_dir_delimiter);
 		xmms_cfg_read_int(cfgfile, "xmms", "player_x", &cfg.player_x);
@@ -410,6 +411,7 @@ static void read_config(void)
 		xmms_cfg_read_boolean(cfgfile, "xmms", "doublesize", &cfg.doublesize);
 		xmms_cfg_read_boolean(cfgfile, "xmms", "autoscroll_songname", &cfg.autoscroll);
 		xmms_cfg_read_int(cfgfile, "xmms", "timer_mode", &cfg.timer_mode);
+		xmms_cfg_read_boolean(cfgfile, "xmms", "timer_minutes_only", &cfg.timer_minutes_only);
 		xmms_cfg_read_int(cfgfile, "xmms", "vis_type", &cfg.vis_type);
 		xmms_cfg_read_int(cfgfile, "xmms", "analyzer_mode", &cfg.analyzer_mode);
 		xmms_cfg_read_int(cfgfile, "xmms", "analyzer_type", &cfg.analyzer_type);
@@ -443,17 +445,17 @@ static void read_config(void)
 		for (i = 0; i < 10; i++)
 		{
 			gchar eqtext[18];
-			
+
 			sprintf(eqtext, "equalizer_band%d", i);
 			xmms_cfg_read_float(cfgfile, "xmms", eqtext, &cfg.equalizer_bands[i]);
 		}
-  		xmms_cfg_read_string(cfgfile, "xmms", "eqpreset_default_file", &cfg.eqpreset_default_file);
+		xmms_cfg_read_string(cfgfile, "xmms", "eqpreset_default_file", &cfg.eqpreset_default_file);
 		xmms_cfg_read_string(cfgfile, "xmms", "eqpreset_extension", &cfg.eqpreset_extension);
 		xmms_cfg_read_string(cfgfile, "xmms", "skin", &cfg.skin);
 		xmms_cfg_read_string(cfgfile, "xmms", "output_plugin", &cfg.outputplugin);
-		xmms_cfg_read_string(cfgfile, "xmms", "effect_plugin", &cfg.effectplugin);
 		xmms_cfg_read_string(cfgfile, "xmms", "enabled_gplugins", &cfg.enabled_gplugins);
 		xmms_cfg_read_string(cfgfile, "xmms", "enabled_vplugins", &cfg.enabled_vplugins);
+		xmms_cfg_read_string(cfgfile, "xmms", "enabled_eplugins", &cfg.enabled_eplugins);
 		xmms_cfg_read_string(cfgfile, "xmms", "filesel_path", &cfg.filesel_path);
 		xmms_cfg_read_string(cfgfile, "xmms", "playlist_path", &cfg.playlist_path);
 		xmms_cfg_read_string(cfgfile, "xmms", "disabled_iplugins", &cfg.disabled_iplugins);
@@ -470,14 +472,14 @@ static void read_config(void)
 			for(i = 1; i <= length; i++)
 			{
 				gchar str[19], *temp;
-				
+
 				sprintf(str, "url_history%d", i);
 				if (xmms_cfg_read_string(cfgfile, "xmms", str, &temp))
 					cfg.url_history = g_list_append(cfg.url_history, temp);
 			}
 		}
 		xmms_cfg_read_string(cfgfile, "xmms", "generic_title_format", &cfg.gentitle_format);
-		
+
 		xmms_cfg_free(cfgfile);
 	}
 
@@ -499,7 +501,7 @@ static void read_config(void)
 		cfg.gentitle_format = g_strdup("%p - %t");
 	if (cfg.outputplugin == NULL)
 	{
-#if defined(HAVE_SYS_SOUNDCARD_H) || defined(HAVE_MACHINE_SOUNDCARD_H)
+#ifdef HAVE_OSS
 		cfg.outputplugin = g_strdup_printf("%s/%s/libOSS.so", PLUGIN_DIR, plugin_dir_list[0]);
 #elif defined(sun)
 		cfg.outputplugin = g_strdup_printf("%s/%s/libSolaris.so", PLUGIN_DIR, plugin_dir_list[0]);
@@ -511,8 +513,6 @@ static void read_config(void)
 		cfg.outputplugin = g_strdup("");
 #endif
 	}
-	if (cfg.effectplugin == NULL)
-		cfg.effectplugin = g_strdup("");
 	if (cfg.eqpreset_default_file == NULL)
 		cfg.eqpreset_default_file = g_strdup("dir_default.preset");
 	if (cfg.eqpreset_extension == NULL)
@@ -559,9 +559,7 @@ void save_config(void)
 	xmms_cfg_write_boolean(cfgfile, "xmms", "snap_windows", cfg.snap_windows);
 	xmms_cfg_write_boolean(cfgfile, "xmms", "save_window_positions", cfg.save_window_position);
 	xmms_cfg_write_boolean(cfgfile, "xmms", "dim_titlebar", cfg.dim_titlebar);
-	xmms_cfg_write_boolean(cfgfile, "xmms", "save_playlist_position", cfg.save_playlist_position);
-	xmms_cfg_write_boolean(cfgfile, "xmms", "read_pl_metadata", cfg.read_pl_metadata);
-	xmms_cfg_write_boolean(cfgfile, "xmms", "open_rev_order", cfg.open_rev_order);
+	xmms_cfg_write_boolean(cfgfile, "xmms", "use_pl_metadata", cfg.use_pl_metadata);
 	xmms_cfg_write_boolean(cfgfile, "xmms", "get_info_on_load", cfg.get_info_on_load);
 	xmms_cfg_write_boolean(cfgfile, "xmms", "get_info_on_demand", cfg.get_info_on_demand);
 	xmms_cfg_write_boolean(cfgfile, "xmms", "eq_doublesize_linked", cfg.eq_doublesize_linked);
@@ -579,6 +577,7 @@ void save_config(void)
 	xmms_cfg_write_boolean(cfgfile, "xmms", "doublesize", cfg.doublesize);
 	xmms_cfg_write_boolean(cfgfile, "xmms", "autoscroll_songname", cfg.autoscroll);
 	xmms_cfg_write_int(cfgfile, "xmms", "timer_mode", cfg.timer_mode);
+	xmms_cfg_write_boolean(cfgfile, "xmms", "timer_minutes_only", cfg.timer_minutes_only);
 	xmms_cfg_write_int(cfgfile, "xmms", "vis_type", cfg.vis_type);
 	xmms_cfg_write_int(cfgfile, "xmms", "analyzer_mode", cfg.analyzer_mode);
 	xmms_cfg_write_int(cfgfile, "xmms", "analyzer_type", cfg.analyzer_type);
@@ -619,8 +618,8 @@ void save_config(void)
 	xmms_cfg_write_int(cfgfile, "xmms", "pause_between_songs_time", cfg.pause_between_songs_time);
 	xmms_cfg_write_int(cfgfile, "xmms", "mouse_wheel_change", cfg.mouse_change);
 	xmms_cfg_write_boolean(cfgfile, "xmms", "show_wm_decorations", cfg.show_wm_decorations);
- 	xmms_cfg_write_string(cfgfile, "xmms", "eqpreset_default_file", cfg.eqpreset_default_file);
- 	xmms_cfg_write_string(cfgfile, "xmms", "eqpreset_extension", cfg.eqpreset_extension);
+	xmms_cfg_write_string(cfgfile, "xmms", "eqpreset_default_file", cfg.eqpreset_default_file);
+	xmms_cfg_write_string(cfgfile, "xmms", "eqpreset_extension", cfg.eqpreset_extension);
 	for (i = 0; i < 10; i++)
 	{
 		str = g_strdup_printf("equalizer_band%d", i);
@@ -635,10 +634,6 @@ void save_config(void)
 		xmms_cfg_write_string(cfgfile, "xmms", "output_plugin", get_current_output_plugin()->filename);
 	else
 		xmms_cfg_remove_key(cfgfile, "xmms", "output_plugin");
-	if (get_current_effect_plugin())
-		xmms_cfg_write_string(cfgfile, "xmms", "effect_plugin", get_current_effect_plugin()->filename);
-	else
-		xmms_cfg_remove_key(cfgfile, "xmms", "effect_plugin");
 
 	str = general_stringify_enabled_list();
 	if (str)
@@ -648,6 +643,7 @@ void save_config(void)
 	}
 	else
 		xmms_cfg_remove_key(cfgfile, "xmms", "enabled_gplugins");
+
 	str = vis_stringify_enabled_list();
 	if (str)
 	{
@@ -656,7 +652,16 @@ void save_config(void)
 	}
 	else
 		xmms_cfg_remove_key(cfgfile, "xmms", "enabled_vplugins");
-	
+
+	str = effect_stringify_enabled_list();
+	if (str)
+	{
+		xmms_cfg_write_string(cfgfile, "xmms", "enabled_eplugins", str);
+		g_free(str);
+	}
+	else
+		xmms_cfg_remove_key(cfgfile, "xmms", "enabled_eplugins");
+
 	xmms_cfg_write_string(cfgfile, "xmms", "disabled_iplugins", cfg.disabled_iplugins);
 	if (cfg.filesel_path)
 		xmms_cfg_write_string(cfgfile, "xmms", "filesel_path", cfg.filesel_path);
@@ -670,13 +675,13 @@ void save_config(void)
 		g_free(str);
 	}
 	xmms_cfg_write_string(cfgfile, "xmms", "generic_title_format", cfg.gentitle_format);
-	
+
 	xmms_cfg_write_file(cfgfile, filename);
 	xmms_cfg_free(cfgfile);
 
 	g_free(filename);
 	filename = g_strconcat(g_get_home_dir(), "/.xmms/xmms.m3u", NULL);
-	playlist_save(filename);
+	playlist_save(filename, FALSE);
 	g_free(filename);
 }
 
@@ -695,10 +700,10 @@ void mainwin_set_shape_mask(void)
 {
 	if (!cfg.player_visible || cfg.show_wm_decorations)
 		return;
-		
+
 	gtk_widget_shape_combine_mask(mainwin, skin_get_mask(SKIN_MASK_MAIN, cfg.doublesize, cfg.player_shaded), 0, 0);
 }
-	
+
 
 void set_doublesize(gboolean ds)
 {
@@ -719,7 +724,7 @@ void set_doublesize(gboolean ds)
 	}
 	else
 	{
-		dock_resize(dock_window_list, mainwin, 275, height);		
+		dock_resize(dock_window_list, mainwin, 275, height);
 		gdk_window_set_back_pixmap(mainwin->window, mainwin_bg, 0);
 	}
 	draw_main_window(TRUE);
@@ -878,13 +883,14 @@ void mainwin_minimize_cb(void)
 	XIconifyWindow(GDK_DISPLAY(), xwindow, DefaultScreen(GDK_DISPLAY()));
 }
 
-void mainwin_shade_cb(void)
+void mainwin_shade_toggle(void)
 {
 	mainwin_set_shade(!cfg.player_shaded);
 }
 
 void mainwin_quit_cb(void)
 {
+	input_stop();
 	gtk_widget_hide(equalizerwin);
 	gtk_widget_hide(playlistwin);
 	gtk_widget_hide(mainwin);
@@ -982,9 +988,31 @@ void draw_main_window(gboolean force)
 	unlock_widget_list(mainwin_wlist);
 }
 
+static void mainwin_update_title_text(void)
+{
+	char *tmp = NULL;
+
+	tmp = playlist_get_info_text();
+
+	pthread_mutex_lock(&title_mutex);
+	g_free(mainwin_title_text);
+	if (tmp != NULL)
+	{
+		mainwin_title_text = g_strdup_printf("XMMS - %s", tmp);
+		g_free(tmp);
+	}
+	else
+		mainwin_title_text = g_strdup("XMMS");
+	pthread_mutex_unlock(&title_mutex);
+
+}
+
 void mainwin_set_info_text(void)
 {
-	gchar *text;
+	char *text;
+
+	if (get_input_playing())
+		mainwin_update_title_text();
 
 	if (mainwin_info_text_locked)
 		return;
@@ -1006,7 +1034,7 @@ void mainwin_set_info_text(void)
 	}
 }
 
-void mainwin_lock_info_text(gchar * text)
+void mainwin_lock_info_text(char *text)
 {
 	mainwin_info_text_locked = TRUE;
 	textbox_set_text(mainwin_info, text);
@@ -1020,39 +1048,26 @@ void mainwin_release_info_text(void)
 
 void mainwin_set_song_info(int rate, int freq, int nch)
 {
-	gchar text[10];
-	gchar *tmp;
-	
 	bitrate = rate;
 	frequency = freq;
 	numchannels = nch;
+	mainwin_set_info_text();
+}
 
-	if (rate == 0 && freq == 0 && nch == 0)
+void mainwin_get_song_info(int *rate, int *freq, int *nch)
+{
+	*rate = bitrate;
+	*freq = frequency;
+	*nch = numchannels;
+}
+
+static void mainwin_update_song_info(void)
+{
+	char text[10];
+
+	if (bitrate != -1)
 	{
-		mainwin_position->hs_pressed = FALSE;
-		mainwin_sposition->hs_pressed = FALSE;
-		textbox_set_text(mainwin_rate_text, "   ");
-		textbox_set_text(mainwin_freq_text, "  ");
-		monostereo_set_num_channels(mainwin_monostereo, 0);
-		playstatus_set_status(mainwin_playstatus, STATUS_STOP);
-		hide_widget(mainwin_minus_num);
-		hide_widget(mainwin_10min_num);
-		hide_widget(mainwin_min_num);
-		hide_widget(mainwin_10sec_num);
-		hide_widget(mainwin_sec_num);
-		textbox_set_text(mainwin_stime_min, "   ");
-		textbox_set_text(mainwin_stime_sec, "  ");
-		hide_widget(mainwin_position);
-		hide_widget(mainwin_sposition);
-		playlistwin_hide_timer();
-		draw_main_window(TRUE);
-		vis_clear(active_vis);
-		gtk_window_set_title(GTK_WINDOW(mainwin), _("XMMS"));
-		return;
-	}
-	if (rate != -1)
-	{
-		rate /= 1000;
+		int rate = bitrate / 1000;
 		if (rate < 1000)
 		{
 			sprintf(text, "%3d", rate);
@@ -1068,9 +1083,9 @@ void mainwin_set_song_info(int rate, int freq, int nch)
 	else
 		textbox_set_text(mainwin_rate_text, "VBR");
 
-	sprintf(text, "%2d", freq);
+	sprintf(text, "%2d", frequency / 1000);
 	textbox_set_text(mainwin_freq_text, text);
-	monostereo_set_num_channels(mainwin_monostereo, nch);
+	monostereo_set_num_channels(mainwin_monostereo, numchannels);
 
 	show_widget(mainwin_minus_num);
 	show_widget(mainwin_10min_num);
@@ -1087,17 +1102,42 @@ void mainwin_set_song_info(int rate, int freq, int nch)
 	}
 	else
 	{
-
 		hide_widget(mainwin_position);
 		hide_widget(mainwin_sposition);
 		mainwin_force_redraw = TRUE;
 	}
-	if ((tmp = playlist_get_info_text()) != NULL)
-	{
-		mainwin_title_text = g_strdup_printf("XMMS - %s", tmp);
+}
 
-		g_free(tmp);
-	}
+void mainwin_clear_song_info(void)
+{
+	pthread_mutex_lock(&title_mutex);
+	g_free(mainwin_title_text);
+	mainwin_title_text = NULL;
+	pthread_mutex_unlock(&title_mutex);
+
+	bitrate = 0;
+	frequency = 0;
+	numchannels = 0;
+
+	mainwin_position->hs_pressed = FALSE;
+	mainwin_sposition->hs_pressed = FALSE;
+	textbox_set_text(mainwin_rate_text, "   ");
+	textbox_set_text(mainwin_freq_text, "  ");
+	monostereo_set_num_channels(mainwin_monostereo, 0);
+	playstatus_set_status(mainwin_playstatus, STATUS_STOP);
+	hide_widget(mainwin_minus_num);
+	hide_widget(mainwin_10min_num);
+	hide_widget(mainwin_min_num);
+	hide_widget(mainwin_10sec_num);
+	hide_widget(mainwin_sec_num);
+	textbox_set_text(mainwin_stime_min, "   ");
+	textbox_set_text(mainwin_stime_sec, "  ");
+	hide_widget(mainwin_position);
+	hide_widget(mainwin_sposition);
+	playlistwin_hide_timer();
+	draw_main_window(TRUE);
+	vis_clear(active_vis);
+	gtk_window_set_title(GTK_WINDOW(mainwin), "XMMS");
 }
 
 void mainwin_disable_seekbar(void)
@@ -1220,14 +1260,36 @@ void mainwin_press(GtkWidget * widget, GdkEventButton * event, gpointer callback
 		mainwin_set_volume_diff(d);
 	}
 
+	if ((event->button == 6 || event->button == 7) &&
+	    event->type == GDK_BUTTON_PRESS &&
+	    playlist_get_current_length() != -1)
+	{
+		/* Horizontal scrolling seeks */
+		int d = cfg.mouse_change * 1000;
+		if (event->button == 6)
+			d *= -1;
+
+		input_seek(CLAMP(input_get_time() + d, 0,
+				 playlist_get_current_length()) / 1000);
+	}
+
 	if (event->button == 1 && event->type == GDK_BUTTON_PRESS &&
 	    !inside_sensitive_widgets(event->x, event->y) &&
 	    (cfg.easy_move || event->y < 14))
 	{
-		gdk_window_raise(mainwin->window);
-		equalizerwin_raise();
-		playlistwin_raise();
-		dock_move_press(dock_window_list, mainwin, event, TRUE); 
+		if (0 && hint_move_resize_available())
+		{
+			hint_move_resize(mainwin, event->x_root,
+					 event->y_root, TRUE);
+			grab = FALSE;
+		}
+		else
+		{
+			gdk_window_raise(mainwin->window);
+			equalizerwin_raise();
+			playlistwin_raise();
+			dock_move_press(dock_window_list, mainwin, event, TRUE);
+		}
 	}
 	else if (event->button == 1 && event->type == GDK_2BUTTON_PRESS &&
 		 event->y < 14 && !inside_sensitive_widgets(event->x, event->y))
@@ -1235,6 +1297,11 @@ void mainwin_press(GtkWidget * widget, GdkEventButton * event, gpointer callback
 		mainwin_set_shade(!cfg.player_shaded);
 		if (dock_is_moving(mainwin))
 			dock_move_release(mainwin);
+	}
+	else if (event->button == 1 && event->type == GDK_2BUTTON_PRESS &&
+		 inside_widget(event->x, event->y, mainwin_info))
+	{
+		playlist_fileinfo_current();
 	}
 	else
 	{
@@ -1333,7 +1400,7 @@ void mainwin_focus_out(GtkWidget * widget, GdkEventButton * event, gpointer call
 
 gboolean mainwin_keypress(GtkWidget * w, GdkEventKey * event, gpointer data)
 {
-	
+
 	switch(event->keyval)
 	{
 	case GDK_Up:
@@ -1356,9 +1423,9 @@ gboolean mainwin_keypress(GtkWidget * w, GdkEventKey * event, gpointer data)
 		break;
 	default:
 	     break;
-			
+
 	}
-			
+
 	return TRUE;
 }
 
@@ -1385,7 +1452,7 @@ void mainwin_jump_to_time_cb(GtkWidget * widget, GtkWidget * entry)
 	}
 }
 
-void mainwin_jump_to_time()
+void mainwin_jump_to_time(void)
 {
 	GtkWidget *vbox, *frame, *vbox_inside, *hbox_new, *hbox_total;
 	GtkWidget *time_entry, *label, *bbox, *jump, *cancel;
@@ -1395,12 +1462,13 @@ void mainwin_jump_to_time()
 	if (!get_input_playing())
 		return;
 
-	mainwin_jtt = gtk_window_new(GTK_WINDOW_DIALOG);
+	mainwin_jtt = gtk_window_new(GDK_WINDOW_DIALOG);
 	gtk_window_set_title(GTK_WINDOW(mainwin_jtt), _("Jump to time"));
-	gtk_window_set_position(GTK_WINDOW(mainwin_jtt), GTK_WIN_POS_CENTER);
 	gtk_window_set_policy(GTK_WINDOW(mainwin_jtt), FALSE, FALSE, FALSE);
 	gtk_window_set_transient_for(GTK_WINDOW(mainwin_jtt), GTK_WINDOW(mainwin));
 	gtk_signal_connect(GTK_OBJECT(mainwin_jtt), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &mainwin_jtt);
+	gtk_signal_connect(GTK_OBJECT(mainwin_jtt), "key_press_event",
+			   util_dialog_keypress_cb, NULL);
 	gtk_container_border_width(GTK_CONTAINER(mainwin_jtt), 10);
 
 	vbox = gtk_vbox_new(FALSE, 5);
@@ -1417,7 +1485,7 @@ void mainwin_jump_to_time()
 	hbox_new = gtk_hbox_new(FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(vbox_inside), hbox_new, TRUE, TRUE, 5);
 	gtk_widget_show(hbox_new);
-	time_entry = gtk_entry_new_with_max_length(5);
+	time_entry = gtk_entry_new();
 	gtk_box_pack_start(GTK_BOX(hbox_new), time_entry, FALSE, FALSE, 5);
 	gtk_signal_connect(GTK_OBJECT(time_entry), "activate", GTK_SIGNAL_FUNC(mainwin_jump_to_time_cb), time_entry);
 	gtk_widget_show(time_entry);
@@ -1467,23 +1535,42 @@ void mainwin_jump_to_time()
 
 static void mainwin_jump_to_file_real_cb(GtkCList* clist)
 {
-	gint *pos;
-
 	if (clist->selection)
 	{
+		int *pos;
+
 		if (get_input_playing())
 			input_stop();
-		pos = (gint *) gtk_clist_get_row_data(clist, GPOINTER_TO_INT(clist->selection->data));
+		pos = gtk_clist_get_row_data(clist, GPOINTER_TO_INT(clist->selection->data));
 		playlist_set_position(*pos);
 		playlist_play();
 		gtk_widget_destroy(mainwin_jtf);
 	}
 }
 
+static void mainwin_jtf_set_qbtn_label(GtkCList *clist, GtkWidget *button)
+{
+	char *label = _("Queue");
+
+	if (clist->selection)
+	{
+		int *pos, lpos = GPOINTER_TO_INT(clist->selection->data);
+		pos = gtk_clist_get_row_data(clist, lpos);
+		if (pos)
+		{
+			if (playlist_is_position_queued(*pos))
+				label = _("Unqueue");
+		}
+	}
+	gtk_widget_set(GTK_WIDGET(button), "label", label, NULL);
+}
+
 static void mainwin_jump_to_file_select_row_cb(GtkCList * widget, gint row, gint column, GdkEventButton * event, gpointer cb_data)
 {
 	if (event && event->button == 1 && event->type == GDK_2BUTTON_PRESS)
 		mainwin_jump_to_file_real_cb(widget);
+	else
+		mainwin_jtf_set_qbtn_label(widget, GTK_WIDGET(cb_data));
 }
 
 static void mainwin_jump_to_file_keypress_cb(GtkWidget * widget, GdkEventKey * event, gpointer userdata)
@@ -1501,7 +1588,7 @@ static gboolean mainwin_jump_to_file_entry_keypress_cb(GtkWidget * widget, GdkEv
 
 	if (!event)
 		return FALSE;
-	
+
 	switch (event->keyval)
 	{
 		case GDK_Return:
@@ -1522,7 +1609,7 @@ static gboolean mainwin_jump_to_file_entry_keypress_cb(GtkWidget * widget, GdkEv
 		case GDK_Delete:
 			if (strlen(gtk_entry_get_text(GTK_ENTRY(widget))) == 0)
 				/* Optimization: Ignore delete keys if
-                                   the string already is empty */
+				 * the string already is empty */
 				stop = TRUE;
 			break;
 		default:
@@ -1554,27 +1641,33 @@ static int mainwin_jump_to_file_match(gchar* song, gchar * keys[], gint nw)
 	return 1;
 }
 
-static void mainwin_jump_to_file_edit_cb(GtkWidget * widget, gpointer userdata)
+static void mainwin_jump_to_file_edit_real(GtkWidget * widget, gpointer userdata)
 {
-	gchar* key;
+	char* key;
 	GtkCList* clist;
 	GList *playlist;
-	gchar *desc_buf;
-	gint songnr = 0;
-	gint *data_buf;
+	char *desc_buf[2];
+	int songnr = 0;
 
-	gchar *words[20];
-	gint nw = 0, i;
-	gchar* ptr;
-	
+	char *words[20];
+	int nw = 0, i;
+	char* ptr;
+
 	PL_LOCK();
 	playlist = get_playlist();
 	key = g_strdup(gtk_entry_get_text(GTK_ENTRY(widget)));
 	clist = GTK_CLIST(userdata);
 
+	/* Figure out what is currently selected */
+	gint row_to_select = -1;
+	gint prev_focus = -1;
+	gint *tmp = gtk_clist_get_row_data(clist, clist->focus_row);
+	if (tmp != NULL)
+		prev_focus = *tmp;
+
 	/* lowercase the key string */
 	g_strdown(key);
-	
+
 	/* Chop the key string into ' '-separeted key words */
 	for (ptr = key; nw < 20; ptr = strchr(ptr, ' '))
 	{
@@ -1587,36 +1680,38 @@ static void mainwin_jump_to_file_edit_cb(GtkWidget * widget, gpointer userdata)
 		        	*ptr = '\0';
 				ptr++;
 			}
-			words[nw++] = ptr;			
+			words[nw++] = ptr;
 		}
 		else
 		{
 			words[nw++] = ptr;
 		}
 	}
-	
-	gtk_clist_freeze(clist);
+
 	gtk_clist_clear(clist);
 
 	while (playlist)
 	{
 		int match = 0;
+		char *title, *filename;
 
-		if (((PlaylistEntry *) playlist->data)->title)
-			desc_buf = ((PlaylistEntry *) playlist->data)->title;
+		title = ((PlaylistEntry *) playlist->data)->title;
+		filename = ((PlaylistEntry *) playlist->data)->filename;
+
+		if (title)
+			desc_buf[1] = title;
+		else if (strchr(filename, '/'))
+			desc_buf[1] = strrchr(filename, '/') + 1;
 		else
-			desc_buf = strrchr(((PlaylistEntry *) playlist->data)->filename, '/') + 1;
-		
+			desc_buf[1] = filename;
+
 		/*
 		 * Optimize a little since the delay when beginning to
 		 * type is annoying.  We'll drop through if the key is
 		 * zero length, and if it is a single letter, we'll
 		 * take a shortcut and use strchr. This'll save us
 		 * from constructing the lowercased song name to
-		 * compare. (Note that we cheat and do not compare the
-		 * one letter key case-insensitively, but I don't
-		 * think anybody notices (or wants to search by one
-		 * letter anyway.))
+		 * compare.
 		 *
 		 * These (admittedly ugly) hacks help noticeably.
 		 *
@@ -1625,40 +1720,56 @@ static void mainwin_jump_to_file_edit_cb(GtkWidget * widget, gpointer userdata)
 		 * constructing them everytime. This'd take memory, so
 		 * I won't do it this time.
 		 */
-		   
+
 		if (nw == 0 ||                           /* zero char key */
 		    (nw == 1 && words[0][0] == '\0') ||  /* zero char key */
 		    (nw == 1 && strlen(words[0]) == 1 && /* one char key */
-		     ((((PlaylistEntry *)playlist->data)->title &&    
-		       strchr(((PlaylistEntry *)playlist->data)->title, words[0][0])) ||
-		      strchr(((PlaylistEntry *)playlist->data)->filename, words[0][0]))))
+		     ((title && (strchr(title, tolower(words[0][0])) ||
+		      strchr(title, toupper(words[0][0])))) ||
+		      strchr(filename, tolower(words[0][0])) ||
+		      strchr(filename, toupper(words[0][0])))))
 			match = 1;
 		else if (nw == 1 && strlen(words[0]) == 1)
 			match = 0;
 		else
-                {
-			gchar song[256];
+		{
+			char song[256];
 
 			/* Cook up a lowercased string that contains
-                           the filename and the (possible) title */
-			for (ptr = ((PlaylistEntry *) playlist->data)->title, i = 0; ptr && *ptr && i < 254; i++, ptr++)
-    				song[i] = tolower(*ptr);
-			for (ptr = ((PlaylistEntry *) playlist->data)->filename; *ptr && i < 254; i++, ptr++)
+			 * the filename and the (possible) title
+			 */
+			for (ptr = title, i = 0; ptr && *ptr && i < 254; i++, ptr++)
 				song[i] = tolower(*ptr);
- 			song[i] = '\0';
+			for (ptr = filename; *ptr && i < 254; i++, ptr++)
+				song[i] = tolower(*ptr);
+			song[i] = '\0';
 
 			/* Compare the key words to the string - if
-                           all the words match, add to the clist */
+			 * all the words match, add to the clist
+			 */
 			match = mainwin_jump_to_file_match(song, words, nw);
 		}
 
 		if (match)
 		{
-			int row;
-			row = gtk_clist_append(clist, &desc_buf);
-			data_buf = g_malloc(sizeof (gint));
+			int row, queue_pos, *data_buf;
+			char *tmp_buf;
+			queue_pos = playlist_get_queue_position((PlaylistEntry *) playlist->data);
+			if (queue_pos != -1) {
+				tmp_buf = g_strdup_printf("%i", queue_pos+1);
+				desc_buf[0] = tmp_buf;
+				row = gtk_clist_append(GTK_CLIST(clist), desc_buf);
+				g_free(tmp_buf);
+			} else {
+				desc_buf[0] = g_strdup_printf(" ");
+				row = gtk_clist_append(GTK_CLIST(clist), desc_buf);
+			}
+
+			data_buf = g_malloc(sizeof (int));
 			*data_buf = songnr;
-			gtk_clist_set_row_data_full(clist, row, data_buf, g_free_func);
+			gtk_clist_set_row_data_full(clist, row, data_buf, g_free);
+			if (songnr == prev_focus)
+				row_to_select = row;
 		}
 
 		songnr++;
@@ -1667,42 +1778,110 @@ static void mainwin_jump_to_file_edit_cb(GtkWidget * widget, gpointer userdata)
 
 	PL_UNLOCK();
 
+	if (row_to_select != -1)
+		gtk_clist_select_row(clist, row_to_select, 0);
+
 	if (cfg.sort_jump_to_file)
 	{
-		gtk_clist_set_sort_column(clist, 0);
+		gtk_clist_set_sort_column(clist, 1);
 		gtk_clist_set_sort_type(clist, GTK_SORT_ASCENDING);
 		gtk_clist_sort(clist);
 	}
-	if (clist->selection)
-		clist->focus_row = GPOINTER_TO_INT(clist->selection->data);
-	gtk_clist_thaw(clist);
 
 	g_free(key);
+
+	if (clist->selection)
+		clist->focus_row = GPOINTER_TO_INT(clist->selection->data);
+}
+
+static void mainwin_jump_to_file_edit_cb(GtkWidget * widget, gpointer userdata)
+{
+	GtkCList* clist = GTK_CLIST(userdata);
+	gtk_clist_freeze(clist);
+	mainwin_jump_to_file_edit_real(widget, userdata);
+	if (clist->focus_row) {
+		gtk_clist_thaw(clist);
+		gtk_clist_moveto(clist, clist->focus_row, -1, 0.5, 0.0);
+	}
+	else
+	{
+		gtk_clist_select_row(clist, 0, 0);
+		gtk_clist_thaw(clist);
+	}
+}
+
+static void mainwin_jump_to_file_clist_refresh(GtkWidget * widget, gpointer userdata)
+{
+	gfloat adjustment;
+	GtkCList* clist = GTK_CLIST(userdata);
+	gtk_clist_freeze(clist);
+	adjustment = clist->vadjustment->value;
+	mainwin_jump_to_file_edit_real(widget, userdata);
+	gtk_adjustment_set_value(clist->vadjustment, adjustment);
+	gtk_clist_thaw(clist);
+}
+
+static void mainwin_jump_to_file_queue_toggle(gint pos, gpointer userdata)
+{
+	GtkWidget **data = (GtkWidget **) userdata;
+	GtkEditable *edit = GTK_EDITABLE(data[0]);
+	GtkCList *clist = GTK_CLIST(data[1]);
+	gpointer qlist = data[2];
+
+	playlist_queue_position(pos);
+	if (strlen(gtk_entry_get_text(GTK_ENTRY(edit))) > 0) {
+		/*
+		 * XXX: It might be a good idea to add a setting such as
+		 *		cfg.reset_search_on_queue or something and check for it here.
+		 */
+		gtk_editable_delete_text(GTK_EDITABLE(edit), 0, -1);
+	} else {
+		mainwin_jump_to_file_clist_refresh(GTK_WIDGET(edit),clist);
+		if (qlist != NULL)
+			mainwin_queue_manager_queue_refresh(GTK_WIDGET(edit), GTK_CLIST(qlist));
+	}
+}
+
+static void mainwin_jump_to_file_queue_cb(GtkButton * widget, gpointer userdata)
+{
+	GtkWidget **data = (GtkWidget **) userdata;
+	GtkCList *clist = GTK_CLIST(data[1]);
+	int *pos;
+
+	if (clist->selection)
+	{
+		int lpos = GPOINTER_TO_INT(clist->selection->data);
+		pos = gtk_clist_get_row_data(clist, lpos);
+		mainwin_jump_to_file_queue_toggle(*pos, userdata);
+	}
+	mainwin_jtf_set_qbtn_label(clist, GTK_WIDGET(widget));
+}
+
+static void mainwin_jump_to_file_cleanup(GtkWidget *window, gpointer userdata)
+{
+	gtk_widget_destroyed(window, &window);
+	/* Free memory allocated for edit_clist_qlist_and_queue
+	   in mainwin_jump_to_file  */
+	g_free(userdata);
 }
 
 static void mainwin_jump_to_file(void)
 {
-	GtkWidget *vbox, *scrollwin, *clist, *sep, *bbox, *jump, *cancel, *edit, *search_label, *hbox;
-	GList *playlist;
-	char *title[1];
-	gchar *desc_buf;
-	gint *data_buf;
-	gint row;
+	GtkWidget *vbox, *scrollwin, *clist, *sep, *bbox, *jump, *queue, *cancel, *edit, *search_label, *hbox;
+	char *title[2];
+	/*
+	 * This little bugger is because I need all these widgets in some of
+	 * the signal handlers. It will be freed when the window
+	 * is destroyed. Better solutions are very much welcomed.
+	 */
+	GtkWidget **edit_clist_qlist_and_queue = g_malloc(sizeof(GtkWidget *)*4);
 
-	PL_LOCK();
-	playlist = get_playlist();
-
-	if (!playlist)
-	{
-		PL_UNLOCK();
-		return;
-	}
-
-	mainwin_jtf = gtk_window_new(GTK_WINDOW_DIALOG);
+	mainwin_jtf = gtk_window_new(GDK_WINDOW_DIALOG);
 	gtk_window_set_title(GTK_WINDOW(mainwin_jtf), _("Jump to file"));
-	gtk_window_set_position(GTK_WINDOW(mainwin_jtf), GTK_WIN_POS_CENTER);
-	gtk_window_set_transient_for(GTK_WINDOW(mainwin_jtf), GTK_WINDOW(mainwin));
-	gtk_signal_connect(GTK_OBJECT(mainwin_jtf), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &mainwin_jtf);
+	gtk_window_set_transient_for(GTK_WINDOW(mainwin_jtf),
+				     GTK_WINDOW(mainwin));
+	gtk_signal_connect(GTK_OBJECT(mainwin_jtf), "destroy",
+			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_cleanup), edit_clist_qlist_and_queue);
 	gtk_container_border_width(GTK_CONTAINER(mainwin_jtf), 10);
 	gtk_window_set_default_size(GTK_WINDOW(mainwin_jtf), 300, 350);
 
@@ -1710,29 +1889,49 @@ static void mainwin_jump_to_file(void)
 	gtk_container_add(GTK_CONTAINER(mainwin_jtf), vbox);
 	gtk_widget_show(vbox);
 
-	title[0] = _("Files");
-	clist = gtk_clist_new_with_titles(1, title);
+	queue = gtk_button_new_with_label(_("Queue"));
+
+	title[0] = _("Q");
+	title[1] = _("Files");
+	clist = gtk_clist_new_with_titles(2, title);
+
+	gtk_clist_set_column_auto_resize(GTK_CLIST(clist), 0, TRUE);
+	gtk_clist_set_column_justification(GTK_CLIST(clist), 0, GTK_JUSTIFY_RIGHT);
 	gtk_clist_set_selection_mode(GTK_CLIST(clist), GTK_SELECTION_BROWSE);
-	gtk_signal_connect(GTK_OBJECT(clist), "select_row", GTK_SIGNAL_FUNC(mainwin_jump_to_file_select_row_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(clist), "key_press_event", GTK_SIGNAL_FUNC(mainwin_jump_to_file_keypress_cb), NULL);
+	gtk_signal_connect(GTK_OBJECT(clist), "select_row",
+			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_select_row_cb),
+			   queue);
+	gtk_signal_connect(GTK_OBJECT(clist), "key_press_event",
+			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_keypress_cb),
+			   NULL);
 	hbox = gtk_hbox_new(FALSE, 3);
- 	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
- 	gtk_widget_show(hbox);
- 
- 	search_label = gtk_label_new(_("Search: "));
- 	gtk_box_pack_start(GTK_BOX(hbox), search_label, FALSE, FALSE, 0);
- 	gtk_widget_show(search_label);
- 
- 	edit = gtk_entry_new();
- 	gtk_entry_set_editable(GTK_ENTRY(edit), TRUE);
- 	gtk_signal_connect(GTK_OBJECT(edit), "changed", GTK_SIGNAL_FUNC(mainwin_jump_to_file_edit_cb), clist);
- 	gtk_signal_connect(GTK_OBJECT(edit), "key_press_event", GTK_SIGNAL_FUNC(mainwin_jump_to_file_entry_keypress_cb), clist);
- 	gtk_box_pack_start(GTK_BOX(hbox), edit, TRUE, TRUE, 3);
- 	gtk_widget_show(edit);
-	
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
+	gtk_widget_show(hbox);
+
+	search_label = gtk_label_new(_("Search: "));
+	gtk_box_pack_start(GTK_BOX(hbox), search_label, FALSE, FALSE, 0);
+	gtk_widget_show(search_label);
+
+	edit = gtk_entry_new();
+	gtk_entry_set_editable(GTK_ENTRY(edit), TRUE);
+	gtk_signal_connect(GTK_OBJECT(edit), "changed",
+			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_edit_cb), clist);
+	gtk_signal_connect(GTK_OBJECT(edit), "key_press_event",
+			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_entry_keypress_cb), clist);
+	gtk_box_pack_start(GTK_BOX(hbox), edit, TRUE, TRUE, 3);
+	gtk_widget_show(edit);
+
+	/* looks messy putting them down here, but edit isn't
+	   defined until just above */
+	edit_clist_qlist_and_queue[0] = edit;
+	edit_clist_qlist_and_queue[1] = clist;
+	edit_clist_qlist_and_queue[2] = NULL;
+	edit_clist_qlist_and_queue[3] = queue;
+
 	scrollwin = gtk_scrolled_window_new(NULL, NULL);
 	gtk_container_add(GTK_CONTAINER(scrollwin), clist);
-	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrollwin), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrollwin),
+				       GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
 	gtk_box_pack_start(GTK_BOX(vbox), scrollwin, TRUE, TRUE, 0);
 	gtk_widget_set_usize(scrollwin, 330, 200);
 	gtk_widget_show(clist);
@@ -1749,49 +1948,427 @@ static void mainwin_jump_to_file(void)
 
 	jump = gtk_button_new_with_label(_("Jump"));
 	gtk_box_pack_start(GTK_BOX(bbox), jump, FALSE, FALSE, 0);
-	gtk_signal_connect(GTK_OBJECT(jump), "clicked", GTK_SIGNAL_FUNC(mainwin_jump_to_file_jump_cb), clist);
+	gtk_signal_connect(GTK_OBJECT(jump), "clicked",
+			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_jump_cb), clist);
 	GTK_WIDGET_SET_FLAGS(jump, GTK_CAN_DEFAULT);
 	gtk_widget_show(jump);
 	gtk_widget_grab_default(jump);
 
+	gtk_box_pack_start(GTK_BOX(bbox), queue, FALSE, FALSE, 0);
+	gtk_signal_connect(GTK_OBJECT(queue), "clicked",
+			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_queue_cb), edit_clist_qlist_and_queue);
+	GTK_WIDGET_SET_FLAGS(queue, GTK_CAN_DEFAULT);
+	gtk_widget_show(queue);
+
 	cancel = gtk_button_new_with_label(_("Close"));
 	gtk_box_pack_start(GTK_BOX(bbox), cancel, FALSE, FALSE, 0);
-	gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(mainwin_jtf));
+	gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked",
+				  GTK_SIGNAL_FUNC(gtk_widget_destroy),
+				  GTK_OBJECT(mainwin_jtf));
 	GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
 	gtk_widget_show(cancel);
 	gtk_widget_show(bbox);
 
-	gtk_clist_clear(GTK_CLIST(clist));
+	/* Initial read of playlist (will take care of locking by itself) */
+	mainwin_jump_to_file_edit_cb(GTK_WIDGET(edit), clist);
 
-	while (playlist)
-	{
-		if (((PlaylistEntry *) playlist->data)->title)
-			desc_buf = ((PlaylistEntry *) playlist->data)->title;
-		else
-			desc_buf = strrchr(((PlaylistEntry *) playlist->data)->filename, '/') + 1;
-		row = gtk_clist_append(GTK_CLIST(clist), &desc_buf);
-		data_buf = g_malloc(sizeof (gint));
-		*data_buf = row;
-		gtk_clist_set_row_data_full(GTK_CLIST(clist), row, data_buf, g_free_func);
-		playlist = playlist->next;
-	}
+	gtk_clist_select_row(GTK_CLIST(clist), get_playlist_position(), 0);
 
-	gtk_clist_select_row(GTK_CLIST(clist), __get_playlist_position(), 0);
-	PL_UNLOCK();
-
-	if (cfg.sort_jump_to_file)
-	{
-		gtk_clist_set_sort_column(GTK_CLIST(clist), 0);
-		gtk_clist_set_sort_type(GTK_CLIST(clist), GTK_SORT_ASCENDING);
-		gtk_clist_sort(GTK_CLIST(clist));
-	}
 	gtk_window_set_modal(GTK_WINDOW(mainwin_jtf), 1);
 	gtk_widget_show(mainwin_jtf);
 	gtk_widget_grab_focus(edit);
-	gtk_clist_moveto(GTK_CLIST(clist),
+
+	/* Only do this if there is a selection, or else we get a segfault */
+	if (GTK_CLIST(clist)->selection) {
+		gtk_clist_moveto(GTK_CLIST(clist),
 			 GPOINTER_TO_INT(GTK_CLIST(clist)->selection->data),
 			 0, 0.5, 0.0);
-	GTK_CLIST(clist)->focus_row = GPOINTER_TO_INT(GTK_CLIST(clist)->selection->data);
+		GTK_CLIST(clist)->focus_row = GPOINTER_TO_INT(GTK_CLIST(clist)->selection->data);
+	}
+}
+
+static void mainwin_queue_manager_select_row_cb(GtkCList * widget, gint row, gint column, GdkEventButton * event, gpointer cb_data)
+{
+	GtkWidget **data = (GtkWidget **) cb_data;
+	GtkCList *clist = GTK_CLIST(data[1]);
+	GtkWidget *queue = GTK_WIDGET(data[3]);
+
+	if (event && event->button == 1 && event->type == GDK_2BUTTON_PRESS && clist->selection) {
+		int *pos = gtk_clist_get_row_data(clist, GPOINTER_TO_INT(clist->selection->data));
+		mainwin_jump_to_file_queue_toggle(*pos, cb_data);
+	}
+	mainwin_jtf_set_qbtn_label(clist, GTK_WIDGET(queue));
+}
+
+static gboolean mainwin_queue_manager_entry_keypress_cb(GtkWidget * widget, GdkEventKey * event, gpointer userdata)
+{
+	GtkWidget **data = (GtkWidget **) userdata;
+	GtkCList *clist = GTK_CLIST(data[1]);
+	gboolean stop = FALSE;
+
+	if (!event)
+		return FALSE;
+
+	switch (event->keyval)
+	{
+		case GDK_Return:
+            if (clist->selection) {
+				int *pos = gtk_clist_get_row_data(clist, GPOINTER_TO_INT(clist->selection->data));
+				mainwin_jump_to_file_queue_toggle(*pos, userdata);
+			}
+			break;
+		case GDK_Escape:
+			gtk_widget_destroy(mainwin_qm);
+			break;
+		case GDK_Up:
+		case GDK_Down:
+		case GDK_Page_Up:
+		case GDK_Page_Down:
+			gtk_widget_event(GTK_WIDGET(clist), (GdkEvent *)event);
+			/* Stop the signal or we might lose focus */
+			stop = TRUE;
+			break;
+		case GDK_BackSpace:
+		case GDK_Delete:
+			if (strlen(gtk_entry_get_text(GTK_ENTRY(widget))) == 0)
+				/* Optimization: Ignore delete keys if
+				 * the string already is empty */
+				stop = TRUE;
+			break;
+		default:
+			return FALSE;
+	}
+
+	if (stop)
+		gtk_signal_emit_stop_by_name(GTK_OBJECT(widget),
+					     "key_press_event");
+
+	return TRUE;
+}
+
+static void mainwin_queue_manager_queue_refresh(GtkWidget * widget, gpointer userdata)
+{
+	GtkCList* qlist = GTK_CLIST(userdata);
+	GList *queue;
+	int pos = 0;
+	gint row_to_select = -1;
+	gint prev_focus = -1;
+	gint *tmp;
+	gfloat adjustment;
+
+	gtk_clist_freeze(qlist);
+
+	PL_LOCK();
+
+	adjustment = qlist->vadjustment->value;
+
+	tmp = gtk_clist_get_row_data(qlist, qlist->focus_row);
+	if (tmp != NULL)
+		prev_focus = playlist_get_playlist_position_from_playqueue_position(*tmp);
+
+	gtk_clist_clear(qlist);
+
+	for (queue = get_queue(); queue; queue = queue->next) {
+		int row, *data_buf;
+		char *title, *filename, *tmp_buf, *desc_buf[2];
+
+		title = ((PlaylistEntry *) queue->data)->title;
+		filename = ((PlaylistEntry *) queue->data)->filename;
+		if (title)
+			desc_buf[1] = title;
+		else if (strchr(filename, '/'))
+			desc_buf[1] = strrchr(filename, '/') + 1;
+		else
+			desc_buf[1] = filename;
+
+		tmp_buf = g_strdup_printf("%i", pos+1);
+		desc_buf[0] = tmp_buf;
+		row = gtk_clist_append(GTK_CLIST(qlist), desc_buf);
+		g_free(tmp_buf);
+
+		data_buf = g_malloc(sizeof (int));
+		*data_buf = pos;
+		gtk_clist_set_row_data_full(qlist, row, data_buf, g_free);
+
+		if (prev_focus != -1 && prev_focus == playlist_get_playlist_position_from_playqueue_position(pos))
+			row_to_select = row;
+
+		++pos;
+	}
+
+	PL_UNLOCK();
+
+	if (row_to_select != -1) {
+		gtk_clist_select_row(qlist, row_to_select, 0);
+		qlist->focus_row = GPOINTER_TO_INT(qlist->selection->data);
+	}
+	gtk_clist_thaw(qlist);
+	/* make sure we don't scroll out of the list */
+	if (adjustment + qlist->vadjustment->page_size > qlist->vadjustment->upper)
+    	adjustment = qlist->vadjustment->upper - qlist->vadjustment->page_size;
+	gtk_adjustment_set_value(qlist->vadjustment, adjustment);
+}
+
+static void mainwin_queue_manager_reorder_real(GtkCList *widget, gint arg1, gint arg2, gpointer userdata) {
+	GtkWidget **data = (GtkWidget **) userdata;
+	GtkEditable *edit = GTK_EDITABLE(data[0]);
+	GtkCList *clist = GTK_CLIST(data[1]);
+	GtkCList *qlist = GTK_CLIST(data[2]);
+
+	/* move and adjust qlist selection accordingly */
+	playlist_queue_move(arg1, arg2);
+	gtk_clist_select_row(qlist, arg2, 0);
+	qlist->focus_row = GPOINTER_TO_INT(qlist->selection->data);
+	/* refresh qlist */
+	mainwin_queue_manager_queue_refresh(GTK_WIDGET(widget), qlist);
+	/* refresh clist */
+	mainwin_jump_to_file_clist_refresh(GTK_WIDGET(edit),clist);
+}
+
+static void mainwin_queue_manager_reorder(GtkCList *widget, gint arg1, gint arg2, gpointer userdata) {
+	mainwin_queue_manager_reorder_real(widget, arg1, arg2, userdata);
+	/* stop the signal to prevent it from reordering our newly reread queue. */
+	gtk_signal_emit_stop_by_name(GTK_OBJECT(widget), "row-move");
+}
+
+static void mainwin_queue_manager_move_up_cb(GtkWidget *widget, gpointer userdata)
+{
+	GtkWidget **data = (GtkWidget **) userdata;
+	GtkCList *qlist = GTK_CLIST(data[2]);
+
+	if (qlist->selection) {
+		int *pos = gtk_clist_get_row_data(qlist,qlist->focus_row);
+		if (pos != NULL && *pos > 0)
+			mainwin_queue_manager_reorder_real(qlist, *pos, (*pos)-1, userdata);
+	}
+}
+
+static void mainwin_queue_manager_move_down_cb(GtkWidget *widget, gpointer userdata)
+{
+	GtkWidget **data = (GtkWidget **) userdata;
+	GtkCList *qlist = GTK_CLIST(data[2]);
+
+	if (qlist->selection) {
+		int *pos = gtk_clist_get_row_data(qlist,qlist->focus_row);
+		if (pos != NULL && *pos < get_playlist_queue_length()-1)
+			mainwin_queue_manager_reorder_real(qlist, *pos, (*pos)+1, userdata);
+	}
+}
+
+static void mainwin_queue_manager_remove_cb(GtkWidget *widget, gpointer userdata)
+{
+	GtkWidget **data = (GtkWidget **) userdata;
+	GtkCList *qlist = GTK_CLIST(data[2]);
+
+	if (qlist->selection) {
+		int *tmp = gtk_clist_get_row_data(qlist, GPOINTER_TO_INT(qlist->selection->data));
+		int pos = playlist_get_playlist_position_from_playqueue_position(*tmp);
+		mainwin_jump_to_file_queue_toggle(pos, userdata);
+	}
+}
+
+static void mainwin_queue_manager_keypress_cb(GtkWidget * widget, GdkEventKey * event, gpointer userdata)
+{
+	if (event && (event->keyval == GDK_Escape))
+		gtk_widget_destroy(mainwin_qm);
+}
+
+static void mainwin_queue_manager_qlist_keypress_cb(GtkWidget * widget, GdkEventKey * event, gpointer userdata)
+{
+	if (event && (event->keyval == GDK_Escape))
+		gtk_widget_destroy(mainwin_qm);
+	/* for some reason, this is needed to avoid clist from reading the Return
+	   keypress from qlist (which is really confusing behaviour for the user) */
+	else if (event && (event->keyval == GDK_Return))
+		gtk_signal_emit_stop_by_name(GTK_OBJECT(widget), "key_press_event");
+	else if (event && (event->keyval == GDK_Delete)) {
+		mainwin_queue_manager_remove_cb(widget, userdata);
+		gtk_signal_emit_stop_by_name(GTK_OBJECT(widget), "key_press_event");
+	}
+}
+
+void mainwin_queue_manager(void)
+{
+	GtkWidget *bigbox, *lbox, *vbox, *qscrollwin, *scrollwin, *qlist, *clist, *qsep, *sep, *bbox, *qbox, *queue, *cancel, *edit, *queue_label, *search_label, *hbox, *move_up, *move_down, *remove;
+	char *title[2];
+	/*
+	 * This little bugger is because I need all these widgets in some of
+	 * the signal handlers. It will be freed when the window
+	 * is destroyed. Better solutions are very much welcomed.
+	 */
+	GtkWidget **edit_clist_qlist_and_queue = g_malloc(sizeof(GtkWidget *)*4);
+
+	mainwin_qm = gtk_window_new(GDK_WINDOW_DIALOG);
+	gtk_window_set_title(GTK_WINDOW(mainwin_qm), _("Jump to file"));
+	gtk_window_set_transient_for(GTK_WINDOW(mainwin_qm),
+				     GTK_WINDOW(mainwin));
+	gtk_signal_connect(GTK_OBJECT(mainwin_qm), "destroy",
+			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_cleanup), edit_clist_qlist_and_queue);
+	gtk_container_border_width(GTK_CONTAINER(mainwin_qm), 10);
+	gtk_window_set_default_size(GTK_WINDOW(mainwin_qm), 600, 350);
+
+	bigbox = gtk_hbox_new(FALSE, 5);
+	gtk_container_add(GTK_CONTAINER(mainwin_qm), bigbox);
+	gtk_widget_show(bigbox);
+
+	lbox = gtk_vbox_new(FALSE, 5);
+	gtk_container_add(GTK_CONTAINER(bigbox), lbox);
+	gtk_widget_show(lbox);
+
+	qsep = gtk_vseparator_new();
+	gtk_box_pack_start(GTK_BOX(bigbox), qsep, FALSE, FALSE, 0);
+	gtk_widget_show(qsep);
+
+	vbox = gtk_vbox_new(FALSE, 5);
+	gtk_container_add(GTK_CONTAINER(bigbox), vbox);
+	gtk_widget_show(vbox);
+
+	queue = gtk_button_new_with_label(_("Queue"));
+
+	title[0] = _("Q");
+	title[1] = _("Files");
+	qlist = gtk_clist_new_with_titles(2, title);
+	qscrollwin = gtk_scrolled_window_new(NULL, NULL);
+	queue_label = gtk_label_new(_("Queued files: "));
+	gtk_box_pack_start(GTK_BOX(lbox), queue_label, FALSE, FALSE, 0);
+	gtk_widget_show(queue_label);
+	gtk_clist_set_column_auto_resize(GTK_CLIST(qlist), 0, TRUE);
+	gtk_clist_set_column_justification(GTK_CLIST(qlist), 0, GTK_JUSTIFY_RIGHT);
+	gtk_clist_set_selection_mode(GTK_CLIST(qlist), GTK_SELECTION_BROWSE);
+	gtk_signal_connect(GTK_OBJECT(qlist), "key_press_event",
+			   GTK_SIGNAL_FUNC(mainwin_queue_manager_qlist_keypress_cb),
+			   edit_clist_qlist_and_queue);
+	gtk_signal_connect(GTK_OBJECT(qlist), "row-move",
+			GTK_SIGNAL_FUNC(mainwin_queue_manager_reorder), edit_clist_qlist_and_queue);
+	gtk_clist_set_reorderable(GTK_CLIST(qlist), TRUE);
+	gtk_container_add(GTK_CONTAINER(qscrollwin), qlist);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(qscrollwin), GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+	gtk_box_pack_start(GTK_BOX(lbox), qscrollwin, TRUE, TRUE, 0);
+	gtk_widget_set_usize(qscrollwin, 330, 200);
+	gtk_widget_show(qlist);
+	gtk_widget_show(qscrollwin);
+
+	sep = gtk_hseparator_new();
+	gtk_box_pack_start(GTK_BOX(lbox), sep, FALSE, FALSE, 0);
+	gtk_widget_show(sep);
+
+	qbox = gtk_hbutton_box_new();
+	gtk_button_box_set_layout(GTK_BUTTON_BOX(qbox), GTK_BUTTONBOX_START);
+	gtk_button_box_set_spacing(GTK_BUTTON_BOX(qbox), 5);
+	gtk_box_pack_start(GTK_BOX(lbox), qbox, FALSE, FALSE, 0);
+
+	move_up = gtk_button_new_with_label(_("Move up"));
+	gtk_box_pack_start(GTK_BOX(qbox), move_up, FALSE, FALSE, 0);
+	gtk_signal_connect(GTK_OBJECT(move_up), "clicked",
+			   GTK_SIGNAL_FUNC(mainwin_queue_manager_move_up_cb), edit_clist_qlist_and_queue);
+	GTK_WIDGET_SET_FLAGS(move_up, GTK_CAN_DEFAULT);
+	gtk_widget_show(move_up);
+
+	move_down = gtk_button_new_with_label(_("Move down"));
+	gtk_box_pack_start(GTK_BOX(qbox), move_down, FALSE, FALSE, 0);
+	gtk_signal_connect(GTK_OBJECT(move_down), "clicked",
+			   GTK_SIGNAL_FUNC(mainwin_queue_manager_move_down_cb), edit_clist_qlist_and_queue);
+	GTK_WIDGET_SET_FLAGS(move_down, GTK_CAN_DEFAULT);
+	gtk_widget_show(move_down);
+
+	remove = gtk_button_new_with_label(_("Remove"));
+	gtk_box_pack_start(GTK_BOX(qbox), remove, FALSE, FALSE, 0);
+	gtk_signal_connect(GTK_OBJECT(remove), "clicked",
+			   GTK_SIGNAL_FUNC(mainwin_queue_manager_remove_cb), edit_clist_qlist_and_queue);
+	GTK_WIDGET_SET_FLAGS(remove, GTK_CAN_DEFAULT);
+	gtk_widget_show(remove);
+
+	gtk_widget_show(qbox);
+
+	clist = gtk_clist_new_with_titles(2, title);
+	gtk_clist_set_column_auto_resize(GTK_CLIST(clist), 0, TRUE);
+	gtk_clist_set_column_justification(GTK_CLIST(clist), 0, GTK_JUSTIFY_RIGHT);
+	gtk_clist_set_selection_mode(GTK_CLIST(clist), GTK_SELECTION_BROWSE);
+	gtk_signal_connect(GTK_OBJECT(clist), "select_row",
+			   GTK_SIGNAL_FUNC(mainwin_queue_manager_select_row_cb),
+			   edit_clist_qlist_and_queue);
+	gtk_signal_connect(GTK_OBJECT(clist), "key_press_event",
+			   GTK_SIGNAL_FUNC(mainwin_queue_manager_keypress_cb),
+			   qlist);
+	hbox = gtk_hbox_new(FALSE, 3);
+	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, FALSE, 3);
+	gtk_widget_show(hbox);
+
+	search_label = gtk_label_new(_("Search: "));
+	gtk_box_pack_start(GTK_BOX(hbox), search_label, FALSE, FALSE, 0);
+	gtk_widget_show(search_label);
+
+	edit = gtk_entry_new();
+	gtk_entry_set_editable(GTK_ENTRY(edit), TRUE);
+	gtk_signal_connect(GTK_OBJECT(edit), "changed",
+			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_edit_cb), clist);
+	/* For updating the queue when people press enter */
+	gtk_signal_connect(GTK_OBJECT(edit), "changed",
+			   GTK_SIGNAL_FUNC(mainwin_queue_manager_queue_refresh), qlist);
+	gtk_signal_connect(GTK_OBJECT(edit), "key_press_event",
+			   GTK_SIGNAL_FUNC(mainwin_queue_manager_entry_keypress_cb), edit_clist_qlist_and_queue);
+	gtk_box_pack_start(GTK_BOX(hbox), edit, TRUE, TRUE, 3);
+	gtk_widget_show(edit);
+
+	/* looks messy putting them down here, but edit isn't
+	   defined until just above */
+	edit_clist_qlist_and_queue[0] = edit;
+	edit_clist_qlist_and_queue[1] = clist;
+	edit_clist_qlist_and_queue[2] = qlist;
+	edit_clist_qlist_and_queue[3] = queue;
+
+
+	scrollwin = gtk_scrolled_window_new(NULL, NULL);
+	gtk_container_add(GTK_CONTAINER(scrollwin), clist);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrollwin),
+				       GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+	gtk_box_pack_start(GTK_BOX(vbox), scrollwin, TRUE, TRUE, 0);
+	gtk_widget_set_usize(scrollwin, 330, 200);
+	gtk_widget_show(clist);
+	gtk_widget_show(scrollwin);
+
+	sep = gtk_hseparator_new();
+	gtk_box_pack_start(GTK_BOX(vbox), sep, FALSE, FALSE, 0);
+	gtk_widget_show(sep);
+
+	bbox = gtk_hbutton_box_new();
+	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
+	gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
+	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
+
+	gtk_box_pack_start(GTK_BOX(bbox), queue, FALSE, FALSE, 0);
+	gtk_signal_connect(GTK_OBJECT(queue), "clicked",
+			   GTK_SIGNAL_FUNC(mainwin_jump_to_file_queue_cb), edit_clist_qlist_and_queue);
+	GTK_WIDGET_SET_FLAGS(queue, GTK_CAN_DEFAULT);
+	gtk_widget_show(queue);
+	gtk_widget_grab_default(queue);
+
+	cancel = gtk_button_new_with_label(_("Close"));
+	gtk_box_pack_start(GTK_BOX(bbox), cancel, FALSE, FALSE, 0);
+	gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked",
+				  GTK_SIGNAL_FUNC(gtk_widget_destroy),
+				  GTK_OBJECT(mainwin_qm));
+	GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
+	gtk_widget_show(cancel);
+	gtk_widget_show(bbox);
+
+	/* Initial read of playlist and queue */
+	mainwin_jump_to_file_edit_cb(GTK_WIDGET(edit), clist);
+	mainwin_queue_manager_queue_refresh(GTK_WIDGET(clist), qlist);
+
+	gtk_clist_select_row(GTK_CLIST(clist), get_playlist_position(), 0);
+
+	gtk_window_set_modal(GTK_WINDOW(mainwin_qm), 1);
+	gtk_widget_show(mainwin_qm);
+	gtk_widget_grab_focus(edit);
+
+	/* Only do this if there is a selection, or else we get a segfault */
+	if (GTK_CLIST(clist)->selection) {
+		gtk_clist_moveto(GTK_CLIST(clist),
+			 GPOINTER_TO_INT(GTK_CLIST(clist)->selection->data),
+			 0, 0.5, 0.0);
+		GTK_CLIST(clist)->focus_row = GPOINTER_TO_INT(GTK_CLIST(clist)->selection->data);
+	}
 }
 
 static gboolean mainwin_configure(GtkWidget * window, GdkEventConfigure *event, gpointer data)
@@ -1802,7 +2379,7 @@ static gboolean mainwin_configure(GtkWidget * window, GdkEventConfigure *event, 
 	if (cfg.show_wm_decorations)
 		gdk_window_get_root_origin(window->window,
 					   &cfg.player_x, &cfg.player_y);
-	else		
+	else
 		gdk_window_get_deskrelative_origin(window->window,
 						   &cfg.player_x, &cfg.player_y);
 	return FALSE;
@@ -1829,7 +2406,7 @@ gint mainwin_client_event(GtkWidget *w,GdkEventClient *event, gpointer data)
 		equalizerwin_set_back_pixmap();
 		playlistwin_set_back_pixmap();
 		return TRUE;
-		
+
 	}
 	return FALSE;
 }
@@ -1867,6 +2444,9 @@ void mainwin_show_dirbrowser(void)
 	{
 		mainwin_dir_browser = xmms_create_dir_browser(_("Select directory to add:"), cfg.filesel_path, GTK_SELECTION_SINGLE, mainwin_add_dir_handler);
 		gtk_signal_connect(GTK_OBJECT(mainwin_dir_browser), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &mainwin_dir_browser);
+		gtk_signal_connect(GTK_OBJECT(mainwin_dir_browser),
+				   "key_press_event",
+				   util_dialog_keypress_cb, NULL);
 		gtk_window_set_transient_for(GTK_WINDOW(mainwin_dir_browser), GTK_WINDOW(mainwin));
 	}
 	if (!GTK_WIDGET_VISIBLE(mainwin_dir_browser))
@@ -1876,13 +2456,20 @@ void mainwin_show_dirbrowser(void)
 
 void mainwin_url_ok_clicked(GtkWidget * w, GtkWidget * entry)
 {
-	gchar *text;
+	char *text = gtk_entry_get_text(GTK_ENTRY(entry));
 
-	text = gtk_entry_get_text(GTK_ENTRY(entry));
 	if (text && *text)
 	{
 		playlist_clear();
-		playlist_add_url_string(text);
+		g_strstrip(text);
+		if (strstr(text, ":/") == NULL && text[0] != '/')
+		{
+			char *temp = g_strconcat("http://", text, NULL);
+			playlist_add_url_string(temp);
+			g_free(temp);
+		}
+		else
+			playlist_add_url_string(text);
 		playlist_play();
 	}
 	gtk_widget_destroy(mainwin_url_window);
@@ -1891,7 +2478,7 @@ void mainwin_url_ok_clicked(GtkWidget * w, GtkWidget * entry)
 void mainwin_url_enqueue_clicked(GtkWidget * w, GtkWidget * entry)
 {
 	gchar *text;
-	
+
 	text = gtk_entry_get_text(GTK_ENTRY(entry));
 	if (text && *text)
 		playlist_add_url_string(text);
@@ -1900,13 +2487,21 @@ void mainwin_url_enqueue_clicked(GtkWidget * w, GtkWidget * entry)
 
 void mainwin_show_add_url_window(void)
 {
-	if(!mainwin_url_window)
-	{
-		mainwin_url_window = util_create_add_url_window(_("Enter location to play:"), GTK_SIGNAL_FUNC(mainwin_url_ok_clicked), GTK_SIGNAL_FUNC(mainwin_url_enqueue_clicked));
-		gtk_window_set_transient_for(GTK_WINDOW(mainwin_url_window), GTK_WINDOW(mainwin));
-		gtk_signal_connect(GTK_OBJECT(mainwin_url_window), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &mainwin_url_window);
-		gtk_widget_show(mainwin_url_window);
-	}
+	if (mainwin_url_window)
+		return;
+
+	mainwin_url_window =
+		util_create_add_url_window(_("Enter location to play:"),
+					   mainwin_url_ok_clicked,
+					   mainwin_url_enqueue_clicked);
+	gtk_window_set_transient_for(GTK_WINDOW(mainwin_url_window),
+				     GTK_WINDOW(mainwin));
+	gtk_signal_connect(GTK_OBJECT(mainwin_url_window), "destroy",
+			   GTK_SIGNAL_FUNC(gtk_widget_destroyed),
+			   &mainwin_url_window);
+	gtk_signal_connect(GTK_OBJECT(mainwin_url_window), "key_press_event",
+			   util_dialog_keypress_cb, NULL);
+	gtk_widget_show(mainwin_url_window);
 }
 
 void mainwin_eject_pushed(void)
@@ -1920,7 +2515,8 @@ void mainwin_eject_pushed(void)
 	filebrowser = util_create_filebrowser(TRUE);
 	gtk_signal_connect(GTK_OBJECT(filebrowser), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &filebrowser);
-
+	gtk_signal_connect(GTK_OBJECT(filebrowser), "key_press_event",
+			   util_dialog_keypress_cb,  NULL);
 }
 
 void mainwin_play_pushed(void)
@@ -1938,7 +2534,7 @@ void mainwin_play_pushed(void)
 
 void mainwin_stop_pushed(void)
 {
-	mainwin_set_song_info(0, 0, 0);
+	mainwin_clear_song_info();
 	input_stop();
 }
 
@@ -1953,6 +2549,16 @@ void mainwin_repeat_pushed(gboolean toggled)
 {
 	GtkWidget *widget;
 	widget = gtk_item_factory_get_widget(mainwin_options_menu, "/Repeat");
+	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(widget), toggled);
+}
+
+void mainwin_advance_pushed(gboolean toggled)
+{
+	/* there isn't really an advance button, but it's easier to handle
+	   the advance command in the same way as the shuffle and repeat cases
+	   if we pretend that there is. */
+	GtkWidget *widget;
+	widget = gtk_item_factory_get_widget(mainwin_options_menu, "/No Playlist Advance");
 	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(widget), toggled);
 }
 
@@ -2059,7 +2665,7 @@ void mainwin_adjust_volume_release(void)
 void mainwin_adjust_balance_motion(gint b)
 {
 	char *tmp;
-	gint v, pvl, pvr; 
+	gint v, pvl, pvr;
 
 	setting_volume = TRUE;
 	balance = b;
@@ -2142,7 +2748,7 @@ void mainwin_set_volume_diff(gint diff)
 	equalizerwin_set_volume_slider(vol);
 	read_volume(VOLUME_SET);
 }
-	
+
 void mainwin_set_balance_diff(gint diff)
 {
 	gint b;
@@ -2153,7 +2759,7 @@ void mainwin_set_balance_diff(gint diff)
 	equalizerwin_set_balance_slider(b);
 	read_volume(VOLUME_SET);
 }
-	
+
 void mainwin_show(gboolean show)
 {
 	GtkWidget *widget = gtk_item_factory_get_widget(mainwin_general_menu, "/Main Window");
@@ -2239,7 +2845,7 @@ void mainwin_songname_menu_callback(gpointer cb_data, guint action, GtkWidget * 
 			mainwin_jump_to_time();
 			break;
 		case MAINWIN_SONGNAME_SCROLL:
-			cfg.autoscroll = GTK_CHECK_MENU_ITEM(gtk_item_factory_get_widget(mainwin_songname_menu, "/Autoscroll Songname"))->active;
+			cfg.autoscroll = GTK_CHECK_MENU_ITEM(gtk_item_factory_get_widget(mainwin_songname_menu, "/Autoscroll Song Name"))->active;
 			textbox_set_scroll(mainwin_info, cfg.autoscroll);
 			break;
 	}
@@ -2259,9 +2865,15 @@ void mainwin_options_menu_callback(gpointer cb_data, guint action, GtkWidget * w
 		reload_skin();
 		break;
 	case MAINWIN_OPT_SHUFFLE:
-		cfg.shuffle = GTK_CHECK_MENU_ITEM(gtk_item_factory_get_widget(mainwin_options_menu, "/Shuffle"))->active;
-		tbutton_set_toggled(mainwin_shuffle, cfg.shuffle);
+	{
+		gboolean shuffle;
+		GtkWidget *w = gtk_item_factory_get_widget(mainwin_options_menu,
+							   "/Shuffle");
+		shuffle = GTK_CHECK_MENU_ITEM(w)->active;
+		tbutton_set_toggled(mainwin_shuffle, shuffle);
+		playlist_set_shuffle(shuffle);
 		break;
+	}
 	case MAINWIN_OPT_REPEAT:
 		cfg.repeat = GTK_CHECK_MENU_ITEM(gtk_item_factory_get_widget(mainwin_options_menu, "/Repeat"))->active;
 		tbutton_set_toggled(mainwin_repeat, cfg.repeat);
@@ -2272,24 +2884,32 @@ void mainwin_options_menu_callback(gpointer cb_data, guint action, GtkWidget * w
 	case MAINWIN_OPT_TREMAINING:
 		set_timer_mode_menu_cb(TIMER_REMAINING);
 		break;
+	case MAINWIN_OPT_TDISPLAY:
+		cfg.timer_minutes_only = GTK_CHECK_MENU_ITEM(gtk_item_factory_get_widget(mainwin_options_menu, "/Time Display (MMM:SS)"))->active;
+		break;
 	case MAINWIN_OPT_ALWAYS:
 		mainwin_menurow->mr_always_selected = GTK_CHECK_MENU_ITEM(gtk_item_factory_get_widget(mainwin_options_menu, "/Always On Top"))->active;
 		cfg.always_on_top = mainwin_menurow->mr_always_selected;
 		draw_widget(mainwin_menurow);
-		mainwin_set_always_on_top(mainwin_menurow->mr_always_selected);
+		hint_set_always(cfg.always_on_top);
 		break;
 	case MAINWIN_OPT_STICKY:
-		cfg.sticky = GTK_CHECK_MENU_ITEM(gtk_item_factory_get_widget(mainwin_options_menu, "/Sticky"))->active;
+	{
+		GtkWidget *w;
+		w = gtk_item_factory_get_widget(mainwin_options_menu,
+						"/Show on all desktops");
+		cfg.sticky = GTK_CHECK_MENU_ITEM(w)->active;
 		hint_set_sticky(cfg.sticky);
 		break;
+	}
 	case MAINWIN_OPT_WS:
 		mainwin_set_shade_menu_cb(GTK_CHECK_MENU_ITEM(gtk_item_factory_get_widget(mainwin_options_menu, "/WindowShade Mode"))->active);
 		break;
 	case MAINWIN_OPT_PWS:
-		playlistwin_set_shade(GTK_CHECK_MENU_ITEM(gtk_item_factory_get_widget(mainwin_options_menu, "/Playlist WindowShade Mode"))->active);
+		playlistwin_set_shade_menu_cb(GTK_CHECK_MENU_ITEM(gtk_item_factory_get_widget(mainwin_options_menu, "/Playlist WindowShade Mode"))->active);
 		break;
 	case MAINWIN_OPT_EQWS:
-		equalizerwin_set_shade(GTK_CHECK_MENU_ITEM(gtk_item_factory_get_widget(mainwin_options_menu, "/Equalizer WindowShade Mode"))->active);
+		equalizerwin_set_shade_menu_cb(GTK_CHECK_MENU_ITEM(gtk_item_factory_get_widget(mainwin_options_menu, "/Equalizer WindowShade Mode"))->active);
 		break;
 	case MAINWIN_OPT_DOUBLESIZE:
 		mainwin_menurow->mr_doublesize_selected = GTK_CHECK_MENU_ITEM(gtk_item_factory_get_widget(mainwin_options_menu, "/DoubleSize"))->active;
@@ -2439,6 +3059,9 @@ void mainwin_general_menu_callback(gpointer cb_data, guint action, GtkWidget * w
 	case MAINWIN_GENERAL_JTF:
 		mainwin_jump_to_file();
 		break;
+	case MAINWIN_GENERAL_CQUEUE:
+		playlist_clear_queue();
+		break;
 	case MAINWIN_GENERAL_EXIT:
 		mainwin_quit_cb();
 		break;
@@ -2463,7 +3086,7 @@ void mainwin_mr_change(MenuRowItem i)
 				else
 					mainwin_lock_info_text(_("ENABLE ALWAYS ON TOP (N/A)"));
 			}
-			else if (mainwin_menurow->mr_doublesize_selected)
+			else if (mainwin_menurow->mr_always_selected)
 				mainwin_lock_info_text(_("DISABLE ALWAYS ON TOP"));
 			else
 				mainwin_lock_info_text(_("ENABLE ALWAYS ON TOP"));
@@ -2571,7 +3194,7 @@ void read_volume(gint when)
 		else if (pvr != vr || pvl != vl)
 		{
 			gchar *tmp;
-			
+
 			v = MAX(vl,vr);
 			if(vl > vr)
 				b = (gint) rint(((gdouble) vr / vl) * 100) - 100;
@@ -2654,9 +3277,10 @@ void create_popups(void)
 	else
 		widget = gtk_item_factory_get_widget(mainwin_options_menu, "/Time Remaining");
 	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(widget), TRUE);
+	CHECK_SET(mainwin_options_menu, "/Time Display (MMM:SS)", cfg.timer_minutes_only);
 
 	CHECK_SET(mainwin_options_menu, "/Always On Top", cfg.always_on_top);
-	CHECK_SET(mainwin_options_menu, "/Sticky", cfg.sticky);
+	CHECK_SET(mainwin_options_menu, "/Show on all desktops", cfg.sticky);
 	CHECK_SET(mainwin_options_menu, "/DoubleSize", cfg.doublesize);
 	CHECK_SET(mainwin_options_menu, "/WindowShade Mode", cfg.player_shaded);
 	CHECK_SET(mainwin_options_menu, "/Playlist WindowShade Mode", cfg.playlist_shaded);
@@ -2666,7 +3290,7 @@ void create_popups(void)
 					    util_menu_translate, NULL, NULL);
 	gtk_item_factory_create_items(mainwin_songname_menu, mainwin_songname_menu_entries_num, mainwin_songname_menu_entries, NULL);
 
-	CHECK_SET(mainwin_songname_menu, "/Autoscroll Songname", cfg.autoscroll);
+	CHECK_SET(mainwin_songname_menu, "/Autoscroll Song Name", cfg.autoscroll);
 
 	mainwin_vis_menu = gtk_item_factory_new(GTK_TYPE_MENU, "<Main>", mainwin_accel);
 	gtk_item_factory_set_translate_func(mainwin_vis_menu,
@@ -2718,7 +3342,7 @@ static void mainwin_create_widgets(void)
 	mainwin_menubtn->pb_allow_draw = FALSE;
 	mainwin_minimize = create_pbutton(&mainwin_wlist, mainwin_bg, mainwin_gc, 244, 3, 9, 9, 9, 0, 9, 9, mainwin_minimize_cb, SKIN_TITLEBAR);
 	mainwin_minimize->pb_allow_draw = FALSE;
-	mainwin_shade = create_pbutton(&mainwin_wlist, mainwin_bg, mainwin_gc, 254, 3, 9, 9, 0, cfg.player_shaded ? 27 : 18, 9, cfg.player_shaded ? 27 : 18, mainwin_shade_cb, SKIN_TITLEBAR);
+	mainwin_shade = create_pbutton(&mainwin_wlist, mainwin_bg, mainwin_gc, 254, 3, 9, 9, 0, cfg.player_shaded ? 27 : 18, 9, cfg.player_shaded ? 27 : 18, mainwin_shade_toggle, SKIN_TITLEBAR);
 	mainwin_shade->pb_allow_draw = FALSE;
 	mainwin_close = create_pbutton(&mainwin_wlist, mainwin_bg, mainwin_gc, 264, 3, 9, 9, 18, 0, 18, 9, mainwin_quit_cb, SKIN_TITLEBAR);
 	mainwin_close->pb_allow_draw = FALSE;
@@ -2808,7 +3432,7 @@ static void mainwin_create_gtk(void)
 	mainwin = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	dock_window_list = dock_add_window(dock_window_list, mainwin);
 	gtk_widget_set_app_paintable(mainwin, TRUE);
-	gtk_window_set_title(GTK_WINDOW(mainwin), _("XMMS"));
+	gtk_window_set_title(GTK_WINDOW(mainwin), "XMMS");
 	gtk_window_set_policy(GTK_WINDOW(mainwin), FALSE, FALSE, TRUE);
 	gtk_window_set_wmclass(GTK_WINDOW(mainwin), "XMMS_Player", "xmms");
 
@@ -2819,7 +3443,7 @@ static void mainwin_create_gtk(void)
 
 	mainwin_set_icon(mainwin);
 	util_set_cursor(mainwin);
-	
+
 	if (cfg.doublesize)
 		gtk_widget_set_usize(mainwin, 550, cfg.player_shaded ? 28 : 232);
 	else
@@ -2828,17 +3452,27 @@ static void mainwin_create_gtk(void)
 		gdk_window_set_decorations(mainwin->window, 0);
 	gtk_window_add_accel_group(GTK_WINDOW(mainwin), mainwin_accel);
 
-	gtk_signal_connect(GTK_OBJECT(mainwin), "destroy", GTK_SIGNAL_FUNC(mainwin_destroy), NULL);
-	gtk_signal_connect(GTK_OBJECT(mainwin), "button_press_event", GTK_SIGNAL_FUNC(mainwin_press), NULL);
-	gtk_signal_connect(GTK_OBJECT(mainwin), "button_release_event", GTK_SIGNAL_FUNC(mainwin_release), NULL);
-	gtk_signal_connect(GTK_OBJECT(mainwin), "motion_notify_event", GTK_SIGNAL_FUNC(mainwin_motion), NULL);
-	gtk_signal_connect(GTK_OBJECT(mainwin), "focus_in_event", GTK_SIGNAL_FUNC(mainwin_focus_in), NULL);
-	gtk_signal_connect(GTK_OBJECT(mainwin), "focus_out_event", GTK_SIGNAL_FUNC(mainwin_focus_out), NULL);
-	gtk_signal_connect(GTK_OBJECT(mainwin), "configure_event", GTK_SIGNAL_FUNC(mainwin_configure), NULL);
-	gtk_signal_connect(GTK_OBJECT(mainwin), "client_event", GTK_SIGNAL_FUNC(mainwin_client_event), NULL);
+	gtk_signal_connect(GTK_OBJECT(mainwin), "destroy",
+			   GTK_SIGNAL_FUNC(mainwin_destroy), NULL);
+	gtk_signal_connect(GTK_OBJECT(mainwin), "button_press_event",
+			   GTK_SIGNAL_FUNC(mainwin_press), NULL);
+	gtk_signal_connect(GTK_OBJECT(mainwin), "button_release_event",
+			   GTK_SIGNAL_FUNC(mainwin_release), NULL);
+	gtk_signal_connect(GTK_OBJECT(mainwin), "motion_notify_event",
+			   GTK_SIGNAL_FUNC(mainwin_motion), NULL);
+	gtk_signal_connect(GTK_OBJECT(mainwin), "focus_in_event",
+			   GTK_SIGNAL_FUNC(mainwin_focus_in), NULL);
+	gtk_signal_connect(GTK_OBJECT(mainwin), "focus_out_event",
+			   GTK_SIGNAL_FUNC(mainwin_focus_out), NULL);
+	gtk_signal_connect(GTK_OBJECT(mainwin), "configure_event",
+			   GTK_SIGNAL_FUNC(mainwin_configure), NULL);
+	gtk_signal_connect(GTK_OBJECT(mainwin), "client_event",
+			   GTK_SIGNAL_FUNC(mainwin_client_event), NULL);
 	xmms_drag_dest_set(mainwin);
-	gtk_signal_connect(GTK_OBJECT(mainwin), "drag-data-received", GTK_SIGNAL_FUNC(mainwin_drag_data_received), NULL);
-	gtk_signal_connect(GTK_OBJECT(mainwin), "key-press-event", GTK_SIGNAL_FUNC(mainwin_keypress), NULL);
+	gtk_signal_connect(GTK_OBJECT(mainwin), "drag-data-received",
+			   GTK_SIGNAL_FUNC(mainwin_drag_data_received), NULL);
+	gtk_signal_connect(GTK_OBJECT(mainwin), "key-press-event",
+			   GTK_SIGNAL_FUNC(mainwin_keypress), NULL);
 
 	gdk_window_set_group(mainwin->window, mainwin->window);
 	mainwin_set_back_pixmap();
@@ -2862,7 +3496,7 @@ void mainwin_recreate(void)
 	mainwin_set_shape_mask();
 	draw_main_window(TRUE);
 }
-									    
+
 
 void set_timer_mode(TimerMode mode)
 {
@@ -2879,6 +3513,26 @@ void set_timer_mode(TimerMode mode)
 static void set_timer_mode_menu_cb(TimerMode mode)
 {
 	cfg.timer_mode = mode;
+}
+
+static void output_failed(void)
+{
+	static GtkWidget *infobox;
+	if (!infobox)
+	{
+		infobox = xmms_show_message(
+			_("Couldn't open audio"),
+			_("Please check that:\n\n"
+			  "Your soundcard is configured properly\n"
+			  "You have the correct output plugin selected\n"
+			  "No other program is blocking the soundcard"),
+			_("OK"), FALSE, NULL, NULL);
+		gtk_signal_connect(GTK_OBJECT(infobox), "destroy",
+				   gtk_widget_destroyed, &infobox);
+	}
+	else
+		gdk_window_raise(infobox->window);
+
 }
 
 gint idle_func(gpointer data)
@@ -2917,14 +3571,14 @@ gint idle_func(gpointer data)
 				number_set_number(mainwin_sec_num, timeleft % 10);
 				if (!mainwin_sposition->hs_pressed)
 				{
-					gchar temp[3];
-					
+					char temp[3];
+
 					sprintf(temp,"%2.2d", timeleft / 60);
 					textbox_set_text(mainwin_stime_min, temp);
 					sprintf(temp,"%2.2d", timeleft % 60);
 					textbox_set_text(mainwin_stime_sec, temp);
 				}
-				
+
 				playlistwin_set_time(timeleft*1000, 0, TIMER_ELAPSED);
 			}
 
@@ -2940,23 +3594,8 @@ gint idle_func(gpointer data)
 		}
 		else if (time == -2)
 		{
-			static GtkWidget *infobox;
 			GDK_THREADS_ENTER();
-			if (!infobox)
-			{
-				infobox = xmms_show_message(
-				 _("Couldn't open audio"),
-				 _("Please check that:\n\n"
-				   "1. You have the correct output plugin selected\n"
-				   "2. No other programs is blocking the soundcard\n"
-				   "3. Your soundcard is configured properly"),
-				 _("Ok"), FALSE, NULL, NULL);
-				gtk_signal_connect(GTK_OBJECT(infobox), "destroy",
-						   GTK_SIGNAL_FUNC(gtk_widget_destroyed),
-						   &infobox);
-			}
-			else
-				gdk_window_raise(infobox->window);
+			output_failed();
 			mainwin_stop_pushed();
 			GDK_THREADS_LEAVE();
 		}
@@ -2988,17 +3627,35 @@ gint idle_func(gpointer data)
 				stime_prefix = ' ';
 			}
 			t /= 1000;
-			
-			/*
-			 * Show the time in the format HH:MM when we
-			 * have more than 100 minutes.
-			 */
-			if (t >= 100 * 60)
-				t /= 60;
-			number_set_number(mainwin_10min_num, t / 600);
-			number_set_number(mainwin_min_num, (t / 60) % 10);
-			number_set_number(mainwin_10sec_num, (t / 10) % 6);
-			number_set_number(mainwin_sec_num, t % 10);
+
+			if (!cfg.timer_minutes_only)
+			{
+				/*
+				 * Show the time in the format HH:MM when we
+				 * have more than 100 minutes.
+				 */
+				if (t >= 100 * 60)
+					t /= 60;
+				number_set_number(mainwin_10min_num, t / 600);
+				number_set_number(mainwin_min_num, (t / 60) % 10);
+				number_set_number(mainwin_10sec_num, (t / 10) % 6);
+				number_set_number(mainwin_sec_num, t % 10);
+			}
+			else
+			{
+				/*
+				 * Show the time in the format MMM:SS when
+				 * cfg.timer_minutes_only = TRUE.
+				 */
+				if ( ((t/(100*60)) % 10) > 0 )
+				{
+					number_set_number(mainwin_minus_num, (t / (100 * 60)) % 10);
+				}
+				number_set_number(mainwin_10min_num, (t / (10 * 60)) % 10);
+				number_set_number(mainwin_min_num, (t / 60) % 10);
+				number_set_number(mainwin_10sec_num, (t / 10) % 6);
+				number_set_number(mainwin_sec_num, t % 10);
+			}
 
 			if (!mainwin_sposition->hs_pressed)
 			{
@@ -3061,9 +3718,13 @@ gint idle_func(gpointer data)
 
 	if (mainwin_title_text)
 	{
+		pthread_mutex_lock(&title_mutex);
+		mainwin_update_song_info();
 		gtk_window_set_title(GTK_WINDOW(mainwin), mainwin_title_text);
 		g_free(mainwin_title_text);
 		mainwin_title_text = NULL;
+		pthread_mutex_unlock(&title_mutex);
+		playlistwin_update_list();
 	}
 
 	GDK_THREADS_LEAVE();
@@ -3083,8 +3744,14 @@ static struct option long_options[] =
 	{"stop", 0, NULL, 's'},
 	{"fwd", 0, NULL, 'f'},
 	{"enqueue", 0, NULL, 'e'},
+	{"queue", 0, NULL, 'Q'},
+	{"toggle-shuffle", 2, NULL, 'S'},
+	{"toggle-repeat", 2, NULL, 'R'},
+	{"toggle-advance", 2, NULL, 'A'},
 	{"show-main-window", 0, NULL, 'm'},
 	{"version", 0, NULL, 'v'},
+	{"quit", 0, NULL, 'q'},
+	{"sm-client-id", 1, NULL, 'i'},
 	{0, 0, 0, 0}
 };
 
@@ -3093,48 +3760,76 @@ void display_usage(void)
 	fprintf(stderr, _("Usage: xmms [options] [files] ...\n\n"
 			  "Options:\n"
 			  "--------\n"));
-	fprintf(stderr, "\n-h, --help		");
-	/* -h, --help switch */
+	fprintf(stderr, "\n  -h, --help			");
+	/* I18N: -h, --help switch */
 	fprintf(stderr, _("Display this text and exit."));
-	fprintf(stderr, "\n-n, --session		");
-	/* -n, --session switch */
+	fprintf(stderr, "\n  -n, --session			");
+	/* I18N: -n, --session switch */
 	fprintf(stderr, _("Select XMMS session (Default: 0)"));
-	fprintf(stderr, "\n-r, --rew		");
-	/* -r, --rew switch */
+	fprintf(stderr, "\n  -r, --rew			");
+	/* I18N: -r, --rew switch */
 	fprintf(stderr, _("Skip backwards in playlist"));
-	fprintf(stderr, "\n-p, --play		");
-	/* -p, --play switch */
+	fprintf(stderr, "\n  -p, --play			");
+	/* I18N: -p, --play switch */
 	fprintf(stderr, _("Start playing current playlist"));
-	fprintf(stderr, "\n-u, --pause		");
-	/* -u, --pause switch */
+	fprintf(stderr, "\n  -u, --pause			");
+	/* I18N: -u, --pause switch */
 	fprintf(stderr, _("Pause current song"));
-	fprintf(stderr, "\n-s, --stop		");
-	/* -s, --stop switch */
+	fprintf(stderr, "\n  -s, --stop			");
+	/* I18N: -s, --stop switch */
 	fprintf(stderr, _("Stop current song"));
-	fprintf(stderr, "\n-t, --play-pause	");
-	/* -t, --play-pause switch */
+	fprintf(stderr, "\n  -t, --play-pause		");
+	/* I18N: -t, --play-pause switch */
 	fprintf(stderr, _("Pause if playing, play otherwise"));
-	fprintf(stderr, "\n-f, --fwd		");
-	/* -f, --fwd switch */
+	fprintf(stderr, "\n  -f, --fwd			");
+	/* I18N: -f, --fwd switch */
 	fprintf(stderr, _("Skip forward in playlist"));
-	fprintf(stderr, "\n-e, --enqueue		");
-	/* -e, --enqueue switch */
+	fprintf(stderr, "\n  -e, --enqueue			");
+	/* I18N: -e, --enqueue switch */
 	fprintf(stderr, _("Don't clear the playlist"));
-	fprintf(stderr, "\n-m, --show-main-window	");
-	/* -m, --show-main-window switch */
+	fprintf(stderr, "\n  -Q, --queue			");
+	/* I18N: -Q, --queue switch */
+	fprintf(stderr, _("Add file(s) to playlist and queue"));
+	fprintf(stderr, "\n\n  -S, --toggle-shuffle%-10s", _("[=SWITCH]"));
+	/* I18N: -S, --toggle-shuffle switch */
+	fprintf(stderr, _("Toggle the 'shuffle' flag."));
+	/* I18N: Only "SWITCH" may be translated */
+	fprintf(stderr, "\n  -R, --toggle-repeat%-11s", _("[=SWITCH]"));
+	/* I18N: -R, --toggle-repeat switch */
+	fprintf(stderr, _("Toggle the 'repeat' flag."));
+	/* I18N: Only "SWITCH" may be translated */
+	fprintf(stderr, "\n  -A, --toggle-advance%-10s", _("[=SWITCH]"));
+	/* I18N: -A, --toggle-advance switch */
+	fprintf(stderr, _("Toggle the 'no playlist advance' flag."));
+	fprintf(stderr, "\n\n  ");
+	/* I18N: "on" and "off" is not translated. */
+	fprintf(stderr, _("SWITCH may be either 'on' or 'off'\n"));
+	fprintf(stderr, "\n  -m, --show-main-window	");
+	/* I18N: -m, --show-main-window switch */
 	fprintf(stderr, _("Show the main window."));
-	fprintf(stderr, "\n-v, --version		");
-	/* -v, --version switch */
+	fprintf(stderr, "\n  -i, --sm-client-id		");
+	/* I18N: -i, --sm-client-id switch */
+	fprintf(stderr, _("Previous session ID"));
+	fprintf(stderr, "\n  -v, --version			");
+	/* I18N: -v, --version switch */
 	fprintf(stderr, _("Print version number and exit."));
+	fprintf(stderr, "\n  -q, --quit			");
+	/* I18N: -q, --quit switch */
+	fprintf(stderr, _("Close remote session."));
 	fprintf(stderr, "\n\n");
+	fprintf(stderr, "Report bugs to http://bugs.xmms.org\n");
+
 	exit(0);
 }
 
 struct cmdlineopt {
 	GList *filenames;
-	gint session;
+	int session;
 	gboolean play, stop, pause, fwd, rew, play_pause;
-	gboolean enqueue, mainwin, remote;
+	gboolean toggle_shuffle, toggle_repeat, toggle_advance;
+	gboolean enqueue, queue, mainwin, remote, quit;
+	char *shuffle, *repeat, *advance;
+	char *previous_session_id;
 };
 
 void parse_cmd_line(int argc, char **argv, struct cmdlineopt *opt)
@@ -3144,7 +3839,7 @@ void parse_cmd_line(int argc, char **argv, struct cmdlineopt *opt)
 
 	memset(opt, 0, sizeof(struct cmdlineopt));
 	opt->session = -1;
-	while ((c = getopt_long(argc, argv, "hn:rpusfemvt", long_options, NULL)) != -1)
+	while ((c = getopt_long(argc, argv, "hn:rpusfeQS::R::A::mi:vtq", long_options, NULL)) != -1)
 	{
 		switch (c)
 		{
@@ -3172,15 +3867,41 @@ void parse_cmd_line(int argc, char **argv, struct cmdlineopt *opt)
 			case 't':
 				opt->play_pause = TRUE;
 				break;
+			case 'S':
+				opt->toggle_shuffle = TRUE;
+				if(optarg)
+					opt->shuffle = g_strdup(optarg);
+				break;
+			case 'R':
+				opt->toggle_repeat = TRUE;
+				if(optarg)
+					opt->repeat = g_strdup(optarg);
+				break;
+				break;
+			case 'A':
+				opt->toggle_advance = TRUE;
+				if(optarg)
+					opt->advance = g_strdup(optarg);
+				break;
+				break;
 			case 'm':
 				opt->mainwin = TRUE;
 				break;
 			case 'e':
 				opt->enqueue = TRUE;
 				break;
+			case 'Q':
+				opt->queue = TRUE;
+				break;
 			case 'v':
 				printf("%s %s\n", PACKAGE, VERSION);
 				exit(0);
+				break;
+			case 'i':
+				opt->previous_session_id = g_strdup(optarg);
+				break;
+			case 'q':
+				opt->quit = TRUE;
 				break;
 		}
 	}
@@ -3201,6 +3922,8 @@ void parse_cmd_line(int argc, char **argv, struct cmdlineopt *opt)
 
 void handle_cmd_line_options(struct cmdlineopt *opt, gboolean remote)
 {
+	int i;
+
 	if (opt->session == -1)
 	{
 		if (!remote)
@@ -3208,11 +3931,15 @@ void handle_cmd_line_options(struct cmdlineopt *opt, gboolean remote)
 		else
 			opt->session = 0;
 	}
-	
+
 	if (opt->filenames != NULL)
 	{
 		GList *node;
-		if (!opt->enqueue)
+		int pos = 0;
+
+		if ((opt->enqueue && opt->play) || (opt->queue && !opt->play))
+			pos = xmms_remote_get_playlist_length (opt->session);
+		if (!opt->enqueue && !opt->queue)
 			xmms_remote_playlist_clear(opt->session);
 		xmms_remote_playlist_add(opt->session, opt->filenames);
 		node = opt->filenames;
@@ -3222,7 +3949,15 @@ void handle_cmd_line_options(struct cmdlineopt *opt, gboolean remote)
 			node = g_list_next(node);
 		}
 		g_list_free(opt->filenames);
-		if (!opt->enqueue)
+		if (opt->queue && !opt->play &&
+		    xmms_remote_get_playlist_length (opt->session) > pos) {
+			for(i=pos;i<xmms_remote_get_playlist_length(opt->session);i++)
+				xmms_remote_playqueue_add(opt->session, i);
+		}
+		if (opt->enqueue && opt->play &&
+		    xmms_remote_get_playlist_length (opt->session) > pos)
+			xmms_remote_set_playlist_pos (opt->session, pos);
+		if (!opt->enqueue && !opt->queue)
 			xmms_remote_play(opt->session);
 	}
 	if (opt->rew)
@@ -3237,8 +3972,84 @@ void handle_cmd_line_options(struct cmdlineopt *opt, gboolean remote)
 		xmms_remote_playlist_next(opt->session);
 	if (opt->play_pause)
 		xmms_remote_play_pause(opt->session);
+	if (opt->toggle_shuffle)
+	{
+		if (opt->shuffle)
+		{
+			if (g_strcasecmp(opt->shuffle, "on") == 0)
+			{
+				if(!xmms_remote_is_shuffle(opt->session))
+		 			xmms_remote_toggle_shuffle(opt->session);
+			}
+			else if (g_strcasecmp(opt->shuffle, "off") == 0)
+			{
+				if(xmms_remote_is_shuffle(opt->session))
+		 			xmms_remote_toggle_shuffle(opt->session);
+			}
+			else
+				/*
+				 * I18N: "on" and "off" is not
+				 * translated.
+				 */
+				fprintf(stderr, _("Value '%s' not understood, "
+						  "must be either 'on' or "
+						  "'off'.\n"), opt->shuffle);
+		}
+		else
+		{
+			xmms_remote_toggle_shuffle(opt->session);
+		}
+	}
+	if (opt->toggle_repeat)
+	{
+		if (opt->repeat)
+		{
+			if (g_strcasecmp(opt->repeat, "on") == 0)
+			{
+				if(!xmms_remote_is_repeat(opt->session))
+		 			xmms_remote_toggle_repeat(opt->session);
+			}
+			else if (g_strcasecmp(opt->repeat, "off") == 0)
+			{
+				if(xmms_remote_is_repeat(opt->session))
+		 			xmms_remote_toggle_repeat(opt->session);
+			}
+			else
+				fprintf(stderr, _("Value '%s' not understood, "
+						  "must be either 'on' or "
+						  "'off'.\n"), opt->repeat);
+		}
+		else
+		{
+			xmms_remote_toggle_repeat(opt->session);
+		}
+	}
+	if (opt->toggle_advance)
+	{
+		if (opt->advance)
+		{
+			if (g_strcasecmp(opt->advance, "on") == 0)
+			{
+				if(!xmms_remote_is_advance(opt->session))
+		 			xmms_remote_toggle_advance(opt->session);
+			}
+			else if (g_strcasecmp(opt->advance, "off") == 0)
+			{
+				if(xmms_remote_is_advance(opt->session))
+		 			xmms_remote_toggle_advance(opt->session);
+			}
+			else
+				fprintf(stderr, _("Value '%s' not understood, must be either 'on' or 'off'.\n"), opt->advance);
+		}
+		else
+		{
+			xmms_remote_toggle_advance(opt->session);
+		}
+	}
 	if (opt->mainwin)
 		xmms_remote_main_win_toggle(opt->session, TRUE);
+	if (opt->quit)
+		xmms_remote_quit(opt->session);
 }
 
 void segfault_handler(int sig)
@@ -3261,7 +4072,7 @@ static gboolean pposition_configure(GtkWidget *w, GdkEventConfigure *event, gpoi
 }
 
 void check_pposition(void)
-{	
+{
 	GtkWidget *window;
 	GdkBitmap *mask;
 	GdkGC *gc;
@@ -3273,17 +4084,17 @@ void check_pposition(void)
 			   GTK_SIGNAL_FUNC(pposition_configure), NULL);
 	gtk_widget_set_uposition(window, 0, 0);
 	gtk_widget_realize(window);
-	
+
 	gtk_widget_set_usize(window, 1, 1);
 	gdk_window_set_decorations(window->window, 0);
-	
+
 	mask = gdk_pixmap_new(window->window, 1, 1, 1);
 	gc = gdk_gc_new(mask);
 	pattern.pixel = 0;
 	gdk_gc_set_foreground(gc, &pattern);
 	gdk_draw_rectangle(mask, gc, TRUE, 0, 0, 1, 1);
 	gdk_gc_destroy(gc);
-	gtk_widget_shape_combine_mask(window, mask, 0, 0);	
+	gtk_widget_shape_combine_mask(window, mask, 0, 0);
 
 	gtk_widget_show(window);
 
@@ -3303,7 +4114,7 @@ static GdkFilterReturn save_yourself_filter(GdkXEvent *xevent, GdkEvent *event, 
 	if (((XEvent*)xevent)->type == ClientMessage)
 	{
 		XClientMessageEvent *cme = (XClientMessageEvent*) xevent;
-		if (cme->message_type == protocols && 
+		if (cme->message_type == protocols &&
 		    (Atom) cme->data.l[0] == save_yourself)
 		{
 			save_config();
@@ -3313,29 +4124,31 @@ static GdkFilterReturn save_yourself_filter(GdkXEvent *xevent, GdkEvent *event, 
 			return GDK_FILTER_REMOVE;
 		}
 	}
-	
+
 	return GDK_FILTER_CONTINUE;
 }
+#endif
 
 static void enable_x11r5_session_management(int argc, char **argv)
 {
 	/*
-	 * X11R5 Session Management 
+	 * X11R5 Session Management
 	 *
 	 * Most of xmms' options does not make sense when we are
 	 * restarted, so we drop them all.
 	 */
-	
-	GdkAtom save_yourself;
-	Atom *temp, *temp2;
-	gint i, n;
+
+	/* GdkAtom save_yourself; */
+	/* Atom *temp, *temp2; */
+	/* int i, n; */
 
 	restart_argc = 1;
-	restart_argv = g_malloc(sizeof (gchar *));
+	restart_argv = g_malloc(sizeof (char *));
 	restart_argv[0] = g_strdup(argv[0]);
-	
+
 	XSetCommand(GDK_DISPLAY(), GDK_WINDOW_XWINDOW(mainwin->window),
 		    restart_argv, restart_argc);
+#if 0
 	save_yourself = gdk_atom_intern("WM_SAVE_YOURSELF", FALSE);
 
 	/*
@@ -3360,14 +4173,13 @@ static void enable_x11r5_session_management(int argc, char **argv)
 	}
 	else
 		XSetWMProtocols(GDK_DISPLAY(), GDK_WINDOW_XWINDOW(mainwin->window), &save_yourself, 1);
-}
-
 #endif
-
+}
 
 int main(int argc, char **argv)
 {
-	gchar *filename;
+	char *filename;
+	const char *sm_client_id;
 	struct cmdlineopt options;
 #if defined(HAVE_SCHED_SETSCHEDULER) && defined(HAVE_SCHED_GET_PRIORITY_MAX)
 	struct sched_param sparam;
@@ -3381,35 +4193,41 @@ int main(int argc, char **argv)
 	signal(SIGPIPE, SIG_IGN); /* for controlsocket.c */
 	signal(SIGSEGV, segfault_handler);
 	g_thread_init(NULL);
+	gtk_set_locale();
 	if (!g_thread_supported())
-	{
-		printf(_("Sorry, threads isn't supported on your platform.\n\n"
-			 "If you're on a libc5 based linux system and installed GLIB & GTK+ before you\n"
-			 "installed LinuxThreads you need to recompile GLIB & GTK+\n"));
-		exit(1);
-	}
+		g_error(_("GLib does not support threads."));
+
 	parse_cmd_line(argc, argv, &options);
 
-#if defined(HAVE_SRANDOMDEV)
+#ifdef HAVE_SRANDOMDEV
 	srandomdev();
 #else
-	srandom(time(NULL));
+	{
+		int fd = open("/dev/urandom", O_RDONLY);
+		if (fd != -1)
+		{
+			char randtable[RANDTABLE_SIZE];
+			read(fd, randtable, RANDTABLE_SIZE);
+			initstate(time(NULL), randtable, RANDTABLE_SIZE);
+			close(fd);
+		}
+		else
+			srandom(time(NULL));
+	}
 #endif
 
 	read_config();
 
-	if (geteuid() == 0)
-	{
 #if defined(HAVE_SCHED_SETSCHEDULER) && defined(HAVE_SCHED_GET_PRIORITY_MAX)
-		if (cfg.use_realtime)
-		{
-			sparam.sched_priority = sched_get_priority_max(SCHED_RR);
-			sched_setscheduler(0, SCHED_RR, &sparam);
-		}
-#endif
-		setuid(getuid());
+	if (cfg.use_realtime)
+	{
+		sparam.sched_priority = sched_get_priority_max(SCHED_RR);
+		sched_setscheduler(0, SCHED_RR, &sparam);
 	}
-	gtk_set_locale();
+#endif
+	if (geteuid() == 0)
+		setuid(getuid());
+
 	if (!gtk_init_check(&argc, &argv))
 	{
 		if (argc < 2)
@@ -3424,6 +4242,10 @@ int main(int argc, char **argv)
 		handle_cmd_line_options(&options, TRUE);
 		exit(0);
 	}
+
+	if (options.quit)
+		return 0;
+
 	gdk_rgb_init();
 	gtk_widget_set_default_colormap(gdk_rgb_get_cmap());
 	gtk_widget_set_default_visual(gdk_rgb_get_visual());
@@ -3435,22 +4257,24 @@ int main(int argc, char **argv)
 		       gtk_major_version, gtk_minor_version, gtk_micro_version, "1.2.2");
 		exit(0);
 	}
-	
+
 	check_wm_hints();
 	check_pposition();
 	mainwin_accel = gtk_accel_group_new();
 
+	sm_client_id = sm_init(argc, argv, options.previous_session_id);
+	gdk_set_sm_client_id(sm_client_id);
 	mainwin_create();
 
 	filename = g_strconcat(g_get_home_dir(), "/.xmms/gtkrc", NULL);
-	gtk_rc_init();
+	/* gtk_rc_init(); */
 	gtk_rc_parse(filename);
 	g_free(filename);
 
-	init_plugins();
-
 	/* Plugins might start threads that can call gtk */
 	GDK_THREADS_ENTER();
+
+	init_plugins();
 
 	playlistwin_create();
 	equalizerwin_create();
@@ -3464,18 +4288,17 @@ int main(int argc, char **argv)
 	filename = g_strconcat(g_get_home_dir(), "/.xmms/xmms.m3u", NULL);
 	playlist_load(filename);
 	g_free(filename);
-	if (cfg.save_playlist_position)
-		playlist_set_position(cfg.playlist_position);
+	playlist_set_position(cfg.playlist_position);
 	GDK_THREADS_LEAVE();
 	start_ctrlsocket();
-	handle_cmd_line_options(&options, FALSE); 
+	handle_cmd_line_options(&options, FALSE);
 	GDK_THREADS_ENTER();
 	mainwin_set_info_text();
 
 	gtk_widget_show(mainwin);
 	if (pposition_broken && cfg.player_x != -1 && cfg.save_window_position)
 		dock_set_uposition(mainwin, cfg.player_x, cfg.player_y);
-	
+
 	if (!cfg.player_visible && (cfg.playlist_visible || cfg.equalizer_visible))
 		mainwin_real_hide();
 	else
@@ -3483,17 +4306,16 @@ int main(int argc, char **argv)
 	if (cfg.playlist_visible)
 		playlistwin_show(TRUE);
 	if (cfg.equalizer_visible)
-		equalizerwin_show(TRUE);		
-	
+		equalizerwin_show(TRUE);
+
 	draw_main_window(TRUE);
-	
-	mainwin_timeout_tag = gtk_timeout_add(10, idle_func, NULL); 
+
+	mainwin_timeout_tag = gtk_timeout_add(10, idle_func, NULL);
 	playlist_start_get_info_thread();
 
-	/* enable_x11r5_session_management(argc, argv); */
-	sm_init(argc, argv);
-	GDK_THREADS_LEAVE();
+	enable_x11r5_session_management(argc, argv);
 	gtk_main();
+	GDK_THREADS_LEAVE();
 
 	return 0;
 }

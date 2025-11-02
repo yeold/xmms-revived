@@ -41,7 +41,7 @@ void esdout_about(void)
 		  "You should have received a copy of the GNU General Public License\n"
 		  "along with this program; if not, write to the Free Software\n"
 		  "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
-		  "USA."), _("Ok"), FALSE, NULL, NULL);
+		  "USA."), _("OK"), FALSE, NULL, NULL);
 	gtk_signal_connect(GTK_OBJECT(dialog), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed),
 			   &dialog);

@@ -6,18 +6,20 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: xmms VERSION\n"
-"POT-Creation-Date: 2002-01-08 17:20+0100\n"
-"PO-Revision-Date: 2001-03-21 08:56+0100\n"
-"Last-Translator: Tomislav Jankovic_<tomaja@net.yu>\n"
-"Language-Team: Serbian (latin) <office@mandrake.co.yu>\n"
+"Report-Msgid-Bugs-To: http://bugs.xmms.org\n"
+"POT-Creation-Date: 2007-11-16 23:53+0100\n"
+"PO-Revision-Date: 2003-01-17 20:40-0500\n"
+"Last-Translator: \n"
+"Language-Team:  <sr@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 0.9.6\n"
 
 #: Effect/echo_plugin/echo.c:43
 #, c-format
 msgid "Echo Plugin %s"
-msgstr "Dodatak za exo efekat %s"
+msgstr "Додатак за еxо ефекат %s"
 
 #: Effect/echo_plugin/gui.c:8
 msgid ""
@@ -26,47 +28,50 @@ msgid ""
 "\n"
 "Surround echo by Carl van Schaik 1999"
 msgstr ""
-"Dodatak za exo efekat\n"
-"Kreirao: Johan Levin 1999.\n"
+"Додатак за еxо ефекат\n"
+"Креирао: Johan Levin 1999.\n"
 "\n"
-"Surround exo - Carl van Schaik 1999"
+"Surround еxо - Carl van Schaik 1999"
 
 #: Effect/echo_plugin/gui.c:22
 msgid "About Echo Plugin"
-msgstr "O Dodatku za exo efekat"
+msgstr "О Додатку за еxо ефекат"
 
 #: Effect/echo_plugin/gui.c:23 Effect/echo_plugin/gui.c:135
 #: Effect/stereo_plugin/stereo.c:56 Effect/stereo_plugin/stereo.c:120
 #: Effect/voice/about.c:35 General/ir/about.c:51 General/ir/configure.c:205
-#: General/ir/configure.c:377 General/joystick/about.c:35
-#: General/joystick/configure.c:272 General/song_change/song_change.c:209
-#: Input/cdaudio/cdindex.c:151 Input/cdaudio/configure.c:256
-#: Input/mikmod/plugin.c:123 Input/mikmod/plugin.c:613
-#: Input/mpg123/configure.c:633 Input/mpg123/fileinfo.c:118
-#: Input/mpg123/fileinfo.c:123 Input/mpg123/fileinfo.c:157
-#: Input/mpg123/fileinfo.c:161 Input/mpg123/fileinfo.c:167
-#: Input/mpg123/http.c:208 Input/mpg123/mpg123.c:1102
-#: Input/tonegen/tonegen.c:54 Input/vorbis/configure.c:347
-#: Input/vorbis/fileinfo.c:202 Input/vorbis/http.c:208
-#: Input/vorbis/vorbis.c:601 Output/OSS/about.c:45 Output/OSS/configure.c:308
-#: Output/disk_writer/disk_writer.c:130 Output/disk_writer/disk_writer.c:383
-#: Output/esd/about.c:44 Output/esd/configure.c:208 Output/solaris/about.c:24
-#: Output/solaris/configure.c:266 Visualization/blur_scope/config.c:101
-#: Visualization/opengl_spectrum/configure.c:73 libxmms/dirbrowser.c:294
-#: xmms/equalizer.c:1271 xmms/equalizer.c:1277 xmms/equalizer.c:1341
-#: xmms/equalizer.c:1350 xmms/equalizer.c:1600 xmms/main.c:2953
-#: xmms/playlistwin.c:1165 xmms/playlistwin.c:1218 xmms/prefswin.c:259
-#: xmms/prefswin.c:999 xmms/util.c:581
-msgid "Ok"
-msgstr "U redu"
+#: General/ir/configure.c:376 General/joystick/about.c:35
+#: General/joystick/configure.c:272 General/song_change/song_change.c:340
+#: Input/cdaudio/cddb.c:734 Input/cdaudio/cddb.c:742 Input/cdaudio/cddb.c:750
+#: Input/cdaudio/cddb.c:774 Input/cdaudio/configure.c:673
+#: Input/mikmod/plugin.c:125 Input/mikmod/plugin.c:616
+#: Input/mpg123/configure.c:586 Input/mpg123/fileinfo.c:138
+#: Input/mpg123/fileinfo.c:193 Input/mpg123/http.c:208
+#: Input/mpg123/mpg123.c:1151 Input/tonegen/tonegen.c:55
+#: Input/vorbis/configure.c:449 Input/vorbis/fileinfo.c:210
+#: Input/vorbis/http.c:208 Input/vorbis/vorbis.c:778 Output/OSS/about.c:45
+#: Output/OSS/configure.c:308 Output/disk_writer/disk_writer.c:145
+#: Output/disk_writer/disk_writer.c:438 Output/esd/about.c:44
+#: Output/esd/configure.c:208 Output/solaris/about.c:24
+#: Output/solaris/configure.c:266 Output/sun/about.c:36
+#: Output/sun/configure.c:557 Output/alsa/about.c:46
+#: Output/alsa/configure.c:437 Visualization/blur_scope/config.c:101
+#: Visualization/opengl_spectrum/configure.c:73 libxmms/dirbrowser.c:342
+#: xmms/equalizer.c:1371 xmms/equalizer.c:1377 xmms/equalizer.c:1441
+#: xmms/equalizer.c:1450 xmms/equalizer.c:1701 xmms/input.c:254
+#: xmms/main.c:3529 xmms/playlistwin.c:733 xmms/playlistwin.c:844
+#: xmms/playlistwin.c:1428 xmms/playlistwin.c:1481 xmms/prefswin.c:310
+#: xmms/prefswin.c:1158 xmms/util.c:582
+msgid "OK"
+msgstr ""
 
 #: Effect/echo_plugin/gui.c:74
 msgid "Configure Echo"
-msgstr "Podesi Exo"
+msgstr "Подеси Еxо"
 
 #: Effect/echo_plugin/gui.c:87
 msgid "Delay: (ms)"
-msgstr "Pauza: (ms)"
+msgstr "Пауза: (ms)"
 
 #: Effect/echo_plugin/gui.c:92
 msgid "Feedback: (%)"
@@ -74,33 +79,35 @@ msgstr "Feedback: (%)"
 
 #: Effect/echo_plugin/gui.c:97
 msgid "Volume: (%)"
-msgstr "Ja�ina: (%)"
+msgstr "Jaчина: (%)"
 
 #: Effect/echo_plugin/gui.c:120
 msgid "Surround echo"
-msgstr "Surround exo"
+msgstr "Surround еxо"
 
 #: Effect/echo_plugin/gui.c:143 Effect/stereo_plugin/stereo.c:129
-#: General/ir/configure.c:212 General/ir/configure.c:384
-#: General/joystick/configure.c:279 General/song_change/song_change.c:216
-#: Input/cdaudio/configure.c:262 Input/mikmod/plugin.c:620
-#: Input/mpg123/configure.c:639 Input/mpg123/fileinfo.c:332
-#: Input/vorbis/configure.c:353 Input/vorbis/fileinfo.c:615
-#: Output/OSS/configure.c:314 Output/disk_writer/disk_writer.c:390
-#: Output/esd/configure.c:215 Output/solaris/configure.c:278
-#: Visualization/blur_scope/config.c:109
-#: Visualization/opengl_spectrum/configure.c:80 libxmms/dirbrowser.c:302
-#: xmms/equalizer.c:1271 xmms/equalizer.c:1277 xmms/equalizer.c:1341
-#: xmms/equalizer.c:1350 xmms/equalizer.c:1604 xmms/main.c:1451
-#: xmms/playlistwin.c:1219 xmms/prefswin.c:1003 xmms/util.c:601
+#: General/ir/configure.c:212 General/ir/configure.c:383
+#: General/joystick/configure.c:279 General/song_change/song_change.c:346
+#: Input/cdaudio/cddb.c:778 Input/cdaudio/configure.c:682
+#: Input/mikmod/plugin.c:623 Input/mpg123/configure.c:592
+#: Input/mpg123/fileinfo.c:442 Input/vorbis/configure.c:455
+#: Input/vorbis/fileinfo.c:714 Output/OSS/configure.c:314
+#: Output/disk_writer/disk_writer.c:445 Output/esd/configure.c:215
+#: Output/solaris/configure.c:278 Output/sun/configure.c:565
+#: Output/alsa/configure.c:443 Visualization/blur_scope/config.c:109
+#: Visualization/opengl_spectrum/configure.c:80 libxmms/dirbrowser.c:351
+#: xmms/equalizer.c:1371 xmms/equalizer.c:1377 xmms/equalizer.c:1441
+#: xmms/equalizer.c:1450 xmms/equalizer.c:1705 xmms/main.c:1519
+#: xmms/playlistwin.c:791 xmms/playlistwin.c:1482 xmms/prefswin.c:1162
+#: xmms/util.c:602
 msgid "Cancel"
-msgstr "Poni�ti"
+msgstr "Поништи"
 
 #: Effect/echo_plugin/gui.c:150 Effect/stereo_plugin/stereo.c:136
 #: General/joystick/configure.c:285 Output/solaris/configure.c:273
-#: xmms/equalizer.c:1610 xmms/prefswin.c:1007
+#: xmms/equalizer.c:1711 xmms/prefswin.c:1166
 msgid "Apply"
-msgstr "Primeni"
+msgstr "Примени"
 
 #: Effect/stereo_plugin/stereo.c:26
 msgid ""
@@ -108,30 +115,30 @@ msgid ""
 "\n"
 "By Johan Levin 1999."
 msgstr ""
-"Dodatak za Ekstra Stereo efekat\n"
+"Додатак за Екстра Стерео ефекат\n"
 "\n"
-"Kreirao: Johan Levin 1999."
+"Креирао: Johan Levin 1999."
 
 #: Effect/stereo_plugin/stereo.c:35
 #, c-format
 msgid "Extra Stereo Plugin %s"
-msgstr "Dodatak za Ekstra Stereo efekat %s"
+msgstr "Додатак за Екстра Стерео ефекат %s"
 
 #: Effect/stereo_plugin/stereo.c:55
 msgid "About Extra Stereo Plugin"
-msgstr "O Dodatku za Ekstra Stereo efekat"
+msgstr "О Додатку зa Екстра Стерео ефекат"
 
 #: Effect/stereo_plugin/stereo.c:97
 msgid "Configure Extra Stereo"
-msgstr "Podesi Ekstra Stereo"
+msgstr "Подеси Екстра Стерео"
 
 #: Effect/stereo_plugin/stereo.c:99
 msgid "Effect intensity:"
-msgstr "Intezitet efekta:"
+msgstr "Интезитет ефекта:"
 
 #: Effect/voice/about.c:31
 msgid "About Voice Removal Plugin"
-msgstr "O dodatku za Uklanjanje glasa"
+msgstr "O додатку за Уклaњaње гласa"
 
 #: Effect/voice/about.c:32
 msgid ""
@@ -139,24 +146,24 @@ msgid ""
 "\n"
 "A simple voice removal plugin by Anders Carlsson <andersca@gnu.org>"
 msgstr ""
-"XMMS dodatak za Uklanjanje glasa\n"
+"XMMS додатак за Уклaњaње гласa\n"
 "\n"
-"Jednostavni dodatak za uklanjanje glasa. Kreirao:Anders Carlsson "
-"<andersca@gnu.org>"
+"Jедноставни додатак за уклaњaње гласа. Креирао:Anders Carlsson <andersca@gnu."
+"org>"
 
 #: Effect/voice/voice.c:23
 #, c-format
 msgid "Voice removal plugin %s"
-msgstr "Dodatak za uklanjanje glasa %s"
+msgstr "Додатак за уклaњaње гласа %s"
 
-#: General/ir/about.c:27 xmms/prefswin.c:666 xmms/prefswin.c:699
-#: xmms/prefswin.c:736 xmms/prefswin.c:776 xmms/prefswin.c:823
+#: General/ir/about.c:27 xmms/prefswin.c:775 xmms/prefswin.c:808
+#: xmms/prefswin.c:850 xmms/prefswin.c:895 xmms/prefswin.c:945
 msgid "About"
-msgstr "O..."
+msgstr "О..."
 
 #: General/ir/about.c:35
 msgid "XMMS IRman Plugin:"
-msgstr "XMMS IRman Dodatak:"
+msgstr "XMMS IRman Додатак:"
 
 #: General/ir/about.c:41
 msgid ""
@@ -164,57 +171,57 @@ msgid ""
 "Control XMMS with your TV / VCR / Stereo remote \n"
 "IRman page - http://www.evation.com/irman/"
 msgstr ""
-"Kereirao Charles Sielski <stray@teklabs.net>\n"
-"Kontrola XMMS sa va�im TV / VCR / Stereo daljincem \n"
-"IRman internet sajt - http://www.evation.com/irman/"
+"Керeирао Charles Sielski <stray@teklabs.net>\n"
+"Контролa XMMS са вaшим ТV / VCR / Stereo дaљинцем \n"
+"IRman интернет саjт - http://www.evation.com/irman/"
 
-#: General/ir/configure.c:27
+#: General/ir/configure.c:27 xmms/util.c:885
 msgid "Play"
-msgstr "Pusti"
+msgstr "Пусти"
 
 #: General/ir/configure.c:27 General/joystick/configure.c:26
 msgid "Stop"
-msgstr "Zaustavi"
+msgstr "Заустави"
 
 #: General/ir/configure.c:27
 msgid "Pause"
-msgstr "Pauza"
+msgstr "Паузa"
 
 #: General/ir/configure.c:28
 msgid "Prev"
-msgstr "Prethodna"
+msgstr "Претходнa"
 
 #: General/ir/configure.c:28
 msgid "Next"
-msgstr "Slede�a"
+msgstr "Следeћa"
 
 #: General/ir/configure.c:28
 msgid "Vol +"
-msgstr "Nivo zvuka +"
+msgstr "Ниво звука +"
 
 #: General/ir/configure.c:29
 msgid "Seek -5s"
-msgstr "Tra�i -5s"
+msgstr "Трaжи -5s"
 
 #: General/ir/configure.c:29
 msgid "Seek +5s"
-msgstr "Tra�i +5s"
+msgstr "Трaжи +5s"
 
 #: General/ir/configure.c:29
 msgid "Vol -"
-msgstr "Nivo zvuka -"
+msgstr "Ниво звука -"
 
 #: General/ir/configure.c:30 General/joystick/configure.c:28
 msgid "Shuffle"
-msgstr "Bez reda"
+msgstr "Без редa"
 
 #: General/ir/configure.c:30 General/joystick/configure.c:29
 msgid "Repeat"
-msgstr "Sa ponavljanje"
+msgstr "Са понављaње"
 
-#: General/ir/configure.c:30 xmms/prefswin.c:930
+#: General/ir/configure.c:30 xmms/prefswin.c:1070
 msgid "Playlist"
-msgstr "Lista pesama"
+msgstr "Листа песамa"
 
 #: General/ir/configure.c:31
 msgid "+100"
@@ -263,57 +270,56 @@ msgstr "9"
 #: General/ir/configure.c:146
 #, c-format
 msgid "`%s' Button Setup"
-msgstr "`%s' pode�avanje tastera"
+msgstr "`%s' подeшавaње тастерa"
 
 #: General/ir/configure.c:156
 msgid "Enter code or use remote"
-msgstr "Unesi kod ili koristi daljinac"
+msgstr "Унеси код или користи дaљинaц"
 
 #: General/ir/configure.c:255
 msgid "XMMS IRman Configuration"
-msgstr "XMMS IRman konfiguracija"
+msgstr "XMMS IRman конфигурациja"
 
-#: General/ir/configure.c:269 Input/cdaudio/configure.c:105
-#: Input/cdaudio/configure.c:114
+#: General/ir/configure.c:269 Input/cdaudio/configure.c:377
+#: Input/cdaudio/configure.c:385
 msgid "Device:"
-msgstr "Ure�aj:"
+msgstr "Уређај:"
 
 #: General/ir/configure.c:278
 msgid "Device: "
-msgstr "Ure�aj: "
+msgstr "Уређај: "
 
 #: General/ir/configure.c:288
 msgid "IR code length: "
-msgstr "IR du�ina koda: "
+msgstr "IR дужина кода: "
 
 #: General/ir/configure.c:301
 msgid "Controls:"
-msgstr "Kontrol:"
+msgstr "Контрол:"
 
-#: General/ir/configure.c:340
+#: General/ir/configure.c:339
 msgid "Playlists:"
-msgstr "Lista pesama:"
+msgstr "Листа песама:"
 
-#: General/ir/configure.c:369
+#: General/ir/configure.c:368
 msgid "General"
-msgstr "Op�te"
+msgstr "Општe"
 
 #: General/ir/ir.c:50
 #, c-format
 msgid "IRman Control %s"
-msgstr "IRman kontrola %s"
+msgstr "IRman контрола %s"
 
 #: General/ir/ir.c:189
 #, c-format
 msgid "unable to open port `%s' (%s)\n"
-msgstr "ne mogu da pristupim portu `%s' (%s)\n"
+msgstr "не могу да приступим порту `%s' (%s)\n"
 
 #: General/joystick/about.c:28
 msgid "About Joystick Driver"
-msgstr "O drajveru za dzojstik"
+msgstr "О драjверу за дзоjстик"
 
 #: General/joystick/about.c:29
-#, fuzzy
 msgid ""
 "Joystick Control Plugin\n"
 "\n"
@@ -324,646 +330,833 @@ msgid ""
 "\n"
 "Control XMMS with one or two joysticks.\n"
 msgstr ""
-"Dodatak za Kontrolu Dzojstika\n"
+"Додатак за Контролу Дзоjстикa\n"
 "\n"
-" Kreirao Tim Ferguson <timf@dgs.monash.edu.au>.\n"
+" Креирао Tim Ferguson <timf@dgs.monash.edu.au>.\n"
 " http://www.dgs.monash.edu.au/~timf/\n"
 "\n"
-" 5+ podr�ka za tastere. Kreirao Justin Wake <justin@globalsoft.com.au>\n"
+" 5+ подршка за тастерe. Креирао Justin Wake <justin@globalsoft.com.au>\n"
 "\n"
-" Kontrola XMMS sa jednim ili dva dzojstika.\n"
-" "
+" Контролa XMMS са jедним или два дзоjстикa.\n"
 
 #: General/joystick/configure.c:26
 msgid "Play/Pause"
-msgstr "Pusti/Pauza"
+msgstr "Пусти/Паузa"
 
 #: General/joystick/configure.c:26
 msgid "Next Track"
-msgstr "Slede�e pesma"
+msgstr "Следeће песмa"
 
 #: General/joystick/configure.c:26
 msgid "Prev Track"
-msgstr "Prethodna pesma"
+msgstr "Претходна песмa"
 
 #: General/joystick/configure.c:27
 msgid "Fwd 5 tracks"
-msgstr "Napred 5 pesama"
+msgstr "Напред 5 песамa"
 
 #: General/joystick/configure.c:27
 msgid "Back 5 tracks"
-msgstr "Nazad 5 pesama"
+msgstr "Назад 5 песамa"
 
 #: General/joystick/configure.c:27
 msgid "Volume Up"
-msgstr "Podigni nivo zvuka"
+msgstr "Подигни ниво звукa"
 
 #: General/joystick/configure.c:28
 msgid "Volume Down"
-msgstr "Spusi nivo zvuka"
+msgstr "Спуси ниво звукa"
 
 #: General/joystick/configure.c:28
 msgid "Forward 5s"
-msgstr "Napred 5s"
+msgstr "Напред 5s"
 
 #: General/joystick/configure.c:28
 msgid "Rewind 5s"
-msgstr "Vrati 5s"
+msgstr "Врати 5s"
 
 #: General/joystick/configure.c:29
 msgid "Alternate"
-msgstr "Alernativno"
+msgstr "Алернативно"
 
 #: General/joystick/configure.c:29
 msgid "Nothing"
-msgstr "Ni�ta"
+msgstr "Ништa"
 
 #: General/joystick/configure.c:94
 msgid "XMMS Joystick Configuration"
-msgstr "XMMS konfiguracija dzojstika"
+msgstr "XMMS конфигурациjа дзоjстикa"
 
-#. --------------------------------------------------
 #: General/joystick/configure.c:118
 msgid "Devices:"
-msgstr "Ure�aji:"
+msgstr "Уређаји:"
 
-#. ------------------------------
 #: General/joystick/configure.c:128
 msgid "Joystick 1:"
-msgstr "Dzojstik 1:"
+msgstr "Дзоjстик 1:"
 
-#. ------------------------------
 #: General/joystick/configure.c:140
 msgid "Joystick 2:"
-msgstr "Dzojstik 2:"
+msgstr "Дзоjстик 2:"
 
-#. ------------------------------
 #: General/joystick/configure.c:152
 msgid "Sensitivity (10-32767):"
-msgstr "Osetljivost (10-32767):"
+msgstr "Осетљивост (10-32767):"
 
-#. --------------------------------------------------
 #: General/joystick/configure.c:183
 msgid "Directionals:"
-msgstr "Pravci:"
+msgstr "Правци:"
 
-#. --------------------------------------------------
 #: General/joystick/configure.c:208
 msgid "Directionals (alternate):"
-msgstr "Pravci (alternativni):"
+msgstr "Правци (алтернативни):"
 
-#. --------------------------------------------------
 #: General/joystick/configure.c:233
 msgid "Buttons:"
-msgstr "Tasteri:"
+msgstr "Тастери:"
 
 #: General/joystick/configure.c:244
 #, c-format
 msgid "Button %d:"
-msgstr "Taster %d:"
+msgstr "Тастер %d:"
 
 #: General/joystick/joy.c:60
 #, c-format
 msgid "Joystick Control %s"
-msgstr "Kontrola dzojstika %s"
+msgstr "Контрола дзоjстика %s"
 
 #: General/joystick/joy.c:159
 msgid "Joystick Control"
-msgstr "Kontrola dzojstika"
+msgstr "Контрола дзоjстикa"
 
-#: General/joystick/joy.c:217 General/joystick/joy.c:267
+#: General/joystick/joy.c:220 General/joystick/joy.c:270
 msgid ""
 "\n"
 "Joystick Control: error reading"
 msgstr ""
 "\n"
-"Kontrola dzojstika: gre�ka pri �itanju"
+"Контрола дзоjстикa: грeшка при читaњу"
 
-#: General/song_change/song_change.c:46
+#: General/song_change/song_change.c:48
 #, c-format
 msgid "Song Change %s"
-msgstr "Promena pesme %s"
+msgstr "Промена песме %s"
 
-#: General/song_change/song_change.c:129
-msgid "Song Change Configuration"
-msgstr "Konfiguracija Promene Pesme"
-
-#: General/song_change/song_change.c:137
-msgid "Song change"
-msgstr "Promena pesme"
+#: General/song_change/song_change.c:134 xmms/prefswin.c:301
+msgid "Warning"
+msgstr "Упозорeњe"
 
 #: General/song_change/song_change.c:145
-msgid "Playlist end"
-msgstr "Kraj Liste pesama"
-
-#: General/song_change/song_change.c:154
 msgid ""
-"Shell-command to run when xmms changes song.  It can optionally include the "
-"string %%s which will be replaced by the new song title."
+"Filename and song title tags should be inside double quotes (\").  Not doing "
+"so might be a security risk.  Continue anyway?"
 msgstr ""
-"Shell-komanda za pokretanje kada xmms menja pesmu.  Ona opciono mo�e "
-"sadr�ati i string %%s koji �e biti zamenjem sa nazivom nove pesme."
 
-#: General/song_change/song_change.c:168 General/song_change/song_change.c:192
+#: General/song_change/song_change.c:158 Input/mpg123/fileinfo.c:283
+msgid "Yes"
+msgstr "Дa"
+
+#: General/song_change/song_change.c:168 Input/mpg123/fileinfo.c:282
+msgid "No"
+msgstr "Нe"
+
+#: General/song_change/song_change.c:231
+msgid "Song Change Configuration"
+msgstr "Конфигурациjа Промене Песмe"
+
+#: General/song_change/song_change.c:238
+#, fuzzy
+msgid "Commands"
+msgstr "Команда:"
+
+#: General/song_change/song_change.c:245
+#, fuzzy
+msgid "Shell-command to run when xmms starts a new song."
+msgstr "Shell-команда за покретaње када xmms досегне до краjа листе песама."
+
+#: General/song_change/song_change.c:254 General/song_change/song_change.c:277
+#: General/song_change/song_change.c:300
 msgid "Command:"
-msgstr "Komanda:"
+msgstr "Команда:"
 
-#: General/song_change/song_change.c:181
+#: General/song_change/song_change.c:268
+#, fuzzy
+msgid "Shell-command to run toward the end of a song."
+msgstr "Shell-команда за покретaње када xmms досегне до краjа листе песама."
+
+#: General/song_change/song_change.c:290
 msgid "Shell-command to run when xmms reaches the end of the playlist."
-msgstr "Shell-komanda za pokretanje kada xmms dosegne do kraja liste pesama."
+msgstr "Shell-команда за покретaње када xmms досегне до краjа листе песама."
 
-#: Input/cdaudio/cdaudio.c:148
+#: General/song_change/song_change.c:313
+#, c-format
+msgid ""
+"You can use the following format strings which will be substituted before "
+"calling the command (not all are useful for the end-of-playlist command).\n"
+"\n"
+"%%F: Frequency (in hertz)\n"
+"%%c: Number of channels\n"
+"%%f: filename (full path)\n"
+"%%l: length (in milliseconds)\n"
+"%%n or %%s: Song name\n"
+"%%r: Rate (in bits per second)\n"
+"%%t: Playlist position (%%02d)\n"
+"%%p: Currently playing (1 or 0)"
+msgstr ""
+
+#: Input/cdaudio/cdaudio.c:162
 #, c-format
 msgid "CD Audio Player %s"
-msgstr "CD Audio Plejer %s"
+msgstr "CD Аудио Плеjер %s"
 
-#: Input/cdaudio/cdaudio.c:373 Input/cdaudio/cdaudio.c:382
+#: Input/cdaudio/cdaudio.c:567 Input/cdaudio/cdaudio.c:576
 #, c-format
 msgid "CD Audio Track %02u"
-msgstr "CD Audio Pesma %02u"
+msgstr "CD Аудио Песма %02u"
 
-#: Input/cdaudio/cdindex.c:147 xmms/prefswin.c:252
-msgid "Warning"
-msgstr "Upozorenje"
+#: Input/cdaudio/cddb.c:722 Output/esd/configure.c:161
+msgid "Server"
+msgstr "Сервер"
 
-#: Input/cdaudio/cdindex.c:148
-msgid ""
-"The SHA-1 hash function failed to properly\n"
-"generate a test key.  As such, Xmms will\n"
-"not be able to contact a CD Index server.\n"
+#: Input/cdaudio/cddb.c:723
+#, fuzzy
+msgid "Latitude"
+msgstr "Латино"
+
+#: Input/cdaudio/cddb.c:724
+msgid "Longitude"
 msgstr ""
-"The SHA-1 hash function nije uspela da ispravno\n"
-"generi�e terst taster.  Kao takav, Xmms ne�e\n"
-"mo�i da kontaktira CD Indeks server.\n"
 
-#: Input/cdaudio/cdindex.c:175 Input/cdaudio/cdinfo.c:145
+#: Input/cdaudio/cddb.c:725
+#, fuzzy
+msgid "Description"
+msgstr "Опис:"
+
+#: Input/cdaudio/cddb.c:732 Input/cdaudio/cddb.c:738 Input/cdaudio/cddb.c:748
+#, fuzzy
+msgid "CDDB"
+msgstr "CDDB:"
+
+#: Input/cdaudio/cddb.c:733
+msgid "Unable to connect to CDDB-server"
+msgstr ""
+
+#: Input/cdaudio/cddb.c:739
+msgid ""
+"Can't get server list from the current CDDB-server\n"
+"Unsupported CDDB protocol level"
+msgstr ""
+
+#: Input/cdaudio/cddb.c:749
+#, fuzzy
+msgid "No site information available"
+msgstr "Стерео (уколико jе могуће)"
+
+#: Input/cdaudio/cddb.c:757
+#, fuzzy
+msgid "CDDB servers"
+msgstr "CDDB сервер:"
+
+#: Input/cdaudio/cddb.c:877 xmms/about.c:348 xmms/equalizer.c:1504
+#: xmms/equalizer.c:1508 xmms/input.c:431 xmms/main.c:1963 xmms/main.c:2346
+#: xmms/skinwin.c:86 xmms/util.c:873
+msgid "Close"
+msgstr "Затвори"
+
 #: Input/cdaudio/cdinfo.c:146 Input/cdaudio/cdinfo.c:147
+#: Input/cdaudio/cdinfo.c:148
 msgid "(unknown)"
-msgstr "(nepoznato)"
+msgstr "(непознато)"
 
-#: Input/cdaudio/configure.c:88
-msgid "CD Audio Player Configuration"
-msgstr "Konfiguracija CD Audio plejera"
+#: Input/cdaudio/configure.c:187 Input/cdaudio/configure.c:202
+#: Input/cdaudio/configure.c:536
+#, c-format
+msgid "Drive %d"
+msgstr "Урeђај %d"
 
-#: Input/cdaudio/configure.c:122
+#: Input/cdaudio/configure.c:249
+#, c-format
+msgid ""
+"Failed to open device %s\n"
+"Error: %s\n"
+"\n"
+msgstr ""
+"Не могу да отворим уређај %s\n"
+"Грешка: %s\n"
+"\n"
+
+#: Input/cdaudio/configure.c:257
+msgid ""
+"Failed to read \"Table of Contents\"\n"
+"Maybe no disc in the drive?\n"
+"\n"
+msgstr ""
+"Не могу да прочитам \"Садржај\"\n"
+"Можда диск није у уређају?\n"
+"\n"
+
+#: Input/cdaudio/configure.c:262
+#, c-format
+msgid ""
+"Device %s OK.\n"
+"Disc has %d tracks"
+msgstr ""
+"Уређај %s је уреду.\n"
+"Диск има %d песама"
+
+#: Input/cdaudio/configure.c:271
+#, c-format
+msgid " (%d data tracks)"
+msgstr " (%d трака са подацима)"
+
+#: Input/cdaudio/configure.c:273
+#, fuzzy, c-format
+msgid ""
+"\n"
+"Total length: %d:%.2d\n"
+msgstr ""
+"\n"
+"Укупна дужина: %d:%d\n"
+"\n"
+
+#: Input/cdaudio/configure.c:279
+msgid "Digital audio extraction not tested as the disc has no audio tracks\n"
+msgstr ""
+
+#: Input/cdaudio/configure.c:296
+msgid ""
+"Digital audio extraction test: OK\n"
+"\n"
+msgstr ""
+
+#: Input/cdaudio/configure.c:300
+#, c-format
+msgid ""
+"Digital audio extraction test failed: %s\n"
+"\n"
+msgstr ""
+
+#: Input/cdaudio/configure.c:313
+#, c-format
+msgid ""
+"Failed to check directory %s\n"
+"Error: %s"
+msgstr ""
+"Не могу да проверим директоријум %s\n"
+"Грешка: %s"
+
+#: Input/cdaudio/configure.c:321
+#, fuzzy, c-format
+msgid "Error: %s exists, but is not a directory"
+msgstr "Грешка: %s постоји, али није директоријум"
+
+#: Input/cdaudio/configure.c:326
+#, c-format
+msgid "Directory %s OK."
+msgstr "Директоријум  %s је у реду. "
+
+#: Input/cdaudio/configure.c:330
+#, c-format
+msgid "Directory %s exists, but you do not have permission to access it."
+msgstr ""
+
+#: Input/cdaudio/configure.c:394
 msgid "Directory:"
-msgstr "Direktorijum:"
+msgstr "Директориjум:"
 
-#.
-#. * Volume config
-#.
-#: Input/cdaudio/configure.c:134
-msgid "Volume setting:"
-msgstr "Pode�avanje ja�ine zvuka:"
+#: Input/cdaudio/configure.c:403
+#, fuzzy
+msgid "Play mode:"
+msgstr "Пусти фајлове"
 
-#: Input/cdaudio/configure.c:140
-msgid "OSS Mixer"
-msgstr "OSS Mikser"
+#: Input/cdaudio/configure.c:409
+msgid "Analog"
+msgstr ""
 
-#: Input/cdaudio/configure.c:148
-msgid "CDROM drive"
-msgstr "CDROM ure�aj"
+#: Input/cdaudio/configure.c:412
+msgid "Digital audio extraction"
+msgstr ""
 
-#: Input/cdaudio/configure.c:153
+#: Input/cdaudio/configure.c:422
+msgid "Volume control:"
+msgstr "Контрола јачине звука:"
+
+#: Input/cdaudio/configure.c:428
+msgid "No mixer"
+msgstr "Беѕт миксера"
+
+#: Input/cdaudio/configure.c:431
+#, fuzzy
+msgid "CD-ROM drive"
+msgstr "CDROM уређај"
+
+#: Input/cdaudio/configure.c:434
+msgid "OSS mixer"
+msgstr "OSS Миксер"
+
+#: Input/cdaudio/configure.c:458
+msgid "Check drive..."
+msgstr "Проверавам уређај..."
+
+#: Input/cdaudio/configure.c:464
+msgid "Remove drive"
+msgstr "Уклони уређај"
+
+#: Input/cdaudio/configure.c:512
+msgid "CD Audio Player Configuration"
+msgstr "Конфигурациjа CD Аудио плеjерa"
+
+#: Input/cdaudio/configure.c:548
+msgid "Add drive"
+msgstr "Додај уређај"
+
+#: Input/cdaudio/configure.c:556
 msgid "Device"
-msgstr "Ure�aj"
+msgstr "Уређај"
 
-#. CDDB
-#: Input/cdaudio/configure.c:163
+#: Input/cdaudio/configure.c:566
 msgid "CDDB:"
 msgstr "CDDB:"
 
-#: Input/cdaudio/configure.c:173
+#: Input/cdaudio/configure.c:577
 msgid "Use CDDB"
-msgstr "Koristi CDDB"
+msgstr "Користи CDDB"
 
-#: Input/cdaudio/configure.c:176
+#: Input/cdaudio/configure.c:581
 msgid "Get server list"
-msgstr "Prika�i listu servera"
+msgstr "Прикaжи листу серверa"
 
-#: Input/cdaudio/configure.c:178
+#: Input/cdaudio/configure.c:583
 msgid "Show network window"
-msgstr "Prika�i mre�ni prozor"
+msgstr "Прикaжи мрeжни прозор"
 
-#: Input/cdaudio/configure.c:185
+#: Input/cdaudio/configure.c:593
 msgid "CDDB server:"
-msgstr "CDDB server:"
+msgstr "CDDB сервер:"
 
-#.
-#. * CDindex
-#.
-#: Input/cdaudio/configure.c:196
+#: Input/cdaudio/configure.c:608
 msgid "CD Index:"
-msgstr "CD Indeks:"
+msgstr "CD Индекс:"
 
-#: Input/cdaudio/configure.c:203
+#: Input/cdaudio/configure.c:615
 msgid "Use CD Index"
-msgstr "Koristi CD Indeks"
+msgstr "Користи CD Индекс"
 
-#: Input/cdaudio/configure.c:210
+#: Input/cdaudio/configure.c:622
 msgid "CD Index server:"
-msgstr "CD Indeks server:"
+msgstr "CD Индекс сервер:"
 
-#.
-#. * Track names
-#.
-#: Input/cdaudio/configure.c:223
+#: Input/cdaudio/configure.c:637
 msgid "Track names:"
-msgstr "Imena pesama:"
+msgstr "Имена песама:"
 
-#: Input/cdaudio/configure.c:229 Input/mpg123/configure.c:607
-#: Input/vorbis/configure.c:320
+#: Input/cdaudio/configure.c:643 Input/mpg123/configure.c:560
+#: Input/vorbis/configure.c:371
 msgid "Override generic titles"
-msgstr "Zaobi�i genetske nazive"
+msgstr "Заобиђи генетске називe"
 
-#: Input/cdaudio/configure.c:240
+#: Input/cdaudio/configure.c:656
 msgid "Name format:"
-msgstr "Ime formata:"
+msgstr "Име формата:"
 
-#: Input/cdaudio/configure.c:249
+#: Input/cdaudio/configure.c:666
 msgid "CD Info"
-msgstr "CD info"
+msgstr "CD инфо"
 
-#: Input/idcin/idcin.c:106
-msgid "Huffman decode error.\n"
-msgstr "Gre�ka Huffman dekodera.\n"
-
-#: Input/idcin/idcin.c:200
-#, c-format
-msgid "Id Software .cin player %s"
-msgstr "Id Software .cin plejer %s"
-
-#: Input/idcin/idcin.c:409
-msgid "Error opening audio for idcin.\n"
-msgstr "Gre�ka pri otvaranju zvu�ne datoteke za idcin.\n"
-
-#: Input/idcin/idcin.c:418
-msgid "IDCin Play"
-msgstr "IDCin Play"
-
-#: Input/mikmod/plugin.c:89
+#: Input/mikmod/plugin.c:91
 msgid "About mikmod plugin"
-msgstr "O mikmod dodatku"
+msgstr "О mikmod додатку"
 
-#: Input/mikmod/plugin.c:113
+#: Input/mikmod/plugin.c:115
 msgid ""
 "Mikmod Plugin\n"
 "http://www.multimania.com/miodrag/mikmod/\n"
 "Ported to xmms by J. Nick Koston"
 msgstr ""
-"Mikmod Dodatak\n"
+"Mikmod Додатак\n"
 "http://www.multimania.com/miodrag/mikmod/\n"
-"Portovao na xmms: J. Nick Koston"
+"Портовао на xmms: J. Nick Koston"
 
-#: Input/mikmod/plugin.c:182
+#: Input/mikmod/plugin.c:184
 #, c-format
 msgid "MikMod Player %s"
-msgstr "MikMod Plejer %s"
+msgstr "MikMod Плеjер %s"
 
-#: Input/mikmod/plugin.c:368
+#: Input/mikmod/plugin.c:373
 msgid "Couldn't load mod"
-msgstr "ne mogu da unesem mod"
+msgstr "не могу да унесем mod"
 
-#: Input/mikmod/plugin.c:440
+#: Input/mikmod/plugin.c:436
 msgid "MikMod Configuration"
-msgstr "MikMod konfiguracija"
+msgstr "MikMod конфигурациja"
 
-#: Input/mikmod/plugin.c:464 Input/mpg123/configure.c:303
+#: Input/mikmod/plugin.c:460 Input/mpg123/configure.c:262
 msgid "Resolution:"
-msgstr "Rezolucija:"
+msgstr "Резолуциjа:"
 
-#: Input/mikmod/plugin.c:475 Input/mpg123/configure.c:310
+#: Input/mikmod/plugin.c:471 Input/mpg123/configure.c:269
 msgid "16 bit"
-msgstr "16 bita"
+msgstr "16 битa"
 
-#: Input/mikmod/plugin.c:483 Input/mpg123/configure.c:315
+#: Input/mikmod/plugin.c:479 Input/mpg123/configure.c:274
 msgid "8 bit"
-msgstr "8 bita"
+msgstr "8 битa"
 
-#: Input/mikmod/plugin.c:491 Input/mpg123/configure.c:331
+#: Input/mikmod/plugin.c:487 Input/mpg123/configure.c:280
 msgid "Channels:"
-msgstr "Kanali:"
+msgstr "Канали:"
 
-#: Input/mikmod/plugin.c:502 Input/mpg123/fileinfo.c:182
+#: Input/mikmod/plugin.c:498 Input/mpg123/fileinfo.c:213
 msgid "Stereo"
-msgstr "Stereo"
+msgstr "Стерео"
 
-#: Input/mikmod/plugin.c:510 Input/mpg123/configure.c:344
+#: Input/mikmod/plugin.c:506 Input/mpg123/configure.c:293
 msgid "Mono"
-msgstr "Mono"
+msgstr "Моно"
 
-#: Input/mikmod/plugin.c:518 Input/mpg123/configure.c:360
-msgid "Down sample:"
+#: Input/mikmod/plugin.c:514
+#, fuzzy
+msgid "Downsample:"
 msgstr "Down sample:"
 
-#: Input/mikmod/plugin.c:529 Input/mpg123/configure.c:367
+#: Input/mikmod/plugin.c:525 Input/mpg123/configure.c:306
 msgid "1:1 (44 kHz)"
 msgstr "1:1 (44 kHz)"
 
-#: Input/mikmod/plugin.c:538 Input/mpg123/configure.c:372
+#: Input/mikmod/plugin.c:534 Input/mpg123/configure.c:311
 msgid "1:2 (22 kHz)"
 msgstr "1:2 (22 kHz)"
 
-#: Input/mikmod/plugin.c:546 Input/mpg123/configure.c:377
+#: Input/mikmod/plugin.c:542 Input/mpg123/configure.c:316
 msgid "1:4 (11 kHz)"
 msgstr "1:4 (11 kHz)"
 
-#: Input/mikmod/plugin.c:558
+#: Input/mikmod/plugin.c:554
 msgid "Look for hidden patterns in modules "
-msgstr "Potra�ite skrivene paterne u modulima"
+msgstr "Потрaжите скривене патерне у модулимa"
 
-#: Input/mikmod/plugin.c:565
+#: Input/mikmod/plugin.c:561
 msgid "Use surround mixing"
-msgstr "Koristi surround miksanje"
+msgstr "Користи surround миксaњe"
 
-#: Input/mikmod/plugin.c:572
+#: Input/mikmod/plugin.c:568
 msgid "Force volume fade at the end of the module"
-msgstr "Prisili da nivo fejduje na kraju modula"
+msgstr "Присили да ниво феjдуjе на краjу модулa"
 
-#: Input/mikmod/plugin.c:579
+#: Input/mikmod/plugin.c:575
 msgid "Use interpolation"
-msgstr "Koristi interpolaciju"
+msgstr "Користи интерполациjу"
 
-#: Input/mikmod/plugin.c:586
+#: Input/mikmod/plugin.c:582
+msgid "Always use filename as title"
+msgstr ""
+
+#: Input/mikmod/plugin.c:589
 msgid "Default panning separation"
-msgstr "Default panuj�a separacija"
+msgstr "Default пануjћа сепарациja"
 
-#: Input/mikmod/plugin.c:598
+#: Input/mikmod/plugin.c:601
 msgid "Quality"
-msgstr "Kvalitet"
+msgstr "Квалитет"
 
-#: Input/mikmod/plugin.c:603 Input/mpg123/configure.c:440
-#: xmms/equalizer.c:1552 xmms/equalizer.c:1588 xmms/prefswin.c:838
-#: xmms/prefswin.c:915 xmms/prefswin.c:922
+#: Input/mikmod/plugin.c:606 Input/mpg123/configure.c:367
+#: xmms/equalizer.c:1653 xmms/equalizer.c:1689 xmms/prefswin.c:960
+#: xmms/prefswin.c:1055 xmms/prefswin.c:1062
 msgid "Options"
-msgstr "Opcije"
+msgstr "Опциje"
 
-#: Input/mpg123/configure.c:231
+#: Input/mpg123/configure.c:190
 msgid "Select the directory where you want to store the MPEG streams:"
-msgstr "Izaberite direktorijum u koji �elite da sme�tate MPEG strimove:"
+msgstr "Изаберите директориjум у коjи желите да смeштате MPEG стримовe:"
 
-#: Input/mpg123/configure.c:286
+#: Input/mpg123/configure.c:245
 msgid "MPG123 Configuration"
-msgstr "MPG123 Konfiguracija"
+msgstr "MPG123 Конфигурациja"
+
+#: Input/mpg123/configure.c:287
+msgid "Stereo (if available)"
+msgstr "Стерео (уколико jе могуће)"
+
+#: Input/mpg123/configure.c:299
+msgid "Down sample:"
+msgstr "Down sample:"
+
+#: Input/mpg123/configure.c:327
+msgid "Decoder:"
+msgstr "Декодер:"
+
+#: Input/mpg123/configure.c:334
+msgid "Automatic detection"
+msgstr "Аутоматска детекција"
 
 #: Input/mpg123/configure.c:338
-msgid "Stereo (if available)"
-msgstr "Stereo (ukoliko je mogu�e)"
+msgid "3DNow! optimized decoder"
+msgstr "3DNow! оптимизовани дeкодер"
 
-#: Input/mpg123/configure.c:410
-msgid "Decoder:"
-msgstr "Dekoder:"
+#: Input/mpg123/configure.c:342
+msgid "MMX optimized decoder"
+msgstr "MMX оптимизовани дeкодер"
 
-#: Input/mpg123/configure.c:417
-msgid "Enable Automatic detection"
-msgstr "Omogu�i Automatsku detekciju"
+#: Input/mpg123/configure.c:346
+msgid "FPU decoder"
+msgstr "FPU декодер"
 
-#: Input/mpg123/configure.c:423
-msgid "use 3DNow! optimized decoder"
-msgstr "koristi 3DNow! optimizovani dekoder"
+#: Input/mpg123/configure.c:375
+msgid "Content"
+msgstr "Садржај"
 
-#: Input/mpg123/configure.c:431
-msgid "use FPU decoder"
-msgstr "koristi FPU dekoder"
+#: Input/mpg123/configure.c:379
+msgid "Extension"
+msgstr "Екстензиjа"
 
-#: Input/mpg123/configure.c:446
-msgid "Detect files by content (instead of file extention)"
-msgstr "Detektuj datoteke po sadr�aj (umesto ekstenzije datoteke)"
+#: Input/mpg123/configure.c:383
+msgid "Extension and content"
+msgstr "Екстензија и садржај"
 
-#: Input/mpg123/configure.c:450
+#: Input/mpg123/configure.c:403
 msgid "Decoder"
-msgstr "Dekoder"
+msgstr "Декодер"
 
-#: Input/mpg123/configure.c:454 Input/vorbis/configure.c:187
+#: Input/mpg123/configure.c:407 Input/vorbis/configure.c:238
 #: Output/OSS/configure.c:264 Output/esd/configure.c:163
-#: Output/solaris/configure.c:231
+#: Output/solaris/configure.c:231 Output/sun/configure.c:255
 msgid "Buffering:"
-msgstr "Baferovanje:"
+msgstr "Баферовaњe:"
 
-#: Input/mpg123/configure.c:465 Input/vorbis/configure.c:197
+#: Input/mpg123/configure.c:418 Input/vorbis/configure.c:248
 msgid "Buffer size (kb):"
-msgstr "Veli�ina bafera (kb):"
+msgstr "Величинa бафера (kb):"
 
-#: Input/mpg123/configure.c:475 Input/vorbis/configure.c:206
+#: Input/mpg123/configure.c:428 Input/vorbis/configure.c:257
 #: Output/OSS/configure.c:285 Output/esd/configure.c:190
-#: Output/solaris/configure.c:252
+#: Output/solaris/configure.c:252 Output/sun/configure.c:286
 msgid "Pre-buffer (percent):"
-msgstr "Pre-bafer (procenat):"
+msgstr "Пре-бафер (проценат):"
 
-#.
-#. * Proxy config.
-#.
-#: Input/mpg123/configure.c:485 Input/vorbis/configure.c:216
+#: Input/mpg123/configure.c:438 Input/vorbis/configure.c:267
 msgid "Proxy:"
 msgstr "Proxy:"
 
-#: Input/mpg123/configure.c:493 Input/vorbis/configure.c:224
+#: Input/mpg123/configure.c:446 Input/vorbis/configure.c:275
 msgid "Use proxy"
-msgstr "Korisiti proxy"
+msgstr "Корисити proxy"
 
-#: Input/mpg123/configure.c:502 Input/vorbis/configure.c:233
+#: Input/mpg123/configure.c:455 Input/vorbis/configure.c:284
 #: Output/esd/configure.c:105 Output/esd/configure.c:136
 msgid "Host:"
 msgstr "Host:"
 
-#: Input/mpg123/configure.c:509 Input/vorbis/configure.c:240
+#: Input/mpg123/configure.c:462 Input/vorbis/configure.c:291
 #: Output/esd/configure.c:145
 msgid "Port:"
-msgstr "Port:"
+msgstr "Порт:"
 
-#: Input/mpg123/configure.c:519 Input/vorbis/configure.c:250
+#: Input/mpg123/configure.c:472 Input/vorbis/configure.c:301
 msgid "Use authentication"
-msgstr "Koristi autentifikaciju"
+msgstr "Користи аутентификациjу"
 
-#: Input/mpg123/configure.c:529 Input/vorbis/configure.c:260
+#: Input/mpg123/configure.c:482 Input/vorbis/configure.c:311
 msgid "Username:"
-msgstr "Korisni�ko ime:"
+msgstr "Корисничко имe:"
 
-#: Input/mpg123/configure.c:537 Input/vorbis/configure.c:268
+#: Input/mpg123/configure.c:490 Input/vorbis/configure.c:319
 msgid "Password:"
-msgstr "Lozinka:"
+msgstr "Лозинка:"
 
-#.
-#. * Save to disk config.
-#.
-#: Input/mpg123/configure.c:550 Input/vorbis/configure.c:281
+#: Input/mpg123/configure.c:503 Input/vorbis/configure.c:332
 msgid "Save stream to disk:"
-msgstr "Snimi strim na disk:"
+msgstr "Сними стрим на диск:"
 
-#: Input/mpg123/configure.c:558 Input/vorbis/configure.c:289
+#: Input/mpg123/configure.c:511 Input/vorbis/configure.c:340
 msgid "Save stream to disk"
-msgstr "Snimi strim na disk"
+msgstr "Сними стрим на диск"
 
-#: Input/mpg123/configure.c:567 Input/vorbis/configure.c:298
-#: Output/disk_writer/disk_writer.c:356
+#: Input/mpg123/configure.c:520 Input/vorbis/configure.c:349
+#: Output/disk_writer/disk_writer.c:403
 msgid "Path:"
-msgstr "Putanja:"
+msgstr "Путaња:"
 
-#: Input/mpg123/configure.c:574 Input/vorbis/configure.c:305
-#: Output/disk_writer/disk_writer.c:367 xmms/prefswin.c:940
-#: xmms/prefswin.c:960
+#: Input/mpg123/configure.c:527 Input/vorbis/configure.c:356
+#: Output/disk_writer/disk_writer.c:414 xmms/prefswin.c:1080
+#: xmms/prefswin.c:1100
 msgid "Browse"
-msgstr "Pretra�i"
+msgstr "Претрaжи"
 
-#: Input/mpg123/configure.c:578
+#: Input/mpg123/configure.c:531
 msgid "SHOUT/Icecast:"
 msgstr "SHOUT/Icecast:"
 
-#: Input/mpg123/configure.c:585
+#: Input/mpg123/configure.c:538
 msgid "Enable SHOUT/Icecast title streaming"
-msgstr "Omogu�i SHOUT/Icecast strim naziva"
+msgstr "Омогући SHOUT/Icecast стрим називa"
 
-#: Input/mpg123/configure.c:589
+#: Input/mpg123/configure.c:542
 msgid "Enable Icecast Metadata UDP Channel"
-msgstr "Omogu�i Icecast Metadata UDP kanale"
+msgstr "Омогући Icecast Metadata UDP каналe"
 
-#: Input/mpg123/configure.c:593 Input/vorbis/configure.c:309
+#: Input/mpg123/configure.c:546 Input/vorbis/configure.c:360
 msgid "Streaming"
-msgstr "Striming"
+msgstr "Стриминг"
 
-#: Input/mpg123/configure.c:595
+#: Input/mpg123/configure.c:548
 msgid "ID3 Tags:"
-msgstr "ID3 Tagovi:"
+msgstr "ID3 Тагови:"
 
-#: Input/mpg123/configure.c:602
+#: Input/mpg123/configure.c:555
 msgid "Disable ID3V2 tags"
-msgstr "Isklju�i ID3V2 tagove"
+msgstr "Искључи ID3V2 таговe"
 
-#: Input/mpg123/configure.c:616
+#: Input/mpg123/configure.c:569
 msgid "ID3 format:"
-msgstr "ID3 format:"
+msgstr "ID3 формат:"
 
-#.
-#. * Title page
-#.
-#: Input/mpg123/configure.c:626 Input/vorbis/configure.c:340
-#: xmms/prefswin.c:971 xmms/prefswin.c:987
+#: Input/mpg123/configure.c:579 Input/vorbis/configure.c:391
+#: xmms/prefswin.c:1111 xmms/prefswin.c:1146
 msgid "Title"
-msgstr "Naziv"
+msgstr "Назив"
 
-#: Input/mpg123/fileinfo.c:117 Input/mpg123/fileinfo.c:123
-#: Input/mpg123/fileinfo.c:156 Input/mpg123/fileinfo.c:161
-#: Input/mpg123/fileinfo.c:166
-msgid "File Info"
-msgstr "Info datoteka"
+#: Input/mpg123/fileinfo.c:126
+#, c-format
+msgid ""
+"%s\n"
+"Unable to write to file: %s"
+msgstr ""
+"%s\n"
+"Не могу да упишем у фајл: %s"
 
-#: Input/mpg123/fileinfo.c:117 Input/mpg123/fileinfo.c:123
+#: Input/mpg123/fileinfo.c:127 Input/mpg123/fileinfo.c:133
 msgid "Couldn't write tag!"
-msgstr "Ne mogu da zapi�em tag!"
+msgstr "Не могу да запишем таг!"
 
-#: Input/mpg123/fileinfo.c:157 Input/mpg123/fileinfo.c:166
+#: Input/mpg123/fileinfo.c:132 Input/mpg123/fileinfo.c:187
+#, c-format
+msgid ""
+"%s\n"
+"Unable to open file: %s"
+msgstr ""
+"%s\n"
+"Не могу да отворим фајл: %s"
+
+#: Input/mpg123/fileinfo.c:137 Input/mpg123/fileinfo.c:192
+msgid "File Info"
+msgstr "Инфо датотекa"
+
+#: Input/mpg123/fileinfo.c:177
+#, c-format
+msgid ""
+"%s\n"
+"Unable to truncate file: %s"
+msgstr ""
+"%s\n"
+"Не могу да truncate фајл: %s"
+
+#: Input/mpg123/fileinfo.c:179 Input/mpg123/fileinfo.c:188
 msgid "Couldn't remove tag!"
-msgstr "Ne mogu da ukolnim tag!"
+msgstr "Не могу да уколним таг!"
 
-#: Input/mpg123/fileinfo.c:161
+#: Input/mpg123/fileinfo.c:183
 msgid "No tag to remove!"
-msgstr "Nema tagova za uklanjanje!"
+msgstr "Нема тагова за уклaњaње!"
 
-#: Input/mpg123/fileinfo.c:182
+#: Input/mpg123/fileinfo.c:213
 msgid "Joint stereo"
-msgstr "Joint stereo"
+msgstr "Joint стерео"
 
-#: Input/mpg123/fileinfo.c:183
+#: Input/mpg123/fileinfo.c:214
 msgid "Dual channel"
-msgstr "Dvostruki kanal"
+msgstr "Двоструки канал"
 
-#: Input/mpg123/fileinfo.c:183
+#: Input/mpg123/fileinfo.c:214
 msgid "Single channel"
-msgstr "�ednostruki kanal"
+msgstr "Йедноструки канал"
 
-#: Input/mpg123/fileinfo.c:196 Input/mpg123/fileinfo.c:490
+#: Input/mpg123/fileinfo.c:227 Input/mpg123/fileinfo.c:596
 #, c-format
 msgid "Bitrate: %d kb/s"
 msgstr "Bitrate: %d kb/s"
 
-#: Input/mpg123/fileinfo.c:197 Input/mpg123/fileinfo.c:492
+#: Input/mpg123/fileinfo.c:229 Input/mpg123/fileinfo.c:599
+#: Input/vorbis/fileinfo.c:853
 #, c-format
-msgid "Samplerate: %ld Hz"
-msgstr "Samplerate: %ld Hz"
+msgid "Samplerate: %d Hz"
+msgstr "Samplerate: %d Hz"
 
-#: Input/mpg123/fileinfo.c:211
+#: Input/mpg123/fileinfo.c:278
 msgid "None"
-msgstr "Nijedan"
+msgstr "Ниjедан"
 
-#: Input/mpg123/fileinfo.c:212
+#: Input/mpg123/fileinfo.c:279
 msgid "50/15 ms"
 msgstr "50/15 ms"
 
-#: Input/mpg123/fileinfo.c:214
-msgid "CCIT J.17"
+#: Input/mpg123/fileinfo.c:281
+#, fuzzy
+msgid "CCITT J.17"
 msgstr "CCIT J.17"
 
-#: Input/mpg123/fileinfo.c:215
-msgid "No"
-msgstr "Ne"
-
-#: Input/mpg123/fileinfo.c:216
-msgid "Yes"
-msgstr "Da"
-
-#: Input/mpg123/fileinfo.c:236 Input/vorbis/fileinfo.c:429
+#: Input/mpg123/fileinfo.c:307 Input/vorbis/fileinfo.c:479 xmms/input.c:404
 msgid "Filename:"
-msgstr "Ime datoteke:"
+msgstr "Име датотекe:"
 
-#: Input/mpg123/fileinfo.c:248
+#: Input/mpg123/fileinfo.c:321
 msgid "ID3 Tag:"
-msgstr "ID3 Tag:"
+msgstr "ID3 Таг:"
 
-#: Input/mpg123/fileinfo.c:255 Input/vorbis/fileinfo.c:451
+#: Input/mpg123/fileinfo.c:329 Input/vorbis/fileinfo.c:501
 msgid "Title:"
-msgstr "Naziv:"
+msgstr "Назив:"
 
-#: Input/mpg123/fileinfo.c:262 Input/vorbis/fileinfo.c:461
+#: Input/mpg123/fileinfo.c:339 Input/vorbis/fileinfo.c:511
 msgid "Artist:"
-msgstr "Umetnik:"
+msgstr "Уметник:"
 
-#: Input/mpg123/fileinfo.c:269 Input/vorbis/fileinfo.c:471
+#: Input/mpg123/fileinfo.c:349 Input/vorbis/fileinfo.c:521
 msgid "Album:"
-msgstr "Album:"
+msgstr "Албум:"
 
-#: Input/mpg123/fileinfo.c:276 Input/vorbis/fileinfo.c:481
+#: Input/mpg123/fileinfo.c:359 Input/vorbis/fileinfo.c:531
 msgid "Comment:"
-msgstr "Komnetar:"
+msgstr "Комнетар:"
 
-#: Input/mpg123/fileinfo.c:283
+#: Input/mpg123/fileinfo.c:369
 msgid "Year:"
-msgstr "Godina:"
+msgstr "Година:"
 
-#: Input/mpg123/fileinfo.c:291 Input/vorbis/fileinfo.c:502
+#: Input/mpg123/fileinfo.c:380 Input/vorbis/fileinfo.c:552
 msgid "Track number:"
-msgstr "Broj pesme:"
+msgstr "Броj песмe:"
 
-#: Input/mpg123/fileinfo.c:299 Input/vorbis/fileinfo.c:513
+#: Input/mpg123/fileinfo.c:391 Input/vorbis/fileinfo.c:563
 msgid "Genre:"
-msgstr "Vrsta:"
+msgstr "Врста:"
 
-#: Input/mpg123/fileinfo.c:321 Input/vorbis/fileinfo.c:601
+#: Input/mpg123/fileinfo.c:430 Input/vorbis/fileinfo.c:700
 msgid "Save"
-msgstr "Snimi"
+msgstr "Сними"
 
-#: Input/mpg123/fileinfo.c:327
+#: Input/mpg123/fileinfo.c:436
 msgid "Remove ID3"
-msgstr "Ukloni ID3"
+msgstr "Уклони ID3"
 
-#: Input/mpg123/fileinfo.c:337
+#: Input/mpg123/fileinfo.c:448
 msgid "MPEG Info:"
-msgstr "MPEG Info:"
+msgstr "MPEG Инфо:"
 
-#: Input/mpg123/fileinfo.c:376 Input/vorbis/fileinfo.c:759
+#: Input/mpg123/fileinfo.c:493 Input/vorbis/fileinfo.c:937 xmms/input.c:393
 #, c-format
 msgid "File Info - %s"
-msgstr "Info datoteka - %s"
+msgstr "Инфо датотека - %s"
 
-#: Input/mpg123/fileinfo.c:485
+#: Input/mpg123/fileinfo.c:586
 #, c-format
 msgid ""
 "Bitrate: Variable,\n"
 "avg. bitrate: %d kb/s"
 msgstr ""
-"Bitrate: promenljivi,\n"
-"prose�ni bitrate: %d kb/s"
+"Bitrate: променљиви,\n"
+"просeчни bitrate: %d kb/s"
 
-#: Input/mpg123/fileinfo.c:493
+#: Input/mpg123/fileinfo.c:601
 #, c-format
 msgid ""
 "%s\n"
@@ -973,833 +1166,872 @@ msgid ""
 "Emphasis: %s"
 msgstr ""
 "%s\n"
-"Gre�ka pkod za�tita: %s\n"
-"Prava: %s\n"
-"Original: %s\n"
+"Грeшка пкод зaштитa: %s\n"
+"Правa: %s\n"
+"Оригинал: %s\n"
 "Emphasis: %s"
 
-#: Input/mpg123/fileinfo.c:494
+#: Input/mpg123/fileinfo.c:608
 #, c-format
 msgid ""
 "%d frames\n"
 "Filesize: %lu B"
 msgstr ""
-"%d frejmova\n"
-"Veli�ina datoteke: %lu B"
+"%d фреjмовa\n"
+"Величина датотекe: %lu B"
 
 #: Input/mpg123/http.c:208 Input/vorbis/http.c:208
-#: Output/disk_writer/disk_writer.c:127
+#: Output/disk_writer/disk_writer.c:142
 msgid "Error"
-msgstr "Gre�ka"
+msgstr "Грeшкa"
 
-#: Input/mpg123/http.c:362 Input/vorbis/http.c:317
-#, c-format
-msgid "LOOKING UP %s"
-msgstr "Tra�im %s"
-
-#: Input/mpg123/http.c:368 Input/vorbis/http.c:323
-#, c-format
-msgid "Couldn't look up host %s"
-msgstr "Ne mogu da prona�em host %s"
-
-#: Input/mpg123/http.c:381 Input/vorbis/http.c:336
+#: Input/mpg123/http.c:374 Input/mpg123/http.c:428 Input/vorbis/http.c:329
+#: Input/vorbis/http.c:382
 #, c-format
 msgid "CONNECTING TO %s:%d"
-msgstr "Konektujem se na %s:%d"
+msgstr "Конектуjем се нa %s:%d"
 
-#: Input/mpg123/http.c:388 Input/mpg123/http.c:408 Input/vorbis/http.c:343
-#: Input/vorbis/http.c:363
+#: Input/mpg123/http.c:389 Input/vorbis/http.c:344
+#, fuzzy, c-format
+msgid "Couldn't connect to host %s:%d"
+msgstr "Не могу да се конектуjем на host %s"
+
+#: Input/mpg123/http.c:395 Input/mpg123/http.c:413 Input/vorbis/http.c:351
+#: Input/vorbis/http.c:367
+#, c-format
+msgid "Couldn't look up host %s"
+msgstr "Не могу да пронaђем host %s"
+
+#: Input/mpg123/http.c:407 Input/vorbis/http.c:361
+#, c-format
+msgid "LOOKING UP %s"
+msgstr "Трaжим %s"
+
+#: Input/mpg123/http.c:435 Input/mpg123/http.c:456 Input/vorbis/http.c:389
+#: Input/vorbis/http.c:410
 #, c-format
 msgid "Couldn't connect to host %s"
-msgstr "Ne mogu da se konektujem na host %s"
+msgstr "Не могу да се конектуjем на host %s"
 
-#: Input/mpg123/http.c:466 Input/vorbis/http.c:407
+#: Input/mpg123/http.c:514 Input/vorbis/http.c:454
 msgid "CONNECTED: WAITING FOR REPLY"
-msgstr "KONEKTOVAN: �ekam odgovor"
+msgstr "КОНЕКТОВАN: чекам одговор"
 
-#: Input/mpg123/http.c:507 Input/vorbis/http.c:448
+#: Input/mpg123/http.c:555 Input/vorbis/http.c:495
 #, c-format
 msgid ""
 "Couldn't connect to host %s\n"
 "Server reported: %s"
 msgstr ""
-"Ne mogu da se konektujem na host %s\n"
-"Izve�taj Servera: %s"
+"Не могу да се конектуjем на host %s\n"
+"Извeштаj Серверa: %s"
 
-#: Input/mpg123/http.c:628 Input/vorbis/http.c:559
+#: Input/mpg123/http.c:686 Input/vorbis/http.c:616
 #, c-format
 msgid "PRE-BUFFERING: %dKB/%dKB"
-msgstr "Pre-baferovanje: %dKB/%dKB"
+msgstr "Пре-баферовaњe: %dKB/%dKB"
 
-#: Input/mpg123/id3_frame_content.c:73
-msgid " (Remix)"
-msgstr " (Remiks)"
-
-#: Input/mpg123/id3_frame_content.c:79
-msgid " (Cover)"
-msgstr " (Cover)"
-
-#: Input/mpg123/mpg123.c:24 Input/vorbis/fileinfo.c:67
+#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:79
 msgid "Blues"
-msgstr "Bluz"
+msgstr "Блуз"
 
-#: Input/mpg123/mpg123.c:24 Input/vorbis/fileinfo.c:67
+#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:79
 msgid "Classic Rock"
-msgstr "Klasi�ni rok"
+msgstr "Класични рок"
 
-#: Input/mpg123/mpg123.c:24 Input/vorbis/fileinfo.c:67
+#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:79
 msgid "Country"
-msgstr "Kantri"
+msgstr "Кантри"
 
-#: Input/mpg123/mpg123.c:24 Input/vorbis/fileinfo.c:67
+#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:79
 msgid "Dance"
-msgstr "Dens"
+msgstr "Денс"
 
-#: Input/mpg123/mpg123.c:25 Input/vorbis/fileinfo.c:68
+#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:80
 msgid "Disco"
-msgstr "Disko"
+msgstr "Диско"
 
-#: Input/mpg123/mpg123.c:25 Input/vorbis/fileinfo.c:68
+#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:80
 msgid "Funk"
-msgstr "Fank"
+msgstr "Фанк"
 
-#: Input/mpg123/mpg123.c:25 Input/vorbis/fileinfo.c:68
+#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:80
 msgid "Grunge"
-msgstr "Grandz"
+msgstr "Грандз"
 
-#: Input/mpg123/mpg123.c:25 Input/vorbis/fileinfo.c:68
+#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:80
 msgid "Hip-Hop"
-msgstr "Hip-Hop"
+msgstr "Хип-Хоп"
 
-#: Input/mpg123/mpg123.c:26 Input/vorbis/fileinfo.c:69
+#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:81
 msgid "Jazz"
-msgstr "Dzez"
+msgstr "Дзез"
 
-#: Input/mpg123/mpg123.c:26 Input/vorbis/fileinfo.c:69
+#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:81
 msgid "Metal"
-msgstr "Metal"
+msgstr "Метал"
 
-#: Input/mpg123/mpg123.c:26 Input/vorbis/fileinfo.c:69
+#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:81
 msgid "New Age"
 msgstr "New Age"
 
-#: Input/mpg123/mpg123.c:26 Input/vorbis/fileinfo.c:69
+#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:81
 msgid "Oldies"
-msgstr "Stari rok"
+msgstr "Стари рок"
 
-#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:70
+#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:82
 msgid "Other"
-msgstr "Drugo"
+msgstr "Друго"
 
-#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:70
+#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:82
 msgid "Pop"
-msgstr "Pop"
+msgstr "Поп"
 
-#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:70
+#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:82
 msgid "R&B"
 msgstr "R&B"
 
-#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:70
+#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:82
 msgid "Rap"
-msgstr "Rep"
+msgstr "Реп"
 
-#: Input/mpg123/mpg123.c:27 Input/vorbis/fileinfo.c:70
+#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:82
 msgid "Reggae"
-msgstr "Rege"
+msgstr "Регe"
 
-#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:71
+#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:83
 msgid "Rock"
-msgstr "Rok"
+msgstr "Рок"
 
-#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:71
+#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:83
 msgid "Techno"
-msgstr "Tehno"
+msgstr "Техно"
 
-#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:71
+#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:83
 msgid "Industrial"
-msgstr "Industrija"
+msgstr "Индустриja"
 
-#: Input/mpg123/mpg123.c:28 Input/vorbis/fileinfo.c:71
+#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:83
 msgid "Alternative"
-msgstr "Alternativa"
+msgstr "Алтернативa"
 
-#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:72
+#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:84
 msgid "Ska"
 msgstr "Ska"
 
-#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:72
+#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:84
 msgid "Death Metal"
-msgstr "Crni metal"
+msgstr "Црни метал"
 
-#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:72
+#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:84
 msgid "Pranks"
 msgstr "Pranks"
 
-#: Input/mpg123/mpg123.c:29 Input/vorbis/fileinfo.c:72
+#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:84
 msgid "Soundtrack"
-msgstr "Filmska muzika"
+msgstr "Филмска музикa"
 
-#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:73
+#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:85
 msgid "Euro-Techno"
-msgstr "Evro-Tehno"
+msgstr "Евро-Техно"
 
-#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:73
+#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:85
 msgid "Ambient"
-msgstr "Ambijentalna"
+msgstr "Амбиjенталнa"
 
-#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:73
+#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:85
 msgid "Trip-Hop"
-msgstr "Trip-Hop"
+msgstr "Трип-Хоп"
 
-#: Input/mpg123/mpg123.c:30 Input/vorbis/fileinfo.c:73
+#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:85
 msgid "Vocal"
-msgstr "Vokalna"
+msgstr "Вокалнa"
 
-#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:74
+#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:86
 msgid "Jazz+Funk"
-msgstr "Dzez+Funk"
+msgstr "Дзез+Функ"
 
-#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:74
+#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:86
 msgid "Fusion"
-msgstr "Fuzija"
+msgstr "Фузиja"
 
-#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:74
+#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:86
 msgid "Trance"
-msgstr "Trens"
+msgstr "Тренс"
 
-#: Input/mpg123/mpg123.c:31 Input/vorbis/fileinfo.c:74
+#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:86
 msgid "Classical"
-msgstr "Klasi�na muzika"
+msgstr "Класична музикa"
 
-#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:75
+#: Input/mpg123/mpg123.c:35 Input/vorbis/fileinfo.c:87
 msgid "Instrumental"
-msgstr "Instrumentalna"
+msgstr "Инструменталнa"
 
-#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:75
+#: Input/mpg123/mpg123.c:35 Input/vorbis/fileinfo.c:87
 msgid "Acid"
 msgstr "Acid"
 
-#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:75
+#: Input/mpg123/mpg123.c:35 Input/vorbis/fileinfo.c:87
 msgid "House"
 msgstr "House"
 
-#: Input/mpg123/mpg123.c:32 Input/vorbis/fileinfo.c:75
+#: Input/mpg123/mpg123.c:35 Input/vorbis/fileinfo.c:87
 msgid "Game"
-msgstr "Igra"
+msgstr "Игрa"
 
-#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:76
+#: Input/mpg123/mpg123.c:36 Input/vorbis/fileinfo.c:88
 msgid "Sound Clip"
-msgstr "Zvu�na sekvenca"
+msgstr "Звучна секвенцa"
 
-#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:76
+#: Input/mpg123/mpg123.c:36 Input/vorbis/fileinfo.c:88
 msgid "Gospel"
 msgstr "Gospel"
 
-#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:76
+#: Input/mpg123/mpg123.c:36 Input/vorbis/fileinfo.c:88
 msgid "Noise"
-msgstr "Smetnje"
+msgstr "Сметњe"
 
-#: Input/mpg123/mpg123.c:33 Input/vorbis/fileinfo.c:76
-msgid "Alt"
-msgstr "Alt"
+#: Input/mpg123/mpg123.c:36 Input/vorbis/fileinfo.c:88
+msgid "AlternRock"
+msgstr "Алтернативни Рок"
 
-#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:77
+#: Input/mpg123/mpg123.c:37 Input/vorbis/fileinfo.c:89
 msgid "Bass"
-msgstr "Bas"
+msgstr "Бас"
 
-#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:77
+#: Input/mpg123/mpg123.c:37 Input/vorbis/fileinfo.c:89
 msgid "Soul"
-msgstr "Soul"
+msgstr "Соул"
 
-#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:77
+#: Input/mpg123/mpg123.c:37 Input/vorbis/fileinfo.c:89
 msgid "Punk"
-msgstr "Pank"
+msgstr "Панк"
 
-#: Input/mpg123/mpg123.c:34 Input/vorbis/fileinfo.c:77
+#: Input/mpg123/mpg123.c:37 Input/vorbis/fileinfo.c:89
 msgid "Space"
 msgstr "Space"
 
-#: Input/mpg123/mpg123.c:35 Input/vorbis/fileinfo.c:78
+#: Input/mpg123/mpg123.c:38 Input/vorbis/fileinfo.c:90
 msgid "Meditative"
-msgstr "Meditacija"
+msgstr "Медитациja"
 
-#: Input/mpg123/mpg123.c:35 Input/vorbis/fileinfo.c:78
+#: Input/mpg123/mpg123.c:38 Input/vorbis/fileinfo.c:90
 msgid "Instrumental Pop"
-msgstr "Instrumrntalni pop"
+msgstr "Инструмрнтални поп"
 
-#: Input/mpg123/mpg123.c:36 Input/vorbis/fileinfo.c:79
+#: Input/mpg123/mpg123.c:39 Input/vorbis/fileinfo.c:91
 msgid "Instrumental Rock"
-msgstr "Instrumentalni Rok"
+msgstr "Инструментални Роk"
 
-#: Input/mpg123/mpg123.c:36 Input/vorbis/fileinfo.c:79
+#: Input/mpg123/mpg123.c:39 Input/vorbis/fileinfo.c:91
 msgid "Ethnic"
-msgstr "Etno muzika"
+msgstr "Етно музикa"
 
-#: Input/mpg123/mpg123.c:36 Input/vorbis/fileinfo.c:79
+#: Input/mpg123/mpg123.c:39 Input/vorbis/fileinfo.c:91
 msgid "Gothic"
-msgstr "Gotska muzika"
+msgstr "Готска музикa"
 
-#: Input/mpg123/mpg123.c:37 Input/vorbis/fileinfo.c:80
+#: Input/mpg123/mpg123.c:40 Input/vorbis/fileinfo.c:92
 msgid "Darkwave"
-msgstr "Tamni talas"
+msgstr "Тамни талас"
 
-#: Input/mpg123/mpg123.c:37 Input/vorbis/fileinfo.c:80
+#: Input/mpg123/mpg123.c:40 Input/vorbis/fileinfo.c:92
 msgid "Techno-Industrial"
-msgstr "Tehno-industrija"
+msgstr "Техно-индустриja"
 
-#: Input/mpg123/mpg123.c:37 Input/vorbis/fileinfo.c:80
+#: Input/mpg123/mpg123.c:40 Input/vorbis/fileinfo.c:92
 msgid "Electronic"
-msgstr "Elektronska muzika"
+msgstr "Електронска музикa"
 
-#: Input/mpg123/mpg123.c:38 Input/vorbis/fileinfo.c:81
+#: Input/mpg123/mpg123.c:41 Input/vorbis/fileinfo.c:93
 msgid "Pop-Folk"
-msgstr "Pop-Folk"
+msgstr "Поп-Фолк"
 
-#: Input/mpg123/mpg123.c:38 Input/vorbis/fileinfo.c:81
+#: Input/mpg123/mpg123.c:41 Input/vorbis/fileinfo.c:93
 msgid "Eurodance"
-msgstr "Evrodens"
+msgstr "Евроденс"
 
-#: Input/mpg123/mpg123.c:38 Input/vorbis/fileinfo.c:81
+#: Input/mpg123/mpg123.c:41 Input/vorbis/fileinfo.c:93
 msgid "Dream"
 msgstr "Dream"
 
-#: Input/mpg123/mpg123.c:39 Input/vorbis/fileinfo.c:82
+#: Input/mpg123/mpg123.c:42 Input/vorbis/fileinfo.c:94
 msgid "Southern Rock"
-msgstr "Ju�nja�ki Rok"
+msgstr "Jужњaчки Рок"
 
-#: Input/mpg123/mpg123.c:39 Input/vorbis/fileinfo.c:82
+#: Input/mpg123/mpg123.c:42 Input/vorbis/fileinfo.c:94
 msgid "Comedy"
-msgstr "Komedija"
+msgstr "Комедиja"
 
-#: Input/mpg123/mpg123.c:39 Input/vorbis/fileinfo.c:82
+#: Input/mpg123/mpg123.c:42 Input/vorbis/fileinfo.c:94
 msgid "Cult"
-msgstr "Kalt"
+msgstr "Калт"
 
-#: Input/mpg123/mpg123.c:40 Input/vorbis/fileinfo.c:83
+#: Input/mpg123/mpg123.c:43 Input/vorbis/fileinfo.c:95
 msgid "Gangsta Rap"
-msgstr "Gangsta Rep"
+msgstr "Gangsta Реп"
 
-#: Input/mpg123/mpg123.c:40 Input/vorbis/fileinfo.c:83
+#: Input/mpg123/mpg123.c:43 Input/vorbis/fileinfo.c:95
 msgid "Top 40"
-msgstr "Top 40"
+msgstr "Tоп 40"
 
-#: Input/mpg123/mpg123.c:40 Input/vorbis/fileinfo.c:83
+#: Input/mpg123/mpg123.c:43 Input/vorbis/fileinfo.c:95
 msgid "Christian Rap"
-msgstr "Hri��anski rep"
+msgstr "Хришћански реп"
 
-#: Input/mpg123/mpg123.c:41 Input/vorbis/fileinfo.c:84
+#: Input/mpg123/mpg123.c:44 Input/vorbis/fileinfo.c:96
 msgid "Pop/Funk"
-msgstr "Pop/Fank"
+msgstr "Поп/Фанк"
 
-#: Input/mpg123/mpg123.c:41 Input/vorbis/fileinfo.c:84
+#: Input/mpg123/mpg123.c:44 Input/vorbis/fileinfo.c:96
 msgid "Jungle"
 msgstr "Jungle"
 
-#: Input/mpg123/mpg123.c:41 Input/vorbis/fileinfo.c:84
+#: Input/mpg123/mpg123.c:44 Input/vorbis/fileinfo.c:96
 msgid "Native American"
-msgstr "Muzika Ameri�kih indijanaca"
+msgstr "Музикa Америчких индиjанацa"
 
-#: Input/mpg123/mpg123.c:42 Input/vorbis/fileinfo.c:85
+#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:97
 msgid "Cabaret"
-msgstr "Kabare"
+msgstr "Кабарe"
 
-#: Input/mpg123/mpg123.c:42 Input/vorbis/fileinfo.c:85
+#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:97
 msgid "New Wave"
-msgstr "Novi talas"
+msgstr "Нови талас"
 
-#: Input/mpg123/mpg123.c:42 Input/vorbis/fileinfo.c:85
+#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:97
 msgid "Psychedelic"
-msgstr "Psihodeli�na muzika"
+msgstr "Психоделичнa музикa"
 
-#: Input/mpg123/mpg123.c:42 Input/vorbis/fileinfo.c:85
+#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:97
 msgid "Rave"
-msgstr "Rejv"
+msgstr "Реjв"
 
-#: Input/mpg123/mpg123.c:43 Input/vorbis/fileinfo.c:86
+#: Input/mpg123/mpg123.c:46 Input/vorbis/fileinfo.c:98
 msgid "Showtunes"
 msgstr "Showtunes"
 
-#: Input/mpg123/mpg123.c:43 Input/vorbis/fileinfo.c:86
+#: Input/mpg123/mpg123.c:46 Input/vorbis/fileinfo.c:98
 msgid "Trailer"
-msgstr "Trejler"
+msgstr "Треjлер"
 
-#: Input/mpg123/mpg123.c:43 Input/vorbis/fileinfo.c:86
+#: Input/mpg123/mpg123.c:46 Input/vorbis/fileinfo.c:98
 msgid "Lo-Fi"
 msgstr "Lo-Fi"
 
-#: Input/mpg123/mpg123.c:43 Input/vorbis/fileinfo.c:86
+#: Input/mpg123/mpg123.c:46 Input/vorbis/fileinfo.c:98
 msgid "Tribal"
-msgstr "Tribal"
+msgstr "Трибал"
 
-#: Input/mpg123/mpg123.c:44 Input/vorbis/fileinfo.c:87
+#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:99
 msgid "Acid Punk"
-msgstr "Acid Pank"
+msgstr "Acid Панк"
 
-#: Input/mpg123/mpg123.c:44 Input/vorbis/fileinfo.c:87
+#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:99
 msgid "Acid Jazz"
-msgstr "Acid Dzaz"
+msgstr "Acid Дзаз"
 
-#: Input/mpg123/mpg123.c:44 Input/vorbis/fileinfo.c:87
+#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:99
 msgid "Polka"
-msgstr "Polka"
+msgstr "Полкa"
 
-#: Input/mpg123/mpg123.c:44 Input/vorbis/fileinfo.c:87
+#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:99
 msgid "Retro"
-msgstr "Retro"
+msgstr "Ретро"
 
-#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:88
+#: Input/mpg123/mpg123.c:48 Input/vorbis/fileinfo.c:100
 msgid "Musical"
 msgstr "Musical"
 
-#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:88
+#: Input/mpg123/mpg123.c:48 Input/vorbis/fileinfo.c:100
 msgid "Rock & Roll"
 msgstr "Rock & Roll"
 
-#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:88
+#: Input/mpg123/mpg123.c:48 Input/vorbis/fileinfo.c:100
 msgid "Hard Rock"
-msgstr "Hard Rok"
+msgstr "Хард Рок"
 
-#: Input/mpg123/mpg123.c:45 Input/vorbis/fileinfo.c:88
+#: Input/mpg123/mpg123.c:48 Input/vorbis/fileinfo.c:100
 msgid "Folk"
-msgstr "Narodna muzika"
+msgstr "Народнa музикa"
 
-#: Input/mpg123/mpg123.c:46 Input/vorbis/fileinfo.c:89
+#: Input/mpg123/mpg123.c:49 Input/vorbis/fileinfo.c:101
 msgid "Folk/Rock"
-msgstr "Narodna/Rok"
+msgstr "Народна/Рок"
 
-#: Input/mpg123/mpg123.c:46 Input/vorbis/fileinfo.c:89
+#: Input/mpg123/mpg123.c:49 Input/vorbis/fileinfo.c:101
 msgid "National Folk"
-msgstr "Izvorna doma�a muzika"
+msgstr "Изворна домaћа музикa"
 
-#: Input/mpg123/mpg123.c:46 Input/vorbis/fileinfo.c:89
+#: Input/mpg123/mpg123.c:49 Input/vorbis/fileinfo.c:101
 msgid "Swing"
-msgstr "Sving"
+msgstr "Свинг"
 
-#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:90
+#: Input/mpg123/mpg123.c:50 Input/vorbis/fileinfo.c:102
 msgid "Fast-Fusion"
 msgstr "Fast-Fusion"
 
-#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:90
+#: Input/mpg123/mpg123.c:50 Input/vorbis/fileinfo.c:102
 msgid "Bebob"
 msgstr "Bebob"
 
-#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:90
+#: Input/mpg123/mpg123.c:50 Input/vorbis/fileinfo.c:102
 msgid "Latin"
-msgstr "Latino"
+msgstr "Латино"
 
-#: Input/mpg123/mpg123.c:47 Input/vorbis/fileinfo.c:90
+#: Input/mpg123/mpg123.c:50 Input/vorbis/fileinfo.c:102
 msgid "Revival"
 msgstr "Revival"
 
-#: Input/mpg123/mpg123.c:48 Input/vorbis/fileinfo.c:91
+#: Input/mpg123/mpg123.c:51 Input/vorbis/fileinfo.c:103
 msgid "Celtic"
-msgstr "Keltska muzika"
+msgstr "Келтска музикa"
 
-#: Input/mpg123/mpg123.c:48 Input/vorbis/fileinfo.c:91
-#, fuzzy
+#: Input/mpg123/mpg123.c:51 Input/vorbis/fileinfo.c:103
 msgid "Bluegrass"
-msgstr "Plava trava"
+msgstr "Плава травa"
 
-#: Input/mpg123/mpg123.c:48 Input/vorbis/fileinfo.c:91
+#: Input/mpg123/mpg123.c:51 Input/vorbis/fileinfo.c:103
 msgid "Avantgarde"
-msgstr "Avangarda"
+msgstr "Авангардa"
 
-#: Input/mpg123/mpg123.c:49 Input/vorbis/fileinfo.c:92
+#: Input/mpg123/mpg123.c:52 Input/vorbis/fileinfo.c:104
 msgid "Gothic Rock"
-msgstr "Gotski Rok"
+msgstr "Готски Рок"
 
-#: Input/mpg123/mpg123.c:49 Input/vorbis/fileinfo.c:92
+#: Input/mpg123/mpg123.c:52 Input/vorbis/fileinfo.c:104
 msgid "Progressive Rock"
-msgstr "Progresivni Rok"
+msgstr "Прогресивни Рок"
 
-#: Input/mpg123/mpg123.c:50 Input/vorbis/fileinfo.c:93
+#: Input/mpg123/mpg123.c:53 Input/vorbis/fileinfo.c:105
 msgid "Psychedelic Rock"
-msgstr "Psihodeli�ni Rok"
+msgstr "Психоделични Рок"
 
-#: Input/mpg123/mpg123.c:50 Input/vorbis/fileinfo.c:93
+#: Input/mpg123/mpg123.c:53 Input/vorbis/fileinfo.c:105
 msgid "Symphonic Rock"
-msgstr "Simfonijski Rok"
+msgstr "Симфониjски Рок"
 
-#: Input/mpg123/mpg123.c:50 Input/vorbis/fileinfo.c:93
+#: Input/mpg123/mpg123.c:53 Input/vorbis/fileinfo.c:105
 msgid "Slow Rock"
-msgstr "Spori Rok"
+msgstr "Спори Рок"
 
-#: Input/mpg123/mpg123.c:51 Input/vorbis/fileinfo.c:94
+#: Input/mpg123/mpg123.c:54 Input/vorbis/fileinfo.c:106
 msgid "Big Band"
 msgstr "Big Band"
 
-#: Input/mpg123/mpg123.c:51 Input/vorbis/fileinfo.c:94
+#: Input/mpg123/mpg123.c:54 Input/vorbis/fileinfo.c:106
 msgid "Chorus"
-msgstr "Horska muzika"
+msgstr "Хорска музикa"
 
-#: Input/mpg123/mpg123.c:51 Input/vorbis/fileinfo.c:94
+#: Input/mpg123/mpg123.c:54 Input/vorbis/fileinfo.c:106
 msgid "Easy Listening"
-msgstr "Lagana muzika"
+msgstr "Лагана музикa"
 
-#: Input/mpg123/mpg123.c:52 Input/vorbis/fileinfo.c:95
+#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:107
 msgid "Acoustic"
-msgstr "Akusti�na muzika"
+msgstr "Акустична музикa"
 
-#: Input/mpg123/mpg123.c:52 Input/vorbis/fileinfo.c:95
+#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:107
 msgid "Humour"
-msgstr "Humor"
+msgstr "Хумор"
 
-#: Input/mpg123/mpg123.c:52 Input/vorbis/fileinfo.c:95
+#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:107
 msgid "Speech"
-msgstr "Govor"
+msgstr "Говор"
 
-#: Input/mpg123/mpg123.c:52 Input/vorbis/fileinfo.c:95
+#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:107
 msgid "Chanson"
-msgstr "�ansone"
+msgstr "шансонe"
 
-#: Input/mpg123/mpg123.c:53 Input/vorbis/fileinfo.c:96
+#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:108
 msgid "Opera"
-msgstr "Opera"
+msgstr "Оперa"
 
-#: Input/mpg123/mpg123.c:53 Input/vorbis/fileinfo.c:96
+#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:108
 msgid "Chamber Music"
-msgstr "Kamerna muzika"
+msgstr "Камерна музикa"
 
-#: Input/mpg123/mpg123.c:53 Input/vorbis/fileinfo.c:96
+#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:108
 msgid "Sonata"
-msgstr "Sonata"
+msgstr "Сонатa"
 
-#: Input/mpg123/mpg123.c:53 Input/vorbis/fileinfo.c:96
+#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:108
 msgid "Symphony"
-msgstr "Simfonija"
+msgstr "Симфониja"
 
-#: Input/mpg123/mpg123.c:54 Input/vorbis/fileinfo.c:97
+#: Input/mpg123/mpg123.c:57 Input/vorbis/fileinfo.c:109
 msgid "Booty Bass"
-msgstr "Booty Bas"
+msgstr "Booty Бас"
 
-#: Input/mpg123/mpg123.c:54 Input/vorbis/fileinfo.c:97
+#: Input/mpg123/mpg123.c:57 Input/vorbis/fileinfo.c:109
 msgid "Primus"
-msgstr "Primus"
+msgstr "Примус"
 
-#: Input/mpg123/mpg123.c:54 Input/vorbis/fileinfo.c:97
+#: Input/mpg123/mpg123.c:57 Input/vorbis/fileinfo.c:109
 msgid "Porn Groove"
 msgstr "Porn Groove"
 
-#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:98
+#: Input/mpg123/mpg123.c:58 Input/vorbis/fileinfo.c:110
 msgid "Satire"
-msgstr "Satira"
+msgstr "Сатирa"
 
-#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:98
+#: Input/mpg123/mpg123.c:58 Input/vorbis/fileinfo.c:110
 msgid "Slow Jam"
 msgstr "Slow Jam"
 
-#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:98
+#: Input/mpg123/mpg123.c:58 Input/vorbis/fileinfo.c:110
 msgid "Club"
-msgstr "Klab"
+msgstr "Клаб"
 
-#: Input/mpg123/mpg123.c:55 Input/vorbis/fileinfo.c:98
+#: Input/mpg123/mpg123.c:58 Input/vorbis/fileinfo.c:110
 msgid "Tango"
-msgstr "Tango"
+msgstr "Танго"
 
-#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:99
+#: Input/mpg123/mpg123.c:59 Input/vorbis/fileinfo.c:111
 msgid "Samba"
-msgstr "Samba"
+msgstr "Самбa"
 
-#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:99
+#: Input/mpg123/mpg123.c:59 Input/vorbis/fileinfo.c:111
 msgid "Folklore"
-msgstr "Folklor"
+msgstr "Фолклор"
 
-#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:99
+#: Input/mpg123/mpg123.c:59 Input/vorbis/fileinfo.c:111
 msgid "Ballad"
-msgstr "Balade"
+msgstr "Баладe"
 
-#: Input/mpg123/mpg123.c:56 Input/vorbis/fileinfo.c:99
+#: Input/mpg123/mpg123.c:59 Input/vorbis/fileinfo.c:111
 msgid "Power Ballad"
-msgstr "Power balade"
+msgstr "Power баладe"
 
-#: Input/mpg123/mpg123.c:57 Input/vorbis/fileinfo.c:100
+#: Input/mpg123/mpg123.c:60 Input/vorbis/fileinfo.c:112
 msgid "Rhythmic Soul"
-msgstr "Ritmi�ki soul"
+msgstr "Ритмички соул"
 
-#: Input/mpg123/mpg123.c:57 Input/vorbis/fileinfo.c:100
+#: Input/mpg123/mpg123.c:60 Input/vorbis/fileinfo.c:112
 msgid "Freestyle"
 msgstr "Freestyle"
 
-#: Input/mpg123/mpg123.c:57 Input/vorbis/fileinfo.c:100
+#: Input/mpg123/mpg123.c:60 Input/vorbis/fileinfo.c:112
 msgid "Duet"
-msgstr "Duet"
+msgstr "Дует"
 
-#: Input/mpg123/mpg123.c:58 Input/vorbis/fileinfo.c:101
+#: Input/mpg123/mpg123.c:61 Input/vorbis/fileinfo.c:113
 msgid "Punk Rock"
-msgstr "Pank rok"
+msgstr "Панк рок"
 
-#: Input/mpg123/mpg123.c:58 Input/vorbis/fileinfo.c:101
+#: Input/mpg123/mpg123.c:61 Input/vorbis/fileinfo.c:113
 msgid "Drum Solo"
-msgstr "Dram Solo"
+msgstr "Драм Соло"
 
-#: Input/mpg123/mpg123.c:58 Input/vorbis/fileinfo.c:101
+#: Input/mpg123/mpg123.c:61 Input/vorbis/fileinfo.c:113
 msgid "A Cappella"
 msgstr "A Cappella"
 
-#: Input/mpg123/mpg123.c:59 Input/vorbis/fileinfo.c:102
+#: Input/mpg123/mpg123.c:62 Input/vorbis/fileinfo.c:114
 msgid "Euro-House"
-msgstr "Evro-House"
+msgstr "Евро-House"
 
-#: Input/mpg123/mpg123.c:59 Input/vorbis/fileinfo.c:102
+#: Input/mpg123/mpg123.c:62 Input/vorbis/fileinfo.c:114
 msgid "Dance Hall"
-msgstr "Dens hol"
+msgstr "Денс хол"
 
-#: Input/mpg123/mpg123.c:59 Input/vorbis/fileinfo.c:102
+#: Input/mpg123/mpg123.c:62 Input/vorbis/fileinfo.c:114
 msgid "Goa"
 msgstr "Goa"
 
-#: Input/mpg123/mpg123.c:60 Input/vorbis/fileinfo.c:103
+#: Input/mpg123/mpg123.c:63 Input/vorbis/fileinfo.c:115
 msgid "Drum & Bass"
 msgstr "Drum & Bass"
 
-#: Input/mpg123/mpg123.c:60 Input/vorbis/fileinfo.c:103
+#: Input/mpg123/mpg123.c:63 Input/vorbis/fileinfo.c:115
 msgid "Club-House"
 msgstr "Club-House"
 
-#: Input/mpg123/mpg123.c:60 Input/vorbis/fileinfo.c:103
+#: Input/mpg123/mpg123.c:63 Input/vorbis/fileinfo.c:115
 msgid "Hardcore"
 msgstr "Hardcore"
 
-#: Input/mpg123/mpg123.c:61 Input/vorbis/fileinfo.c:104
+#: Input/mpg123/mpg123.c:64 Input/vorbis/fileinfo.c:116
 msgid "Terror"
-msgstr "Teror"
+msgstr "Терор"
 
-#: Input/mpg123/mpg123.c:61 Input/vorbis/fileinfo.c:104
+#: Input/mpg123/mpg123.c:64 Input/vorbis/fileinfo.c:116
 msgid "Indie"
-msgstr "Indijska muzika"
+msgstr "Индиjска музикa"
 
-#: Input/mpg123/mpg123.c:61 Input/vorbis/fileinfo.c:104
+#: Input/mpg123/mpg123.c:64 Input/vorbis/fileinfo.c:116
 msgid "BritPop"
 msgstr "BritPop"
 
-#: Input/mpg123/mpg123.c:61 Input/vorbis/fileinfo.c:104
+#: Input/mpg123/mpg123.c:64 Input/vorbis/fileinfo.c:116
 msgid "Negerpunk"
-msgstr "Crni pank"
+msgstr "Црни панк"
 
-#: Input/mpg123/mpg123.c:62 Input/vorbis/fileinfo.c:105
+#: Input/mpg123/mpg123.c:65 Input/vorbis/fileinfo.c:117
 msgid "Polsk Punk"
-msgstr "Poljski pank"
+msgstr "Пољски панк"
 
-#: Input/mpg123/mpg123.c:62 Input/vorbis/fileinfo.c:105
+#: Input/mpg123/mpg123.c:65 Input/vorbis/fileinfo.c:117
 msgid "Beat"
 msgstr "Beat"
 
-#: Input/mpg123/mpg123.c:62 Input/vorbis/fileinfo.c:105
+#: Input/mpg123/mpg123.c:65 Input/vorbis/fileinfo.c:117
 msgid "Christian Gangsta Rap"
-msgstr "Hri��anski Gangsta Rep"
+msgstr "Хришћански Gangsta Реп"
 
-#: Input/mpg123/mpg123.c:63 Input/vorbis/fileinfo.c:106
+#: Input/mpg123/mpg123.c:66 Input/vorbis/fileinfo.c:118
 msgid "Heavy Metal"
-msgstr "Te�ki Metal"
+msgstr "Тeшки Metal"
 
-#: Input/mpg123/mpg123.c:63 Input/vorbis/fileinfo.c:106
-#, fuzzy
+#: Input/mpg123/mpg123.c:66 Input/vorbis/fileinfo.c:118
 msgid "Black Metal"
-msgstr "Crni Metal"
+msgstr "Црни Метал"
 
-#: Input/mpg123/mpg123.c:63 Input/vorbis/fileinfo.c:106
+#: Input/mpg123/mpg123.c:66 Input/vorbis/fileinfo.c:118
 msgid "Crossover"
 msgstr "Crossover"
 
-#: Input/mpg123/mpg123.c:64 Input/vorbis/fileinfo.c:107
+#: Input/mpg123/mpg123.c:67 Input/vorbis/fileinfo.c:119
 msgid "Contemporary Christian"
 msgstr "Contemporary Christian"
 
-#: Input/mpg123/mpg123.c:64 Input/vorbis/fileinfo.c:107
+#: Input/mpg123/mpg123.c:67 Input/vorbis/fileinfo.c:119
 msgid "Christian Rock"
-msgstr "Hri��anski Rok"
+msgstr "Хришћански Рок"
 
-#: Input/mpg123/mpg123.c:65 Input/vorbis/fileinfo.c:108
+#: Input/mpg123/mpg123.c:68 Input/vorbis/fileinfo.c:120
 msgid "Merengue"
 msgstr "Merengue"
 
-#: Input/mpg123/mpg123.c:65 Input/vorbis/fileinfo.c:108
+#: Input/mpg123/mpg123.c:68 Input/vorbis/fileinfo.c:120
 msgid "Salsa"
-msgstr "Salsa"
+msgstr "Салсa"
 
-#: Input/mpg123/mpg123.c:65 Input/vorbis/fileinfo.c:108
+#: Input/mpg123/mpg123.c:68 Input/vorbis/fileinfo.c:120
 msgid "Thrash Metal"
-msgstr "Thrash Metal"
+msgstr "Thrash Метал"
 
-#: Input/mpg123/mpg123.c:66 Input/vorbis/fileinfo.c:109
+#: Input/mpg123/mpg123.c:69 Input/vorbis/fileinfo.c:121
 msgid "Anime"
-msgstr "Animacija"
+msgstr "Анимациja"
 
-#: Input/mpg123/mpg123.c:66 Input/vorbis/fileinfo.c:109
+#: Input/mpg123/mpg123.c:69 Input/vorbis/fileinfo.c:121
 msgid "JPop"
-msgstr "JPop"
+msgstr "JПоп"
 
-#: Input/mpg123/mpg123.c:66 Input/vorbis/fileinfo.c:109
+#: Input/mpg123/mpg123.c:69 Input/vorbis/fileinfo.c:121
 msgid "Synthpop"
-msgstr "SynthPop"
+msgstr "SynthПоп"
 
-#: Input/mpg123/mpg123.c:1099
-#, fuzzy
+#: Input/mpg123/mpg123.c:1148
 msgid "About MPEG Layer 1/2/3 plugin"
-msgstr "MPEG sloj 1/2/3 Plejer %s"
+msgstr "O plugin за MPEG слоjеве 1/2/3 "
 
-#: Input/mpg123/mpg123.c:1100
+#: Input/mpg123/mpg123.c:1149
 msgid ""
 "mpg123 decoding engine by Michael Hipp <mh@mpg123.de>\n"
 "Plugin by The XMMS team"
 msgstr ""
+"mpg123 engine за декодирање креирао Michael Hipp <mh@mpg123.de>\n"
+"Plugin урадио XMMS тим"
 
-#: Input/mpg123/mpg123.c:1134
+#: Input/mpg123/mpg123.c:1183
 #, c-format
 msgid "MPEG Layer 1/2/3 Player %s"
-msgstr "MPEG sloj 1/2/3 Plejer %s"
+msgstr "MPEG слоj 1/2/3 Плеjер %s"
 
 #: Input/tonegen/tonegen.c:49
 msgid "About Tone Generator"
-msgstr "O Generatoru Tonova"
+msgstr "О Генератору Тоновa"
 
-#: Input/tonegen/tonegen.c:50
-#, fuzzy
+#: Input/tonegen/tonegen.c:51
 msgid ""
-"Sinus tone generator by H�vard Kv�len <havardk@xmms.org>\n"
+"Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
 "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
 "\n"
 "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 "e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
 msgstr ""
-"Generator sinusnog tona. Kreirao: Haavard Kvaalen <havardk@xmms.org>\n"
-"Modifikovao: Daniel J. Peng <danielpeng@bigfoot.com>\n"
+"Генератор синусног тона. Креирао: Haavard Kvaalen <havardk@xmms.org>\n"
+"Модификовао: Daniel J. Peng <danielpeng@bigfoot.com>\n"
 "\n"
-"Da bi ga koristili , dodajte URL: "
-"tone://frequency1;frequency2;frequency3;...\n"
-"primer tone://2000;2005 da bi bio pu�ten 2000Hz ton i  2005Hz ton"
+"Да би га користили , додаjтe URL: tone://frequency1;frequency2;"
+"frequency3;...\n"
+"пример tone://2000;2005 да би био пуштен 2000Hz тон и  2005Hz тон"
 
-#: Input/tonegen/tonegen.c:163
+#: Input/tonegen/tonegen.c:164
 msgid "Tone Generator: "
-msgstr "Generator tona: "
+msgstr "Генератор тона: "
 
-#: Input/tonegen/tonegen.c:263
+#: Input/tonegen/tonegen.c:264
 #, c-format
 msgid "Tone Generator %s"
-msgstr "Generator tona %s"
+msgstr "Генератор тонa %s"
 
-#: Input/vorbis/configure.c:122
+#: Input/vorbis/configure.c:158
 msgid "Select the directory where you want to store the Ogg Vorbis streams:"
-msgstr "Izaberi direktorijum gde �elite da sme�tate Ogg Vorbis strimove:"
+msgstr "Изабери директориjум где желите да смeштате Ogg Vorbis стримовe:"
 
-#: Input/vorbis/configure.c:175
+#: Input/vorbis/configure.c:226
 msgid "Ogg Vorbis Configuration"
-msgstr "Ogg Vorbis Konfiguracija"
+msgstr "Ogg Vorbis Конфигурациja"
 
-#. Title config..
-#: Input/vorbis/configure.c:313
+#: Input/vorbis/configure.c:364
 msgid "Ogg Vorbis Tags:"
-msgstr "Ogg Vorbis Tagovi:"
+msgstr "Ogg Vorbis Тагови:"
 
-#: Input/vorbis/configure.c:329 xmms/prefswin.c:979
+#: Input/vorbis/configure.c:380 xmms/prefswin.c:1120
 msgid "Title format:"
-msgstr "Format naziva:"
+msgstr "Формат нaзивa:"
 
-#: Input/vorbis/fileinfo.c:197
-#, c-format
+#: Input/vorbis/configure.c:395 Input/vorbis/fileinfo.c:645
+msgid "ReplayGain Settings:"
+msgstr "Подешавање ReplayGain-а:"
+
+#: Input/vorbis/configure.c:402
+msgid "Enable Clipping Prevention"
+msgstr "Омогуќи заштиту од Clipping-а"
+
+#: Input/vorbis/configure.c:406
+msgid "Enable ReplayGain"
+msgstr "Омогуќи ReplayGain"
+
+#: Input/vorbis/configure.c:410
+msgid "ReplayGain Type:"
+msgstr "Тип ReplayGain-а:"
+
+#: Input/vorbis/configure.c:419
+msgid "use Track Gain/Peak"
+msgstr "користи Gain/Peak ѕа песму"
+
+#: Input/vorbis/configure.c:426
+msgid "use Album Gain/Peak"
+msgstr "користи Gain/Peak ѕа албум"
+
+#: Input/vorbis/configure.c:436
+msgid "Enable 6dB Boost + Hard Limiting"
+msgstr "Омогуќи 6dB Boost + Hard Limiting"
+
+#: Input/vorbis/configure.c:440
+msgid "ReplayGain"
+msgstr "ReplayGain"
+
+#: Input/vorbis/fileinfo.c:208
+#, fuzzy, c-format
 msgid ""
-"An error occured:\n"
+"An error occurred:\n"
 "%s"
 msgstr ""
+"Појавила се грешка\n"
+"%s"
 
-#: Input/vorbis/fileinfo.c:200
-#, fuzzy
+#: Input/vorbis/fileinfo.c:210
 msgid "Error!"
-msgstr "Gre�ka"
+msgstr "Грeшкa!"
 
-#: Input/vorbis/fileinfo.c:229 Input/vorbis/fileinfo.c:276
-#: Input/vorbis/fileinfo.c:297 Input/vorbis/fileinfo.c:306
+#: Input/vorbis/fileinfo.c:238 Input/vorbis/fileinfo.c:293
+#: Input/vorbis/fileinfo.c:314 Input/vorbis/fileinfo.c:323
 msgid "Failed to modify tag"
-msgstr ""
+msgstr "Не могу да изменим таг"
 
-#: Input/vorbis/fileinfo.c:443
-#, fuzzy
+#: Input/vorbis/fileinfo.c:493
 msgid "Ogg Vorbis Tag:"
-msgstr "Ogg Vorbis Tagovi:"
+msgstr "Ogg Vorbis Таг:"
 
-#: Input/vorbis/fileinfo.c:491
-#, fuzzy
+#: Input/vorbis/fileinfo.c:541
 msgid "Date:"
-msgstr "Dens"
+msgstr "Датум:"
 
-#: Input/vorbis/fileinfo.c:532
-#, fuzzy
+#: Input/vorbis/fileinfo.c:582
 msgid "Description:"
-msgstr "Pravci:"
+msgstr "Опис:"
 
-#: Input/vorbis/fileinfo.c:542
-#, fuzzy
+#: Input/vorbis/fileinfo.c:592
 msgid "Location:"
-msgstr "Latino"
+msgstr "Локација"
 
-#: Input/vorbis/fileinfo.c:552
-#, fuzzy
+#: Input/vorbis/fileinfo.c:602
 msgid "Version:"
-msgstr "Rezolucija:"
+msgstr "Верзија:"
 
-#: Input/vorbis/fileinfo.c:563
-#, fuzzy
+#: Input/vorbis/fileinfo.c:613
 msgid "ISRC number:"
-msgstr "Broj pesme:"
+msgstr "ISRC број:"
 
-#: Input/vorbis/fileinfo.c:574
+#: Input/vorbis/fileinfo.c:624
 msgid "Organization:"
-msgstr ""
+msgstr "Организација:"
 
-#: Input/vorbis/fileinfo.c:584
+#: Input/vorbis/fileinfo.c:634
 msgid "Copyright:"
-msgstr ""
+msgstr "Права:"
 
-#: Input/vorbis/fileinfo.c:608
-#, fuzzy
+#: Input/vorbis/fileinfo.c:652
+msgid "Track gain:"
+msgstr "Track gain:"
+
+#: Input/vorbis/fileinfo.c:662
+msgid "Track peak:"
+msgstr "Track peak:"
+
+#: Input/vorbis/fileinfo.c:673
+msgid "Album gain:"
+msgstr "Album gain:"
+
+#: Input/vorbis/fileinfo.c:683
+msgid "Album peak:"
+msgstr "Album peak:"
+
+#: Input/vorbis/fileinfo.c:707
 msgid "Remove Tag"
-msgstr "Ukloni ID3"
+msgstr "Уклони таг"
 
-#: Input/vorbis/fileinfo.c:623
-#, fuzzy
+#: Input/vorbis/fileinfo.c:722
 msgid "Ogg Vorbis Info:"
-msgstr "Ogg Vorbis Tagovi:"
+msgstr "Инфо о Ogg Vorbis-у:"
 
-#: Input/vorbis/fileinfo.c:708
-#, fuzzy, c-format
+#: Input/vorbis/fileinfo.c:851
+#, c-format
 msgid "Nominal bitrate: %d kbps"
-msgstr "Bitrate: %d kb/s"
+msgstr "Номинални bitrate: %d kbps"
 
-#: Input/vorbis/fileinfo.c:709
+#: Input/vorbis/fileinfo.c:852
 #, fuzzy, c-format
-msgid "Samplerate: %d Hz"
-msgstr "Samplerate: %ld Hz"
+msgid "Average bitrate: %.1f kbps"
+msgstr "Номинални bitrate: %d kbps"
 
-#: Input/vorbis/fileinfo.c:710
-#, fuzzy, c-format
+#: Input/vorbis/fileinfo.c:854
+#, c-format
 msgid "Channels: %d"
-msgstr "Kanali:"
+msgstr "Канали: %d"
 
-#: Input/vorbis/fileinfo.c:711
+#: Input/vorbis/fileinfo.c:855
 #, c-format
 msgid "Length: %d:%.2d"
-msgstr ""
+msgstr "Дужина: %d:%.2d"
 
-#: Input/vorbis/fileinfo.c:712
-#, fuzzy, c-format
+#: Input/vorbis/fileinfo.c:856
+#, c-format
 msgid "File size: %d B"
-msgstr ""
-"%d frejmova\n"
-"Veli�ina datoteke: %lu B"
+msgstr "Величина фајла: %d B"
 
-#: Input/vorbis/vorbis.c:117
+#: Input/vorbis/fileinfo.c:857
+#, c-format
+msgid "Vendor: %s"
+msgstr ""
+
+#: Input/vorbis/vorbis.c:130
 #, c-format
 msgid "Ogg Vorbis Player %s"
-msgstr "Ogg Vorbis Plejer %s"
+msgstr "Ogg Vorbis Плеjер %s"
 
-#: Input/vorbis/vorbis.c:589
+#: Input/vorbis/vorbis.c:761
 msgid "About Ogg Vorbis Plugin"
-msgstr "O Ogg Vorbis Dodatku"
+msgstr "О Ogg Vorbis Додатку"
 
-#: Input/vorbis/vorbis.c:590
-#, fuzzy
+#: Input/vorbis/vorbis.c:766
 msgid ""
-"Ogg Vorbis Plugin by Xiphophorus\n"
+"Ogg Vorbis Plugin by the Xiph.org Foundation\n"
 "\n"
 "Original code by\n"
 "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
@@ -1809,37 +2041,39 @@ msgid ""
 "Michael Smith <msmith@labyrinth.edu.au>\n"
 "Jack Moffitt <jack@icecast.org>\n"
 "Jorn Baayen <jorn@nl.linux.org>\n"
-"H�vard Kv�len <havardk@xmms.org>\n"
+"Haavard Kvaalen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "\n"
-"Visit Xiphophorus at http://www.xiph.org/\n"
+"Visit the Xiph.org Foundation at http://www.xiph.org/\n"
 msgstr ""
-"Ogg Vorbis Dodatak: Xiphophorus\n"
+"Ogg Vorbis Додатак: Xiph.org Фондација\n"
 "\n"
-"Orginalni kod:\n"
+"Оргинални код:\n"
 "Tony Arcieri <bascule@inferno.tusculum.edu>\n"
-"Kontributi:\n"
+"Контрибути:\n"
 "Chris Montgomery <monty@xiph.org>\n"
 "Peter Alm <peter@xmms.org>\n"
 "Michael Smith <msmith@labyrinth.edu.au>\n"
 "Jack Moffitt <jack@icecast.org>\n"
 "Jorn Baayen <jorn@nl.linux.org>\n"
 "Haavard Kvaalen <havardk@xmms.org>\n"
+"Gian-Carlo Pascutto <gcp@sjeng.org>\n"
 "\n"
-"Posetite Xiphophorus na http://www.xiph.org/\n"
+"Посетитe Xiph.org Фондацију нa http://www.xiph.org/\n"
 
-#: Input/wav/wav.c:57
+#: Input/wav/wav.c:82
 #, c-format
 msgid "Wave Player %s"
-msgstr "Wave Plejer %s"
+msgstr "Wave Плеjер %s"
 
 #: Output/OSS/OSS.c:44
 #, c-format
 msgid "OSS Driver %s"
-msgstr "OSS ure�aj: %s"
+msgstr "OSS урeђај: %s"
 
 #: Output/OSS/about.c:30
 msgid "About OSS Driver"
-msgstr "O OSS drajveru"
+msgstr "О OSS драjверу"
 
 #: Output/OSS/about.c:31
 msgid ""
@@ -1860,21 +2094,21 @@ msgid ""
 "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
 "USA."
 msgstr ""
-"XMMS OSS drajver\n"
+"XMMS OSS драjвер\n"
 "\n"
-" Ovaj program je besplatan; mo�ete ga distribuirati ili menjati\n"
-"pod uslovima GNU Op�te Javne Licence kako je objavila\n"
-"Free Software Fondacija; ili verzija 2 Licence, ili\n"
-"kasnija verzija.\n"
+" Оваj програм jе бесплатан; можете га дистрибуирати или мењати\n"
+"под условима GNU Опште Jавнe Лиценцe како jе обjавилa\n"
+"Free Software Фондациja; или верзиjа 2 Лиценцe, или\n"
+"касниjа верзиja.\n"
 "\n"
-"Ovaj program je distribuiran u nadi da �e biti koristan,\n"
-"ali BEZ GARANCIJA; �ak i bez garancije o upotrebljivosti\n"
-"ili korisnosti u prakti�nim poslovima.  Pogledajte\n"
-"GNU Op�tu Javnu Licencu za vi�e detalja.\n"
+"Оваj програм jе дистрибуиран у нади да ће бити користан,\n"
+"али БЕЗ ГАРАНЦИJA; чак и без гаранциjе о употребљивости\n"
+"или корисности у практичним пословимa.  Погледаjтe\n"
+"GNU Општу Jавну Лиценцу за више детaљa.\n"
 "\n"
-"Trebalo bi da ste programom dobili i kopiju GNU Op�te Javne Licence;\n"
-"ukoliko niste, javite se Free Software\n"
-"Fondaciji, 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
+"Требало би да сте програмом добили и копиjу GNU Опште Jавнe Лиценцe;\n"
+"уколико нистe, jавите сe Free Software\n"
+"Фондациjи, 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
 "USA."
 
 #: Output/OSS/configure.c:133
@@ -1888,70 +2122,77 @@ msgstr "Default"
 
 #: Output/OSS/configure.c:180
 msgid "OSS Driver configuration"
-msgstr "Kofiguracija OSS drajvera"
+msgstr "Кофигурациjа OSS драjверa"
 
-#: Output/OSS/configure.c:194
+#: Output/OSS/configure.c:194 Output/sun/configure.c:179
+#: Output/alsa/configure.c:289
 msgid "Audio device:"
-msgstr "Audio ure�aj:"
+msgstr "Аудио уређај:"
 
 #: Output/OSS/configure.c:212 Output/OSS/configure.c:246
 msgid "Use alternate device:"
-msgstr "Koristi alernativni ure�aj:"
+msgstr "Користи алернативни уређај:"
 
-#: Output/OSS/configure.c:228
+#: Output/OSS/configure.c:228 Output/sun/configure.c:216
+#: Output/alsa/configure.c:334
 msgid "Mixer device:"
-msgstr "Mikser ure�aj:"
+msgstr "Миксер уређај:"
 
 #: Output/OSS/configure.c:262 Output/solaris/configure.c:229
+#: Output/sun/configure.c:244
 msgid "Devices"
-msgstr "Ure�aji"
+msgstr "Уређаји"
 
 #: Output/OSS/configure.c:276 Output/esd/configure.c:176
-#: Output/solaris/configure.c:243
+#: Output/solaris/configure.c:243 Output/sun/configure.c:268
 msgid "Buffer size (ms):"
-msgstr "Veli�ina bafera (ms):"
+msgstr "Величина бафера (ms):"
 
 #: Output/OSS/configure.c:292 Output/esd/configure.c:201
-#: Output/solaris/configure.c:259
+#: Output/solaris/configure.c:259 Output/sun/configure.c:300
 msgid "Buffering"
-msgstr "Baferovanje"
+msgstr "Баферовaњe"
 
 #: Output/OSS/configure.c:293
 msgid "Mixer Settings:"
-msgstr "Pode�avanja miksera:"
+msgstr "Подeшавaња миксера:"
 
 #: Output/OSS/configure.c:298
 msgid "Volume controls Master not PCM"
-msgstr "Kontrola ja�ina zvuka Master ne PCM"
+msgstr "Контрола jaчина звука Master нe PCM"
 
-#: Output/OSS/configure.c:301
+#: Output/OSS/configure.c:301 Output/sun/configure.c:390
 msgid "Mixer"
-msgstr "Mikser"
+msgstr "Миксер"
 
-#: Output/disk_writer/disk_writer.c:96
+#: Output/disk_writer/disk_writer.c:112
 #, c-format
 msgid "Disk Writer Plugin %s"
-msgstr "Dodatak za Disk Writer %s"
+msgstr "Додатак за Disk Writer %s"
 
-#: Output/disk_writer/disk_writer.c:128
+#: Output/disk_writer/disk_writer.c:143
 msgid ""
 "You cannot use the Disk Writer plugin\n"
 "when you're running in realtime mode."
 msgstr ""
-"Ne mo�ete koristiti Disk Writer dodatak\n"
-"kada koristite program u realtime modu."
+"Не можете користити Disk Writer додатак\n"
+"када користите програм у realtime моду."
 
-#: Output/disk_writer/disk_writer.c:301
+#: Output/disk_writer/disk_writer.c:344
 msgid "Select the directory where you want to store the output files:"
-msgstr "Izaberite direktorijum gde �ete sme�tate output datoteke:"
+msgstr "Изаберите директориjум где ћетe смeштате output датотекe:"
 
-#: Output/disk_writer/disk_writer.c:345
+#: Output/disk_writer/disk_writer.c:392
 msgid "Disk Writer Configuration"
-msgstr "Konfiguracija Disk Writer-a"
+msgstr "Конфигурациjа Disk Writer-a"
+
+#: Output/disk_writer/disk_writer.c:421
+msgid "Don't strip file name extension"
+msgstr ""
 
 #: Output/esd/about.c:29
 msgid "About ESounD Plugin"
-msgstr "O ESounD Dodatak"
+msgstr "О ESounD Додатак"
 
 #: Output/esd/about.c:30
 msgid ""
@@ -1972,53 +2213,48 @@ msgid ""
 "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
 "USA."
 msgstr ""
-"XMMS ESounD Dodatak\n"
+"XMMS ESounD Додатак\n"
 "\n"
-" Ovaj program je besplatan; mo�ete ga distribuirati ili menjati\n"
-"pod uslovima GNU Op�te Javne Licence kako je objavila\n"
-"Free Software Fondacija; ili verzija 2 Licence, ili\n"
-"kasnija verzija.\n"
+" Оваj програм jе бесплатан; можете га дистрибуирати или мењати\n"
+"под условима GNU Опште Jавнe Лиценцe како jе обjавилa\n"
+"Free Software Фондациja; или верзиjа 2 Лиценцe, или\n"
+"касниjа верзиja.\n"
 "\n"
-"Ovaj program je distribuiran u nadi da �e biti koristan,\n"
-"ali BEZ GARANCIJA; �ak i bez garancije o upotrebljivosti\n"
-"ili korisnosti u prakti�nim poslovima.  Pogledajte\n"
-"GNU Op�tu Javnu Licencu za vi�e detalja.\n"
+"Оваj програм jе дистрибуиран у нади да ће бити користан,\n"
+"али БЕЗ ГАРАНЦИJA; чак и без гаранциjе о употребљивости\n"
+"или корисности у практичним пословимa.  Погледаjтe\n"
+"GNU Општу Jавну Лиценцу за више детaљa.\n"
 "\n"
-"Trebalo bi da ste programom dobili i kopiju GNU Op�te Javne Licence;\n"
-"ukoliko niste, javite se Free Software\n"
-"Fondaciji, 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
+"Требало би да сте програмом добили и копиjу GNU Опште Jавнe Лиценцe;\n"
+"уколико нистe, jавите сe Free Software\n"
+"Фондациjи, 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
 "USA."
 
 #: Output/esd/configure.c:95
 msgid "ESD Plugin configuration"
-msgstr "Konfiguracija ESD Dodatak"
+msgstr "Конфигурациjа ESD Додатак"
 
 #: Output/esd/configure.c:117
 msgid "Use remote host"
-msgstr "Koristi remote host"
+msgstr "Користи remote host"
 
 #: Output/esd/configure.c:124
-#, fuzzy
 msgid "Volume controls OSS mixer"
-msgstr "Kontrola ja�ina zvuka Master ne PCM"
-
-#: Output/esd/configure.c:161
-msgid "Server"
-msgstr "Server"
+msgstr "Контрола јачине звука OSS миксера"
 
 #: Output/esd/esd.c:45
 #, c-format
 msgid "eSound Output Plugin %s"
-msgstr "eSound Output Dodatak %s"
+msgstr "eSound Output Додатак %s"
 
 #: Output/solaris/Sun.c:32
 #, c-format
 msgid "Solaris audio plugin %s"
-msgstr "Solaris audio Dodatak %s"
+msgstr "Solaris аудио Додатак %s"
 
 #: Output/solaris/about.c:20
 msgid "About Solaris Audio Driver"
-msgstr "O Solaris Audio drajver"
+msgstr "О Solaris Аудио драjвер"
 
 #: Output/solaris/about.c:21
 msgid ""
@@ -2027,10 +2263,10 @@ msgid ""
 "Written by John Riddoch (jr@scms.rgu.ac.uk)\n"
 "with help from many contributors."
 msgstr ""
-"XMMS Solaris Audio Drajver\n"
+"XMMS Solaris Аудио Драjвер\n"
 "\n"
-"Napisao: John Riddoch (jr@scms.rgu.ac.uk)\n"
-"uz pomo� mnogih kontributora."
+"Написао: John Riddoch (jr@scms.rgu.ac.uk)\n"
+"уз помоћ многих контрибуторa."
 
 #: Output/solaris/configure.c:101
 #, c-format
@@ -2040,31 +2276,178 @@ msgstr "Default - %s"
 #: Output/solaris/configure.c:121
 #, c-format
 msgid "Soundcard #%d - %s"
-msgstr "Zvu�na kartica #%d - %s"
+msgstr "Звучна картицa #%d - %s"
 
 #: Output/solaris/configure.c:154
 msgid "Configure Solaris driver"
-msgstr "Podesi Solaris drajver"
+msgstr "Подеси Solaris драjвер"
 
 #: Output/solaris/configure.c:190
 msgid "Always use AUDIODEV environment variable"
-msgstr "Uvek koristi AUDIODEV okru�enje"
+msgstr "Увек користи AUDIODEV окружeњe"
 
 #: Output/solaris/configure.c:196
 msgid "Output ports:"
-msgstr "Output portovi:"
+msgstr "Output портови:"
 
 #: Output/solaris/configure.c:206
 msgid "Line out"
-msgstr "Vanjski izlaz"
+msgstr "Вaњски излаз"
 
 #: Output/solaris/configure.c:207
 msgid "Headphones"
-msgstr "Slu�alice"
+msgstr "Слушалицe"
 
 #: Output/solaris/configure.c:208
 msgid "Internal speaker"
-msgstr "Interni zvu�nik"
+msgstr "Интерни звучник"
+
+#: Output/sun/about.c:32
+#, fuzzy
+msgid "About the Sun Driver"
+msgstr "О OSS драjверу"
+
+#: Output/sun/about.c:33
+msgid ""
+"XMMS BSD Sun Driver\n"
+"\n"
+"Copyright (c) 2001 CubeSoft Communications, Inc.\n"
+"Maintainer: <vedge at csoft.org>.\n"
+msgstr ""
+
+#: Output/sun/configure.c:197
+#, fuzzy
+msgid "Audio control device:"
+msgstr "Аудио уређај:"
+
+#: Output/sun/configure.c:346
+#, fuzzy
+msgid "Volume controls device:"
+msgstr "Контрола јачине звука:"
+
+#: Output/sun/configure.c:359
+msgid "XMMS uses mixer exclusively."
+msgstr ""
+
+#: Output/sun/configure.c:486
+msgid "Status"
+msgstr ""
+
+#: Output/sun/configure.c:536
+#, fuzzy
+msgid "Sun driver configuration"
+msgstr "Кофигурациjа OSS драjверa"
+
+#: Output/sun/sun.c:52
+#, fuzzy, c-format
+msgid "BSD Sun Driver %s"
+msgstr "OSS урeђај: %s"
+
+#: Output/alsa/about.c:30
+#, fuzzy
+msgid "About ALSA Driver"
+msgstr "О OSS драjверу"
+
+#: Output/alsa/about.c:31
+#, fuzzy
+msgid ""
+"XMMS ALSA Driver\n"
+"\n"
+" This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
+"USA.\n"
+"Author: Matthieu Sozeau (mattam@altern.org)"
+msgstr ""
+"XMMS OSS драjвер\n"
+"\n"
+" Оваj програм jе бесплатан; можете га дистрибуирати или мењати\n"
+"под условима GNU Опште Jавнe Лиценцe како jе обjавилa\n"
+"Free Software Фондациja; или верзиjа 2 Лиценцe, или\n"
+"касниjа верзиja.\n"
+"\n"
+"Оваj програм jе дистрибуиран у нади да ће бити користан,\n"
+"али БЕЗ ГАРАНЦИJA; чак и без гаранциjе о употребљивости\n"
+"или корисности у практичним пословимa.  Погледаjтe\n"
+"GNU Општу Jавну Лиценцу за више детaљa.\n"
+"\n"
+"Требало би да сте програмом добили и копиjу GNU Опште Jавнe Лиценцe;\n"
+"уколико нистe, jавите сe Free Software\n"
+"Фондациjи, 59 Temple Place - Suite 330, Boston, MA 02111-1307,\n"
+"USA."
+
+#: Output/alsa/alsa.c:44
+#, fuzzy, c-format
+msgid "ALSA %s output plugin"
+msgstr "Беѕ излазног додатка"
+
+#: Output/alsa/configure.c:153
+msgid "Unknown soundcard"
+msgstr ""
+
+#: Output/alsa/configure.c:208
+#, fuzzy, c-format
+msgid "Default PCM device (%s)"
+msgstr "Default (%s)"
+
+#: Output/alsa/configure.c:275
+#, fuzzy
+msgid "ALSA Driver configuration"
+msgstr "Кофигурациjа OSS драjверa"
+
+#: Output/alsa/configure.c:303
+#, fuzzy
+msgid "Mixer:"
+msgstr "Миксер"
+
+#: Output/alsa/configure.c:311
+#, fuzzy
+msgid "Use software volume control"
+msgstr "Контрола јачине звука:"
+
+#: Output/alsa/configure.c:321
+#, fuzzy
+msgid "Mixer card:"
+msgstr "Миксер уређај:"
+
+#: Output/alsa/configure.c:354
+#, fuzzy
+msgid "Device settings"
+msgstr "Подeшавaња миксера:"
+
+#: Output/alsa/configure.c:360
+#, fuzzy
+msgid "Soundcard:"
+msgstr "Звучна картицa #%d - %s"
+
+#: Output/alsa/configure.c:373 Output/alsa/configure.c:415
+#, fuzzy
+msgid "Buffer time (ms):"
+msgstr "Величина бафера (ms):"
+
+#: Output/alsa/configure.c:387
+#, fuzzy
+msgid "Period time (ms):"
+msgstr "Величина бафера (ms):"
+
+#: Output/alsa/configure.c:402
+#, fuzzy
+msgid "XMMS:"
+msgstr "XMMS"
+
+#: Output/alsa/configure.c:430
+msgid "Advanced settings"
+msgstr ""
 
 #: Visualization/blur_scope/blur_scope.c:62
 #, c-format
@@ -2077,183 +2460,145 @@ msgstr "Blur scope"
 
 #: Visualization/blur_scope/config.c:68
 msgid "Color Entry"
-msgstr "Unos boje"
+msgstr "Унос боje"
 
 #: Visualization/blur_scope/config.c:76
 #: Visualization/opengl_spectrum/configure.c:51
 msgid "Options:"
-msgstr "Opcije:"
+msgstr "Опциje:"
 
 #: Visualization/opengl_spectrum/configure.c:43
 msgid "OpenGL Spectrum configuration"
-msgstr "Konfiguracija OpenGL spektralnog analizatora"
+msgstr "Конфигурациjа OpenGL спектралног aнализаторa"
 
 #: Visualization/opengl_spectrum/configure.c:57
 msgid "3DFX Fullscreen mode"
-msgstr "3DFX Celi ekran"
+msgstr "3DFX Цели екран"
 
 #: Visualization/opengl_spectrum/opengl_spectrum.c:123
 #: Visualization/opengl_spectrum/opengl_spectrum.c:124
 msgid "OpenGL Spectrum analyzer"
-msgstr "OpenGL spektralni analizator"
+msgstr "OpenGL спектрални aнализатор"
 
 #: Visualization/opengl_spectrum/opengl_spectrum.c:142
 #, c-format
 msgid "OpenGL Spectrum analyzer %s"
-msgstr "OpenGL Spektralni analizator %s"
+msgstr "OpenGL Спектрални aнализатор %s"
 
 #: Visualization/sanalyzer/spectrum.c:66
 #, c-format
 msgid "Simple spectrum analyzer %s"
-msgstr "Jednostavni spektralni analizator %s"
+msgstr "Jедноставни спектрални анализатор %s"
 
 #: Visualization/sanalyzer/spectrum.c:86
 msgid "Spectrum analyzer"
-msgstr "Spektralni analizator"
-
-#: gnomexmms/gnomexmms.c:537
-msgid "xmms applet"
-msgstr "xmms apleti"
-
-#: gnomexmms/gnomexmms.c:538
-msgid "Copyright (C) Anders Carlsson 1999), Hiroshi Takekawa 2001"
-msgstr "Sva prava(C) Anders Carlsson 1999), Hiroshi Takekawa 2001 "
-
-#: gnomexmms/gnomexmms.c:540
-msgid ""
-"A simple xmms gnome panel applet by Anders Carlsson.\n"
-"Some code is from wmxmms by Mikael Alm.\n"
-"Tooltip support by Hiroshi Takekawa."
-msgstr ""
-"Jednostavni xmms gnome panelni aplet. Kreirao: Anders Carlsson.\n"
-"Deo koda je iz wmxmms. Uradio: Mikael Alm.\n"
-"Podr�ka za Tooltip. Uradio: Hiroshi Takekawa."
-
-#: gnomexmms/gnomexmms.c:568
-msgid "About..."
-msgstr "O..."
-
-#: libxmms/titlestring.c:277
-#, fuzzy
-msgid "Performer/Artist"
-msgstr ""
-"= Izvo�a�/Umetnik\n"
-"= Album"
-
-#: libxmms/titlestring.c:278
-#, fuzzy
-msgid "Album"
-msgstr "Album:"
-
-#: libxmms/titlestring.c:279
-#, fuzzy
-msgid "Genre"
-msgstr "Vrsta:"
-
-#: libxmms/titlestring.c:280
-#, fuzzy
-msgid "File name"
-msgstr "Ime datoteke:"
-
-#: libxmms/titlestring.c:281
-msgid "File path"
-msgstr ""
-
-#: libxmms/titlestring.c:282
-#, fuzzy
-msgid "File extension"
-msgstr "Ekstenzija datoteka sa postavkama:"
+msgstr "Спектрални анализатор"
 
 #: libxmms/titlestring.c:283
-#, fuzzy
-msgid "Track name"
-msgstr "Imena pesama:"
+msgid "Performer/Artist"
+msgstr "Извођaч/Уметник"
 
 #: libxmms/titlestring.c:284
-#, fuzzy
-msgid "Track number"
-msgstr "Broj pesme:"
+msgid "Album"
+msgstr "Албум"
 
 #: libxmms/titlestring.c:285
-#, fuzzy
-msgid "Date"
-msgstr "Dens"
+msgid "Genre"
+msgstr "Врста"
 
 #: libxmms/titlestring.c:286
-#, fuzzy
-msgid "Year"
-msgstr "Godina:"
+msgid "File name"
+msgstr "Име датотекe"
 
 #: libxmms/titlestring.c:287
-#, fuzzy
+msgid "File path"
+msgstr "Путaња датотекe"
+
+#: libxmms/titlestring.c:288
+msgid "File extension"
+msgstr "Екстензиjа датотекe"
+
+#: libxmms/titlestring.c:289
+msgid "Track name"
+msgstr "Назив песме"
+
+#: libxmms/titlestring.c:290
+msgid "Track number"
+msgstr "Броj песмe"
+
+#: libxmms/titlestring.c:291
+msgid "Date"
+msgstr "Датум"
+
+#: libxmms/titlestring.c:292
+msgid "Year"
+msgstr "Година"
+
+#: libxmms/titlestring.c:293
 msgid "Comment"
-msgstr "Komnetar:"
+msgstr "Коментар"
 
 #: wmxmms/getopt.c:632 xmms/getopt.c:632
 #, c-format
 msgid "%s: option `%s' is ambiguous\n"
-msgstr "%s: opcija `%s' je dvosmislena\n"
+msgstr "%s: опциja `%s' je двосмисленa\n"
 
 #: wmxmms/getopt.c:656 xmms/getopt.c:656
 #, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
-msgstr "%s: opcija `--%s' ne dozvoljava argument\n"
+msgstr "%s: опциja `--%s' не дозвољава аргумент\n"
 
 #: wmxmms/getopt.c:661 xmms/getopt.c:661
 #, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
-msgstr "%s: opcija `%c%s' ne dozvoljava argument\n"
+msgstr "%s: опциja `%c%s' не дозвољава аргумент\n"
 
 #: wmxmms/getopt.c:678 wmxmms/getopt.c:851 xmms/getopt.c:678 xmms/getopt.c:851
 #, c-format
 msgid "%s: option `%s' requires an argument\n"
-msgstr "%s: opcija `%s' zahteva argument\n"
+msgstr "%s: опциja `%s' захтевa аргумент\n"
 
-#. --option
 #: wmxmms/getopt.c:707 xmms/getopt.c:707
 #, c-format
 msgid "%s: unrecognized option `--%s'\n"
-msgstr "%s: neprepoznata opcija `--%s'\n"
+msgstr "%s: непрепозната опциja `--%s'\n"
 
-#. +option or -option
 #: wmxmms/getopt.c:711 xmms/getopt.c:711
 #, c-format
 msgid "%s: unrecognized option `%c%s'\n"
-msgstr "%s: neprepoznata opcija `%c%s'\n"
+msgstr "%s: непрепозната опциja `%c%s'\n"
 
-#. 1003.2 specifies the format of this message.
 #: wmxmms/getopt.c:737 xmms/getopt.c:737
 #, c-format
 msgid "%s: illegal option -- %c\n"
-msgstr "%s: ilegalna opcija -- %c\n"
+msgstr "%s: илегална опциja -- %c\n"
 
 #: wmxmms/getopt.c:740 xmms/getopt.c:740
 #, c-format
 msgid "%s: invalid option -- %c\n"
-msgstr "%s: pogre�na opcija -- %c\n"
+msgstr "%s: погрeшна опциja -- %c\n"
 
-#. 1003.2 specifies the format of this message.
 #: wmxmms/getopt.c:770 wmxmms/getopt.c:900 xmms/getopt.c:770 xmms/getopt.c:900
 #, c-format
 msgid "%s: option requires an argument -- %c\n"
-msgstr "%s: opcija zahteva argument -- %c\n"
+msgstr "%s: опциjа захтева аргумент -- %c\n"
 
 #: wmxmms/getopt.c:817 xmms/getopt.c:817
 #, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
-msgstr "%s: opcija `-W %s' je dvosmislena\n"
+msgstr "%s: опциjа `-W %s' jе двосмисленa\n"
 
 #: wmxmms/getopt.c:835 xmms/getopt.c:835
 #, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
-msgstr "%s: opcija `-W %s' ne dozvoljava argument\n"
+msgstr "%s: опциjа `-W %s' не дозвољава аргумент\n"
 
-#: wmxmms/wmxmms.c:617
+#: wmxmms/wmxmms.c:667
 #, c-format
 msgid "ERROR: Couldn't find %s\n"
-msgstr "Gre�ka: Ne mogu da prona�en %s\n"
+msgstr "Грeшка: Не могу да пронaђен %s\n"
 
-#: wmxmms/wmxmms.c:652
+#: wmxmms/wmxmms.c:705
 #, c-format
 msgid ""
 "Usage: %s [options]\n"
@@ -2271,24 +2616,24 @@ msgid ""
 "-v, --version\t\tDisplay version information and exit\n"
 "\n"
 msgstr ""
-"Upotreba: %s [opcije]\n"
+"Употребa: %s [опциje]\n"
 "\n"
-"Opcije:\n"
+"Опциje:\n"
 "--------\n"
 "\n"
-"-h, --help\t\tPrikaz ovog teksta i izlaz.\n"
-"-g, --geometry\t\tPode�ava geometriju (primer +20+20)\n"
-"-s, --session\t\tPode�ava xmms sesija (Default: 0)\n"
-"-c, --command\t\tKomanda za startanje xmms-a (Default: xmms)\n"
-"-i, --icon\t\tPode�ava ikonu koju �e koristiti kada xmms nije u radu\n"
-"-n, --single\t\tDovoljan je jedan klik za startanje xmms\n"
-"-t, --title\t\tPrikazuje ime pesme kada je kursor u prozoru\n"
-"-v, --version\t\tPrikazuje informaciju verzije i izlazi\n"
+"-h, --help\t\tПрикaз овог текста и излаз.\n"
+"-g, --geometry\t\tПодешава геометриjу (пример +20+20)\n"
+"-s, --session\t\tПодeшава xmms сесиja (Default: 0)\n"
+"-c, --command\t\tКоманда за стартaњe xmms-a (Default: xmms)\n"
+"-i, --icon\t\tПодeшава икону коjу ће користити када xmms ниjе у раду\n"
+"-n, --single\t\tДовољан jе jедан клик за стартaње xmms\n"
+"-t, --title\t\tПрикaзуjе име песме кaда jе курсор у прозору\n"
+"-v, --version\t\tПрикaзуjе информациjу верзиjе и излази\n"
 "\n"
 
 #: xmms/about.c:28
 msgid "Main Programming:"
-msgstr "Glavno programiranje:"
+msgstr "Главно програмирaњe:"
 
 #: xmms/about.c:29
 msgid "Peter Alm"
@@ -2296,12 +2641,10 @@ msgstr "Peter Alm"
 
 #: xmms/about.c:31
 msgid "Additional Programming:"
-msgstr "Dodatno programiranje:"
+msgstr "Додатно програмирaњe:"
 
-#. for languages that can't display 'a ring' (�) replace it with "aa"
-#: xmms/about.c:33 xmms/about.c:130
-#, fuzzy
-msgid "H�vard Kv�len"
+#: xmms/about.c:33 xmms/about.c:181
+msgid "Haavard Kvaalen"
 msgstr "Haavard Kvaalen"
 
 #: xmms/about.c:34
@@ -2310,662 +2653,801 @@ msgstr "Derrik Pates"
 
 #: xmms/about.c:36
 msgid "With Additional Help:"
-msgstr "Dodatna pomo�:"
+msgstr "Додатна помоћ:"
 
 #: xmms/about.c:37
+msgid "Tony Arcieri"
+msgstr ""
+
+#: xmms/about.c:38
 msgid "Sean Atkinson"
 msgstr "Sean Atkinson"
 
-#: xmms/about.c:38 xmms/about.c:101
+#: xmms/about.c:39 xmms/about.c:136
 msgid "Jorn Baayen"
-msgstr ""
+msgstr "Jorn Baayen"
 
-#: xmms/about.c:39
+#: xmms/about.c:40
 msgid "James M. Cape"
 msgstr "James M. Cape"
 
-#: xmms/about.c:40
-msgid "Anders Carlsson (effect plugins)"
-msgstr "Anders Carlsson (Dodatci za efekte)"
-
 #: xmms/about.c:41
+msgid "Anders Carlsson (effect plugins)"
+msgstr "Anders Carlsson (Додaтци зa ефектe)"
+
+#: xmms/about.c:42
 msgid "Chun-Chung Chen (xfont patch)"
 msgstr "Chun-Chung Chen (xfont)"
 
-#: xmms/about.c:42
-msgid "Tim Ferguson (joystick plugin)"
-msgstr "Tim Ferguson (dodatak za dzojstik)"
-
 #: xmms/about.c:43
+msgid "Tim Ferguson (joystick plugin)"
+msgstr "Tim Ferguson (додатак за дзоjстик)"
+
+#: xmms/about.c:44
 msgid "Ben Gertzfield"
 msgstr "Ben Gertzfield"
 
-#: xmms/about.c:44
+#: xmms/about.c:45
 msgid "Vesa Halttunen"
 msgstr "Vesa Halttunen"
 
-#: xmms/about.c:45
+#: xmms/about.c:46
 msgid "Logan Hanks"
 msgstr "Logan Hanks"
 
-#: xmms/about.c:46
-msgid "Eric L. Hernes (FreeBSD patches)"
-msgstr "Eric L. Hernes (FreeBSD opcija)"
-
 #: xmms/about.c:47
+msgid "Eric L. Hernes (FreeBSD patches)"
+msgstr "Eric L. Hernes (FreeBSD опциja)"
+
+#: xmms/about.c:48
 msgid "Ville Herva"
 msgstr "Ville Herva"
 
-#: xmms/about.c:48
-msgid "Michael Hipp and others (MPG123 engine)"
-msgstr "Michael Hipp i drugi (MPG123 engine)"
+#: xmms/about.c:49
+msgid "Ian 'Hixie' Hickson"
+msgstr ""
 
-#. for languages that can't display 'a diaeresis' (�) replace it with "ae"
 #: xmms/about.c:50
-#, fuzzy
-msgid "Olle H�lln�s (compiling fixes)"
-msgstr "Olle Haellnaes (problemi  pri kompajliranju)"
+msgid "higway (MMX)"
+msgstr "аутопут (MMX)"
 
 #: xmms/about.c:51
+msgid "Michael Hipp and others (MPG123 engine)"
+msgstr "Michael Hipp и други (MPG123 engine)"
+
+#: xmms/about.c:53
+msgid "Olle Hallnas (compiling fixes)"
+msgstr "Olle Hallnas (проблеми  при компаjлирaњу)"
+
+#: xmms/about.c:55
+msgid "Matti Hamalainen"
+msgstr ""
+
+#: xmms/about.c:56
 msgid "David Jacoby"
 msgstr "David Jacoby"
 
-#: xmms/about.c:52
-msgid "Osamu Kayasono (3DNow!)"
-msgstr "Osamu Kayasono (3DNow!)"
+#: xmms/about.c:57
+msgid "Osamu Kayasono (3DNow!/MMX)"
+msgstr "Osamu Kayasono (3DNow!/MMX)"
 
-#: xmms/about.c:53
+#: xmms/about.c:58
 msgid "Lyle B Kempler"
 msgstr "Lyle B Kempler"
 
-#: xmms/about.c:54
+#: xmms/about.c:59
 msgid "J. Nick Koston (MikMod plugin)"
-msgstr "J. Nick Koston (MikMod dodatak)"
+msgstr "J. Nick Koston (MikMod додатак)"
 
-#: xmms/about.c:55
+#: xmms/about.c:60
 msgid "Aaron Lehmann"
 msgstr "Aaron Lehmann"
 
-#: xmms/about.c:56
+#: xmms/about.c:61
 msgid "Johan Levin (echo + stereo plugin)"
-msgstr "Johan Levin (dodatak za echo + stereo)"
+msgstr "Johan Levin (додатак за echo + stereo)"
 
-#: xmms/about.c:57
+#: xmms/about.c:62
 msgid "Eric Lindvall"
 msgstr "Eric Lindvall"
 
-#: xmms/about.c:58 xmms/about.c:104
+#: xmms/about.c:63 xmms/about.c:154
 msgid "Colin Marquardt"
 msgstr "Colin Marquardt"
 
-#: xmms/about.c:59
+#: xmms/about.c:64
 msgid "Willem Monsuwe"
 msgstr "Willem Monsuwe"
 
-#: xmms/about.c:60
-msgid "John Riddoch (Solaris plugin)"
-msgstr "John Riddoch (Dodatak za Solaris)"
+#: xmms/about.c:65
+msgid "Heikki Orsila"
+msgstr ""
 
-#: xmms/about.c:61
+#: xmms/about.c:66
+msgid "Gian-Carlo Pascutto"
+msgstr ""
+
+#: xmms/about.c:67
+msgid "John Riddoch (Solaris plugin)"
+msgstr "John Riddoch (Додатак за Solaris)"
+
+#: xmms/about.c:68
+msgid "Josip Rodin"
+msgstr "Josip Rodin"
+
+#: xmms/about.c:69
 msgid "Pablo Saratxaga (i18n)"
 msgstr "Pablo Saratxaga (i18n)"
 
-#: xmms/about.c:62
+#: xmms/about.c:70
 msgid "Carl van Schaik (pro logic plugin)"
-msgstr "Carl van Schaik (dodatak za pro logic)"
+msgstr "Carl van Schaik (додатак за pro logic)"
 
-#. for languages that can't display 'o diaeresis' (�) replace it with "oe"
-#: xmms/about.c:64
-msgid "J�rg Schuler"
+#: xmms/about.c:72
+msgid "Joerg Schuler"
 msgstr "Joerg Schuler"
 
-#: xmms/about.c:65
+#: xmms/about.c:73
 msgid "Charles Sielski (irman plugin)"
-msgstr "Charles Sielski (dodatak za irman)"
+msgstr "Charles Sielski (додатак за irman)"
 
-#: xmms/about.c:66 xmms/about.c:131
+#: xmms/about.c:74 xmms/about.c:182
 msgid "Espen Skoglund"
 msgstr "Espen Skoglund"
 
-#: xmms/about.c:67
+#: xmms/about.c:75
+msgid "Matthieu Sozeau (ALSA plugin)"
+msgstr ""
+
+#: xmms/about.c:76
 msgid "Kimura Takuhiro (3DNow!)"
 msgstr "Kimura Takuhiro (3DNow!)"
 
-#: xmms/about.c:68
+#: xmms/about.c:77
 msgid "Zinx Verituse"
 msgstr "Zinx Verituse"
 
-#: xmms/about.c:69
-#, fuzzy
+#: xmms/about.c:78
 msgid "Ryan Weaver (RPMs among other things)"
-msgstr "Ryan Weaver (RedHat RPM-ovi izme�u ostalog)"
+msgstr "Ryan Weaver (RPM-ови измeђу осталог)"
 
-#: xmms/about.c:70
+#: xmms/about.c:79
 msgid "Chris Wilson"
 msgstr "Chris Wilson"
 
-#: xmms/about.c:71
+#: xmms/about.c:80
 msgid "Dave Yearke"
 msgstr "Dave Yearke"
 
-#: xmms/about.c:72
+#: xmms/about.c:81
 msgid "Stephan K. Zitz"
 msgstr "Stephan K. Zitz"
 
-#: xmms/about.c:74
-msgid "Homepage and Graphics:"
-msgstr "Internet sajt i grafika:"
+#: xmms/about.c:83
+msgid "Default skin:"
+msgstr "Основна кошуљица:"
 
-#: xmms/about.c:75 xmms/about.c:147
+#: xmms/about.c:84
+msgid "Leonard \"Blayde\" Tan"
+msgstr "Leonard \"Blayde\" Tan"
+
+#: xmms/about.c:85
+msgid "Robin Sylvestre (Equalizer and Playlist)"
+msgstr "Robin Sylvestre (Еквилајѕер и Листа песама)"
+
+#: xmms/about.c:86
+#, fuzzy
+msgid "Thomas Nilsson (New titles and cleanups)"
+msgstr "Thomas Nilsson (Нови наслови,и пречишћени код)"
+
+#: xmms/about.c:88
+msgid "Homepage and Graphics:"
+msgstr "Интернет саjт и графикa:"
+
+#: xmms/about.c:89 xmms/about.c:206
 msgid "Thomas Nilsson"
 msgstr "Thomas Nilsson"
 
-#: xmms/about.c:77
+#: xmms/about.c:91
 msgid "Support and Docs:"
-msgstr "Podr�ka i dokumentacija:"
+msgstr "Подршка и документациjа:"
 
-#. for languages that can't display 'a diaeresis' (�) replace it with "ae"
-#: xmms/about.c:79 xmms/about.c:146
-#, fuzzy
-msgid "Olle H�lln�s"
-msgstr "Olle Haellnaes"
-
-#: xmms/about.c:84
-msgid "Afrikaans:"
-msgstr ""
-
-#. for languages that can't display 'e acute' (�) replace it with "e"
-#: xmms/about.c:86
-msgid "Schalk W. Cronj� "
-msgstr ""
-
-#: xmms/about.c:87
-msgid "Azerbaijani:"
-msgstr ""
-
-#: xmms/about.c:87
-msgid "Vasif Ismailoglu"
-msgstr ""
-
-#: xmms/about.c:88
-msgid "Basque:"
-msgstr ""
-
-#: xmms/about.c:88
-msgid "I�igo Salvador Azurmendi"
-msgstr ""
-
-#: xmms/about.c:89
-msgid "Brazilian Portuguese:"
-msgstr ""
-
-#: xmms/about.c:89
-msgid "Juan Carlos Castro y Castro"
-msgstr ""
-
-#: xmms/about.c:90
-#, fuzzy
-msgid "Bulgarian:"
-msgstr "Baferovanje:"
-
-#: xmms/about.c:90
-msgid "Yovko D. Lambrev"
-msgstr ""
-
-#: xmms/about.c:91
-msgid "Catalan:"
-msgstr ""
-
-#: xmms/about.c:91
-msgid "Quico Llach"
-msgstr ""
-
-#: xmms/about.c:92
-#, fuzzy
-msgid "Chinese:"
-msgstr "Kanali:"
-
-#: xmms/about.c:92
-#, fuzzy
-msgid "Chun-Chung Chen"
-msgstr "Chun-Chung Chen (xfont)"
-
-#: xmms/about.c:92
-msgid "Jouston Huang"
-msgstr ""
-
-#: xmms/about.c:93
-msgid "Andrew Lee"
-msgstr ""
-
-#: xmms/about.c:93
-msgid "Chih-Wei Huang"
-msgstr ""
-
-#: xmms/about.c:93
-msgid "Danny Zeng"
-msgstr ""
-
-#: xmms/about.c:94
-msgid "Croatian:"
-msgstr ""
-
-#: xmms/about.c:94
-msgid "Vlatko Kosturjak"
-msgstr ""
-
-#: xmms/about.c:94
-msgid "Vladimir Vuksan"
-msgstr ""
-
-#: xmms/about.c:95
-msgid "Czech:"
-msgstr ""
-
-#. for languages that can't display 'i acute' (�) replace it with "i"
-#: xmms/about.c:97
-msgid "Vladim�r Marek"
-msgstr ""
+#: xmms/about.c:93 xmms/about.c:205
+msgid "Olle Hallnas"
+msgstr "Olle Hallnas"
 
 #: xmms/about.c:98
-msgid "Radek Vybiral"
-msgstr ""
-
-#: xmms/about.c:99
-msgid "Danish:"
-msgstr ""
-
-#: xmms/about.c:99
-msgid "Nikolaj Berg Amondsen"
-msgstr ""
-
-#: xmms/about.c:99
-msgid "Troels Liebe Bentsen"
-msgstr ""
+msgid "Afrikaans:"
+msgstr "Афрички:"
 
 #: xmms/about.c:100
-msgid "Kenneth Christiansen"
-msgstr ""
-
-#: xmms/about.c:100
-msgid "Keld Simonsen"
-msgstr ""
+msgid "Schalk W. Cronje"
+msgstr "Schalk W. Cronjé"
 
 #: xmms/about.c:101
 #, fuzzy
-msgid "Dutch:"
-msgstr "Duet"
-
-#: xmms/about.c:101
-msgid "Wilmer van der Gaast"
-msgstr ""
+msgid "Albanian:"
+msgstr "Album gain:"
 
 #: xmms/about.c:102
-msgid "Tom Laermans"
-msgstr ""
+#, fuzzy
+msgid "Naim Daka"
+msgstr "Nazmi Savga"
 
 #: xmms/about.c:103
-msgid "Esperanto:"
-msgstr ""
-
-#: xmms/about.c:103
-msgid "D. Dale Gulledge"
-msgstr ""
-
-#: xmms/about.c:104
-#, fuzzy
-msgid "German:"
-msgstr "Vrsta:"
-
-#: xmms/about.c:104
-msgid "Stefan Siegel"
-msgstr ""
+msgid "Azerbaijani:"
+msgstr "Азербејџански:"
 
 #: xmms/about.c:105
-#, fuzzy
-msgid "Greek:"
-msgstr "Vrsta:"
-
-#: xmms/about.c:105
-msgid "Kyritsis Athanasios"
-msgstr ""
-
-#: xmms/about.c:106
-msgid "French:"
-msgstr ""
-
-#: xmms/about.c:106
-msgid "Arnaud Boissinot"
-msgstr ""
-
-#: xmms/about.c:106
-msgid "Eric Fernandez-Bellot"
+msgid "Metin Amiroff"
 msgstr ""
 
 #: xmms/about.c:107
-msgid "Galician:"
-msgstr ""
+msgid "Vasif Ismailoglu"
+msgstr "Vasif Ismailoglu"
 
-#. for languages that can't display 'i acute' (�) replace it with "i"
-#: xmms/about.c:109
-msgid "Alberto Garc�a"
-msgstr ""
+#: xmms/about.c:108
+msgid "Basque:"
+msgstr "Баскијски:"
 
-#. for languages that can't display 'a acute' (�) replace it with "a"
+#: xmms/about.c:110
+msgid "Inigo Salvador Azurmendi"
+msgstr "Iñigo Salvador Azurmendi"
+
 #: xmms/about.c:111
-msgid "David Fern�ndez Vaamonde"
-msgstr ""
-
-#: xmms/about.c:112
-msgid "Hungarian:"
-msgstr ""
-
-#: xmms/about.c:112
-msgid "Arpad Biro"
-msgstr ""
-
-#: xmms/about.c:113
-msgid "Indonesian:"
-msgstr ""
-
-#: xmms/about.c:113
-msgid "Budi Rachmanto"
-msgstr ""
-
-#: xmms/about.c:114
 #, fuzzy
-msgid "Irish:"
-msgstr "Umetnik:"
+msgid "Belarusian:"
+msgstr "Баферовaњe:"
 
-#: xmms/about.c:114
-msgid "Alastair McKinstry"
+#: xmms/about.c:112
+msgid "Smaliakou Zmicer"
 msgstr ""
 
-#: xmms/about.c:115
-msgid "Italian:"
-msgstr ""
+#: xmms/about.c:113
+#, fuzzy
+msgid "Bosnian:"
+msgstr "Румунски:"
 
 #: xmms/about.c:115
-msgid "Paolo Lorenzin"
+msgid "Amila Akagic"
 msgstr ""
 
 #: xmms/about.c:116
-msgid "Japanese:"
+msgid "Grabovica Eldin"
 msgstr ""
 
 #: xmms/about.c:116
-msgid "Hiroshi Takekawa"
+msgid "Vedran Ljubovic"
 msgstr ""
 
 #: xmms/about.c:117
-msgid "Korean:"
-msgstr ""
-
-#: xmms/about.c:117
-msgid "Jaegeum Choe"
-msgstr ""
-
-#: xmms/about.c:117
-msgid "Sang-Jin Hwang"
-msgstr ""
+msgid "Brazilian Portuguese:"
+msgstr "Бразилски-португалски:"
 
 #: xmms/about.c:118
-msgid "Byeong-Chan Kim"
-msgstr ""
-
-#: xmms/about.c:118
-msgid "Man-Yong Lee"
-msgstr ""
+msgid "Juan Carlos Castro y Castro"
+msgstr "Juan Carlos Castro y Castro"
 
 #: xmms/about.c:119
-msgid "Lithuanian:"
-msgstr ""
+msgid "Bulgarian:"
+msgstr "Бугарски:"
 
-#: xmms/about.c:119
-msgid "Gediminas Paulauskas"
+#: xmms/about.c:120
+msgid "Boyan Ivanov"
 msgstr ""
 
 #: xmms/about.c:120
-#, fuzzy
-msgid "Latvian:"
-msgstr "Latino"
+msgid "Yovko D. Lambrev"
+msgstr "Yovko D. Lambrev"
 
-#. I18N: The "n" should be replaced with 'n cedilla' (�) if it
-#. can be displayed
-#. I18N: The last "s" should be replaced with 's caron' (�) if
-#. it can be displayed
-#: xmms/about.c:125
-msgid "Juris Kudins"
+#: xmms/about.c:121
+msgid "Catalan:"
+msgstr "Каталонски:"
+
+#: xmms/about.c:122
+msgid "Albert Astals Cid"
 msgstr ""
+
+#: xmms/about.c:122
+msgid "Quico Llach"
+msgstr "Quico Llach"
+
+#: xmms/about.c:122 xmms/about.c:201
+msgid "Jordi Mallach"
+msgstr "Jordi Mallach"
+
+#: xmms/about.c:123
+msgid "Chinese:"
+msgstr "Кинески:"
+
+#: xmms/about.c:124
+msgid "Chun-Chung Chen"
+msgstr "Chun-Chung Chen"
+
+#: xmms/about.c:124
+msgid "Jouston Huang"
+msgstr "Jouston Huang"
+
+#: xmms/about.c:124
+msgid "Andrew Lee"
+msgstr "Andrew Lee"
+
+#: xmms/about.c:125
+msgid "Chih-Wei Huang"
+msgstr "Chih-Wei Huang"
+
+#: xmms/about.c:125
+msgid "Shiyu Tang"
+msgstr ""
+
+#: xmms/about.c:125
+msgid "Danny Zeng"
+msgstr "Danny Zeng"
 
 #: xmms/about.c:126
-msgid "Vitauts Stochka"
-msgstr ""
+msgid "Croatian:"
+msgstr "Хрватски:"
 
 #: xmms/about.c:127
-msgid "Norwegian:"
-msgstr ""
+msgid "Vlatko Kosturjak"
+msgstr "Vlatko Kosturjak"
 
-#. for languages that can't display 'o slash' (�) replace it with "oe"
-#: xmms/about.c:129
-msgid "Andreas Bergstr�m"
-msgstr ""
+#: xmms/about.c:127
+msgid "Vladimir Vuksan"
+msgstr "Vladimir Vuksan"
+
+#: xmms/about.c:128
+msgid "Czech:"
+msgstr "Чешки:"
 
 #: xmms/about.c:130
-msgid "Terje Bjerkelia"
-msgstr ""
+msgid "Vladimir Marek"
+msgstr "Vladimír Marek"
 
-#: xmms/about.c:130
-msgid "Roy-Magne Mo"
-msgstr ""
-
-#: xmms/about.c:132
-msgid "Polish:"
-msgstr ""
+#: xmms/about.c:131
+msgid "Radek Vybiral"
+msgstr "Radek Vybiral"
 
 #: xmms/about.c:132
-msgid "Grzegorz Kowal"
-msgstr ""
+msgid "Danish:"
+msgstr "Дански:"
 
 #: xmms/about.c:133
-#, fuzzy
-msgid "Portuguese:"
-msgstr "Port:"
+msgid "Nikolaj Berg Amondsen"
+msgstr "Nikolaj Berg Amondsen"
 
 #: xmms/about.c:133
-msgid "Jorge Costa"
-msgstr ""
+msgid "Troels Liebe Bentsen"
+msgstr "Troels Liebe Bentsen"
 
 #: xmms/about.c:134
-msgid "Romanian:"
-msgstr ""
+msgid "Kenneth Christiansen"
+msgstr "Kenneth Christiansen"
 
 #: xmms/about.c:134
-msgid "Florin Grad"
+msgid "Keld Simonsen"
+msgstr "Keld Simonsen"
+
+#: xmms/about.c:135
+msgid "Dutch:"
+msgstr "Холандски:"
+
+#: xmms/about.c:136
+msgid "Bart Coppens"
 msgstr ""
 
-#. I18N: The "s" should be replaced with 's cedilla' (�) if it
-#. can be displayed
+#: xmms/about.c:136
+msgid "Wilmer van der Gaast"
+msgstr "Wilmer van der Gaast"
+
 #: xmms/about.c:137
-msgid "Misu Moldovan"
-msgstr ""
+msgid "Tom Laermans"
+msgstr "Tom Laermans"
 
 #: xmms/about.c:138
-msgid "Russian:"
-msgstr ""
-
-#: xmms/about.c:138
-msgid "Valek Filippov"
-msgstr ""
-
-#: xmms/about.c:138
-msgid "Alexandr P. Kovalenko"
-msgstr ""
+msgid "Esperanto:"
+msgstr "Есперанто:"
 
 #: xmms/about.c:139
-msgid "Maxim Koshelev"
-msgstr ""
-
-#: xmms/about.c:139
-msgid "Aleksey Smirnov"
-msgstr ""
+msgid "D. Dale Gulledge"
+msgstr "D. Dale Gulledge"
 
 #: xmms/about.c:140
-msgid "Serbian:"
-msgstr ""
-
-#: xmms/about.c:140
-msgid "Tomislav Jankovic"
-msgstr ""
+#, fuzzy
+msgid "Estonian:"
+msgstr "Румунски:"
 
 #: xmms/about.c:141
-msgid "Slovak:"
-msgstr ""
-
-#: xmms/about.c:141
-msgid "Pavol Cvengros"
+msgid "Marek Laane"
 msgstr ""
 
 #: xmms/about.c:142
-msgid "Tomas Hornocek"
-msgstr ""
-
-#: xmms/about.c:142
-msgid "Jan Matis"
-msgstr ""
+#, fuzzy
+msgid "Finnish:"
+msgstr "Дански:"
 
 #: xmms/about.c:143
-msgid "Spanish:"
-msgstr ""
+#, fuzzy
+msgid "Thomas Backlund"
+msgstr "Thomas Nilsson"
 
 #: xmms/about.c:143
-msgid "Fabian Mandelbaum"
+msgid "Matias Griese"
 msgstr ""
 
-#: xmms/about.c:143
-msgid "Jordi Mallach"
-msgstr ""
+#: xmms/about.c:144
+msgid "French:"
+msgstr "Француски:"
 
-#. for languages that can't display 'i acute' (�) replace it with "i"
 #: xmms/about.c:145
-msgid "Juan Manuel Garc�a Molina"
-msgstr ""
+msgid "Arnaud Boissinot"
+msgstr "Arnaud Boissinot"
+
+#: xmms/about.c:145
+msgid "Eric Fernandez-Bellot"
+msgstr "Eric Fernandez-Bellot"
 
 #: xmms/about.c:146
-msgid "Swedish:"
-msgstr ""
+msgid "Galician:"
+msgstr "Галицијански:"
 
-#: xmms/about.c:146
-msgid "David Hedbor"
-msgstr ""
+#: xmms/about.c:148
+msgid "Alberto Garcia"
+msgstr "Alberto García"
 
-#: xmms/about.c:147
+#: xmms/about.c:150
+msgid "David Fernandez Vaamonde"
+msgstr "David Fernández Vaamonde"
+
+#: xmms/about.c:151
 #, fuzzy
-msgid "Christian Rose"
-msgstr "Hri��anski Rok"
+msgid "Georgian:"
+msgstr "Немачки:"
 
-#: xmms/about.c:147
-msgid "Fuad Sabanovic"
+#: xmms/about.c:152
+msgid "Aiet Kolkhi"
 msgstr ""
 
-#: xmms/about.c:148
-msgid "Tajik:"
-msgstr ""
+#: xmms/about.c:153
+msgid "German:"
+msgstr "Немачки:"
 
-#: xmms/about.c:148
-msgid "Trinh Minh Thanh"
-msgstr ""
-
-#: xmms/about.c:149
-msgid "Thai:"
-msgstr ""
-
-#: xmms/about.c:149
-msgid "Supphachoke Suntiwichaya"
-msgstr ""
-
-#: xmms/about.c:150
-msgid "Turkish:"
-msgstr ""
-
-#: xmms/about.c:150
-msgid "Nazmi Savga"
-msgstr ""
-
-#. I18N: The "i" should be replaced with 'dotless i' (�) if it
-#. can be displayed
-#. for languages that can't display 'O diaeresis' (�) replace it with "O"
 #: xmms/about.c:154
-msgid "�mer Fadil Usta"
-msgstr ""
+msgid "Stefan Siegel"
+msgstr "Stefan Siegel"
 
 #: xmms/about.c:155
-msgid "Ukrainian:"
-msgstr ""
-
-#: xmms/about.c:155
-msgid "Dmytro Koval'ov"
-msgstr ""
+msgid "Greek:"
+msgstr "Грчки:"
 
 #: xmms/about.c:156
+msgid "Kyritsis Athanasios"
+msgstr "Kyritsis Athanasios"
+
+#: xmms/about.c:157
+msgid "Hungarian:"
+msgstr "Маѓарски:"
+
+#: xmms/about.c:158
+msgid "Arpad Biro"
+msgstr "Arpad Biro"
+
+#: xmms/about.c:159
+msgid "Indonesian:"
+msgstr "Индонезијански:"
+
+#: xmms/about.c:160
+msgid "Budi Rachmanto"
+msgstr "Budi Rachmanto"
+
+#: xmms/about.c:161
+msgid "Irish:"
+msgstr "Ирски:"
+
+#: xmms/about.c:162
+msgid "Alastair McKinstry"
+msgstr "Alastair McKinstry"
+
+#: xmms/about.c:163
+msgid "Italian:"
+msgstr "Италијански:"
+
+#: xmms/about.c:164
+msgid "Paolo Lorenzin"
+msgstr "Paolo Lorenzin"
+
+#: xmms/about.c:164
+msgid "Daniele Pighin"
+msgstr ""
+
+#: xmms/about.c:165
+msgid "Japanese:"
+msgstr "Јапански:"
+
+#: xmms/about.c:166
+msgid "Hiroshi Takekawa"
+msgstr "Hiroshi Takekawa"
+
+#: xmms/about.c:167
+msgid "Korean:"
+msgstr "Корејански:"
+
+#: xmms/about.c:168
+msgid "Jaegeum Choe"
+msgstr "Jaegeum Choe"
+
+#: xmms/about.c:168
+msgid "Sang-Jin Hwang"
+msgstr "Sang-Jin Hwang"
+
+#: xmms/about.c:168
+msgid "Byeong-Chan Kim"
+msgstr "Byeong-Chan Kim"
+
+#: xmms/about.c:169
+msgid "Man-Yong Lee"
+msgstr "Man-Yong Lee"
+
+#: xmms/about.c:170
+msgid "Lithuanian:"
+msgstr "Литвански:"
+
+#: xmms/about.c:171
+msgid "Gediminas Paulauskas"
+msgstr "Gediminas Paulauskas"
+
+#: xmms/about.c:172
+msgid "Latvian:"
+msgstr "Летонски:"
+
+#: xmms/about.c:174
+msgid "Juris Kudins"
+msgstr "Juris Kudins"
+
+#: xmms/about.c:175
+msgid "Vitauts Stochka"
+msgstr "Vitauts Stochka"
+
+#: xmms/about.c:176
 #, fuzzy
-msgid "Vietnamese:"
-msgstr "Ime datoteke:"
+msgid "Malay:"
+msgstr "Пусти"
 
-#: xmms/about.c:156
+#: xmms/about.c:177
+msgid "Muhammad Najmi Ahmad Zabidi"
+msgstr ""
+
+#: xmms/about.c:178
+msgid "Norwegian:"
+msgstr "Норвешки:"
+
+#: xmms/about.c:180
+msgid "Andreas Bergstrom"
+msgstr "Andreas Bergstrøm"
+
+#: xmms/about.c:181
+msgid "Terje Bjerkelia"
+msgstr "Terje Bjerkelia"
+
+#: xmms/about.c:181
+msgid "Roy-Magne Mo"
+msgstr "Roy-Magne Mo"
+
+#: xmms/about.c:183
+msgid "Polish:"
+msgstr "Пољски:"
+
+#: xmms/about.c:184
+msgid "Grzegorz Kowal"
+msgstr "Grzegorz Kowal"
+
+#: xmms/about.c:185
+msgid "Portuguese:"
+msgstr "Португалски:"
+
+#: xmms/about.c:186
+msgid "Jorge Costa"
+msgstr "Jorge Costa"
+
+#: xmms/about.c:187
+msgid "Romanian:"
+msgstr "Румунски:"
+
+#: xmms/about.c:188
+msgid "Florin Grad"
+msgstr "Florin Grad"
+
+#: xmms/about.c:190
+msgid "Misu Moldovan"
+msgstr "Mişu Moldovan"
+
+#: xmms/about.c:191
+msgid "Russian:"
+msgstr "Руски:"
+
+#: xmms/about.c:192
+msgid "Valek Filippov"
+msgstr "Валек Филипов"
+
+#: xmms/about.c:192
+msgid "Alexandr P. Kovalenko"
+msgstr "Александр П. Коваленко"
+
+#: xmms/about.c:193
+msgid "Maxim Koshelev"
+msgstr "Максим Кошелев"
+
+#: xmms/about.c:193
+msgid "Aleksey Smirnov"
+msgstr "Aleksey Smirnov"
+
+#: xmms/about.c:194
+msgid "Serbian:"
+msgstr "Српски:"
+
+#: xmms/about.c:195
+msgid "Tomislav Jankovic"
+msgstr "Tomislav Jankovic"
+
+#: xmms/about.c:196
+msgid "Slovak:"
+msgstr "Словачки:"
+
+#: xmms/about.c:197
+msgid "Pavol Cvengros"
+msgstr "Pavol Cvengros"
+
+#: xmms/about.c:198
+#, fuzzy
+msgid "Slovenian:"
+msgstr "Словачки:"
+
+#: xmms/about.c:199
+msgid "Tadej Panjtar"
+msgstr ""
+
+#: xmms/about.c:199
+msgid "Tomas Hornocek"
+msgstr "Tomas Hornocek"
+
+#: xmms/about.c:199
+msgid "Jan Matis"
+msgstr "Jan Matis"
+
+#: xmms/about.c:200
+msgid "Spanish:"
+msgstr "Шпански:"
+
+#: xmms/about.c:201
+msgid "Fabian Mandelbaum"
+msgstr "Fabian Mandelbaum"
+
+#: xmms/about.c:203
+msgid "Juan Manuel Garcia Molina"
+msgstr "Juan Manuel García Molina"
+
+#: xmms/about.c:204
+msgid "Swedish:"
+msgstr "Шведски:"
+
+#: xmms/about.c:205
+msgid "David Hedbor"
+msgstr "David Hedbor"
+
+#: xmms/about.c:206
+msgid "Christian Rose"
+msgstr "Christian Rose"
+
+#: xmms/about.c:206
+msgid "Fuad Sabanovic"
+msgstr "Fuad Sabanovic"
+
+#: xmms/about.c:207
+msgid "Tajik:"
+msgstr "Tajik:"
+
+#: xmms/about.c:208
 msgid "Roger Kovacs"
-msgstr ""
+msgstr "Roger Kovacs"
 
-#: xmms/about.c:156
+#: xmms/about.c:208
 msgid "Dilshod Marupov"
+msgstr "Dilshod Marupov"
+
+#: xmms/about.c:209
+msgid "Thai:"
+msgstr "Thai:"
+
+#: xmms/about.c:210
+msgid "Pramote Khuwijitjaru"
 msgstr ""
 
-#: xmms/about.c:157
+#: xmms/about.c:210
+msgid "Supphachoke Suntiwichaya"
+msgstr "Supphachoke Suntiwichaya"
+
+#: xmms/about.c:211
+msgid "Turkish:"
+msgstr "Турски:"
+
+#: xmms/about.c:212
+msgid "Nazmi Savga"
+msgstr "Nazmi Savga"
+
+#: xmms/about.c:214
+msgid "Omer Fadil Usta"
+msgstr "Ömer Fadıl Usta"
+
+#: xmms/about.c:215
+msgid "Ukrainian:"
+msgstr "Украјински:"
+
+#: xmms/about.c:216
+msgid "Dmytro Koval'ov"
+msgstr "Дмитро Ковальов"
+
+#: xmms/about.c:217
+msgid "Uzbek:"
+msgstr ""
+
+#: xmms/about.c:218
+msgid "Mashrab Kuvatov"
+msgstr ""
+
+#: xmms/about.c:219
+msgid "Vietnamese:"
+msgstr "Вијетнамски:"
+
+#: xmms/about.c:220
+msgid "Trinh Minh Thanh"
+msgstr "Trinh Minh Thanh"
+
+#: xmms/about.c:221
 msgid "Walloon:"
-msgstr ""
-
-#: xmms/about.c:157
-msgid "Lucyin Mahin"
-msgstr ""
-
-#: xmms/about.c:157
-#, fuzzy
-msgid "Pablo Saratxaga"
-msgstr "Pablo Saratxaga (i18n)"
+msgstr "Валонски:"
 
 #: xmms/about.c:222
-msgid "About XMMS"
-msgstr "O XMMS"
+msgid "Lucyin Mahin"
+msgstr "Lucyin Mahin"
 
-#: xmms/about.c:252
-#, c-format
-msgid "XMMS %s - Cross platform multimedia player"
-msgstr "XMMS %s - Multi platformni multimedijalni plejer"
+#: xmms/about.c:222
+msgid "Pablo Saratxaga"
+msgstr "Pablo Saratxaga"
 
-#: xmms/about.c:259
-msgid "Copyright (C) 1997-2001 4front Technologies"
-msgstr "Sva prava (C) 1997-2001 4front Technologies"
+#: xmms/about.c:223
+#, fuzzy
+msgid "Welsh:"
+msgstr "Пољски:"
 
-#: xmms/about.c:268
-msgid "Credits"
-msgstr "Napomene"
-
-#: xmms/about.c:273
-msgid "Translators"
+#: xmms/about.c:224
+msgid "Rhoslyn Prys"
 msgstr ""
 
-#.
-#. * This is ugly.
-#. * Change the Cancel buttons caption to Close.
-#.
-#: xmms/about.c:279 xmms/equalizer.c:1404 xmms/equalizer.c:1408
-#: xmms/main.c:1757 xmms/skinwin.c:86 xmms/util.c:844
-msgid "Close"
-msgstr "Zatvori"
+#: xmms/about.c:288
+msgid "About XMMS"
+msgstr "О XММS"
+
+#: xmms/about.c:320
+#, c-format
+msgid "XMMS %s - Cross platform multimedia player"
+msgstr "XMMS %s - Мулти платформни мултимедиjални плеjер"
+
+#: xmms/about.c:327
+#, fuzzy
+msgid "Copyright (C) 1997-2004 4Front Technologies and The XMMS Team"
+msgstr "Сва права (C) 1997-2004 4Front Technologies"
+
+#: xmms/about.c:337
+msgid "Credits"
+msgstr "Напоменe"
+
+#: xmms/about.c:342
+msgid "Translators"
+msgstr "Преводиоци"
 
 #: xmms/eq_slider.c:61
 msgid "PREAMP"
-msgstr "PREAMP"
+msgstr "ПРЕАМП"
 
 #: xmms/eq_slider.c:61
 msgid "60HZ"
@@ -3007,152 +3489,151 @@ msgstr "14KHZ"
 msgid "16KHZ"
 msgstr "16KHZ"
 
-#: xmms/equalizer.c:79
-msgid "/Load"
-msgstr "/U�itaj"
-
 #: xmms/equalizer.c:80
-msgid "/Load/Preset"
-msgstr "/U�itaj/postavke za EQ"
+msgid "/Load"
+msgstr "/Учитаj"
 
 #: xmms/equalizer.c:81
-msgid "/Load/Auto-load preset"
-msgstr "/U�itaj/Autou�itavanje postavke za EQ"
+msgid "/Load/Preset"
+msgstr "/Учитаj/поставке за ЕQ"
 
 #: xmms/equalizer.c:82
+msgid "/Load/Auto-load preset"
+msgstr "/Учитаj/Аутоучитавaње поставке за ЕQ"
+
+#: xmms/equalizer.c:83
 msgid "/Load/Default"
-msgstr "/U�itaj/Default"
+msgstr "/Учитаj/Default"
 
-#: xmms/equalizer.c:83 xmms/equalizer.c:85
+#: xmms/equalizer.c:84 xmms/equalizer.c:86
 msgid "/Load/-"
-msgstr "/U�itaj/-"
+msgstr "/Учитаj/-"
 
-#: xmms/equalizer.c:84
+#: xmms/equalizer.c:85
 msgid "/Load/Zero"
-msgstr "/U�itaj/Nula"
-
-#: xmms/equalizer.c:86
-msgid "/Load/From file"
-msgstr "/U�itaj/Iz datoteke"
+msgstr "/Учитаj/Нулa"
 
 #: xmms/equalizer.c:87
-msgid "/Load/From WinAMP EQF file"
-msgstr "/U�itaj/Iz WinAMP EQF datoteke"
+msgid "/Load/From file"
+msgstr "/Учитаj/Из датотeкe"
 
 #: xmms/equalizer.c:88
-msgid "/Import"
-msgstr ""
+msgid "/Load/From WinAMP EQF file"
+msgstr "/Учитаj/Из WinAMP EQF датотекe"
 
 #: xmms/equalizer.c:89
-msgid "/Import/WinAMP Presets"
-msgstr ""
+msgid "/Import"
+msgstr "/Импортуј"
 
 #: xmms/equalizer.c:90
-msgid "/Save"
-msgstr "Sa�uvaj"
+msgid "/Import/WinAMP Presets"
+msgstr "/Импортуј/WinAMP еквилајзер.поставке"
 
 #: xmms/equalizer.c:91
-msgid "/Save/Preset"
-msgstr "/Sa�uvaj/postavke za EQ"
+msgid "/Save"
+msgstr "/Сaчуваj"
 
 #: xmms/equalizer.c:92
-msgid "/Save/Auto-load preset"
-msgstr "/Sa�uvaj/Autou�itavanje postavke za EQ"
+msgid "/Save/Preset"
+msgstr "/Сaчуваj/поставке за ЕQ"
 
 #: xmms/equalizer.c:93
-msgid "/Save/Default"
-msgstr "/Sa�uvaj/Default"
+msgid "/Save/Auto-load preset"
+msgstr "/Сaчуваj/Аутоучитавaње поставке за ЕQ"
 
 #: xmms/equalizer.c:94
-msgid "/Save/-"
-msgstr "/Sa�uvaj/-"
+msgid "/Save/Default"
+msgstr "/Сaчуваj/Default"
 
 #: xmms/equalizer.c:95
-msgid "/Save/To file"
-msgstr "/Sa�uvaj/U datoteku"
+msgid "/Save/-"
+msgstr "/Сaчуваj/-"
 
 #: xmms/equalizer.c:96
-msgid "/Save/To WinAMP EQF file"
-msgstr "/Sa�uvaj/U WinAMP EQF datoteku"
+msgid "/Save/To file"
+msgstr "/Сaчуваj/У датотеку"
 
 #: xmms/equalizer.c:97
-msgid "/Delete"
-msgstr "/Obri�i"
+msgid "/Save/To WinAMP EQF file"
+msgstr "/Сaчуваj/У WinAMP EQF датотеку"
 
 #: xmms/equalizer.c:98
-msgid "/Delete/Preset"
-msgstr "/Obri�i/postavke za EQ"
+msgid "/Delete"
+msgstr "/Обриши"
 
 #: xmms/equalizer.c:99
-msgid "/Delete/Auto-load preset"
-msgstr "/Obri�i/Autou�itavanje postavke za EQ"
+msgid "/Delete/Preset"
+msgstr "/Обриши/поставке за ЕQ"
 
 #: xmms/equalizer.c:100
+msgid "/Delete/Auto-load preset"
+msgstr "/Обриши/Аутоучитавaње поставке за ЕQ"
+
+#: xmms/equalizer.c:101
 msgid "/Configure Equalizer"
-msgstr "/Podesi Ekvilajzer"
+msgstr "/Подеси Eквилаjзер"
 
-#: xmms/equalizer.c:649
+#: xmms/equalizer.c:747
 msgid "XMMS Equalizer"
-msgstr "XMMS Ekvilajzer"
+msgstr "XMMS Eквилаjзер"
 
-#: xmms/equalizer.c:1204
+#: xmms/equalizer.c:1304
 msgid "Presets"
-msgstr "Postavke za EQ"
+msgstr "Поставке за ЕQ"
 
-#: xmms/equalizer.c:1271
+#: xmms/equalizer.c:1371
 msgid "Load preset"
-msgstr "U�itaj postavke za EQ"
+msgstr "Учитаj поставке за ЕQ"
 
-#: xmms/equalizer.c:1277
+#: xmms/equalizer.c:1377
 msgid "Load auto-preset"
-msgstr "U�itaj auto-postavke za EQ"
+msgstr "Учитаj ауто-поставке за ЕQ"
 
-#: xmms/equalizer.c:1300 xmms/equalizer.c:1315
+#: xmms/equalizer.c:1400 xmms/equalizer.c:1415
 msgid "Load equalizer preset"
-msgstr "U�itaj postavku za ekvilajzer"
+msgstr "Учитаj поставку за еквилаjзер"
 
-#: xmms/equalizer.c:1330
-#, fuzzy
+#: xmms/equalizer.c:1430
 msgid "Import equalizer presets"
-msgstr "U�itaj postavku za ekvilajzer"
+msgstr "Импортуј поставку за еквилаjзер"
 
-#: xmms/equalizer.c:1341
+#: xmms/equalizer.c:1441
 msgid "Save preset"
-msgstr "Sa�uvaj postavke"
+msgstr "Сaчуваj поставкe"
 
-#: xmms/equalizer.c:1350
+#: xmms/equalizer.c:1450
 msgid "Save auto-preset"
-msgstr "Sa�uvaj auto-postavke"
+msgstr "Сaчуваj ауто-поставке"
 
-#: xmms/equalizer.c:1371 xmms/equalizer.c:1394
+#: xmms/equalizer.c:1471 xmms/equalizer.c:1494
 msgid "Save equalizer preset"
-msgstr "Sa�uvaj postavku za ekvilajzer"
+msgstr "Сaчуваj поставку за еквилаjзер"
 
-#: xmms/equalizer.c:1404
+#: xmms/equalizer.c:1504
 msgid "Delete preset"
-msgstr "Obri�i postavku"
+msgstr "Обриши поставку"
 
-#: xmms/equalizer.c:1404 xmms/equalizer.c:1408
+#: xmms/equalizer.c:1504 xmms/equalizer.c:1508
 msgid "Delete"
-msgstr "Obri�i"
+msgstr "Обриши"
 
-#: xmms/equalizer.c:1408
+#: xmms/equalizer.c:1508
 msgid "Delete auto-preset"
-msgstr "Obri�i auto-postavke"
+msgstr "Обриши ауто-поставке"
 
-#: xmms/equalizer.c:1540
+#: xmms/equalizer.c:1641
 msgid "Configure Equalizer"
-msgstr "Podesi Ekvilajzer"
+msgstr "Подеси Еквилаjзер"
 
-#: xmms/equalizer.c:1561
+#: xmms/equalizer.c:1662
 msgid "Directory preset file:"
-msgstr "Direktorijum datoteka sa postavkama:"
+msgstr "Директориjум датотекa са поставкама:"
 
-#: xmms/equalizer.c:1569
+#: xmms/equalizer.c:1670
 msgid "File preset extension:"
-msgstr "Ekstenzija datoteka sa postavkama:"
+msgstr "Екстензиjа датотека са поставкама:"
 
-#: xmms/equalizer.c:1576
+#: xmms/equalizer.c:1677
 msgid ""
 "If \"Auto\" is enabled on the equalizer, xmms will try to load equalizer "
 "presets like this:\n"
@@ -3162,533 +3643,636 @@ msgid ""
 "3: Look for a preset saved with the \"auto-load\" feature\n"
 "4: Finally, try to load the \"default\" preset"
 msgstr ""
-"Ukoliko je \"Auto\" uklju�en na ekvilajzeru, xmms �e poku�ati da u�ita "
-"postavkepostavke ekvilajzera na ovaj na�in:\n"
+"Уколико jе \"Ауто\" укључен на еквилаjзеру, xmms ће покушати да учита "
+"поставкeпоставке еквилаjзерa на оваj нaчин:\n"
 "1: Look for a preset file in the directory of the file we are about to "
 "play.\n"
-"2: Potra�ite direktorijum sa datotekama sa postavkama u istom "
-"direktorijumu.\n"
-"3: Potra�ite postavke sa�uvane sa \"auto-load\" opcijom\n"
-"4: Na kraju, poku�ajte da u�itajte \"default\" postavku"
+"2: Потрaжите директориjум са датотекама са поставкама у истом "
+"директориjуму.\n"
+"3: Потрaжите поставке сaчуване са \"auto-load\" опциjом\n"
+"4: На краjу, покушаjте да учитаjте \"default\" поставку"
 
-#: xmms/main.c:125
+#: xmms/input.c:252
+msgid "No output plugin"
+msgstr "Беѕ излазног додатка"
+
+#: xmms/input.c:253
+msgid "No output plugin has been selected"
+msgstr "Није изабрана излазни додатак (plugin)"
+
+#: xmms/input.c:417
+msgid "No input plugin recognized this file"
+msgstr "Ниједан улазни додатак (plugin) није препоѕнао овај фајл"
+
+#: xmms/input.c:419
+#, c-format
+msgid "Input plugin: %s"
+msgstr "Улaзни додатак(plugins): %s"
+
+#: xmms/main.c:128
 msgid "/Preferences"
-msgstr "/Opcije"
+msgstr "/Опциje"
 
-#: xmms/main.c:126
+#: xmms/main.c:129
 msgid "/Skin Browser"
-msgstr "/Preglednik ko�uljica"
+msgstr "/Прегледник кошуљицa"
 
-#: xmms/main.c:127
+#: xmms/main.c:130
 msgid "/Reload skin"
-msgstr "/Ponovi unos ko�uljice"
+msgstr "/Понови унос кошуљицe"
 
-#. "<control>3"
-#: xmms/main.c:128 xmms/main.c:132 xmms/main.c:135 xmms/main.c:269
-#: xmms/main.c:274 xmms/main.c:278 xmms/main.c:297 xmms/playlistwin.c:85
-#: xmms/playlistwin.c:114
+#: xmms/main.c:131 xmms/main.c:135 xmms/main.c:139 xmms/main.c:273
+#: xmms/main.c:278 xmms/main.c:282 xmms/main.c:302 xmms/playlistwin.c:161
 msgid "/-"
 msgstr "/-"
 
-#: xmms/main.c:129
+#: xmms/main.c:132
 msgid "/Repeat"
-msgstr "/Sa ponavljanjem"
-
-#: xmms/main.c:130
-msgid "/Shuffle"
-msgstr "/Bez reda"
-
-#: xmms/main.c:131
-msgid "/No Playlist Advance"
-msgstr "/Nema napredne liste pesama"
+msgstr "/Са понављaњем"
 
 #: xmms/main.c:133
-msgid "/Time Elapsed"
-msgstr "/Proteklo vreme"
+msgid "/Shuffle"
+msgstr "/Без редa"
 
 #: xmms/main.c:134
-msgid "/Time Remaining"
-msgstr "/Preostalo vreme"
+msgid "/No Playlist Advance"
+msgstr "/Нема напредне листе песамa"
 
 #: xmms/main.c:136
-msgid "/Always On Top"
-msgstr "/uvek na vrhu"
+msgid "/Time Elapsed"
+msgstr "/Протекло времe"
 
 #: xmms/main.c:137
-msgid "/Sticky"
-msgstr "/Zalepljno"
+msgid "/Time Remaining"
+msgstr "/Преостало времe"
 
 #: xmms/main.c:138
-msgid "/WindowShade Mode"
-msgstr "/WindowShade Mod"
-
-#: xmms/main.c:139
-msgid "/Playlist WindowShade Mode"
-msgstr "/Lista pesma u WindowShade modu"
+msgid "/Time Display (MMM:SS)"
+msgstr ""
 
 #: xmms/main.c:140
-msgid "/Equalizer WindowShade Mode"
-msgstr "/Ekvilajzer u WindowShade modu"
+msgid "/Always On Top"
+msgstr "/увек на врху"
 
 #: xmms/main.c:141
-msgid "/DoubleSize"
-msgstr "/Dvostruka veli�ina"
+msgid "/Show on all desktops"
+msgstr ""
 
 #: xmms/main.c:142
+msgid "/WindowShade Mode"
+msgstr "/WindowShade Мод"
+
+#: xmms/main.c:143
+msgid "/Playlist WindowShade Mode"
+msgstr "/Листа песма у WindowShade моду"
+
+#: xmms/main.c:144
+msgid "/Equalizer WindowShade Mode"
+msgstr "/Еквилаjзер у WindowShade моду"
+
+#: xmms/main.c:145
+msgid "/DoubleSize"
+msgstr "/Двострука величинa"
+
+#: xmms/main.c:146
 msgid "/Easy Move"
 msgstr "/Easy Move"
 
-#: xmms/main.c:158
+#: xmms/main.c:162
 msgid "/File Info"
-msgstr "/Info datoteka"
+msgstr "/Инфо датотекa"
 
-#: xmms/main.c:159
+#: xmms/main.c:163
 msgid "/Jump To File"
-msgstr "/Idi na Datoteku"
+msgstr "/Иди на Датотеку"
 
-#: xmms/main.c:160
+#: xmms/main.c:164
 msgid "/Jump To Time"
-msgstr "/Idi na Vreme"
+msgstr "/Иди на Времe"
 
-#: xmms/main.c:161
-msgid "/Autoscroll Songname"
-msgstr "/Autoskrolovanje Imena pesme"
-
-#: xmms/main.c:185
-msgid "/Visualization Mode"
-msgstr "/Vizuelzacioni mod"
-
-#: xmms/main.c:186
-msgid "/Visualization Mode/Analyzer"
-msgstr "/Vizuelzacioni mod/Analizator"
-
-#: xmms/main.c:187
-msgid "/Visualization Mode/Scope"
-msgstr "/Vizuelzacioni mod/Scope"
-
-#: xmms/main.c:188
-msgid "/Visualization Mode/Off"
-msgstr "/Vizuelzacioni mod/Uga�en"
+#: xmms/main.c:165
+#, fuzzy
+msgid "/Autoscroll Song Name"
+msgstr "/Аутоскроловaње Имена песмe"
 
 #: xmms/main.c:189
-msgid "/Analyzer Mode"
-msgstr "/Analizator Mod"
+msgid "/Visualization Mode"
+msgstr "/Визуелзациони мод"
 
 #: xmms/main.c:190
-msgid "/Analyzer Mode/Normal"
-msgstr "/Analizator Mod/Normalni"
+msgid "/Visualization Mode/Analyzer"
+msgstr "/Визуелзациони мод/Анализатор"
 
 #: xmms/main.c:191
-msgid "/Analyzer Mode/Fire"
-msgstr "/Analizator Mod/Vatra"
+msgid "/Visualization Mode/Scope"
+msgstr "/Визуелзациони мод/Scope"
 
 #: xmms/main.c:192
-msgid "/Analyzer Mode/Vertical Lines"
-msgstr "/Analizator Mod/Vertikalne Linije"
+msgid "/Visualization Mode/Off"
+msgstr "/Визуелзациони мод/Угaшен"
 
-#: xmms/main.c:193 xmms/main.c:196
-msgid "/Analyzer Mode/-"
-msgstr "/Analizator Mod/-"
+#: xmms/main.c:193
+msgid "/Analyzer Mode"
+msgstr "/Анализатор Мод"
 
 #: xmms/main.c:194
-msgid "/Analyzer Mode/Lines"
-msgstr "/Analizator Mod/Linije"
+msgid "/Analyzer Mode/Normal"
+msgstr "/Анализатор Мод/Нормални"
 
 #: xmms/main.c:195
-msgid "/Analyzer Mode/Bars"
-msgstr "/Analizator Mod/Bar linije"
+msgid "/Analyzer Mode/Fire"
+msgstr "/Анализатор Мод/Ватрa"
 
-#: xmms/main.c:197
-msgid "/Analyzer Mode/Peaks"
-msgstr "/Analizator Mod/Vrhovi"
+#: xmms/main.c:196
+msgid "/Analyzer Mode/Vertical Lines"
+msgstr "/Анализатор Мод/Вертикалне Линиje"
+
+#: xmms/main.c:197 xmms/main.c:200
+msgid "/Analyzer Mode/-"
+msgstr "/Анализатор Мод/-"
 
 #: xmms/main.c:198
-msgid "/Scope Mode"
-msgstr "/Scope Mod"
+msgid "/Analyzer Mode/Lines"
+msgstr "/Анализатор Мод/Линиje"
 
 #: xmms/main.c:199
-msgid "/Scope Mode/Dot Scope"
-msgstr "/Scope Mod/Ta�kasti Scope"
-
-#: xmms/main.c:200
-msgid "/Scope Mode/Line Scope"
-msgstr "/Scope Mod/Linijski Scope"
+msgid "/Analyzer Mode/Bars"
+msgstr "/Анализатор Мод/Бар линиje"
 
 #: xmms/main.c:201
-msgid "/Scope Mode/Solid Scope"
-msgstr "/Scope Mod/Povr�inski Scope"
+msgid "/Analyzer Mode/Peaks"
+msgstr "/Анализатор Мод/Врхови"
 
 #: xmms/main.c:202
-msgid "/WindowShade VU Mode"
-msgstr "/WindowShade VU Mod"
+msgid "/Scope Mode"
+msgstr "/Scope Мод"
 
 #: xmms/main.c:203
-msgid "/WindowShade VU Mode/Normal"
-msgstr "/WindowShade VU Mod/Normalni"
+msgid "/Scope Mode/Dot Scope"
+msgstr "/Scope Мод/Тaчкасти Scope"
 
 #: xmms/main.c:204
-msgid "/WindowShade VU Mode/Smooth"
-msgstr "/WindowShade VU Mod/Mekani"
+msgid "/Scope Mode/Line Scope"
+msgstr "/Scope Мод/Линиjски Scope"
 
 #: xmms/main.c:205
-msgid "/Refresh Rate"
-msgstr "/Osve�avanje"
+msgid "/Scope Mode/Solid Scope"
+msgstr "/Scope Мод/Површински Scope"
 
 #: xmms/main.c:206
-msgid "/Refresh Rate/Full (~50 fps)"
-msgstr "/Osve�avanje/Potpuno (~50 fps)"
+msgid "/WindowShade VU Mode"
+msgstr "/WindowShade VU Мод"
 
 #: xmms/main.c:207
-msgid "/Refresh Rate/Half (~25 fps)"
-msgstr "/Osve�avanje/Polovina (~25 fps)"
+msgid "/WindowShade VU Mode/Normal"
+msgstr "/WindowShade VU Мод/Нормални"
 
 #: xmms/main.c:208
-msgid "/Refresh Rate/Quarter (~13 fps)"
-msgstr "/Osve�avanje/�etvrtina (~13 fps)"
+msgid "/WindowShade VU Mode/Smooth"
+msgstr "/WindowShade VU Мод/Мекани"
 
 #: xmms/main.c:209
-msgid "/Refresh Rate/Eighth (~6 fps)"
-msgstr "/Osve�avanje/Osmina (~6 fps)"
+msgid "/Refresh Rate"
+msgstr "/Освeжавaњe"
 
 #: xmms/main.c:210
-msgid "/Analyzer Falloff"
-msgstr "/Spu�tanje analizatora"
+msgid "/Refresh Rate/Full (~50 fps)"
+msgstr "/Освeжавaњe/Потпуно (~50 fps)"
 
 #: xmms/main.c:211
-msgid "/Analyzer Falloff/Slowest"
-msgstr "/Spu�tanje analizatora/Najsporije"
+msgid "/Refresh Rate/Half (~25 fps)"
+msgstr "/Освeжавaњe/Половинa (~25 fps)"
 
 #: xmms/main.c:212
-msgid "/Analyzer Falloff/Slow"
-msgstr "/Spu�tanje analizatora/Sporo"
+msgid "/Refresh Rate/Quarter (~13 fps)"
+msgstr "/Освeжавaњe/четвртинa (~13 fps)"
 
 #: xmms/main.c:213
-msgid "/Analyzer Falloff/Medium"
-msgstr "/Spu�tanje analizatora/Srednje"
+msgid "/Refresh Rate/Eighth (~6 fps)"
+msgstr "/Освeжавaњe/Осминa (~6 fps)"
 
 #: xmms/main.c:214
-msgid "/Analyzer Falloff/Fast"
-msgstr "/Spu�tanje analizatora/Brzo"
+msgid "/Analyzer Falloff"
+msgstr "/Спуштaње анализаторa"
 
 #: xmms/main.c:215
-msgid "/Analyzer Falloff/Fastest"
-msgstr "/Spu�tanje analizatora/Najbr�e"
+msgid "/Analyzer Falloff/Slowest"
+msgstr "/Спуштaње анализаторa/Наjспориje"
 
 #: xmms/main.c:216
-msgid "/Peaks Falloff"
-msgstr "/Spu�tanje vrhova"
+msgid "/Analyzer Falloff/Slow"
+msgstr "/Спуштaње анализаторa/Споро"
 
 #: xmms/main.c:217
-msgid "/Peaks Falloff/Slowest"
-msgstr "/Spu�tanje vrhova/Najsporije"
+msgid "/Analyzer Falloff/Medium"
+msgstr "/Спуштaње анализаторa/Средњe"
 
 #: xmms/main.c:218
-msgid "/Peaks Falloff/Slow"
-msgstr "/Spu�tanje vrhova/Sporo"
+msgid "/Analyzer Falloff/Fast"
+msgstr "/Спуштaње анализаторa/Брзо"
 
 #: xmms/main.c:219
-msgid "/Peaks Falloff/Medium"
-msgstr "/Spu�tanje vrhova/Srednje"
+msgid "/Analyzer Falloff/Fastest"
+msgstr "/Спуштaње анализаторa/Наjбржe"
 
 #: xmms/main.c:220
-msgid "/Peaks Falloff/Fast"
-msgstr "/Spu�tanje vrhova/Brzo"
+msgid "/Peaks Falloff"
+msgstr "/Спуштaње врховa"
 
 #: xmms/main.c:221
-msgid "/Peaks Falloff/Fastest"
-msgstr "/Spu�tanje vrhova/Najbr�e"
+msgid "/Peaks Falloff/Slowest"
+msgstr "/Спуштaње врховa/Наjспориje"
 
 #: xmms/main.c:222
+msgid "/Peaks Falloff/Slow"
+msgstr "/Спуштaње врховa/Споро"
+
+#: xmms/main.c:223
+msgid "/Peaks Falloff/Medium"
+msgstr "/Спуштaње врховa/Средњe"
+
+#: xmms/main.c:224
+msgid "/Peaks Falloff/Fast"
+msgstr "/Спуштaње врховa/Брзо"
+
+#: xmms/main.c:225
+msgid "/Peaks Falloff/Fastest"
+msgstr "/Спуштaње врховa/Наjбржe"
+
+#: xmms/main.c:226
 msgid "/Visualization plugins"
-msgstr "/Vizelizacioni Dodaci"
-
-#: xmms/main.c:268
-msgid "/About XMMS"
-msgstr "/O XMMS-u"
-
-#: xmms/main.c:270
-msgid "/Play File"
-msgstr "/Pusti datoteku"
-
-#: xmms/main.c:271
-msgid "/Play Directory"
-msgstr "/Pusti direktorijum"
+msgstr "/Визелизациони Додаци"
 
 #: xmms/main.c:272
-msgid "/Play Location"
-msgstr "Pusti sa klokacije"
+msgid "/About XMMS"
+msgstr "/О XMMS-у"
 
-#: xmms/main.c:273 xmms/playlistwin.c:113
-msgid "/View File Info"
-msgstr "/Pogledaj Info datoteku"
+#: xmms/main.c:274
+msgid "/Play File"
+msgstr "/Пусти датотеку"
 
 #: xmms/main.c:275
-msgid "/Main Window"
-msgstr "?Glavni prozor"
+msgid "/Play Directory"
+msgstr "/Пусти директориjум"
 
 #: xmms/main.c:276
-msgid "/Playlist Editor"
-msgstr "/Editor liste pesama"
+msgid "/Play Location"
+msgstr "/Пусти са клокациje"
 
-#: xmms/main.c:277
-msgid "/Graphical EQ"
-msgstr "/Grafi�ki EQ"
+#: xmms/main.c:277 xmms/playlistwin.c:158
+msgid "/View File Info"
+msgstr "/Погледаj Инфо датотеку"
 
 #: xmms/main.c:279
-msgid "/Options"
-msgstr "/Opcije"
+msgid "/Main Window"
+msgstr "/Главни прозор"
 
 #: xmms/main.c:280
-msgid "/Playback"
-msgstr "/Pu�tanje"
+msgid "/Playlist Editor"
+msgstr "/Едитор листе песамa"
 
 #: xmms/main.c:281
-msgid "/Playback/Previous"
-msgstr "/Pu�tanje/Pretnodna"
-
-#: xmms/main.c:282
-msgid "/Playback/Play"
-msgstr "/Pu�tanje/Pusti"
+msgid "/Graphical EQ"
+msgstr "/Графички EQ"
 
 #: xmms/main.c:283
-msgid "/Playback/Pause"
-msgstr "/Pu�tanje/Pusti"
+msgid "/Options"
+msgstr "/Опциje"
 
 #: xmms/main.c:284
-msgid "/Playback/Stop"
-msgstr "/Pu�tanje/Zaustavi"
+msgid "/Playback"
+msgstr "/Пуштaњe"
 
 #: xmms/main.c:285
-msgid "/Playback/Next"
-msgstr "/Pu�tanje/Slede�a"
+msgid "/Playback/Previous"
+msgstr "/Пуштaњe/Претноднa"
 
-#: xmms/main.c:286 xmms/main.c:293
-msgid "/Playback/-"
-msgstr "/Pu�tanje/-"
+#: xmms/main.c:286
+msgid "/Playback/Play"
+msgstr "/Пуштaњe/Пусти"
 
-#. {N_("/Playback/Stop with Fadeout"),"<Shift>V",mainwin_general_menu_callback,MAINWIN_GENERAL_STOPFADE,"<Item>"},
+#: xmms/main.c:287
+msgid "/Playback/Pause"
+msgstr "/Пуштaњe/Пусти"
+
 #: xmms/main.c:288
-msgid "/Playback/Back 5 Seconds"
-msgstr "/Pu�tanje/nazad 5 sekundi"
+msgid "/Playback/Stop"
+msgstr "/Пуштaњe/Заустави"
 
 #: xmms/main.c:289
-msgid "/Playback/Fwd 5 Seconds"
-msgstr "/Pu�tanje/Napred 5 sekundi"
+msgid "/Playback/Next"
+msgstr "/Пуштaњe/Следeћa"
 
-#: xmms/main.c:290
-msgid "/Playback/Start of List"
-msgstr "/Pu�tanje/Po�etak liste"
-
-#: xmms/main.c:291
-msgid "/Playback/10 Tracks Back"
-msgstr "/Pu�tanje/10 poslednjih pesama"
+#: xmms/main.c:290 xmms/main.c:297
+msgid "/Playback/-"
+msgstr "/Пуштaњe/-"
 
 #: xmms/main.c:292
-msgid "/Playback/10 Tracks Fwd"
-msgstr "/Pu�tanje/10 pesama ispred"
+msgid "/Playback/Back 5 Seconds"
+msgstr "/Пуштaњe/нaзад 5 секунди"
+
+#: xmms/main.c:293
+msgid "/Playback/Fwd 5 Seconds"
+msgstr "/Пуштaњe/Напред 5 секунди"
 
 #: xmms/main.c:294
-msgid "/Playback/Jump to Time"
-msgstr "/Pu�tanje/Idi na vreme"
+msgid "/Playback/Start of List"
+msgstr "/Пуштaњe/Почетак листe"
 
 #: xmms/main.c:295
-msgid "/Playback/Jump to File"
-msgstr "/Pu�tanje/Idi na datoteku"
+msgid "/Playback/10 Tracks Back"
+msgstr "/Пуштaњe/10 последњих песамa"
 
 #: xmms/main.c:296
-msgid "/Visualization"
-msgstr "/Vizeuelizacija"
+msgid "/Playback/10 Tracks Fwd"
+msgstr "/Пуштaњe/10 песама испред"
 
 #: xmms/main.c:298
+msgid "/Playback/Jump to Time"
+msgstr "/Пуштaњe/Иди на времe"
+
+#: xmms/main.c:299
+msgid "/Playback/Jump to File"
+msgstr "/Пуштaњe/Иди на датотеку"
+
+#: xmms/main.c:300
+#, fuzzy
+msgid "/Playback/Clear Queue"
+msgstr "/Пуштaњe/Пусти"
+
+#: xmms/main.c:301
+msgid "/Visualization"
+msgstr "/Визеуелизациja"
+
+#: xmms/main.c:303
 msgid "/Exit"
-msgstr "/Izlaz"
+msgstr "/Излаз"
 
-#: xmms/main.c:1050 xmms/main.c:2811
-msgid "XMMS"
-msgstr "XMMS"
-
-#: xmms/main.c:1399
+#: xmms/main.c:1466
 msgid "Jump to time"
-msgstr "Idi na datoteku"
+msgstr "Иди на датотеку"
 
-#: xmms/main.c:1409
+#: xmms/main.c:1477
 msgid "Jump to:"
-msgstr "Idi na:"
+msgstr "Иди на:"
 
-#: xmms/main.c:1425
+#: xmms/main.c:1493
 msgid "minutes:seconds"
-msgstr "minuti:sekunde"
+msgstr "минути:секундe"
 
-#: xmms/main.c:1432
+#: xmms/main.c:1500
 msgid "Track length:"
-msgstr "Du�ina pesme:"
+msgstr "Дужина песмe:"
 
-#: xmms/main.c:1446 xmms/main.c:1750
+#: xmms/main.c:1514 xmms/main.c:1949
 msgid "Jump"
-msgstr "Idi"
+msgstr "Иди"
 
-#: xmms/main.c:1702
+#: xmms/main.c:1553 xmms/main.c:1892 xmms/main.c:2226
+#, fuzzy
+msgid "Queue"
+msgstr "Enqueue"
+
+#: xmms/main.c:1562
+#, fuzzy
+msgid "Unqueue"
+msgstr "Enqueue"
+
+#: xmms/main.c:1880 xmms/main.c:2202
 msgid "Jump to file"
-msgstr "Idi na datoteku"
+msgstr "Иди на датотеку"
 
-#: xmms/main.c:1713
+#: xmms/main.c:1894 xmms/main.c:2228
+msgid "Q"
+msgstr ""
+
+#: xmms/main.c:1895 xmms/main.c:2229
 msgid "Files"
-msgstr "Datoteke"
+msgstr "Датотекe"
 
-#: xmms/main.c:1722
+#: xmms/main.c:1911 xmms/main.c:2297
 msgid "Search: "
-msgstr "Tra�i: "
+msgstr "Трaжи: "
 
-#: xmms/main.c:1868 xmms/playlistwin.c:573
+#: xmms/main.c:2232
+msgid "Queued files: "
+msgstr ""
+
+#: xmms/main.c:2260
+msgid "Move up"
+msgstr ""
+
+#: xmms/main.c:2267
+#, fuzzy
+msgid "Move down"
+msgstr "Спуси ниво звукa"
+
+#: xmms/main.c:2274
+#, fuzzy
+msgid "Remove"
+msgstr "/Уклони"
+
+#: xmms/main.c:2445 xmms/playlistwin.c:640
 msgid "Select directory to add:"
-msgstr "Izaberi direktorijum za dodavanje:"
+msgstr "Изабери директориjум за додавaњe:"
 
-#: xmms/main.c:1905
+#: xmms/main.c:2494
 msgid "Enter location to play:"
-msgstr "Unesi lokaciju za pu�tanje:"
+msgstr "Унеси локациjу за пуштaњe:"
 
-#: xmms/main.c:2016
+#: xmms/main.c:2622
+#, c-format
 msgid "SEEK TO: %d:%-2.2d/%d:%-2.2d (%d%%)"
-msgstr "Tra�i do: %d:%-2.2d/%d:%-2.2d (%d%%)"
+msgstr "Трaжи до: %d:%-2.2d/%d:%-2.2d (%d%%)"
 
-#: xmms/main.c:2041 xmms/main.c:2584
+#: xmms/main.c:2647 xmms/main.c:3207
+#, c-format
 msgid "VOLUME: %d%%"
-msgstr "Ja�ina: %d%%"
+msgstr "Jaчина: %d%%"
 
-#: xmms/main.c:2070 xmms/main.c:2589
+#: xmms/main.c:2676 xmms/main.c:3212
+#, c-format
 msgid "BALANCE: %d%% LEFT"
-msgstr "Balans: %d%% levo"
+msgstr "Баланс: %d%% лево"
 
-#: xmms/main.c:2075 xmms/main.c:2592
+#: xmms/main.c:2681 xmms/main.c:3215
 msgid "BALANCE: CENTER"
-msgstr "Balans: centar"
+msgstr "Баланс: центар"
 
-#: xmms/main.c:2080 xmms/main.c:2595
+#: xmms/main.c:2686 xmms/main.c:3218
+#, c-format
 msgid "BALANCE: %d%% RIGHT"
-msgstr "Balans: %d%% desno"
+msgstr "Баланс: %d%% десно"
 
-#: xmms/main.c:2456
+#: xmms/main.c:3079
 msgid "OPTIONS MENU"
-msgstr "Meni sa opcijama"
+msgstr "Мени са опциjамa"
 
-#: xmms/main.c:2462
+#: xmms/main.c:3085
 msgid "DISABLE ALWAYS ON TOP (N/A)"
-msgstr "Isklju�i Uvek na vrhu (N/A)"
+msgstr "Искључи Увек на врху (N/A)"
 
-#: xmms/main.c:2464
+#: xmms/main.c:3087
 msgid "ENABLE ALWAYS ON TOP (N/A)"
-msgstr "Omogu�i Uvek na vrhu (N/A)"
+msgstr "Омогући Увек на врху (N/A)"
 
-#: xmms/main.c:2467
+#: xmms/main.c:3090
 msgid "DISABLE ALWAYS ON TOP"
-msgstr "Isklju�i Uvek na vrhu"
+msgstr "Искључи Увек на врху"
 
-#: xmms/main.c:2469
+#: xmms/main.c:3092
 msgid "ENABLE ALWAYS ON TOP"
-msgstr "Omogu�i Uvek na vrhu"
+msgstr "Омогући Увек на врху"
 
-#: xmms/main.c:2472
+#: xmms/main.c:3095
 msgid "FILE INFO BOX"
-msgstr "Boks Info datoteke"
+msgstr "Бокс Инфо датотекe"
 
-#: xmms/main.c:2476
+#: xmms/main.c:3099
 msgid "DISABLE DOUBLESIZE"
-msgstr "Isklju�i dvostruku veli�inu"
+msgstr "Искључи двоструку величину"
 
-#: xmms/main.c:2478
+#: xmms/main.c:3101
 msgid "ENABLE DOUBLESIZE"
-msgstr "Omogu�i dvostruku veli�inu"
+msgstr "Омогући двоструку величину"
 
-#: xmms/main.c:2481
+#: xmms/main.c:3104
 msgid "VISUALIZATION MENU"
-msgstr "Meni za vizuelizaciju"
+msgstr "Мени за визуелизациjу"
 
-#: xmms/main.c:2948
+#: xmms/main.c:3524
 msgid "Couldn't open audio"
-msgstr "Ne mogu da otvoim audio"
+msgstr "Не могу да отвоим аудио"
 
-#: xmms/main.c:2949
+#: xmms/main.c:3525
+#, fuzzy
 msgid ""
 "Please check that:\n"
 "\n"
-"1. You have the correct output plugin selected\n"
-"2. No other programs is blocking the soundcard\n"
-"3. Your soundcard is configured properly"
+"Your soundcard is configured properly\n"
+"You have the correct output plugin selected\n"
+"No other program is blocking the soundcard"
 msgstr ""
-"Proverite:\n"
+"Проверитe:\n"
 "\n"
-"1. da li ste izabrali pravi izlazni (output) dodatak(plugin)\n"
-"2. da li neki drugi program(i) blokira(ju) zvu�nu karticu\n"
-"3. da li je zvu�na kartica dobro konfigurisana"
+"1. да ли сте изабрали прави излазни (output) додатак(plugin)\n"
+"2. да ли неки други програм(и) блокира(jу) звучну картицу\n"
+"3. да ли jе звучнa картица добро конфигурисанa"
 
-#: xmms/main.c:3093
+#: xmms/main.c:3760
+#, c-format
 msgid ""
 "Usage: xmms [options] [files] ...\n"
 "\n"
 "Options:\n"
 "--------\n"
 msgstr ""
+"Употреба: xmms [опције] [фајлови] ...\n"
+"\n"
+"Опције:\n"
+"--------\n"
 
-#. -h, --help switch
-#: xmms/main.c:3098
+#: xmms/main.c:3765
+#, c-format
 msgid "Display this text and exit."
-msgstr ""
+msgstr "Приказује овај текст и излази."
 
-#. -n, --session switch
-#: xmms/main.c:3101
+#: xmms/main.c:3768
+#, c-format
 msgid "Select XMMS session (Default: 0)"
-msgstr ""
+msgstr "Изабери XMMS сесију (Default: 0)"
 
-#. -r, --rew switch
-#: xmms/main.c:3104
-#, fuzzy
+#: xmms/main.c:3771
+#, c-format
 msgid "Skip backwards in playlist"
-msgstr "Prika�i brojeve u listi datoteka"
+msgstr "Скочи уназад на листи"
 
-#. -p, --play switch
-#: xmms/main.c:3107
+#: xmms/main.c:3774
+#, c-format
 msgid "Start playing current playlist"
-msgstr ""
+msgstr "Пусти тренутну листу"
 
-#. -u, --pause switch
-#: xmms/main.c:3110
-#, fuzzy
+#: xmms/main.c:3777
+#, c-format
 msgid "Pause current song"
-msgstr "Pauza izme�u pesama od"
+msgstr "Паузирај тренутну песму"
 
-#. -s, --stop switch
-#: xmms/main.c:3113
+#: xmms/main.c:3780
+#, c-format
 msgid "Stop current song"
-msgstr ""
+msgstr "Заустави тренутну песму"
 
-#. -t, --play-pause switch
-#: xmms/main.c:3116
+#: xmms/main.c:3783
+#, c-format
 msgid "Pause if playing, play otherwise"
-msgstr ""
+msgstr "Заустави ако је пуштена, иначе пусти"
 
-#. -f, --fwd switch
-#: xmms/main.c:3119
-#, fuzzy
+#: xmms/main.c:3786
+#, c-format
 msgid "Skip forward in playlist"
-msgstr "Prika�i brojeve u listi datoteka"
+msgstr "Скочи напред на листи"
 
-#. -e, --enqueue switch
-#: xmms/main.c:3122
+#: xmms/main.c:3789
+#, c-format
 msgid "Don't clear the playlist"
+msgstr "Немој да очистиш листу"
+
+#: xmms/main.c:3792
+#, c-format
+msgid "Add file(s) to playlist and queue"
 msgstr ""
 
-#. -m, --show-main-window switch
-#: xmms/main.c:3125
-#, fuzzy
+#: xmms/main.c:3793 xmms/main.c:3797 xmms/main.c:3801
+msgid "[=SWITCH]"
+msgstr ""
+
+#: xmms/main.c:3795
+#, c-format
+msgid "Toggle the 'shuffle' flag."
+msgstr ""
+
+#: xmms/main.c:3799
+#, c-format
+msgid "Toggle the 'repeat' flag."
+msgstr ""
+
+#: xmms/main.c:3803
+#, c-format
+msgid "Toggle the 'no playlist advance' flag."
+msgstr ""
+
+#: xmms/main.c:3806
+#, c-format
+msgid "SWITCH may be either 'on' or 'off'\n"
+msgstr ""
+
+#: xmms/main.c:3809
+#, c-format
 msgid "Show the main window."
-msgstr "Prika�i mre�ni prozor"
+msgstr "Прикaжи главни прозор"
 
-#. -v, --version switch
-#: xmms/main.c:3128
-msgid "Print version number and exit."
+#: xmms/main.c:3812
+#, c-format
+msgid "Previous session ID"
 msgstr ""
 
-#: xmms/main.c:3246
+#: xmms/main.c:3815
+#, c-format
+msgid "Print version number and exit."
+msgstr "Приказује број верзије и излази."
+
+#: xmms/main.c:3818
+#, fuzzy, c-format
+msgid "Close remote session."
+msgstr "Користи remote host"
+
+#: xmms/main.c:3994 xmms/main.c:4018 xmms/main.c:4042
+#, c-format
+msgid "Value '%s' not understood, must be either 'on' or 'off'.\n"
+msgstr ""
+
+#: xmms/main.c:4057
+#, c-format
 msgid ""
 "\n"
 "Segmentation fault\n"
@@ -3698,641 +4282,703 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"Segmentaciona gre�ka\n"
+"Сегментациона грeшкa\n"
 "\n"
-"Verovatno je u pitanju bag u XMMS, molim vas posetite\n"
-"http://bugs.xmms.org i popunite izve�taj o bagu.\n"
+"Вероватно jе у питaњу баг у XMMS, молим вас посетитe\n"
+"http://www.xmms.org/bugs и попуните извeштаj о багу.\n"
 "\n"
 
-#: xmms/main.c:3386
-msgid ""
-"Sorry, threads isn't supported on your platform.\n"
-"\n"
-"If you're on a libc5 based linux system and installed GLIB & GTK+ before "
-"you\n"
-"installed LinuxThreads you need to recompile GLIB & GTK+\n"
+#: xmms/main.c:4198
+msgid "GLib does not support threads."
 msgstr ""
-"Na �alost, tredovi nisu na va�oj platformi.\n"
-"\n"
-"Ukoliko koristite na libc5 baziranom Linux sistemu i instalirali GLIB & GTK+ "
-"pre you\n"
-"instaliranog LinuxThreads-a morate da rekompajlirate GLIB & GTK+\n"
 
-#: xmms/main.c:3433
-#, fuzzy, c-format
+#: xmms/main.c:4255
+#, c-format
 msgid ""
 "Sorry, your GTK+ version (%d.%d.%d) doesn't work with XMMS.\n"
 "Please use GTK+ %s or newer.\n"
-msgstr "Na �alost, va�a GTK+ verzija (%d.%d.%d) ne radi sa XMMS.\n"
-
-#. xmms.desktop comment
-#: xmms/main.c:3503
-msgid "X Multimedia System"
 msgstr ""
+"На жалост, вaша GTK+ верзиjа (%d.%d.%d) не ради са XMMS.\n"
+"Треба да инсталирате GTK+ %s или новији.\n"
 
-#: xmms/playlistwin.c:75
+#: xmms/main.c:4325
+msgid "X Multimedia System"
+msgstr "X Мултимедијални Систем"
+
+#: xmms/playlistwin.c:95
 msgid "/Sort List"
-msgstr "/Sortiraj listu"
+msgstr "/Сортираj листу"
 
-#: xmms/playlistwin.c:76
+#: xmms/playlistwin.c:96
 msgid "/Sort List/By Title"
-msgstr "/Sortiraj listu/Po Nazivu pesme"
+msgstr "/Сортираj листу/По Називу песмe"
 
-#: xmms/playlistwin.c:77
+#: xmms/playlistwin.c:98
 msgid "/Sort List/By Filename"
-msgstr "/Sortiraj Listu/Po imenu datoteke"
+msgstr "/Сортираj Листу/По имену датотекe"
 
-#: xmms/playlistwin.c:78
+#: xmms/playlistwin.c:100
 msgid "/Sort List/By Path + Filename"
-msgstr "/Sortiraj Listu/Po putanji + imenu datoteke"
-
-#: xmms/playlistwin.c:79
-#, fuzzy
-msgid "/Sort List/By Date"
-msgstr "/Sortiraj listu/Po Nazivu pesme"
-
-#: xmms/playlistwin.c:80
-msgid "/Sort Selection"
-msgstr "/Sortiraj selektovano"
-
-#: xmms/playlistwin.c:81
-msgid "/Sort Selection/By Title"
-msgstr "/Sortiraj selektovano/Po nazivu"
-
-#: xmms/playlistwin.c:82
-msgid "/Sort Selection/By Filename"
-msgstr "/Sortiraj selektovano/Po imenu datoteke"
-
-#: xmms/playlistwin.c:83
-msgid "/Sort Selection/By Path + Filename"
-msgstr "/Sortiraj selektovano/Po putanji + imenu datoteke"
-
-#: xmms/playlistwin.c:84
-#, fuzzy
-msgid "/Sort Selection/By Date"
-msgstr "/Sortiraj selektovano/Po nazivu"
-
-#: xmms/playlistwin.c:86
-msgid "/Randomize List"
-msgstr "/Razbacaj listu"
-
-#: xmms/playlistwin.c:87
-msgid "/Reverse List"
-msgstr "/Obrni listu"
-
-#: xmms/playlistwin.c:101
-msgid "/Remove Dead Files"
-msgstr "/Ukolni nepostoje�e datoteke"
+msgstr "/Сортираj Листу/По путaњи + имену датотекe"
 
 #: xmms/playlistwin.c:102
-msgid "/Physically Delete Files"
-msgstr "/Fizi�ko brisanje datoteka"
+msgid "/Sort List/By Date"
+msgstr "/Сортираj листу/По Датуму"
 
-#: xmms/playlistwin.c:115
-msgid "/Add"
-msgstr ""
+#: xmms/playlistwin.c:104 xmms/playlistwin.c:173
+msgid "/Selection"
+msgstr "/Селекција"
+
+#: xmms/playlistwin.c:105
+#, fuzzy
+msgid "/Selection/Sort By Title"
+msgstr "/Сортираj селектовано/По називу"
+
+#: xmms/playlistwin.c:107
+#, fuzzy
+msgid "/Selection/Sort By Filename"
+msgstr "/Сортираj селектовано/По имену датотекe"
+
+#: xmms/playlistwin.c:109
+#, fuzzy
+msgid "/Selection/Sort By Path + Filename"
+msgstr "/Сортираj селектовано/По путaњи + имeну датотекe"
+
+#: xmms/playlistwin.c:111
+#, fuzzy
+msgid "/Selection/Sort By Date"
+msgstr "/Сортираj селектовано/По Датуму"
+
+#: xmms/playlistwin.c:113
+#, fuzzy
+msgid "/Selection/Randomize"
+msgstr "/Селекција/-"
 
 #: xmms/playlistwin.c:116
-msgid "/Add/File"
-msgstr ""
-
-#: xmms/playlistwin.c:117
-#, fuzzy
-msgid "/Add/Directory"
-msgstr "Direktorijum:"
+msgid "/Randomize List"
+msgstr "/Разбацаj листу"
 
 #: xmms/playlistwin.c:118
-msgid "/Add/Url"
-msgstr ""
-
-#: xmms/playlistwin.c:120
-#, fuzzy
-msgid "/Remove"
-msgstr "Ukloni ID3"
-
-#: xmms/playlistwin.c:121
-msgid "/Remove/Selected"
-msgstr ""
-
-#: xmms/playlistwin.c:122
-msgid "/Remove/Crop"
-msgstr ""
-
-#: xmms/playlistwin.c:123
-msgid "/Remove/All"
-msgstr ""
-
-#: xmms/playlistwin.c:124
-#, fuzzy
-msgid "/Remove/Misc"
-msgstr "/Ukolni nepostoje�e datoteke"
-
-#: xmms/playlistwin.c:126
-#, fuzzy
-msgid "/Selection"
-msgstr "/Sortiraj selektovano"
-
-#: xmms/playlistwin.c:127
-msgid "/Selection/Select All"
-msgstr ""
-
-#: xmms/playlistwin.c:128
-#, fuzzy
-msgid "/Selection/Select None"
-msgstr "/Sortiraj selektovano/Po imenu datoteke"
-
-#: xmms/playlistwin.c:129
-#, fuzzy
-msgid "/Selection/Invert Selection"
-msgstr "/Sortiraj selektovano"
-
-#: xmms/playlistwin.c:130
-#, fuzzy
-msgid "/Selection/-"
-msgstr "/Sortiraj selektovano"
+msgid "/Reverse List"
+msgstr "/Обрни листу"
 
 #: xmms/playlistwin.c:131
-msgid "/Selection/Read Extended Info"
+msgid "/By extension"
+msgstr "/По екстензији"
+
+#: xmms/playlistwin.c:148
+msgid "/Remove Dead Files"
+msgstr "/Уколни непостоjeће датотекe"
+
+#: xmms/playlistwin.c:149
+msgid "/Physically Delete Files"
+msgstr "/Физичко брисaње датотекa"
+
+#: xmms/playlistwin.c:159
+#, fuzzy
+msgid "/Queue - Unqueue"
+msgstr "/Пуштaњe/-"
+
+#: xmms/playlistwin.c:160
+msgid "/Queue manager"
 msgstr ""
 
-#: xmms/playlistwin.c:133
-#, fuzzy
+#: xmms/playlistwin.c:162
+msgid "/Add"
+msgstr "/Додај"
+
+#: xmms/playlistwin.c:163
+msgid "/Add/File"
+msgstr "/Додај/Фајл"
+
+#: xmms/playlistwin.c:164
+msgid "/Add/Directory"
+msgstr "/Додај/Директоријум"
+
+#: xmms/playlistwin.c:165
+msgid "/Add/Url"
+msgstr "/Додај/Url"
+
+#: xmms/playlistwin.c:167
+msgid "/Remove"
+msgstr "/Уклони"
+
+#: xmms/playlistwin.c:168
+msgid "/Remove/Selected"
+msgstr "/Уклони/Селектовано"
+
+#: xmms/playlistwin.c:169
+msgid "/Remove/Crop"
+msgstr "/Уклони/Crop"
+
+#: xmms/playlistwin.c:170
+msgid "/Remove/All"
+msgstr "/Уклони/Све"
+
+#: xmms/playlistwin.c:171
+msgid "/Remove/Misc"
+msgstr "/Уклони/Разно"
+
+#: xmms/playlistwin.c:174
+msgid "/Selection/Select All"
+msgstr "/Selection/Select All"
+
+#: xmms/playlistwin.c:175
+msgid "/Selection/Select None"
+msgstr "/Селекција/Селектуј ништа"
+
+#: xmms/playlistwin.c:176
+msgid "/Selection/Invert Selection"
+msgstr "/Селекција/Инверзна селекција"
+
+#: xmms/playlistwin.c:177
+msgid "/Selection/-"
+msgstr "/Селекција/-"
+
+#: xmms/playlistwin.c:178
+msgid "/Selection/Read Extended Info"
+msgstr "/Селекција/Прочитај Додатни Инфо"
+
+#: xmms/playlistwin.c:180
 msgid "/Sort"
-msgstr "/Sortiraj listu"
+msgstr "/Сортираj"
 
-#: xmms/playlistwin.c:135
-#, fuzzy
+#: xmms/playlistwin.c:182
 msgid "/Playlist"
-msgstr "Lista pesama"
+msgstr "/Листа песамa"
 
-#: xmms/playlistwin.c:136
-#, fuzzy
+#: xmms/playlistwin.c:183
 msgid "/Playlist/Load List"
-msgstr "/Editor liste pesama"
+msgstr "/Листа песама/Учитај листу"
 
-#: xmms/playlistwin.c:137
-#, fuzzy
+#: xmms/playlistwin.c:184
 msgid "/Playlist/Save List"
-msgstr "/Editor liste pesama"
+msgstr "/Листа песама/Сачувај листу"
 
-#: xmms/playlistwin.c:138
-#, fuzzy
+#: xmms/playlistwin.c:185
 msgid "/Playlist/New List"
-msgstr "/Editor liste pesama"
+msgstr "/Листа песама/Нова листа"
 
-#: xmms/playlistwin.c:551
+#: xmms/playlistwin.c:618
 msgid "Enter URL to add:"
-msgstr "Unesi URL za dodavanje:"
+msgstr "Унеси URL за додавaњe:"
 
-#: xmms/playlistwin.c:695
-msgid "Load playlist"
-msgstr "U�itaj listu pesama"
+#: xmms/playlistwin.c:718
+msgid "Unable to write playlist!"
+msgstr "Не могу да испишем листу песама!"
 
 #: xmms/playlistwin.c:721
-msgid "Save playlist"
-msgstr "Sa�uvaj listu datoteka"
+#, c-format
+msgid "Error writing playlist \"%s\": %s"
+msgstr "Грешка при записивању листе песама \"%s\": %s"
 
-#: xmms/playlistwin.c:1145
+#: xmms/playlistwin.c:768
+msgid "File exists!"
+msgstr "Фајл постоји!"
+
+#: xmms/playlistwin.c:771
+#, fuzzy, c-format
+msgid "%s already exists."
+msgstr "%s већ постоји."
+
+#: xmms/playlistwin.c:782
+msgid "Overwrite"
+msgstr "Препиши"
+
+#: xmms/playlistwin.c:839
+#, c-format
+msgid ""
+"Unknown file type for %s.\n"
+"The filename of the playlist should end in either \".m3u\" or \".pls\"."
+msgstr ""
+
+#: xmms/playlistwin.c:843
+msgid "Unable to save playlist"
+msgstr "Не могу са сачувам листу песама"
+
+#: xmms/playlistwin.c:916
+msgid "Load playlist"
+msgstr "Учитаj листу песамa"
+
+#: xmms/playlistwin.c:953
+msgid "Save playlist"
+msgstr "Сaчуваj листу датотекa"
+
+#: xmms/playlistwin.c:971
+msgid "Save options"
+msgstr "Сaчуваj опције"
+
+#: xmms/playlistwin.c:975
+msgid "Determine file type:"
+msgstr "Одрети тип фајла:"
+
+#: xmms/playlistwin.c:1408
 #, c-format
 msgid "Failed to delete \"%s\": %s."
-msgstr "Ne mogu da obri�em \"%s\": %s."
+msgstr "Не могу да обришем \"%s\": %s."
 
-#: xmms/playlistwin.c:1161
+#: xmms/playlistwin.c:1424
 #, c-format
 msgid "%d of %d files successfully deleted."
-msgstr "%d od  %d datoteka uspe�no obisano."
+msgstr "%d од  %d датотекa успeшно обисано."
 
-#: xmms/playlistwin.c:1165
+#: xmms/playlistwin.c:1428
 msgid "XMMS: Files deleted"
-msgstr "XMMS: Datoteke izbrisane"
+msgstr "XMMS: Датотеке избрисанe"
 
-#: xmms/playlistwin.c:1196
+#: xmms/playlistwin.c:1459
 msgid "XMMS: Delete files?"
-msgstr "XMMS: Da bri�em datoteke?"
+msgstr "XMMS: Да бришем датотекe?"
 
-#: xmms/playlistwin.c:1205
+#: xmms/playlistwin.c:1468
 #, c-format
 msgid "Really delete %d files?"
-msgstr "Stvarno da izbr�em %d datoteka?"
+msgstr "Стварно да избршем %d датотекa?"
 
-#: xmms/playlistwin.c:1207
+#: xmms/playlistwin.c:1470
 #, c-format
 msgid "Really delete: \"%s\"?"
-msgstr "Stvarno da izbr�em: \"%s\"?"
+msgstr "Стварно да избршем: \"%s\"?"
 
-#: xmms/playlistwin.c:1650
+#: xmms/playlistwin.c:1930
 msgid "XMMS Playlist"
-msgstr "XMMS Lista pesama"
+msgstr "XMMS Листа песамa"
 
-#: xmms/prefswin.c:253
+#: xmms/prefswin.c:302
+#, fuzzy
 msgid ""
-"Realtime priority is a way for XMMS to make sure it always\n"
-"get as much CPU time as needed for decoding audio files without\n"
-"any \"skips\".\n"
+"Realtime priority is a way for XMMS to get a higher\n"
+"priority  for CPU time.  This might give less \"skips\".\n"
 "\n"
 "This requires that XMMS is run with root privileges and\n"
-"may, although it's very unusal, lock up your computer.\n"
+"may, although it's very unusual, lock up your computer.\n"
+"Running XMMS with root privileges might also have other\n"
+"security implications.\n"
 "\n"
-"You have been warned, to activate this you need to\n"
-"restart XMMS."
+"Using this feature is not recommended.\n"
+"To activate this you need to restart XMMS."
 msgstr ""
-"Realtime prioritet je na�in da XMMS uvek koristi najvi�e\n"
-"snage i CPU vremena i koliko mu je potrebno za dekodiranje audio datoteka\n"
-"i  \"preskakanje\".\n"
+"Приоритет у реалном времену jе нaчин да XMMS увек користи наjвишe\n"
+"снаге и CPU времена и колико му jе потребно за декодирaње аудио датотекa\n"
+"и  \"прескакaњe\".\n"
 "\n"
-"Ovo zahteva da XMMS bude pokrenut sa root privilegijama i\n"
-"mo�e, iako je to veoma neuobi�ajeno, da blokira kompjuter.\n"
+"Ово захтева да XMMS буде покренут сa root привилегиjама и\n"
+"можe, иако jе то веома неуобичаjено, да блокира компjутер.\n"
+"Покретање програма са овим овлашћењима може угрозити и\n"
+"сигурност система.\n"
 "\n"
-"Bili ste upozoreni, da bi aktivirali morate da\n"
-"restartujete XMMS."
+"Били сте упозорени, да би активирали морате дa\n"
+"рестартуjетe XMMS."
 
-#: xmms/prefswin.c:389
+#: xmms/prefswin.c:439
 msgid "Select playlist font:"
-msgstr "Izaberite font za listu pesama:"
+msgstr "Изаберите фонт за листу песама:"
 
-#: xmms/prefswin.c:416
+#: xmms/prefswin.c:466
 msgid "Select main window font:"
-msgstr "Izaberite font za glavni prozor:"
+msgstr "Изаберите фонт за главни прозор:"
 
-#: xmms/prefswin.c:611
+#: xmms/prefswin.c:719
 msgid "Preferences"
-msgstr "Opcije"
+msgstr "Опциje"
 
-#.
-#. * Input plugins
-#.
-#: xmms/prefswin.c:633
+#: xmms/prefswin.c:742
 msgid "Input Plugins"
-msgstr "Ulazni dodaci(plugins)"
+msgstr "Улазни додаци(plugins)"
 
-#: xmms/prefswin.c:641
+#: xmms/prefswin.c:750
 msgid "Input plugins"
-msgstr "Ulazni dodaci(plugins)"
+msgstr "Улaзни додаци(plugins)"
 
-#: xmms/prefswin.c:663 xmms/prefswin.c:695 xmms/prefswin.c:732
-#: xmms/prefswin.c:772 xmms/prefswin.c:819
+#: xmms/prefswin.c:772 xmms/prefswin.c:804 xmms/prefswin.c:846
+#: xmms/prefswin.c:891 xmms/prefswin.c:941
 msgid "Configure"
-msgstr "Podesi"
+msgstr "Подеси"
 
-#: xmms/prefswin.c:670 xmms/prefswin.c:780 xmms/prefswin.c:827
+#: xmms/prefswin.c:779 xmms/prefswin.c:854 xmms/prefswin.c:899
+#: xmms/prefswin.c:949
 msgid "Enable plugin"
-msgstr "Omogu�i dodatke(plugins)"
+msgstr "Омогући додатке(plugins)"
 
-#.
-#. * Output plugin
-#.
-#: xmms/prefswin.c:678
+#: xmms/prefswin.c:787
 msgid "Output Plugin"
-msgstr "Izlazni dodaci(plugins)"
+msgstr "Излазни додаци(plugins)"
 
-#: xmms/prefswin.c:703
+#: xmms/prefswin.c:812
 msgid "Audio I/O Plugins"
-msgstr "Audio I/O dodaci(plugins)"
+msgstr "Аудио I/O додаци(plugins)"
 
-#.
-#. * Effect plugins
-#.
-#: xmms/prefswin.c:715
-msgid "Effect Plugins"
-msgstr "Dodaci sa efektima"
+#: xmms/prefswin.c:818 xmms/prefswin.c:858
+msgid "Effects Plugins"
+msgstr "Додаци са ефектимa"
 
-#: xmms/prefswin.c:740
-msgid "Use plugins"
-msgstr "Koristi dodatke(plugins)"
+#: xmms/prefswin.c:825
+msgid "Effects plugins"
+msgstr "Додаци са ефектимa"
 
-#.
-#. * General plugins
-#.
-#: xmms/prefswin.c:747
+#: xmms/prefswin.c:864 xmms/prefswin.c:903
 msgid "General Plugins"
-msgstr "Op�ti dodaci(plugins)"
-
-#: xmms/prefswin.c:754
-msgid "General plugins"
-msgstr "Op�ti dodaci(plugins)"
-
-#: xmms/prefswin.c:784
-msgid "Effect/General Plugins"
-msgstr "Efekti/Op�ti dodaci(plugins)"
-
-#: xmms/prefswin.c:792 xmms/prefswin.c:831
-msgid "Visualization Plugins"
-msgstr "Vizuelni dodaci(plugins)"
-
-#: xmms/prefswin.c:800
-msgid "Visualization plugins"
-msgstr "Vizuelni dodaci(plugins)"
-
-#: xmms/prefswin.c:846
-msgid "Read info on"
-msgstr "Pro�itaj info na"
-
-#: xmms/prefswin.c:848
-msgid "demand"
-msgstr "zahtev"
-
-#: xmms/prefswin.c:850
-msgid "load"
-msgstr "u�itaj"
-
-#: xmms/prefswin.c:853
-msgid "Allow multiple instances"
-msgstr "Omogu�i vi�e aktivnih XMMS programa"
-
-#: xmms/prefswin.c:855
-msgid "Reverse file order in fileselector"
-msgstr "Obrnut red datoteka u izbornika datoteka"
-
-#: xmms/prefswin.c:856
-msgid "Always show clutterbar"
-msgstr "Uvek prika�i clutterbar"
-
-#: xmms/prefswin.c:858
-msgid "Convert %20 to space"
-msgstr "Konvertuj %20 u prostor"
-
-#: xmms/prefswin.c:859
-msgid "Save window positions"
-msgstr "Sa�uvaj poziciju prozora"
-
-#: xmms/prefswin.c:861
-msgid "Convert underscore to space"
-msgstr "Konvertuj underscore u prostor"
-
-#: xmms/prefswin.c:862
-msgid "Show numbers in playlist"
-msgstr "Prika�i brojeve u listi datoteka"
-
-#: xmms/prefswin.c:864
-msgid "Dim titlebar when inactive"
-msgstr "Prikrij titlebar kada je inaktivan"
-
-#: xmms/prefswin.c:865
-msgid "Save playlist position"
-msgstr "Sa�uvaj poziciju liste pesama"
-
-#: xmms/prefswin.c:867
-msgid "Sort \"Jump to file\" alphabetical"
-msgstr "Sortiraj \"Idi na datoteku\" u alfabetskom redu"
-
-#: xmms/prefswin.c:868
-msgid "Equalizer doublesize linked"
-msgstr "Linkuj dvostruku veli�inu za ekvilajzer"
+msgstr "Општи додаци(plugins)"
 
 #: xmms/prefswin.c:870
+msgid "General plugins"
+msgstr "Општи додаци(plugins)"
+
+#: xmms/prefswin.c:911 xmms/prefswin.c:953
+msgid "Visualization Plugins"
+msgstr "Визуелни додаци(plugins)"
+
+#: xmms/prefswin.c:919
+msgid "Visualization plugins"
+msgstr "Визуелни додаци(plugins)"
+
+#: xmms/prefswin.c:968
+msgid "Read info on"
+msgstr "Прочитаj инфо нa"
+
+#: xmms/prefswin.c:970
+msgid "play"
+msgstr "Пусти"
+
+#: xmms/prefswin.c:971
+msgid "Read song title and length only when starting to play"
+msgstr "Прочитај наслов песме и дужину само при пуштању песме"
+
+#: xmms/prefswin.c:973
+msgid "demand"
+msgstr "захтев"
+
+#: xmms/prefswin.c:974
+#, fuzzy
+msgid "Read song title and length when the song is visible in the playlist"
+msgstr "Прочитај наслов песме и дужину када је песма видљива у листи песама"
+
+#: xmms/prefswin.c:976
+msgid "load"
+msgstr "учитаj"
+
+#: xmms/prefswin.c:977
+msgid ""
+"Read song title and length as soon as the song is loaded to the playlist"
+msgstr "Прочитај наслов песме и дужину чим се песма учита у листу песама"
+
+#: xmms/prefswin.c:980
+msgid "Allow multiple instances"
+msgstr "Омогући више активних XММS програмa"
+
+#: xmms/prefswin.c:982
+msgid "Convert %20 to space"
+msgstr "Конвертуj %20 у простор"
+
+#: xmms/prefswin.c:983
+msgid "Always show clutterbar"
+msgstr "Увек прикaжи clutterbar"
+
+#: xmms/prefswin.c:984
+msgid ""
+"The \"clutterbar\" is the row of buttons at the left side of the main window"
+msgstr "\"clutterbar\" је ред тастера са леве стране главног прозора"
+
+#: xmms/prefswin.c:986
+msgid "Convert underscore to space"
+msgstr "Конвертуj underscore у простор"
+
+#: xmms/prefswin.c:987
+msgid "Save window positions"
+msgstr "Сaчуваj позициjу прозорa"
+
+#: xmms/prefswin.c:989
+msgid "Dim titlebar when inactive"
+msgstr "Прикриj titlebar када jе инактиван"
+
+#: xmms/prefswin.c:990
+msgid "Show numbers in playlist"
+msgstr "Прикaжи броjеве у листи датотекa"
+
+#: xmms/prefswin.c:992
+#, fuzzy
+msgid "Sort \"Jump to file\" alphabetically"
+msgstr "Сортираj \"Иди на датотеку\" у алфабетском реду"
+
+#: xmms/prefswin.c:993
+msgid "Equalizer doublesize linked"
+msgstr "Линкуj двоструку величину за еквилаjзер"
+
+#: xmms/prefswin.c:995
 msgid "Use realtime priority when available"
-msgstr "Koristi realtime prioritet kada je mogu�e"
+msgstr "Користи realtime приоритет када jе могућe"
 
-#: xmms/prefswin.c:872
+#: xmms/prefswin.c:996
+#, fuzzy
+msgid "Run XMMS with higher priority (not recommended)"
+msgstr "Покрени XMMS са вишљим приоритетом (није препоручљиво)"
+
+#: xmms/prefswin.c:998
 msgid "Smooth title scroll"
-msgstr "Klizni skrol naziva pesme"
+msgstr "Клизни скрол назива песмe"
 
-#: xmms/prefswin.c:876
+#: xmms/prefswin.c:1002
 msgid "Pause between songs for"
-msgstr "Pauza izme�u pesama od"
+msgstr "Пауза измeђу песама од"
 
-#. I18N: s = seconds
-#: xmms/prefswin.c:882
-msgid "s"
-msgstr "s"
+#: xmms/prefswin.c:1007
+msgid "seconds"
+msgstr "секунде"
 
-#: xmms/prefswin.c:888
-msgid "Snap windows at"
-msgstr "Prebaci prozor na"
-
-#: xmms/prefswin.c:893
-msgid "pixels"
-msgstr "piksela"
-
-#: xmms/prefswin.c:898
-msgid "Do not hide windowmanager decorations"
-msgstr "Nemoj da skriva� dekoraciju windowmanager-a"
-
-#: xmms/prefswin.c:899
-msgid "Use '\\' as a directory delimiter"
-msgstr "Koristi '\\' kao delimiter direktorijuma"
-
-#: xmms/prefswin.c:902
-msgid "Transparent playlist window"
-msgstr "Transparentni prozor liste pesama"
-
-#: xmms/prefswin.c:905
-msgid "Mouse Wheel adjusts Volume by (%)"
-msgstr "To�ki� na mi�u reguli�e nivo zvuka u (%)"
-
-#: xmms/prefswin.c:913
-msgid "Read meta data from playlists"
+#: xmms/prefswin.c:1013
+msgid ""
+"When moving windows around, snap them together, and towards screen edges at "
+"this distance"
 msgstr ""
 
-#: xmms/prefswin.c:927
+#: xmms/prefswin.c:1017
+msgid "Snap windows at"
+msgstr "Пребаци прозор нa"
+
+#: xmms/prefswin.c:1022
+msgid "pixels"
+msgstr "пикселa"
+
+#: xmms/prefswin.c:1028
+#, fuzzy
+msgid "Show window manager decorations"
+msgstr "Прикажи декорациjу windowmanager-a"
+
+#: xmms/prefswin.c:1032
+msgid "Use '\\' as a directory delimiter"
+msgstr "Користи '\\' као делимитер директориjумa"
+
+#: xmms/prefswin.c:1035
+msgid ""
+"Recommended if you want to load playlists that were created in MS Windows"
+msgstr ""
+
+#: xmms/prefswin.c:1039
+msgid "Mouse Wheel adjusts Volume by (%)"
+msgstr "Точкић на мишу регулише ниво звука у (%)"
+
+#: xmms/prefswin.c:1048
+#, fuzzy
+msgid "Use meta-data in playlists"
+msgstr "Користи мета податке у листи песама"
+
+#: xmms/prefswin.c:1051
+msgid "Store information such as song title and length to playlists"
+msgstr ""
+
+#: xmms/prefswin.c:1067
 msgid "Use fontsets (Enable for multi-byte charset support)"
-msgstr "Koristi set fontova (omogu�i podr�ku za multi-byte karaktere)"
+msgstr "Користи сет фонтова (омогући подршку за multi-byte карактере)"
 
-#: xmms/prefswin.c:946
+#: xmms/prefswin.c:1086
 msgid "Main Window"
-msgstr "Glavni Prozor"
+msgstr "Главни Прозор"
 
-#: xmms/prefswin.c:953
+#: xmms/prefswin.c:1093
 msgid "Use X font"
-msgstr "Koristi X font"
+msgstr "Користи X фонт"
 
-#: xmms/prefswin.c:965
+#: xmms/prefswin.c:1105
 msgid "Fonts"
-msgstr "Fontovi"
+msgstr "Фонтови"
 
-#: xmms/prefswin.c:1183 xmms/prefswin.c:1213
+#: xmms/prefswin.c:1129
+#, fuzzy
+msgid "Advanced Title Options"
+msgstr "Подeшавaња миксера:"
+
+#: xmms/prefswin.c:1137
+#, c-format
+msgid ""
+"%0.2n - Display a 0 padded 2 char long tracknumber\n"
+"\n"
+"For more details, please read the included README or http://www.xmms.org/"
+"docs/readme.php"
+msgstr ""
+
+#: xmms/prefswin.c:1269 xmms/prefswin.c:1299 xmms/prefswin.c:1329
 msgid " (enabled)"
-msgstr " (omogu�eno)"
+msgstr " (омогућено)"
 
-#: xmms/prefswin.c:1242
+#: xmms/prefswin.c:1358
 msgid " (disabled)"
-msgstr " (omenogu�eno)"
+msgstr " (оменогућено)"
 
 #: xmms/skinwin.c:50
 msgid "Skin selector"
-msgstr "Selektor ko�uljica"
+msgstr "Селектор кошуљицa"
 
 #: xmms/skinwin.c:58
 msgid "Skins"
-msgstr "Ko�uljice"
+msgstr "Кошуљицe"
 
 #: xmms/skinwin.c:77
 msgid "Select random skin on play"
-msgstr "Izaberi random ko�uljicu pri startanju"
+msgstr "Изабери random кошуљицу при стартaњу"
 
 #: xmms/skinwin.c:195
 msgid "(none)"
-msgstr "(nijedan)"
+msgstr "(ниjедан)"
 
-#. I18N note: "Enqueue" here means "Add to playlist"
-#: xmms/util.c:593
+#: xmms/util.c:594
 msgid "Enqueue"
 msgstr "Enqueue"
 
-#: xmms/util.c:808
-msgid "Load file(s)"
-msgstr "U�taj datoteku(e)"
-
-#: xmms/util.c:827
-msgid "Add selected files"
-msgstr "Dodaj selektovane datoteke"
+#: xmms/util.c:830
+msgid "Play files"
+msgstr "Пусти фајлове"
 
 #: xmms/util.c:832
+msgid "Load files"
+msgstr "Учтаj фајлове"
+
+#: xmms/util.c:859
+msgid "Add selected files"
+msgstr "Додаj селектоване датотекe"
+
+#: xmms/util.c:863
 msgid "Add all files in directory"
-msgstr "Dodaj sve datoteke u direktorijumu"
+msgstr "Додаj све датотеке у директориjуму"
 
-#~ msgid " Close "
-#~ msgstr " Zatvori "
+#: xmms/util.c:887 xmms/util.c:905
+msgid "Add"
+msgstr "Додај"
 
-#~ msgid ""
-#~ "= Performer/Artist\n"
-#~ "= Album\n"
-#~ "= File name\n"
-#~ "= File path\n"
-#~ "= File extension"
-#~ msgstr ""
-#~ "= Izvo�a�/Umetnik\n"
-#~ "= Album\n"
-#~ "= Ime datoteke\n"
-#~ "= Putanja datoteke\n"
-#~ "= Ekstenzija datoteke"
+#~ msgid "Ok"
+#~ msgstr "У реду"
+
+#~ msgid "Song change"
+#~ msgstr "Промена песмe"
+
+#~ msgid "Playlist end"
+#~ msgstr "Краj Листe песамa"
 
 #~ msgid ""
-#~ "= Track name\n"
-#~ "= Track number\n"
-#~ "= Year\n"
-#~ "= Genre\n"
-#~ "= Comment"
+#~ "Shell-command to run when xmms changes song.  It can optionally include "
+#~ "the string %%s which will be replaced by the new song title."
 #~ msgstr ""
-#~ "= Ime pesme\n"
-#~ "= Broj pesme\n"
-#~ "= Godina\n"
-#~ "= Vrsta\n"
-#~ "= Komnetar"
+#~ "Shell-команда за покретaње када xmms мeња песму.  Она опционо може "
+#~ "садржати и стринг %%s коjи ће бити замeњем са називом нове песмe."
 
-#~ msgid "Message"
-#~ msgstr "Poruka"
+#~ msgid "Samplerate: %ld Hz"
+#~ msgstr "Samplerate: %ld Hz"
 
-#~ msgid "(Remix)"
-#~ msgstr "(Remiks)"
+#, fuzzy
+#~ msgid "User defined:"
+#~ msgstr "Корисничко имe:"
 
-#~ msgid "(Cover)"
-#~ msgstr "(Cover)"
+#, fuzzy
+#~ msgid "Mixer device"
+#~ msgstr "Миксер уређај:"
+
+#~ msgid "xmms applet"
+#~ msgstr "xmms аплети"
+
+#~ msgid "Copyright (C) Anders Carlsson 1999), Hiroshi Takekawa 2001"
+#~ msgstr "Сва права(C) Anders Carlsson 1999), Hiroshi Takekawa 2001 "
 
 #~ msgid ""
-#~ "= Track name\n"
-#~ "= Track number"
+#~ "A simple xmms gnome panel applet by Anders Carlsson.\n"
+#~ "Some code is from wmxmms by Mikael Alm.\n"
+#~ "Tooltip support by Hiroshi Takekawa."
 #~ msgstr ""
-#~ "= Ime pesme\n"
-#~ "= Broj pesme"
+#~ "Jедноставни xmms gnome панелни аплет. Креирао: Anders Carlsson.\n"
+#~ "Део кода jе из wmxmms. Урадио: Mikael Alm.\n"
+#~ "Подршка за Tooltip. Урадио: Hiroshi Takekawa."
+
+#~ msgid "About..."
+#~ msgstr "О..."
 
 #~ msgid ""
-#~ "Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
-#~ "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n"
+#~ "Sorry, threads isn't supported on your platform.\n"
 #~ "\n"
-#~ "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
-#~ "e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"
+#~ "If you're on a libc5 based linux system and installed GLIB & GTK+ before "
+#~ "you\n"
+#~ "installed LinuxThreads you need to recompile GLIB & GTK+\n"
 #~ msgstr ""
-#~ "Generator sinusnog tona. Kreirao: Haavard Kvaalen <havardk@xmms.org>\n"
-#~ "Modifikovao: Daniel J. Peng <danielpeng@bigfoot.com>\n"
+#~ "На жалост, тредови нису на вaшоj платформи.\n"
 #~ "\n"
-#~ "Da bi ga koristili , dodajte URL: "
-#~ "tone://frequency1;frequency2;frequency3;...\n"
-#~ "primer tone://2000;2005 da bi bio pu�ten 2000Hz ton i  2005Hz ton"
+#~ "Уколико користите на libc5 базираном Linux систему и инсталирали GLIB & "
+#~ "GTK+ прe you\n"
+#~ "инсталираног LinuxThreads-а морате да рекомпаjлирате GLIB & GTK+\n"
+
+#~ msgid "/Sort Selection"
+#~ msgstr "/Сортираj селектовано"
+
+#~ msgid "Unknown filetype for %s"
+#~ msgstr "Непознати тип фајла за %s"
+
+#~ msgid "Transparent playlist window"
+#~ msgstr "Транспарентни прозор листе песамa"
 
 #~ msgid ""
-#~ "= Track name\n"
-#~ "= Track number\n"
-#~ "= Date\n"
-#~ "\n"
+#~ "The SHA-1 hash function failed to properly\n"
+#~ "generate a test key.  As such, Xmms will\n"
+#~ "not be able to contact a CD Index server.\n"
 #~ msgstr ""
-#~ "= Ime pesme\n"
-#~ "= Broj pesme\n"
-#~ "= Datum\n"
-#~ "\n"
+#~ "The SHA-1 hash function ниjе успела да исправно\n"
+#~ "генерише терст тастер.  Као такав, Xmms нeћe\n"
+#~ "моћи да контактира CD Индекс сервер.\n"
 
-#~ msgid "Audio"
-#~ msgstr "Audio"
+#~ msgid "Copyright (C) 1997-2002 The XMMS Team"
+#~ msgstr "Сва права (C) 1997-2002 XMMS Тим"
 
-#~ msgid "Buffer size (msec):"
-#~ msgstr "Veli�ina bafera (msec):"
+#~ msgid "/Sticky"
+#~ msgstr "/Залепљно"
 
-#~ msgid ""
-#~ "\n"
-#~ "Usage: xmms [options] [files] ...\n"
-#~ "\n"
-#~ "Options:\n"
-#~ "--------\n"
-#~ "\n"
-#~ "-h, --help              Display this text and exit.\n"
-#~ "-n, --session\t\tSelect XMMS session (Default: 0)\n"
-#~ "-r, --rew               Skip backwards in playlist\n"
-#~ "-p, --play\t\tStart playing current playlist\n"
-#~ "-u, --pause\t\tPause current song\n"
-#~ "-s, --stop\t\tStop current song\n"
-#~ "-f, --fwd               Skip forward in playlist\n"
-#~ "-e, --enqueue\t\tDon't clear the playlist\n"
-#~ "-m, --show-main-window\tShow the main window.\n"
-#~ "-v, --version           Print version number and exit.\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Upotreba: xmms [opcije] [datoteke] ...\n"
-#~ "\n"
-#~ "Opcije:\n"
-#~ "--------\n"
-#~ "\n"
-#~ "-h, --help              Prikazuje ovaj tekst i izlazi.\n"
-#~ "-n, --session\t\tIzaberi XMMS sesija (Default: 0)\n"
-#~ "-r, --rew               Presko�i unazad na listi pesama\n"
-#~ "-p, --play\t\tStartanje prenutne liste pesama\n"
-#~ "-u, --pause\t\tPauzira trenutnu pesmu\n"
-#~ "-s, --stop\t\tZaustavlja trenutnu pesmu\n"
-#~ "-f, --fwd               Presko�i unapred na liti pesama\n"
-#~ "-e, --enqueue\t\tDon't o�isti listu pesama\n"
-#~ "-m, --show-main-window\tPrikazuje glavni Show the main window.\n"
-#~ "-v, --version           Prikazuje broj verzije i izlazi.\n"
-#~ "\n"
+#~ msgid "Detect files by content (instead of file extention)"
+#~ msgstr "Детектуj датотеке по садржаj (уместо екстензиjе датотеке)"
 
-#~ msgid "Please use GTK+ 1.2.2 or newer (NOTE not 1.3.x)\n"
-#~ msgstr "Molim vas koristite GTK+ 1.2.2 ili noviji (samo ne 1.3.x)\n"
+#~ msgid " (Remix)"
+#~ msgstr " (Ремикс)"
 
-#~ msgid ""
-#~ "= Performer/Artist\n"
-#~ "= Album\n"
-#~ "= Genre\n"
-#~ "= File name\n"
-#~ "= File path\n"
-#~ "= File extension"
-#~ msgstr ""
-#~ "= Izvo�a�/Umetnik\n"
-#~ "= Album\n"
-#~ "= Vrsta\n"
-#~ "= Ime datoteke\n"
-#~ "= Putanja datoteke\n"
-#~ "= Ekstenzija datoteke"
+#~ msgid " (Cover)"
+#~ msgstr " (Cover)"
 
-#~ msgid ""
-#~ "= Track name\n"
-#~ "= Track number\n"
-#~ "= Date\n"
-#~ "= Year\n"
-#~ "= Comment\n"
-#~ msgstr ""
-#~ "= Ime pesme\n"
-#~ "= Broj pesme\n"
-#~ "= Datum\n"
-#~ "= Godina\n"
-#~ "= Komentar\n"
+#~ msgid "Effect/General Plugins"
+#~ msgstr "Ефекти/Општи додаци(plugins)"
 
-#~ msgid "Haavard Kvaalen"
-#~ msgstr "Haavard Kvaalen"
+#~ msgid "Volume setting:"
+#~ msgstr "Подeшавaње jaчине звука:"
 
-#~ msgid "Olle Haellnaes (compiling fixes)"
-#~ msgstr "Olle Haellnaes (problemi  pri kompajliranju)"
+#~ msgid "Huffman decode error.\n"
+#~ msgstr "Грeшка Huffman декодера.\n"
 
-#~ msgid "Joerg Schuler"
-#~ msgstr "Joerg Schuler"
+#~ msgid "Id Software .cin player %s"
+#~ msgstr "Id Software .cin плеjер %s"
 
-#~ msgid "Olle Haellnaes"
-#~ msgstr "Olle Haellnaes"
+#~ msgid "Error opening audio for idcin.\n"
+#~ msgstr "Грeшка при отварaњу звучне датотеке за idcin.\n"
+
+#~ msgid "IDCin Play"
+#~ msgstr "IDCin Play"
+
+#~ msgid "Alt"
+#~ msgstr "Алт"
+
+#~ msgid "use Audiophile Gain"
+#~ msgstr "корисити Audiophile Gain"
+
+#~ msgid "Radio:"
+#~ msgstr "Радио:"
+
+#~ msgid "Audiophile:"
+#~ msgstr "Audiophile:"
+
+#~ msgid "Peak:"
+#~ msgstr "Врх:"
+
+#~ msgid "UNTRANSLATED"
+#~ msgstr "TRANSLATED"
+
+#~ msgid "Use plugins"
+#~ msgstr "Користи додаткe(plugins)"
+
+#~ msgid "Reverse file order in fileselector"
+#~ msgstr "Обрнут ред датотека у изборника датотекa"
+
+#~ msgid "Save playlist position"
+#~ msgstr "Сaчуваj позициjу листе песама"
+
+#~ msgid "s"
+#~ msgstr "s"

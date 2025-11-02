@@ -1,5 +1,6 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2000  Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1998-2002  Peter Alm, Mikael Alm, Olle Hallnas,
+ *                           Thomas Nilsson and 4Front Technologies
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -26,7 +27,6 @@
 
 #include "xmms/i18n.h"
 #include "config.h"
-#include <locale.h>
 
 #include "libxmms/xmmsctrl.h"
 #include "xmms-dock-master.xpm"
@@ -35,7 +35,7 @@
 
 typedef struct
 {
-	gint x, y, width, height, pressed_x, pressed_y, normal_x, normal_y;
+	int x, y, width, height, pressed_x, pressed_y, normal_x, normal_y;
 	gboolean focus, pressed;
 	void (*callback) (void);
 }
@@ -50,12 +50,12 @@ void action_stop(void);
 
 Button buttons[] =
 {
-	{21, 28, 9, 11, 20, 64, 0, 64, FALSE, FALSE, action_play},	/* PLAY */
-	{33, 28, 9, 11, 30, 64, 10, 64, FALSE, FALSE, action_pause},	/* PAUSE */
-	{45, 28, 9, 11, 20, 75, 0, 75, FALSE, FALSE, action_eject},	/* EJECT */
-	{21, 42, 9, 11, 20, 86, 0, 86, FALSE, FALSE, action_prev},	/* PREV */
-	{33, 42, 9, 11, 30, 86, 10, 86, FALSE, FALSE, action_next},	/* NEXT */
-	{45, 42, 9, 11, 30, 75, 10, 75, FALSE, FALSE, action_stop},	/* STOP */
+	{21, 28, 9, 11, 20, 64, 0, 64, FALSE, FALSE, action_play},   /* PLAY */
+	{33, 28, 9, 11, 30, 64, 10, 64, FALSE, FALSE, action_pause}, /* PAUSE */
+	{45, 28, 9, 11, 20, 75, 0, 75, FALSE, FALSE, action_eject},  /* EJECT */
+	{21, 42, 9, 11, 20, 86, 0, 86, FALSE, FALSE, action_prev},   /* PREV */
+	{33, 42, 9, 11, 30, 86, 10, 86, FALSE, FALSE, action_next},  /* NEXT */
+	{45, 42, 9, 11, 30, 75, 10, 75, FALSE, FALSE, action_stop},  /* STOP */
 };
 
 #define NUM_BUTTONS 6
@@ -75,10 +75,10 @@ GList *button_list;
 #define SEEKSLIDER_MAX		(SEEKSLIDER_WIDTH - SEEKSLIDER_KNOB_WIDTH)
 
 gboolean volslider_dragging = FALSE;
-gint volslider_pos = 0;
+int volslider_pos = 0;
 gboolean seekslider_visible = FALSE, seekslider_dragging = FALSE;
-gint seekslider_pos = -1, seekslider_drag_offset = 0;
-gint timeout_tag = 0;
+int seekslider_pos = -1, seekslider_drag_offset = 0;
+int timeout_tag = 0;
 
 void init(void);
 
@@ -88,13 +88,13 @@ GdkBitmap *mask, *launch_mask;
 GdkGC *dock_gc;
 GtkTooltips *tooltips = NULL;
 
-gint xmms_session = 0;
-gchar *xmms_cmd = "xmms";
+int xmms_session = 0;
+char *xmms_cmd = "xmms";
 gboolean xmms_running = FALSE;
 
 gboolean has_geometry = FALSE, single_click = FALSE, song_title = FALSE;
-gchar *icon_name = NULL;
-gint win_x, win_y;
+char *icon_name = NULL;
+int win_x, win_y;
 
 GtkTargetEntry drop_types[] =
 {
@@ -102,8 +102,6 @@ GtkTargetEntry drop_types[] =
 };
 
 /* Does anyone know a better way? */
-
-extern Window gdk_leader_window;
 
 void action_play(void)
 {
@@ -135,38 +133,49 @@ void action_stop(void)
 	xmms_remote_stop(xmms_session);
 }
 
-gboolean inside_region(gint mx, gint my, gint x, gint y, gint w, gint h)
+gboolean inside_region(int mx, int my, int x, int y, int w, int h)
 {
 	if ((mx >= x && mx < x + w) && (my >= y && my < y + h))
 		return TRUE;
 	return FALSE;
 }
 
-void real_draw_button(GdkWindow * w, Button * button)
+void real_draw_button(GdkWindow *w, Button *button)
 {
 
 	if (button->pressed)
-		gdk_draw_pixmap(w, dock_gc, pixmap, button->pressed_x, button->pressed_y, button->x, button->y, button->width, button->height);
+		gdk_draw_pixmap(w, dock_gc, pixmap,
+				button->pressed_x, button->pressed_y,
+				button->x, button->y,
+				button->width, button->height);
 	else
-		gdk_draw_pixmap(w, dock_gc, pixmap, button->normal_x, button->normal_y, button->x, button->y, button->width, button->height);
+		gdk_draw_pixmap(w, dock_gc, pixmap,
+				button->normal_x, button->normal_y,
+				button->x, button->y,
+				button->width, button->height);
 }
 
-void draw_button(Button * button)
+void draw_button(Button *button)
 {
 	real_draw_button(window->window, button);
 	real_draw_button(icon_win->window, button);
 }
 
-void draw_buttons(GList * list)
+void draw_buttons(GList *list)
 {
 	for (; list; list = g_list_next(list))
 		draw_button(list->data);
 }
 
-void real_draw_volslider(GdkWindow * w)
+void real_draw_volslider(GdkWindow *w)
 {
-	gdk_draw_pixmap(w, dock_gc, pixmap, 48, 65, VOLSLIDER_X, VOLSLIDER_Y, VOLSLIDER_WIDTH, VOLSLIDER_HEIGHT);
-	gdk_draw_pixmap(w, dock_gc, pixmap, 42, 65 + VOLSLIDER_HEIGHT - volslider_pos, VOLSLIDER_X, VOLSLIDER_Y + VOLSLIDER_HEIGHT - volslider_pos, VOLSLIDER_WIDTH, volslider_pos);
+	gdk_draw_pixmap(w, dock_gc, pixmap, 48, 65, VOLSLIDER_X, VOLSLIDER_Y,
+			VOLSLIDER_WIDTH, VOLSLIDER_HEIGHT);
+	gdk_draw_pixmap(w, dock_gc, pixmap, 42,
+			65 + VOLSLIDER_HEIGHT - volslider_pos,
+			VOLSLIDER_X,
+			VOLSLIDER_Y + VOLSLIDER_HEIGHT - volslider_pos,
+			VOLSLIDER_WIDTH, volslider_pos);
 }
 
 void draw_volslider(void)
@@ -175,9 +184,9 @@ void draw_volslider(void)
 	real_draw_volslider(icon_win->window);
 }
 
-void real_draw_seekslider(GdkWindow * w)
+void real_draw_seekslider(GdkWindow *w)
 {
-	gint slider_x;
+	int slider_x;
 
 	if (seekslider_visible)
 	{
@@ -188,7 +197,9 @@ void real_draw_seekslider(GdkWindow * w)
 			slider_x = 47;
 		else
 			slider_x = 50;
-		gdk_draw_pixmap(w, dock_gc, pixmap, slider_x, 112, SEEKSLIDER_X + seekslider_pos, SEEKSLIDER_Y, 3, SEEKSLIDER_HEIGHT);
+		gdk_draw_pixmap(w, dock_gc, pixmap, slider_x, 112,
+				SEEKSLIDER_X + seekslider_pos, SEEKSLIDER_Y, 3,
+				SEEKSLIDER_HEIGHT);
 	}
 	else
 		gdk_draw_pixmap(w, dock_gc, pixmap, 2, 100, 19, 12, 35, 14);
@@ -204,30 +215,34 @@ void redraw_window(void)
 {
 	if (xmms_running)
 	{
-		gdk_draw_pixmap(window->window, dock_gc, pixmap, 0, 0, 0, 0, 64, 64);
-		gdk_draw_pixmap(icon_win->window, dock_gc, pixmap, 0, 0, 0, 0, 64, 64);
+		gdk_draw_pixmap(window->window, dock_gc, pixmap,
+				0, 0, 0, 0, 64, 64);
+		gdk_draw_pixmap(icon_win->window, dock_gc, pixmap,
+				0, 0, 0, 0, 64, 64);
 		draw_buttons(button_list);
 		draw_volslider();
 		draw_seekslider();
 	}
 	else
 	{
-		gdk_draw_pixmap(window->window, dock_gc, launch_pixmap, 0, 0, 0, 0, 64, 64);
-		gdk_draw_pixmap(icon_win->window, dock_gc, launch_pixmap, 0, 0, 0, 0, 64, 64);
+		gdk_draw_pixmap(window->window, dock_gc, launch_pixmap,
+				0, 0, 0, 0, 64, 64);
+		gdk_draw_pixmap(icon_win->window, dock_gc, launch_pixmap,
+				0, 0, 0, 0, 64, 64);
 	}
 }
 
-void expose_cb(GtkWidget * w, GdkEventExpose * event, gpointer data)
+void expose_cb(GtkWidget *w, GdkEventExpose *event, gpointer data)
 {
 	redraw_window();
 }
 
-void button_press_cb(GtkWidget * w, GdkEventButton * event, gpointer data)
+void button_press_cb(GtkWidget *w, GdkEventButton *event, gpointer data)
 {
 	GList *node;
 	Button *btn;
-	gint pos;
-	gchar *cmd;
+	int pos;
+	char *cmd;
 
 	if (xmms_running)
 	{
@@ -247,10 +262,14 @@ void button_press_cb(GtkWidget * w, GdkEventButton * event, gpointer data)
 		}
 		else if (event->button == 4 || event->button == 5)
 		{
-			if (event->button == 4) volslider_pos += 3;
-			else volslider_pos -= 3;
-			if (volslider_pos < 0) volslider_pos = 0;
-			if (volslider_pos > VOLSLIDER_HEIGHT) volslider_pos = VOLSLIDER_HEIGHT;
+			if (event->button == 4)
+				volslider_pos += 3;
+			else
+				volslider_pos -= 3;
+			if (volslider_pos < 0)
+				volslider_pos = 0;
+			if (volslider_pos > VOLSLIDER_HEIGHT)
+				volslider_pos = VOLSLIDER_HEIGHT;
 			xmms_remote_set_main_volume(xmms_session, (volslider_pos * 100) / VOLSLIDER_HEIGHT);
 			draw_volslider();
 		}
@@ -281,7 +300,8 @@ void button_press_cb(GtkWidget * w, GdkEventButton * event, gpointer data)
 		{
 			pos = event->x - SEEKSLIDER_X;
 
-			if (pos >= seekslider_pos && pos < seekslider_pos + SEEKSLIDER_KNOB_WIDTH)
+			if (pos >= seekslider_pos &&
+			    pos < seekslider_pos + SEEKSLIDER_KNOB_WIDTH)
 				seekslider_drag_offset = pos - seekslider_pos;
 			else
 			{
@@ -296,7 +316,8 @@ void button_press_cb(GtkWidget * w, GdkEventButton * event, gpointer data)
 			seekslider_dragging = TRUE;
 		}
 	}
-	else if ((!single_click && event->type == GDK_2BUTTON_PRESS) || (single_click && event->type == GDK_BUTTON_PRESS))
+	else if ((!single_click && event->type == GDK_2BUTTON_PRESS) ||
+		 (single_click && event->type == GDK_BUTTON_PRESS))
 	{
 		cmd = g_strconcat(xmms_cmd, " &", NULL);
 		system(cmd);
@@ -304,11 +325,11 @@ void button_press_cb(GtkWidget * w, GdkEventButton * event, gpointer data)
 	}
 }
 
-void button_release_cb(GtkWidget * w, GdkEventButton * event, gpointer data)
+void button_release_cb(GtkWidget *w, GdkEventButton *event, gpointer data)
 {
 	GList *node;
 	Button *btn;
-	gint len;
+	int len;
 
 	if (event->button != 1)
 		return;
@@ -329,13 +350,13 @@ void button_release_cb(GtkWidget * w, GdkEventButton * event, gpointer data)
 	if (seekslider_dragging)
 	{
 		len = xmms_remote_get_playlist_time(xmms_session, xmms_remote_get_playlist_pos(xmms_session));
-		xmms_remote_jump_to_time(xmms_session, ((seekslider_pos * len) / SEEKSLIDER_MAX));
+		xmms_remote_jump_to_time(xmms_session, (seekslider_pos * len) / SEEKSLIDER_MAX);
 		seekslider_dragging = FALSE;
 	}
 
 }
 
-void motion_notify_cb(GtkWidget * w, GdkEventMotion * event, gpointer data)
+void motion_notify_cb(GtkWidget *w, GdkEventMotion *event, gpointer data)
 {
 	GList *node;
 	Button *btn;
@@ -346,8 +367,11 @@ void motion_notify_cb(GtkWidget * w, GdkEventMotion * event, gpointer data)
 		btn = node->data;
 		if (btn->focus)
 		{
-			inside = inside_region(event->x, event->y, btn->x, btn->y, btn->width, btn->height);
-			if ((inside && !btn->pressed) || (!inside && btn->pressed))
+			inside = inside_region(event->x, event->y,
+					       btn->x, btn->y,
+					       btn->width, btn->height);
+			if ((inside && !btn->pressed) ||
+			    (!inside && btn->pressed))
 			{
 				btn->pressed = inside;
 				draw_button(btn);
@@ -366,7 +390,8 @@ void motion_notify_cb(GtkWidget * w, GdkEventMotion * event, gpointer data)
 	}
 	if (seekslider_dragging)
 	{
-		seekslider_pos = (event->x - SEEKSLIDER_X) - seekslider_drag_offset;
+		seekslider_pos =
+			event->x - SEEKSLIDER_X - seekslider_drag_offset;
 		if (seekslider_pos < 0)
 			seekslider_pos = 0;
 		if (seekslider_pos > SEEKSLIDER_MAX)
@@ -376,7 +401,7 @@ void motion_notify_cb(GtkWidget * w, GdkEventMotion * event, gpointer data)
 
 }
 
-void destroy_cb(GtkWidget * w, gpointer data)
+void destroy_cb(GtkWidget *w, gpointer data)
 {
 	gtk_exit(0);
 }
@@ -434,9 +459,9 @@ static void update_tooltip(void)
 	}
 }
 
-gint timeout_func(gpointer data)
+int timeout_func(gpointer data)
 {
-	gint new_pos, pos, len;
+	int new_pos, pos;
 	gboolean playing, running;
 
 	running = xmms_remote_is_running(xmms_session);
@@ -481,7 +506,7 @@ gint timeout_func(gpointer data)
 		}
 		else if (playing)
 		{
-			int p = xmms_remote_get_playlist_pos(xmms_session);
+			int len, p = xmms_remote_get_playlist_pos(xmms_session);
 			len = xmms_remote_get_playlist_time(xmms_session, p);
 			if (len == -1)
 			{
@@ -526,14 +551,15 @@ gint timeout_func(gpointer data)
 	return TRUE;
 }
 
-void drag_data_received(GtkWidget * widget, GdkDragContext * context,
-			gint x, gint y, GtkSelectionData * selection_data,
+void drag_data_received(GtkWidget *widget, GdkDragContext *context,
+			int x, int y, GtkSelectionData *selection_data,
 			guint info, guint time)
 {
 	if (selection_data->data)
 	{
+		char *url = selection_data->data;
 		xmms_remote_playlist_clear(xmms_session);
-		xmms_remote_playlist_add_url_string(xmms_session, (gchar *) selection_data->data);
+		xmms_remote_playlist_add_url_string(xmms_session, url);
 		xmms_remote_play(xmms_session);
 	}
 }
@@ -543,7 +569,7 @@ void init(void)
 	GdkColor bg_color;
 	GdkWindow *leader;
 	XWMHints hints;
-	gint i, w, h;
+	int i, w, h;
 	GdkGC *mask_gc;
 
 	for (i = 0; i < NUM_BUTTONS; i++)
@@ -555,53 +581,74 @@ void init(void)
 		gtk_tooltips_set_delay(tooltips, 1000);
 	}
 
-	window = gtk_window_new(GTK_WINDOW_DIALOG);
+	window = gtk_window_new(GDK_WINDOW_DIALOG);
 	if (has_geometry)
 		gtk_widget_set_uposition(window, win_x, win_y);
 	gtk_widget_set_usize(window, 64, 64);
 	gtk_widget_set_app_paintable(window, TRUE);
-	gtk_widget_set_events(window, GDK_BUTTON_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_EXPOSURE_MASK);
-	gtk_signal_connect(GTK_OBJECT(window), "expose_event", GTK_SIGNAL_FUNC(expose_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(window), "button_press_event", GTK_SIGNAL_FUNC(button_press_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(window), "button_release_event", GTK_SIGNAL_FUNC(button_release_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(window), "motion_notify_event", GTK_SIGNAL_FUNC(motion_notify_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(window), "destroy", GTK_SIGNAL_FUNC(destroy_cb), NULL);
-	gtk_drag_dest_set(window, GTK_DEST_DEFAULT_ALL, drop_types, 1, GDK_ACTION_COPY);
-	gtk_signal_connect(GTK_OBJECT(window), "drag_data_received", GTK_SIGNAL_FUNC(drag_data_received), NULL);
+	gtk_widget_set_events(window,
+			      GDK_BUTTON_MOTION_MASK | GDK_BUTTON_PRESS_MASK |
+			      GDK_BUTTON_RELEASE_MASK | GDK_EXPOSURE_MASK);
+	gtk_signal_connect(GTK_OBJECT(window), "expose_event",
+			   GTK_SIGNAL_FUNC(expose_cb), NULL);
+	gtk_signal_connect(GTK_OBJECT(window), "button_press_event",
+			   GTK_SIGNAL_FUNC(button_press_cb), NULL);
+	gtk_signal_connect(GTK_OBJECT(window), "button_release_event",
+			   GTK_SIGNAL_FUNC(button_release_cb), NULL);
+	gtk_signal_connect(GTK_OBJECT(window), "motion_notify_event",
+			   GTK_SIGNAL_FUNC(motion_notify_cb), NULL);
+	gtk_signal_connect(GTK_OBJECT(window), "destroy",
+			   GTK_SIGNAL_FUNC(destroy_cb), NULL);
+	gtk_drag_dest_set(window, GTK_DEST_DEFAULT_ALL, drop_types, 1,
+			  GDK_ACTION_COPY);
+	gtk_signal_connect(GTK_OBJECT(window), "drag_data_received",
+			   GTK_SIGNAL_FUNC(drag_data_received), NULL);
 
 	gtk_widget_realize(window);
 	bg_color.red = 0;
 	bg_color.green = 0;
 	bg_color.blue = 0;
-	gdk_colormap_alloc_color(gdk_colormap_get_system(), &bg_color, FALSE, TRUE);
+	gdk_colormap_alloc_color(gdk_colormap_get_system(),
+				 &bg_color, FALSE, TRUE);
 	gdk_window_set_background(window->window, &bg_color);
 	gdk_window_clear(window->window);
 	hints.initial_state = WithdrawnState;
 	hints.flags = StateHint;
 	XSetWMHints(GDK_DISPLAY(), GDK_WINDOW_XWINDOW(window->window), &hints);
 
-	icon_win = gtk_window_new(GTK_WINDOW_DIALOG);
+	icon_win = gtk_window_new(GDK_WINDOW_DIALOG);
 	gtk_widget_set_app_paintable(icon_win, TRUE);
 	gtk_widget_set_uposition(icon_win, 0, 0);
 	gtk_widget_set_usize(icon_win, 64, 64);
-	gtk_widget_set_events(icon_win, GDK_BUTTON_MOTION_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_EXPOSURE_MASK);
-	gtk_signal_connect(GTK_OBJECT(icon_win), "expose_event", GTK_SIGNAL_FUNC(expose_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(icon_win), "button_press_event", GTK_SIGNAL_FUNC(button_press_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(icon_win), "button_release_event", GTK_SIGNAL_FUNC(button_release_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(icon_win), "motion_notify_event", GTK_SIGNAL_FUNC(motion_notify_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(icon_win), "destroy", GTK_SIGNAL_FUNC(destroy_cb), NULL);
-	gtk_drag_dest_set(icon_win, GTK_DEST_DEFAULT_ALL, drop_types, 1, GDK_ACTION_COPY);
-	gtk_signal_connect(GTK_OBJECT(icon_win), "drag_data_received", GTK_SIGNAL_FUNC(drag_data_received), NULL);
+	gtk_widget_set_events(icon_win,
+			      GDK_BUTTON_MOTION_MASK | GDK_BUTTON_PRESS_MASK |
+			      GDK_BUTTON_RELEASE_MASK | GDK_EXPOSURE_MASK);
+	gtk_signal_connect(GTK_OBJECT(icon_win), "expose_event",
+			   GTK_SIGNAL_FUNC(expose_cb), NULL);
+	gtk_signal_connect(GTK_OBJECT(icon_win), "button_press_event",
+			   GTK_SIGNAL_FUNC(button_press_cb), NULL);
+	gtk_signal_connect(GTK_OBJECT(icon_win), "button_release_event",
+			   GTK_SIGNAL_FUNC(button_release_cb), NULL);
+	gtk_signal_connect(GTK_OBJECT(icon_win), "motion_notify_event",
+			   GTK_SIGNAL_FUNC(motion_notify_cb), NULL);
+	gtk_signal_connect(GTK_OBJECT(icon_win), "destroy",
+			   GTK_SIGNAL_FUNC(destroy_cb), NULL);
+	gtk_drag_dest_set(icon_win, GTK_DEST_DEFAULT_ALL, drop_types, 1,
+			  GDK_ACTION_COPY);
+	gtk_signal_connect(GTK_OBJECT(icon_win), "drag_data_received",
+			   GTK_SIGNAL_FUNC(drag_data_received), NULL);
 	gtk_widget_realize(icon_win);
 	bg_color.red = 0;
 	bg_color.green = 0;
 	bg_color.blue = 0;
-	gdk_colormap_alloc_color(gdk_colormap_get_system(), &bg_color, FALSE, TRUE);
+	gdk_colormap_alloc_color(gdk_colormap_get_system(),
+				 &bg_color, FALSE, TRUE);
 	gdk_window_set_background(icon_win->window, &bg_color);
 	gdk_window_clear(icon_win->window);
 	dock_gc = gdk_gc_new(icon_win->window);
 
-	launch_pixmap = gdk_pixmap_new(window->window, 64, 64, gdk_visual_get_best_depth());
+	launch_pixmap = gdk_pixmap_new(window->window, 64, 64,
+				       gdk_visual_get_best_depth());
 
 	launch_mask = gdk_pixmap_new(window->window, 64, 64, 1);
 	mask_gc = gdk_gc_new(launch_mask);
@@ -611,7 +658,8 @@ void init(void)
 
 	if (!icon_name)
 		icon_name = g_strdup_printf("%s/wmxmms.xpm", DATA_DIR);
-	pixmap = gdk_pixmap_create_from_xpm(window->window, &mask, NULL, icon_name);
+	pixmap = gdk_pixmap_create_from_xpm(window->window, &mask,
+					    NULL, icon_name);
 	if (!pixmap)
 	{
 		printf(_("ERROR: Couldn't find %s\n"), icon_name);
@@ -624,8 +672,10 @@ void init(void)
 		w = 64;
 	if (h > 64)
 		h = 64;
-	gdk_draw_pixmap(launch_pixmap, dock_gc, pixmap, 0, 0, 32 - (w / 2), 32 - (h / 2), w, h);
-	gdk_draw_pixmap(launch_mask, mask_gc, mask, 0, 0, 32 - (w / 2), 32 - (h / 2), w, h);
+	gdk_draw_pixmap(launch_pixmap, dock_gc, pixmap,
+			0, 0, 32 - (w / 2), 32 - (h / 2), w, h);
+	gdk_draw_pixmap(launch_mask, mask_gc, mask,
+			0, 0, 32 - (w / 2), 32 - (h / 2), w, h);
 	gdk_gc_unref(mask_gc);
 	gdk_pixmap_unref(pixmap);
 	gdk_bitmap_unref(mask);
@@ -633,9 +683,10 @@ void init(void)
 	gtk_widget_shape_combine_mask(window, launch_mask, 0, 0);
 	gtk_widget_shape_combine_mask(icon_win, launch_mask, 0, 0);
 
-	pixmap = gdk_pixmap_create_from_xpm_d(window->window, &mask, NULL, xmms_dock_master_xpm);
+	pixmap = gdk_pixmap_create_from_xpm_d(window->window,
+					      &mask, NULL, xmms_dock_master_xpm);
 
-	leader = gdk_window_foreign_new(gdk_leader_window);
+	leader = gdk_window_foreign_new(gdk_x11_get_default_root_xwindow());
 	gdk_window_set_icon(leader, icon_win->window, NULL, NULL);
 	gdk_window_reparent(icon_win->window, leader, 0, 0);
 
@@ -663,73 +714,42 @@ void display_usage(char *cmd)
 	       cmd);
 }
 
-struct option long_options[] =
+static struct option lopt[] =
 {
-	{"help", 0, 0, 0},
-	{"geometry", 1, 0, 0},
-	{"session", 1, 0, 0},
-	{"command", 1, 0, 0},
-	{"icon", 1, 0, 0},
-	{"single", 0, 0, 0},
-	{"title", 0, 0, 0},
-	{"version", 0, 0, 0},
-	{NULL, 0, 0, 0}
+	{"help", 0, NULL, 'h'},
+	{"geometry", 1, NULL, 'g'},
+	{"session", 1, NULL, 's'},
+	{"command", 1, NULL, 'c'},
+	{"icon", 1, NULL, 'i'},
+	{"single", 0, NULL, 'n'},
+	{"title", 0, NULL, 't'},
+	{"version", 0, NULL, 'v'},
+	{NULL, 0, NULL, 0}
 };
 
 int main(int argc, char **argv)
 {
-	gint c, o;
+	int c;
 
 	gtk_set_locale();
 #ifdef ENABLE_NLS
-	bindtextdomain (PACKAGE, LOCALEDIR);
-	textdomain (PACKAGE);
+	bindtextdomain(PACKAGE, LOCALEDIR);
+	textdomain(PACKAGE);
 #endif
 
 	gtk_init(&argc, &argv);
 
-	while ((c = getopt_long(argc, argv, "hg:s:c:i:ntv", long_options, &o)) != -1)
+	while ((c = getopt_long(argc, argv, "hg:s:c:i:ntv", lopt, NULL)) != -1)
 	{
 		switch (c)
 		{
-			case 0:
-				switch (o)
-				{
-					case 0:
-						display_usage(argv[0]);
-						gtk_exit(0);
-						break;
-					case 1:
-						XParseGeometry(optarg, &win_x, &win_y, NULL, NULL);
-						has_geometry = TRUE;
-						break;
-					case 2:
-						xmms_session = atoi(optarg);
-						break;
-					case 3:
-						xmms_cmd = g_strdup(optarg);
-						break;
-					case 4:
-						icon_name = g_strdup(optarg);
-						break;
-					case 5:
-						single_click = TRUE;
-						break;
-					case 6:
-						song_title = TRUE;
-						break;
-					case 7:
-						printf("wmxmms %s\n", VERSION);
-						gtk_exit(0);
-						break;
-				}
-				break;
 			case 'h':
 				display_usage(argv[0]);
 				gtk_exit(0);
 				break;
 			case 'g':
-				XParseGeometry(optarg, &win_x, &win_y, NULL, NULL);
+				XParseGeometry(optarg, &win_x, &win_y,
+					       NULL, NULL);
 				has_geometry = TRUE;
 				break;
 			case 's':
@@ -758,19 +778,3 @@ int main(int argc, char **argv)
 	gtk_main();
 	return 0;
 }
-
-
-#if defined(USE_DMALLOC)
-
-/*
- * When allocating via, say, g_strdup the wrapper macro must free the
- * previously allocated string through the original g_free function.
- */
-void g_free_orig (gpointer mem)
-{
-#undef g_free
-	void g_free (gpointer);
-	g_free (mem);
-}
-
-#endif

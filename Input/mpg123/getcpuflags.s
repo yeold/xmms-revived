@@ -1,11 +1,9 @@
-// getcpuflags.s - get CPUFLAGS
-// KIMURA Takuhiro <kim@hannah.ipc.miyakyo-u.ac.jp> - until 31.Mar.1999
-//                 <kim@comtec.co.jp>               - after  1.Apr.1999
-
-// extern int getcpuid(void) 
-// -> 0x00000000 (CPUID instruction not supported)
-// or CPUFLAGS
-
+# KIMURA Takuhiro <kim@comtec.co.jp>
+# Copyright 2002 Haavard Kvaalen <havardk@xmms.org>
+	
+# Get feature flags with cpuid
+# void mpg123_getcpuid(unsigned int *fflags, unsigned int *efflags)
+	
 .text
 	.align 4
 .globl mpg123_getcpuflags
@@ -13,37 +11,51 @@
 mpg123_getcpuflags:
 	pushl %ebp
 	movl %esp,%ebp
-	subl $4,%esp
 	pushl %edx
 	pushl %ecx
 	pushl %ebx
-	movl $0x80000000,%eax 
-	
-	pushfl
-	pushfl
-	popl %eax
+	pushfl			# First test if cpuid is supported
+	pushfl			# Check if the ID flag (bit 21 of eflags) sticks
+	popl %eax		# Get eflags
 	movl %eax,%ebx
-	xorl $0x00200000,%eax
+	xorl $0x200000,%eax	# Flip bit 21
 	pushl %eax
-	popfl
+	popfl			# Get modified eflags to flag register
 	pushfl
-	popl %eax
-	popfl
-	cmpl %ebx,%eax
-	/ for detect 3DNow! support (bit 31)
+	popl %eax		# Get eflags again
+	popfl			# Restore original eflags
+	xorl %ebx,%eax
+	je nocpuid
+	xorl %eax,%eax
+	cpuid			# Check if eax = 1 is supported
+	xorl %edx,%edx
+	cmp $1,%eax
+	jl noflags
+	movl $1,%eax		# Get feature flags
+	cpuid
+noflags:
+	movl 8(%ebp),%eax
+	movl %edx,(%eax)
+	movl $0x80000000,%eax	# Check support for extended level cpuid
+	cpuid
+	xorl %edx,%edx
+	cmp $0x80000001,%eax	# Get extended feature flags
+	jl noeflags
 	movl $0x80000001,%eax
 	cpuid
-	movl %edx,%eax
-	jmp .L1
-	.align 4
-.L0:	
-	movl $0,%eax
-	.align 4
-.L1:
-	movl %eax,-4(%esp)
+noeflags:
+	movl 12(%ebp),%eax
+	movl %edx,(%eax)
+	jmp done
+nocpuid:
+	xorl %edx,%edx
+	movl 8(%ebp),%eax
+	movl %edx,(%eax)
+	movl 12(%ebp),%eax
+	movl %edx,(%eax)
+done:
 	popl %ebx
 	popl %ecx
 	popl %edx
-	movl %ebp,%esp
-	popl %ebp
+	leave
 	ret

@@ -23,4 +23,4 @@ lib_LTLIBRARIES = $(solarislib)
 libSolaris_la_LDFLAGS = @PLUGIN_LDFLAGS@
 libdir = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
 libSolaris_la_SOURCES = $(solarisbuildsources)
-INCLUDES = @GTK_CFLAGS@ -I$(top_builddir)/intl
+INCLUDES = @GTK_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)

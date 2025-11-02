@@ -1,5 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2000  Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1998-2002  Peter Alm, Mikael Alm, Olle Hallnas,
+ *                           Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1999-2004  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -56,47 +58,15 @@ static void ice_handler(gpointer data, gint source, GdkInputCondition condition)
 	IceProcessMessages(data, NULL, NULL);
 }
 
-void sm_init(int argc, char **argv)
+const char * sm_init(int argc, char **argv, const char *previous_session_id)
 {
-	SmPropValue program_val, restart_val;
-	SmPropValue userid_val  = { 0, NULL };
-	SmProp program_prop, userid_prop, restart_prop, clone_prop, *props[4];
 	SmcCallbacks smcall;
 	char errstr[256];
 
-	program_val.length = strlen(PACKAGE);
-	program_val.value = PACKAGE;
-	restart_val.length = strlen(argv[0]);
-	restart_val.value = argv[0];
-	program_prop.name = SmProgram;
-	program_prop.type = SmARRAY8;
-	program_prop.num_vals = 1;
-	program_prop.vals = &program_val;
-	userid_prop.name = SmProgram;
-	userid_prop.type = SmARRAY8;
-	userid_prop.num_vals = 1;
-	userid_prop.vals = &userid_val;
-	restart_prop.name = SmRestartCommand;
-	restart_prop.type = SmLISTofARRAY8;
-	restart_prop.num_vals = 1;
-	restart_prop.vals = &restart_val;
-	clone_prop.name = SmCloneCommand;
-	clone_prop.type = SmLISTofARRAY8;
-	clone_prop.num_vals = 1;
-	clone_prop.vals = &restart_val;
-
-	props[0] = &program_prop;
-	props[1] = &userid_prop;
-	props[2] = &restart_prop;
-	props[3] = &clone_prop;
-
-
 	if (!getenv("SESSION_MANAGER"))
-		return;
+		return NULL;
 
 	memset(&smcall, 0, sizeof(smcall));
-	userid_val.value = g_strdup_printf("%d", geteuid());
-	userid_val.length = strlen(userid_val.value);
 	smcall.save_yourself.callback = sm_save_yourself;
 	smcall.die.callback = sm_die;
 	smcall.save_complete.callback = sm_save_complete;
@@ -107,15 +77,66 @@ void sm_init(int argc, char **argv)
 				     SmcSaveCompleteProcMask |
 				     SmcShutdownCancelledProcMask |
 				     SmcDieProcMask,
-				     &smcall, NULL, &session_id,
+				     &smcall, (char*) previous_session_id,
+                                     &session_id,
 				     sizeof(errstr), errstr);
-	if (!smc_conn)
-		return;
-	SmcSetProperties(smc_conn, sizeof(props) / sizeof(props[0]),
-			 (SmProp **)&props);
-	ice_conn = SmcGetIceConnection(smc_conn);
-	gdk_input_add(IceConnectionNumber(ice_conn), GDK_INPUT_READ,
-		      ice_handler, ice_conn);
+	if (smc_conn)
+	{
+		SmPropValue program_val, restart_val[3];
+		SmPropValue userid_val  = { 0, NULL };
+		SmProp program_prop, userid_prop, restart_prop, clone_prop, *props[4];
+
+		program_val.length = strlen("xmms");
+		program_val.value = "xmms";
+
+		program_prop.name = SmProgram;
+		program_prop.type = SmARRAY8;
+		program_prop.num_vals = 1;
+		program_prop.vals = &program_val;
+
+		userid_prop.name = SmProgram;
+		userid_prop.type = SmARRAY8;
+		userid_prop.num_vals = 1;
+		userid_prop.vals = &userid_val;
+
+		userid_val.value = g_strdup_printf("%d", geteuid());
+		userid_val.length = strlen(userid_val.value);
+
+		restart_prop.name = SmRestartCommand;
+		restart_prop.type = SmLISTofARRAY8;
+		restart_prop.num_vals = session_id ? 3 : 1;
+		restart_prop.vals = &restart_val[0];
+
+		restart_val[0].length = strlen(argv[0]);
+		restart_val[0].value = argv[0];
+		if (session_id != NULL)
+		{
+			restart_val[1].length = strlen("--sm-client-id");
+			restart_val[1].value = "--sm-client-id";
+			restart_val[2].length = strlen(session_id);
+			restart_val[2].value = session_id;
+		}
+
+		clone_prop.name = SmCloneCommand;
+		clone_prop.type = SmLISTofARRAY8;
+		clone_prop.num_vals = 1;
+		clone_prop.vals = &restart_val[0];
+
+		props[0] = &program_prop;
+		props[1] = &userid_prop;
+		props[2] = &restart_prop;
+		props[3] = &clone_prop;                
+
+		SmcSetProperties(smc_conn, sizeof(props) / sizeof(props[0]),
+				 (SmProp **)&props);
+		ice_conn = SmcGetIceConnection(smc_conn);
+		gdk_input_add(IceConnectionNumber(ice_conn), GDK_INPUT_READ,
+			      ice_handler, ice_conn);
+
+		g_free(userid_val.value);
+	}
+
+	return session_id;
 }
 
 void sm_cleanup(void)
@@ -126,8 +147,9 @@ void sm_cleanup(void)
 
 #else
 
-void sm_init(int argc, char **argv)
+const char * sm_init(int argc, char **argv, const char *previous_session_id)
 {
+	return NULL;
 }
 
 void sm_cleanup(void)

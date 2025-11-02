@@ -1,7 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2001  Peter Alm, Mikael Alm, Olle Hallnas,
+ *  Copyright (C) 1998-2004  Peter Alm, Mikael Alm, Olle Hallnas,
  *                           Thomas Nilsson and 4Front Technologies
- *  Copyright (C) 1999-2001  Haavard Kvaalen
+ *  Copyright (C) 1999-2004  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "xmmsctrl.h"
 #include "../xmms/controlsocket.h"
 
@@ -38,22 +39,40 @@
 #endif
 
 
-static gpointer remote_read_packet(gint fd, ServerPktHeader * pkt_hdr)
+static int read_all(int fd, void *buf, size_t count)
+{
+	size_t left = count;
+	int r;
+	do {
+		r = read(fd, buf, left);
+		if (r < 0)
+			return -1;
+		left -= r;
+		buf = (char *)buf + r;
+	} while (left > 0 && r > 0);
+	return count - left;
+}
+
+static gpointer remote_read_packet(int fd, ServerPktHeader * pkt_hdr)
 {
 	gpointer data = NULL;
 
-	if (read(fd, pkt_hdr, sizeof (ServerPktHeader)) == sizeof (ServerPktHeader))
+	if (read_all(fd, pkt_hdr, sizeof (ServerPktHeader)) == sizeof (ServerPktHeader))
 	{
 		if (pkt_hdr->data_length)
 		{
 			data = g_malloc0(pkt_hdr->data_length);
-			read(fd, data, pkt_hdr->data_length);
+			if (read_all(fd, data, pkt_hdr->data_length) != pkt_hdr->data_length)
+			{
+				g_free(data);
+				data = NULL;
+			}
 		}
 	}
 	return data;
 }
 
-static void remote_read_ack(gint fd)
+static void remote_read_ack(int fd)
 {
 	gpointer data;
 	ServerPktHeader pkt_hdr;
@@ -64,21 +83,41 @@ static void remote_read_ack(gint fd)
 
 }
 
-static void remote_send_packet(gint fd, guint32 command, gpointer data, guint32 data_length)
+static int write_all(int fd, const void *buf, size_t count)
+{
+	size_t left = count;
+	/* FIXME: This can take forever */
+	do {
+		int written = write(fd, buf, left);
+		if (written < 0)
+		{
+			g_warning("remote_send_packet(): "
+				  "Failed to send data to xmms: %s",
+				  strerror(errno));
+			return -1;
+		}
+		left -= written;
+		buf = (char *)buf + written;
+	} while (left > 0);
+	return count;
+}
+
+static void remote_send_packet(int fd, guint32 command, gpointer data, guint32 data_length)
 {
 	ClientPktHeader pkt_hdr;
 
 	pkt_hdr.version = XMMS_PROTOCOL_VERSION;
 	pkt_hdr.command = command;
 	pkt_hdr.data_length = data_length;
-	write(fd, &pkt_hdr, sizeof (ClientPktHeader));
+	if (write_all(fd, &pkt_hdr, sizeof (ClientPktHeader)) < 0)
+		return;
 	if (data_length && data)
-		write(fd, data, data_length);
+		write_all(fd, data, data_length);
 }
 
-static void remote_send_guint32(gint session, guint32 cmd, guint32 val)
+static void remote_send_guint32(int session, guint32 cmd, guint32 val)
 {
-	gint fd;
+	int fd;
 
 	if ((fd = xmms_connect_to_session(session)) == -1)
 		return;
@@ -87,9 +126,9 @@ static void remote_send_guint32(gint session, guint32 cmd, guint32 val)
 	close(fd);
 }
 
-static void remote_send_boolean(gint session, guint32 cmd, gboolean val)
+static void remote_send_boolean(int session, guint32 cmd, gboolean val)
 {
-	gint fd;
+	int fd;
 
 	if ((fd = xmms_connect_to_session(session)) == -1)
 		return;
@@ -98,20 +137,20 @@ static void remote_send_boolean(gint session, guint32 cmd, gboolean val)
 	close(fd);
 }
 
-static void remote_send_gfloat(gint session, guint32 cmd, gfloat value)
+static void remote_send_gfloat(int session, guint32 cmd, float value)
 {
-	gint fd;
+	int fd;
 
 	if ((fd = xmms_connect_to_session(session)) == -1)
 		return;
-	remote_send_packet(fd, cmd, &value, sizeof (gfloat));
+	remote_send_packet(fd, cmd, &value, sizeof (float));
 	remote_read_ack(fd);
 	close(fd);
 }
 
-static void remote_send_string(gint session, guint32 cmd, gchar * string)
+static void remote_send_string(int session, guint32 cmd, char * string)
 {
-	gint fd;
+	int fd;
 
 	if ((fd = xmms_connect_to_session(session)) == -1)
 		return;
@@ -120,9 +159,9 @@ static void remote_send_string(gint session, guint32 cmd, gchar * string)
 	close(fd);
 }
 
-static gboolean remote_cmd(gint session, guint32 cmd)
+static gboolean remote_cmd(int session, guint32 cmd)
 {
-	gint fd;
+	int fd;
 
 	if ((fd = xmms_connect_to_session(session)) == -1)
 		return FALSE;
@@ -133,7 +172,7 @@ static gboolean remote_cmd(gint session, guint32 cmd)
 	return TRUE;
 }
 
-static gboolean remote_get_gboolean(gint session, gint cmd)
+static gboolean remote_get_gboolean(int session, int cmd)
 {
 	ServerPktHeader pkt_hdr;
 	gboolean ret = FALSE;
@@ -155,11 +194,11 @@ static gboolean remote_get_gboolean(gint session, gint cmd)
 	return ret;
 }
 
-static guint32 remote_get_gint(gint session, gint cmd)
+static guint32 remote_get_gint(int session, int cmd)
 {
 	ServerPktHeader pkt_hdr;
 	gpointer data;
-	gint fd, ret = 0;
+	int fd, ret = 0;
 
 	if ((fd = xmms_connect_to_session(session)) == -1)
 		return ret;
@@ -167,7 +206,7 @@ static guint32 remote_get_gint(gint session, gint cmd)
 	data = remote_read_packet(fd, &pkt_hdr);
 	if (data)
 	{
-		ret = *((gint *) data);
+		ret = *((int *) data);
 		g_free(data);
 	}
 	remote_read_ack(fd);
@@ -175,7 +214,27 @@ static guint32 remote_get_gint(gint session, gint cmd)
 	return ret;
 }
 
-static gfloat remote_get_gfloat(gint session, gint cmd)
+static guint32 remote_get_gint_pos(int session, int cmd, guint32 pos)
+{
+	ServerPktHeader pkt_hdr;
+	gpointer data;
+	int fd, ret = 0;
+
+	if ((fd = xmms_connect_to_session(session)) == -1)
+		return ret;
+	remote_send_packet(fd, cmd, &pos, sizeof (guint32));
+	data = remote_read_packet(fd, &pkt_hdr);
+	if (data)
+	{
+		ret = *((int *) data);
+		g_free(data);
+	}
+	remote_read_ack(fd);
+	close(fd);
+	return ret;
+}
+
+static float remote_get_gfloat(int session, int cmd)
 {
 	ServerPktHeader pkt_hdr;
 	gpointer data;
@@ -188,7 +247,7 @@ static gfloat remote_get_gfloat(gint session, gint cmd)
 	data = remote_read_packet(fd, &pkt_hdr);
 	if (data)
 	{
-		ret = *((gfloat *) data);
+		ret = *((float *) data);
 		g_free(data);
 	}
 	remote_read_ack(fd);
@@ -196,7 +255,7 @@ static gfloat remote_get_gfloat(gint session, gint cmd)
 	return ret;
 }
 
-gchar *remote_get_string(gint session, gint cmd)
+char *remote_get_string(int session, int cmd)
 {
 	ServerPktHeader pkt_hdr;
 	gpointer data;
@@ -211,11 +270,11 @@ gchar *remote_get_string(gint session, gint cmd)
 	return data;
 }
 
-gchar *remote_get_string_pos(gint session, gint cmd, guint32 pos)
+char *remote_get_string_pos(int session, int cmd, guint32 pos)
 {
 	ServerPktHeader pkt_hdr;
 	gpointer data;
-	gint fd;
+	int fd;
 
 	if ((fd = xmms_connect_to_session(session)) == -1)
 		return NULL;
@@ -226,9 +285,9 @@ gchar *remote_get_string_pos(gint session, gint cmd, guint32 pos)
 	return data;
 }
 
-gint xmms_connect_to_session(gint session)
+int xmms_connect_to_session(int session)
 {
-	gint fd;
+	int fd;
 	uid_t stored_uid, euid;
 	struct sockaddr_un saddr;
 
@@ -238,7 +297,7 @@ gint xmms_connect_to_session(gint session)
 		stored_uid = getuid();
 		euid = geteuid();
 		setuid(euid);
-		sprintf(saddr.sun_path, "%s/xmms_%s.%d", g_get_tmp_dir(), g_get_user_name(), session);
+		g_snprintf(saddr.sun_path, 108, "%s/xmms_%s.%d", g_get_tmp_dir(), g_get_user_name(), session);
 		setreuid(stored_uid, euid);
 		if (connect(fd, (struct sockaddr *) &saddr, sizeof (saddr)) != -1)
 			return fd;
@@ -247,18 +306,21 @@ gint xmms_connect_to_session(gint session)
 	return -1;
 }
 
-void xmms_remote_playlist(gint session, gchar ** list, gint num, gboolean enqueue)
+void xmms_remote_playlist(int session, char ** list, int num, gboolean enqueue)
 {
-	gint fd, i;
-	gchar *data, *ptr;
-	gint data_length;
+	int fd, i;
+	char *data, *ptr;
+	int data_length;
 	guint32 len;
+
+	g_return_if_fail(list != NULL);
+	g_return_if_fail(num > 0);
+	
+	if (!enqueue)
+		xmms_remote_playlist_clear(session);
 
 	if ((fd = xmms_connect_to_session(session)) == -1)
 		return;
-
-	if (!enqueue)
-		xmms_remote_playlist_clear(session);
 
 	for (i = 0, data_length = 0; i < num; i++)
 		data_length += (((strlen(list[i]) + 1) + 3) / 4) * 4 + 4;
@@ -285,26 +347,30 @@ void xmms_remote_playlist(gint session, gchar ** list, gint num, gboolean enqueu
 		xmms_remote_play(session);
 }
 
-gint xmms_remote_get_version(gint session)
+int xmms_remote_get_version(int session)
 {
 	return remote_get_gint(session, CMD_GET_VERSION);
 }
 
-void xmms_remote_play_files(gint session, GList * list)
+void xmms_remote_play_files(int session, GList * list)
 {
+	g_return_if_fail(list != NULL);
+
 	xmms_remote_playlist_clear(session);
 	xmms_remote_add_files(session, list);
 	xmms_remote_play(session);
 }
 
-void xmms_remote_playlist_add(gint session, GList * list)
+void xmms_remote_playlist_add(int session, GList * list)
 {
-	gchar **str_list;
+	char **str_list;
 	GList *node;
-	gint i, num;
+	int i, num;
 
+	g_return_if_fail(list != NULL);
+	
 	num = g_list_length(list);
-	str_list = g_malloc0(num * sizeof (gchar *));
+	str_list = g_malloc0(num * sizeof (char *));
 	for (i = 0, node = list; i < num && node; i++, node = g_list_next(node))
 		str_list[i] = node->data;
 
@@ -312,72 +378,102 @@ void xmms_remote_playlist_add(gint session, GList * list)
 	g_free(str_list);
 }
 
-void xmms_remote_playlist_delete(gint session, gint pos)
+void xmms_remote_playlist_delete(int session, int pos)
 {
 	remote_send_guint32(session,CMD_PLAYLIST_DELETE, pos);
 }
 
-void xmms_remote_play(gint session)
+void xmms_remote_play(int session)
 {
 	remote_cmd(session, CMD_PLAY);
 }
 
-void xmms_remote_pause(gint session)
+void xmms_remote_pause(int session)
 {
 	remote_cmd(session, CMD_PAUSE);
 }
 
-void xmms_remote_stop(gint session)
+void xmms_remote_stop(int session)
 {
 	remote_cmd(session, CMD_STOP);
 }
 
-void xmms_remote_play_pause(gint session)
+void xmms_remote_play_pause(int session)
 {
 	remote_cmd(session, CMD_PLAY_PAUSE);
 }
 
-gboolean xmms_remote_is_playing(gint session)
+gboolean xmms_remote_is_playing(int session)
 {
 	return remote_get_gboolean(session, CMD_IS_PLAYING);
 }
 
-gboolean xmms_remote_is_paused(gint session)
+gboolean xmms_remote_is_paused(int session)
 {
 	return remote_get_gboolean(session, CMD_IS_PAUSED);
 }
 
-gint xmms_remote_get_playlist_pos(gint session)
+gint xmms_remote_get_playlist_pos(int session)
 {
 	return remote_get_gint(session, CMD_GET_PLAYLIST_POS);
 }
 
-void xmms_remote_set_playlist_pos(gint session, gint pos)
+void xmms_remote_set_playlist_pos(int session, int pos)
 {
 	remote_send_guint32(session, CMD_SET_PLAYLIST_POS, pos);
 }
 
-gint xmms_remote_get_playlist_length(gint session)
+gint xmms_remote_get_playlist_length(int session)
 {
 	return remote_get_gint(session, CMD_GET_PLAYLIST_LENGTH);
 }
 
-void xmms_remote_playlist_clear(gint session)
+void xmms_remote_playlist_clear(int session)
 {
 	remote_cmd(session, CMD_PLAYLIST_CLEAR);
 }
 
-gint xmms_remote_get_output_time(gint session)
+void xmms_remote_playqueue_add(gint session, gint pos)
+{
+	remote_send_guint32(session, CMD_PLAYQUEUE_ADD, pos);
+}
+
+void xmms_remote_playqueue_remove(gint session, gint pos)
+{
+	remote_send_guint32(session, CMD_PLAYQUEUE_REMOVE, pos);
+}
+
+void xmms_remote_playqueue_clear(gint session)
+{
+	remote_cmd(session, CMD_PLAYQUEUE_CLEAR);
+}
+		
+gint xmms_remote_get_playqueue_length(gint session)
+{
+	return remote_get_gint(session, CMD_GET_PLAYQUEUE_LENGTH);
+}
+
+gint xmms_remote_get_playqueue_pos_from_playlist_pos(gint session, gint pos)
+{
+	return remote_get_gint_pos(session, CMD_GET_PLAYQUEUE_POS_FROM_PLAYLIST_POS, pos);
+}
+
+gint xmms_remote_get_playlist_pos_from_playqueue_pos(gint session, gint pos)
+{
+	return remote_get_gint_pos(session, CMD_GET_PLAYLIST_POS_FROM_PLAYQUEUE_POS, pos);
+}
+
+int xmms_remote_get_output_time(int session)
 {
 	return remote_get_gint(session, CMD_GET_OUTPUT_TIME);
 }
 
-void xmms_remote_jump_to_time(gint session, gint pos)
+void xmms_remote_jump_to_time(int session, int pos)
 {
 	remote_send_guint32(session, CMD_JUMP_TO_TIME, pos);
 }
 
-void xmms_remote_get_volume(gint session, gint * vl, gint * vr)
+void xmms_remote_get_volume(int session, int * vl, int * vr)
 {
 	ServerPktHeader pkt_hdr;
 	gint fd;
@@ -385,6 +481,7 @@ void xmms_remote_get_volume(gint session, gint * vl, gint * vr)
 
 	if ((fd = xmms_connect_to_session(session)) == -1)
 		return;
+
 	remote_send_packet(fd, CMD_GET_VOLUME, NULL, 0);
 	data = remote_read_packet(fd, &pkt_hdr);
 	if (data)
@@ -397,33 +494,27 @@ void xmms_remote_get_volume(gint session, gint * vl, gint * vr)
 	close(fd);
 }
 
-gint xmms_remote_get_main_volume(gint session)
+int xmms_remote_get_main_volume(int session)
 {
 	gint vl, vr;
 
 	xmms_remote_get_volume(session, &vl, &vr);
 
-	return (vl > vr) ? vl : vr;
+	return MAX(vl, vr);
 }
 
-gint xmms_remote_get_balance(gint session)
+int xmms_remote_get_balance(int session)
 {
 	return remote_get_gint(session, CMD_GET_BALANCE);
 }
 
-void xmms_remote_set_volume(gint session, gint vl, gint vr)
+void xmms_remote_set_volume(int session, int vl, int vr)
 {
 	gint fd;
 	guint32 v[2];
 
-	if (vl < 0)
-		vl = 0;
-	if (vl > 100)
-		vl = 100;
-	if (vr < 0)
-		vr = 0;
-	if (vr > 100)
-		vr = 100;
+	vl = CLAMP(vl, 0, 100);
+	vr = CLAMP(vr, 0, 100);
 
 	if ((fd = xmms_connect_to_session(session)) == -1)
 		return;
@@ -434,20 +525,22 @@ void xmms_remote_set_volume(gint session, gint vl, gint vr)
 	close(fd);
 }
 
-void xmms_remote_set_main_volume(gint session, gint v)
+void xmms_remote_set_main_volume(int session, int v)
 {
-	gint b, vl, vr;
+	int b, vl, vr;
 
 	b = xmms_remote_get_balance(session);
 
+	v = CLAMP(v, 0, 100);
+	
 	if (b < 0)
 	{
 		vl = v;
-		vr = (v * (100 - abs(b))) / 100;
+		vr = rint((v * (100 + b)) / 100.0);
 	}
 	else if (b > 0)
 	{
-		vl = (v * (100 - b)) / 100;
+		vl = rint((v * (100 - b)) / 100.0);
 		vr = v;
 	}
 	else
@@ -455,21 +548,18 @@ void xmms_remote_set_main_volume(gint session, gint v)
 	xmms_remote_set_volume(session, vl, vr);
 }
 
-void xmms_remote_set_balance(gint session, gint b)
+void xmms_remote_set_balance(int session, int b)
 {
-	gint v, vl, vr;
+	int v, vl, vr;
 
-	if (b < -100)
-		b = -100;
-	if (b > 100)
-		b = 100;
+	b = CLAMP(b, -100, 100);
 
 	v = xmms_remote_get_main_volume(session);
 
 	if (b < 0)
 	{
 		vl = v;
-		vr = (v * (100 - abs(b))) / 100;
+		vr = (v * (100 + b)) / 100;
 	}
 	else if (b > 0)
 	{
@@ -481,31 +571,31 @@ void xmms_remote_set_balance(gint session, gint b)
 	xmms_remote_set_volume(session, vl, vr);
 }
 
-gchar *xmms_remote_get_skin(gint session)
+char *xmms_remote_get_skin(int session)
 {
 	return remote_get_string(session, CMD_GET_SKIN);
 }
 
-void xmms_remote_set_skin(gint session, gchar * skinfile)
+void xmms_remote_set_skin(int session, char * skinfile)
 {
 	remote_send_string(session, CMD_SET_SKIN, skinfile);
 }
 
-gchar *xmms_remote_get_playlist_file(gint session, gint pos)
+char *xmms_remote_get_playlist_file(int session, int pos)
 {
 	return remote_get_string_pos(session, CMD_GET_PLAYLIST_FILE, pos);
 }
 
-gchar *xmms_remote_get_playlist_title(gint session, gint pos)
+char *xmms_remote_get_playlist_title(int session, int pos)
 {
 	return remote_get_string_pos(session, CMD_GET_PLAYLIST_TITLE, pos);
 }
 
-gint xmms_remote_get_playlist_time(gint session, gint pos)
+int xmms_remote_get_playlist_time(int session, int pos)
 {
 	ServerPktHeader pkt_hdr;
 	gpointer data;
-	gint fd, ret = 0;
+	int fd, ret = 0;
 	guint32 p = pos;
 
 	if ((fd = xmms_connect_to_session(session)) == -1)
@@ -522,7 +612,7 @@ gint xmms_remote_get_playlist_time(gint session, gint pos)
 	return ret;
 }
 
-void xmms_remote_get_info(gint session, gint * rate, gint * freq, gint * nch)
+void xmms_remote_get_info(int session, int * rate, int * freq, int * nch)
 {
 	ServerPktHeader pkt_hdr;
 	gint fd;
@@ -543,82 +633,83 @@ void xmms_remote_get_info(gint session, gint * rate, gint * freq, gint * nch)
 	close(fd);
 }
 
-void xmms_remote_get_eq_data(gint session)
+void xmms_remote_get_eq_data(int session)
 {
-	/* write me! */
+	/* Obsolete */
 }
 
-void xmms_remote_set_eq_data(gint session)
+void xmms_remote_set_eq_data(int session)
 {
-	/* write me! */
+	/* Obsolete */
 }
 
-void xmms_remote_pl_win_toggle(gint session, gboolean show)
+void xmms_remote_pl_win_toggle(int session, gboolean show)
 {
 	remote_send_boolean(session, CMD_PL_WIN_TOGGLE, show);
 }
 
-void xmms_remote_eq_win_toggle(gint session, gboolean show)
+void xmms_remote_eq_win_toggle(int session, gboolean show)
 {
 	remote_send_boolean(session, CMD_EQ_WIN_TOGGLE, show);
 }
 
-void xmms_remote_main_win_toggle(gint session, gboolean show)
+void xmms_remote_main_win_toggle(int session, gboolean show)
 {
 	remote_send_boolean(session, CMD_MAIN_WIN_TOGGLE, show);
 }
 
-gboolean xmms_remote_is_main_win(gint session)
+gboolean xmms_remote_is_main_win(int session)
 {
 	return remote_get_gboolean(session, CMD_IS_MAIN_WIN);
 }
 
-gboolean xmms_remote_is_pl_win(gint session)
+gboolean xmms_remote_is_pl_win(int session)
 {
 	return remote_get_gboolean(session, CMD_IS_PL_WIN);
 }
 
-gboolean xmms_remote_is_eq_win(gint session)
+gboolean xmms_remote_is_eq_win(int session)
 {
 	return remote_get_gboolean(session, CMD_IS_EQ_WIN);
 }
 
-void xmms_remote_show_prefs_box(gint session)
+void xmms_remote_show_prefs_box(int session)
 {
 	remote_cmd(session, CMD_SHOW_PREFS_BOX);
 }
 
-void xmms_remote_toggle_aot(gint session, gboolean ontop)
+void xmms_remote_toggle_aot(int session, gboolean ontop)
 {
 	remote_send_boolean(session, CMD_TOGGLE_AOT, ontop);
 }
 
-void xmms_remote_show_about_box(gint session)
+void xmms_remote_show_about_box(int session)
 {
 	remote_cmd(session, CMD_SHOW_ABOUT_BOX);
 }
 
-void xmms_remote_eject(gint session)
+void xmms_remote_eject(int session)
 {
 	remote_cmd(session, CMD_EJECT);
 }
 
-void xmms_remote_playlist_prev(gint session)
+void xmms_remote_playlist_prev(int session)
 {
 	remote_cmd(session, CMD_PLAYLIST_PREV);
 }
 
-void xmms_remote_playlist_next(gint session)
+void xmms_remote_playlist_next(int session)
 {
 	remote_cmd(session, CMD_PLAYLIST_NEXT);
 }
 
-void xmms_remote_playlist_add_url_string(gint session, gchar * string)
+void xmms_remote_playlist_add_url_string(int session, char * string)
 {
+	g_return_if_fail(string != NULL);
 	remote_send_string(session, CMD_PLAYLIST_ADD_URL_STRING, string);
 }
 
-void xmms_remote_playlist_ins_url_string(gint session, gchar * string, gint pos)
+void xmms_remote_playlist_ins_url_string(int session, char * string, int pos)
 {
 	int fd, size;
 	char* packet;
@@ -639,19 +730,24 @@ void xmms_remote_playlist_ins_url_string(gint session, gchar * string, gint pos)
 	g_free(packet);
 }
 
-gboolean xmms_remote_is_running(gint session)
+gboolean xmms_remote_is_running(int session)
 {
 	return remote_cmd(session, CMD_PING);
 }
 
-void xmms_remote_toggle_repeat(gint session)
+void xmms_remote_toggle_repeat(int session)
 {
 	remote_cmd(session, CMD_TOGGLE_REPEAT);
 }
 
-void xmms_remote_toggle_shuffle(gint session)
+void xmms_remote_toggle_shuffle(int session)
 {
 	remote_cmd(session, CMD_TOGGLE_SHUFFLE);
+}
+
+void xmms_remote_toggle_advance(int session)
+{
+	remote_cmd(session, CMD_TOGGLE_ADVANCE);
 }
 
 gboolean xmms_remote_is_repeat(gint session)
@@ -664,10 +760,15 @@ gboolean xmms_remote_is_shuffle(gint session)
 	return remote_get_gboolean(session, CMD_IS_SHUFFLE);
 }
 
-void xmms_remote_get_eq(gint session, gfloat *preamp, gfloat **bands)
+gboolean xmms_remote_is_advance(int session)
+{
+	return remote_get_gboolean(session, CMD_IS_ADVANCE);
+}
+
+void xmms_remote_get_eq(int session, float *preamp, float **bands)
 {
 	ServerPktHeader pkt_hdr;
-	gint fd;
+	int fd;
 	gpointer data;
 
 	if (preamp)
@@ -685,9 +786,9 @@ void xmms_remote_get_eq(gint session, gfloat *preamp, gfloat **bands)
 		if (pkt_hdr.data_length >= 11 * sizeof(gfloat))
 		{
 			if (preamp)
-				*preamp = *((gfloat *) data);
+				*preamp = *((float *) data);
 			if (bands)
-				*bands = (gfloat *) g_memdup((gfloat *)data + 1, 10 * sizeof(gfloat));
+				*bands = g_memdup((float *)data + 1, 10 * sizeof(float));
 		}
 		g_free(data);
 	}
@@ -695,12 +796,12 @@ void xmms_remote_get_eq(gint session, gfloat *preamp, gfloat **bands)
 	close(fd);
 }
 
-gfloat xmms_remote_get_eq_preamp(gint session)
+float xmms_remote_get_eq_preamp(int session)
 {
 	return remote_get_gfloat(session, CMD_GET_EQ_PREAMP);
 }
 
-gfloat xmms_remote_get_eq_band(gint session, gint band)
+float xmms_remote_get_eq_band(int session, int band)
 {
 	ServerPktHeader pkt_hdr;
 	gint fd;
@@ -720,43 +821,45 @@ gfloat xmms_remote_get_eq_band(gint session, gint band)
 	return val;
 }
 
-void xmms_remote_set_eq(gint session, gfloat preamp, gfloat *bands)
+void xmms_remote_set_eq(int session, float preamp, float *bands)
 {
-	gint fd, i;
-	gfloat data[11];
+	int fd, i;
+	float data[11];
+
+	g_return_if_fail(bands != NULL);
 
 	if ((fd = xmms_connect_to_session(session)) == -1)
 		return;
 	data[0] = preamp;
-	for(i = 0; i < 10; i++)
+	for (i = 0; i < 10; i++)
 		data[i + 1] = bands[i];
 	remote_send_packet(fd, CMD_SET_EQ, data, sizeof(data));
 	remote_read_ack(fd);
 	close(fd);
 }
 
-void xmms_remote_set_eq_preamp(gint session, gfloat preamp)
+void xmms_remote_set_eq_preamp(int session, float preamp)
 {
 	remote_send_gfloat(session, CMD_SET_EQ_PREAMP, preamp);
 }
 
-void xmms_remote_set_eq_band(gint session, gint band, gfloat value)
+void xmms_remote_set_eq_band(int session, int band, float value)
 {
-	gint fd;
-	gchar data[sizeof(gint) + sizeof(gfloat)];
+	int fd;
+	char data[sizeof(int) + sizeof(float)];
 
 	if ((fd = xmms_connect_to_session(session)) == -1)
 		return;
-	*((gint *) data) = band;
-	*((gfloat *) (data + sizeof(gint))) = value;
+	*((int *) data) = band;
+	*((float *) (data + sizeof(int))) = value;
 	remote_send_packet(fd, CMD_SET_EQ_BAND, data, sizeof(data));
 	remote_read_ack(fd);
 	close(fd);
 }
 
-void xmms_remote_quit(gint session)
+void xmms_remote_quit(int session)
 {
-	gint fd;
+	int fd;
 
 	if ((fd = xmms_connect_to_session(session)) == -1)
 		return;

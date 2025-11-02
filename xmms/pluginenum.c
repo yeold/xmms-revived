@@ -36,7 +36,7 @@
 #endif
 
 
-gchar *plugin_dir_list[] =
+char *plugin_dir_list[] =
 {
 	PLUGINSUBS,
 	NULL
@@ -49,7 +49,7 @@ extern struct GeneralPluginData *gp_data;
 extern struct VisPluginData *vp_data;
 
 void scan_plugins(char *dirname);
-void add_plugin(gchar * filename);
+void add_plugin(char * filename);
 
 static int d_iplist_compare(const void *a, const void *b)
 {
@@ -88,12 +88,9 @@ static int vislist_compare_func(const void *a, const void *b)
 
 void init_plugins(void)
 {
-	gchar *dir, *temp, *temp2;
+	char *dir, *temp, *temp2;
 	GList *node, *disabled_iplugin_names = NULL;
-	OutputPlugin *op;
-	InputPlugin *ip;
-	EffectPlugin *ep;
-	gint dirsel = 0;
+	int dirsel = 0;
 
 	if (cfg.disabled_iplugins)
 	{
@@ -154,24 +151,34 @@ void init_plugins(void)
 		op_data->current_output_plugin = op_data->output_list->data;
 	ip_data->input_list = g_list_sort(ip_data->input_list, inputlist_compare_func);
 	ep_data->effect_list = g_list_sort(ep_data->effect_list, effectlist_compare_func);
-	if (!ep_data->current_effect_plugin && g_list_length(ep_data->effect_list))
-		ep_data->current_effect_plugin = ep_data->effect_list->data;
+	ep_data->enabled_list = NULL;
 	gp_data->general_list = g_list_sort(gp_data->general_list, generallist_compare_func);
 	gp_data->enabled_list = NULL;
 	vp_data->vis_list = g_list_sort(vp_data->vis_list, vislist_compare_func);
 	vp_data->enabled_list = NULL;
 	general_enable_from_stringified_list(cfg.enabled_gplugins);
 	vis_enable_from_stringified_list(cfg.enabled_vplugins);
+	effect_enable_from_stringified_list(cfg.enabled_eplugins);
 	if (cfg.enabled_gplugins)
 	{
 		g_free(cfg.enabled_gplugins);
 		cfg.enabled_gplugins = NULL;
 	}
+	if (cfg.enabled_vplugins)
+	{
+		g_free(cfg.enabled_vplugins);
+		cfg.enabled_vplugins = NULL;
+	}
+	if (cfg.enabled_eplugins)
+	{
+		g_free(cfg.enabled_eplugins);
+		cfg.enabled_eplugins = NULL;
+	}
 
 	node = op_data->output_list;
 	while (node)
 	{
-		op = (OutputPlugin *) node->data;
+		OutputPlugin *op = node->data;
 		/*
 		 * Only test basename to avoid problems when changing
 		 * prefix.  We will only see one plugin with the same
@@ -185,23 +192,10 @@ void init_plugins(void)
 		node = node->next;
 	}
 
-	node = ep_data->effect_list;
-	while (node)
-	{
-		ep = (EffectPlugin *) node->data;
-		if (!strcmp(cfg.effectplugin, ep->filename))
-		{
-			ep_data->current_effect_plugin = ep;
-		}
-		if (ep->init)
-			ep->init();
-		node = node->next;
-	}
-
 	node = ip_data->input_list;
 	while (node)
 	{
-		ip = (InputPlugin *) node->data;
+		InputPlugin *ip = node->data;
 		temp = g_basename(ip->filename);
 		if (g_list_find_custom(disabled_iplugin_names, temp, d_iplist_compare))
 			disabled_iplugins = g_list_append(disabled_iplugins, ip);
@@ -275,7 +269,7 @@ static void dynamic_lib_error(void)
 static int plugin_check_duplicate(char *filename)
 {
 	GList *l;
-	gchar *base_filename = g_basename(filename);
+	char *base_filename = g_basename(filename);
 	/*
 	 * erg.. gotta check 'em all, surely there's a better way
 	 *                                                 - Zinx
@@ -310,7 +304,7 @@ static int plugin_check_duplicate(char *filename)
 }
 
 
-void add_plugin(gchar * filename)
+void add_plugin(char * filename)
 {
 	void *h;
 	void *(*gpi) (void);
@@ -373,7 +367,7 @@ void add_plugin(gchar * filename)
 
 void scan_plugins(char *dirname)
 {
-	gchar *filename, *ext;
+	char *filename, *ext;
 	DIR *dir;
 	struct dirent *ent;
 	struct stat statbuf;
@@ -396,116 +390,106 @@ void scan_plugins(char *dirname)
 
 void cleanup_plugins(void)
 {
-	InputPlugin *ip;
-	OutputPlugin *op;
-	EffectPlugin *ep;
-	GeneralPlugin *gp;
-	VisPlugin *vp;
 	GList *node, *next;
 
 	if (get_input_playing())
 		input_stop();
 
-	if (disabled_iplugins)
-		g_list_free(disabled_iplugins);
-	node = get_input_list();
+	g_list_free(disabled_iplugins);
+	node = ip_data->input_list;
 	while (node)
 	{
-		ip = (InputPlugin *) node->data;
-		if (ip && ip->cleanup)
+		InputPlugin *ip = node->data;
+		if (ip->cleanup)
 		{
 			ip->cleanup();
 			GDK_THREADS_LEAVE();
 			while(g_main_iteration(FALSE));
 			GDK_THREADS_ENTER();
-
 		}
+		g_free(ip->filename);
 		close_dynamic_lib(ip->handle);
 		node = node->next;
 	}
-	if (ip_data->input_list)
-		g_list_free(ip_data->input_list);
+	g_list_free(ip_data->input_list);
 	g_free(ip_data);
 
-	node = get_output_list();
+	node = op_data->output_list;
 	while (node)
 	{
-		op = (OutputPlugin *) node->data;
+		OutputPlugin *op = node->data;
+		g_free(op->filename);
 		close_dynamic_lib(op->handle);
 		node = node->next;
 	}
-	if (op_data->output_list)
-		g_list_free(op_data->output_list);
+	g_list_free(op_data->output_list);
 	g_free(op_data);
 
-	node = get_effect_list();
+	node = ep_data->effect_list;
 	while (node)
 	{
-		ep = (EffectPlugin *) node->data;
-		if (ep && ep->cleanup)
+		EffectPlugin *ep = node->data;
+		if (ep->cleanup)
 		{
 			ep->cleanup();
 			GDK_THREADS_LEAVE();
 			while(g_main_iteration(FALSE));
 			GDK_THREADS_ENTER();
-
 		}
+		g_free(ep->filename);
 		close_dynamic_lib(ep->handle);
 		node = node->next;
 	}
-	if (ep_data->effect_list)
-		g_list_free(ep_data->effect_list);
+	g_list_free(ep_data->effect_list);
 	g_free(ep_data);
 
 	node = get_general_enabled_list();
 	while (node)
 	{
-		gp = (GeneralPlugin *) node->data;
+		GeneralPlugin *gp = node->data;
 		next = node->next;
 		enable_general_plugin(g_list_index(gp_data->general_list, gp), FALSE);
 		node = next;
 	}
-	if (gp_data->enabled_list)
-		g_list_free(gp_data->enabled_list);
+	g_list_free(gp_data->enabled_list);
 
 	GDK_THREADS_LEAVE();
 	while(g_main_iteration(FALSE));
 	GDK_THREADS_ENTER();
 	
-	node = get_general_list();
+	node = gp_data->general_list;
 	while (node)
 	{
-		gp = (GeneralPlugin *) node->data;
+		GeneralPlugin *gp = node->data;
+		g_free(gp->filename);
 		close_dynamic_lib(gp->handle);
 		node = node->next;
 	}
-	if (gp_data->general_list)
-		g_list_free(gp_data->general_list);
+	g_list_free(gp_data->general_list);
+	g_free(gp_data);
 
 	node = get_vis_enabled_list();
 	while (node)
 	{
-		vp = (VisPlugin *) node->data;
+		VisPlugin *vp = node->data;
 		next = node->next;
 		enable_vis_plugin(g_list_index(vp_data->vis_list, vp), FALSE);
 		node = next;
 	}
-	if (vp_data->enabled_list)
-		g_list_free(vp_data->enabled_list);
+	g_list_free(vp_data->enabled_list);
 	
 	GDK_THREADS_LEAVE();
 	while(g_main_iteration(FALSE));
 	GDK_THREADS_ENTER();
 	
-	node = get_vis_list();
+	node = vp_data->vis_list;
 	while (node)
 	{
-		vp = (VisPlugin *) node->data;
+		VisPlugin *vp = node->data;
+		g_free(vp->filename);
 		close_dynamic_lib(vp->handle);
 		node = node->next;
 	}
-	if (vp_data->vis_list)
-		g_list_free(vp_data->vis_list);
+	g_list_free(vp_data->vis_list);
 	g_free(vp_data);
-
 }

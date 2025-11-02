@@ -8,5 +8,5 @@ libwav_la_SOURCES = 	\
 wav.c \
 wav.h
 
-INCLUDES = @GTK_CFLAGS@ -I$(top_builddir)/intl
+INCLUDES = @GTK_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)
 

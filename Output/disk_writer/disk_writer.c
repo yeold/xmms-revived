@@ -1,6 +1,11 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2000  Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1998-2004  Peter Alm, Mikael Alm, Olle Hallnas,
+ *                           Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1999-2004  Haavard Kvaalen
  *
+ *  File name suffix option added by Heikki Orsila 2003
+ *  <heikki.orsila@iki.fi> (no copyrights claimed)
+ * 
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -29,6 +34,14 @@
 #include "libxmms/configfile.h"
 #include "libxmms/util.h"
 
+
+struct format_info { 
+	AFormat format;
+	int frequency;
+	int channels;
+};
+struct format_info input;
+
 struct wavhead
 {
 	guint32 main_chunk;
@@ -50,6 +63,9 @@ static GtkWidget *configure_win = NULL, *configure_vbox;
 static GtkWidget *path_hbox, *path_label, *path_entry, *path_browse, *path_dirbrowser = NULL;
 static GtkWidget *configure_separator;
 static GtkWidget *configure_bbox, *configure_ok, *configure_cancel;
+
+static GtkWidget *use_suffix_toggle = NULL;
+static gboolean use_suffix = FALSE;
 
 static gchar *file_path = NULL;
 static FILE *output_file = NULL;
@@ -100,16 +116,15 @@ OutputPlugin *get_oplugin_info(void)
 static void disk_init(void)
 {
 	ConfigFile *cfgfile;
-	gchar *filename;
 
-	filename = g_strconcat(g_get_home_dir(), "/.xmms/config", NULL);
-	cfgfile = xmms_cfg_open_file(filename);
+	cfgfile = xmms_cfg_open_default_file();
 	if (cfgfile)
 	{
 		xmms_cfg_read_string(cfgfile, "disk_writer", "file_path", &file_path);
+		xmms_cfg_read_boolean(cfgfile, "disk_writer", "use_suffix", &use_suffix);
 		xmms_cfg_free(cfgfile);
 	}
-	g_free(filename);
+
 	if (!file_path)
 		file_path = g_strdup(g_get_home_dir());
 }
@@ -127,14 +142,17 @@ static gint disk_open(AFormat fmt, gint rate, gint nch)
 		xmms_show_message(_("Error"),
 				  _("You cannot use the Disk Writer plugin\n"
 				    "when you're running in realtime mode."),
-				  _("Ok"), FALSE, NULL, NULL);
+				  _("OK"), FALSE, NULL, NULL);
 		return 0;
 	}
 
 	pos = xmms_remote_get_playlist_pos(ctrlsocket_get_session_id());
 	title = xmms_remote_get_playlist_file(ctrlsocket_get_session_id(), pos);
-	if (title != NULL && (temp = strrchr(title, '.')) != NULL)
-		*temp = '\0';
+	if (!use_suffix) {
+		if (title != NULL && (temp = strrchr(title, '.')) != NULL) {
+			*temp = '\0';
+		}
+	}
 	if (title == NULL || strlen(g_basename(title)) == 0)
 	{
 		g_free(title);
@@ -176,6 +194,10 @@ static gint disk_open(AFormat fmt, gint rate, gint nch)
 	memcpy(&header.data_chunk, "data", 4);
 	header.data_length = GUINT32_TO_LE(0);
 	fwrite(&header, sizeof (struct wavhead), 1, output_file);
+
+	input.format = fmt;
+	input.frequency = rate;
+	input.channels = nch;
 
 	return 1;
 }
@@ -234,12 +256,33 @@ static void convert_buffer(gpointer buffer, gint length)
 
 static void disk_write(void *ptr, gint length)
 {
-#ifdef WORDS_BIGENDIAN
-	if (afmt == FMT_S8 || afmt == FMT_S16_BE || afmt == FMT_S16_NE || afmt == FMT_U16_LE || afmt == FMT_U16_BE || afmt == FMT_U16_NE)
-#else
-	if (afmt == FMT_S8 || afmt == FMT_S16_BE || afmt == FMT_U16_LE || afmt == FMT_U16_BE || afmt == FMT_U16_NE)
-#endif
+	AFormat new_format;
+	int new_frequency, new_channels;
+	EffectPlugin *ep;
+
+	new_format = input.format;
+	new_frequency = input.frequency;
+	new_channels = input.channels;
+
+	ep = get_current_effect_plugin();
+	if ( effects_enabled() && ep && ep->query_format ) { 
+		ep->query_format(&new_format,&new_frequency,&new_channels);
+	}
+
+	if ( effects_enabled() && ep && ep->mod_samples ) { 
+		length = ep->mod_samples(&ptr,length,
+					input.format,
+					input.frequency,
+					input.channels );
+	}
+
+	if (afmt == FMT_S8 || afmt == FMT_S16_BE ||
+	    afmt == FMT_U16_LE || afmt == FMT_U16_BE || afmt == FMT_U16_NE)
 		convert_buffer(ptr, length);
+#ifdef WORDS_BIGENDIAN
+	if (afmt == FMT_S16_NE)
+		convert_buffer(ptr, length);
+#endif
 	written += fwrite(ptr, 1, length, output_file);
 }
 
@@ -279,7 +322,7 @@ static gint disk_playing(void)
 
 static gint disk_get_written_time(void)
 {
-	if(header.byte_p_sec != 0.0)
+	if(header.byte_p_sec != 0)
 		return (gint) ((written * 1000) / header.byte_p_sec);
 	return 0;
 }
@@ -307,22 +350,24 @@ static void path_browse_cb(GtkWidget * w, gpointer data)
 
 static void configure_ok_cb(gpointer data)
 {
-	gchar *filename;
 	ConfigFile *cfgfile;
-
-	filename = g_strconcat(g_get_home_dir(), "/.xmms/config", NULL);
 
 	if (file_path)
 		g_free(file_path);
 	file_path = g_strdup(gtk_entry_get_text(GTK_ENTRY(path_entry)));
 
-	cfgfile = xmms_cfg_open_file(filename);
+	use_suffix =
+		gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(use_suffix_toggle));
+
+	cfgfile = xmms_cfg_open_default_file();
 	if (!cfgfile)
 		cfgfile = xmms_cfg_new();
+
 	xmms_cfg_write_string(cfgfile, "disk_writer", "file_path", file_path);
-	xmms_cfg_write_file(cfgfile, filename);
+	xmms_cfg_write_boolean(cfgfile, "disk_writer", "use_suffix", use_suffix);
+	xmms_cfg_write_default_file(cfgfile);
 	xmms_cfg_free(cfgfile);
-	g_free(filename);
+
 	gtk_widget_destroy(configure_win);
 	if (path_dirbrowser)
 		gtk_widget_destroy(path_dirbrowser);
@@ -336,9 +381,11 @@ static void configure_destroy(void)
 
 static void disk_configure(void)
 {
+	GtkTooltips *use_suffix_tooltips;
+
 	if (!configure_win)
 	{
-		configure_win = gtk_window_new(GTK_WINDOW_DIALOG);
+		configure_win = gtk_window_new(GDK_WINDOW_DIALOG);
 
 		gtk_signal_connect(GTK_OBJECT(configure_win), "destroy", GTK_SIGNAL_FUNC(configure_destroy), NULL);
 		gtk_signal_connect(GTK_OBJECT(configure_win), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &configure_win);
@@ -371,6 +418,14 @@ static void disk_configure(void)
 
 		gtk_widget_show(path_hbox);
 
+		use_suffix_toggle = gtk_check_button_new_with_label(_("Don't strip file name extension"));
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(use_suffix_toggle), use_suffix);
+		gtk_box_pack_start(GTK_BOX(configure_vbox), use_suffix_toggle, FALSE, FALSE, 0);
+		use_suffix_tooltips = gtk_tooltips_new();
+		gtk_tooltips_set_tip(use_suffix_tooltips, use_suffix_toggle, "If enabled, the extension from the original filename will not be stripped before adding the .wav extension to the end.", NULL);
+		gtk_tooltips_enable(use_suffix_tooltips);
+		gtk_widget_show(use_suffix_toggle);
+
 		configure_separator = gtk_hseparator_new();
 		gtk_box_pack_start(GTK_BOX(configure_vbox), configure_separator, FALSE, FALSE, 0);
 		gtk_widget_show(configure_separator);
@@ -380,7 +435,7 @@ static void disk_configure(void)
 		gtk_button_box_set_spacing(GTK_BUTTON_BOX(configure_bbox), 5);
 		gtk_box_pack_start(GTK_BOX(configure_vbox), configure_bbox, FALSE, FALSE, 0);
 
-		configure_ok = gtk_button_new_with_label(_("Ok"));
+		configure_ok = gtk_button_new_with_label(_("OK"));
 		gtk_signal_connect(GTK_OBJECT(configure_ok), "clicked", GTK_SIGNAL_FUNC(configure_ok_cb), NULL);
 		GTK_WIDGET_SET_FLAGS(configure_ok, GTK_CAN_DEFAULT);
 		gtk_box_pack_start(GTK_BOX(configure_bbox), configure_ok, TRUE, TRUE, 0);

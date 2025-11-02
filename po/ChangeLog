@@ -1,3 +1,481 @@
+Tue Dec 26 17:30:16 EET 2006  Matti Hämäläinen <ccr@tnsp.org>
+
+	* pt_BR.po, bg.po, sl.po: Removed traces of titlestring
+	conditionals.
+
+Tue Dec 26 17:04:20 EET 2006  Matti Hämäläinen <ccr@tnsp.org>
+
+	* fi.po: Updated translation.
+
+Thu Nov 30 06:19:03 CST 2006 Ryan Weaver <ryanw@falsehope.com>
+
+	* bg.po: Updated translation.
+	Submitted by Zlatko Popov <zlatkopopov@fsa-bg.org>.
+
+Wed Sep 20 09:21:14 CDT 2006 Ryan Weaver <ryanw@falsehope.com>
+
+	* bg.po: Updated translation.
+	Submitted by Zlatko Popov <zlatkopopov@fsa-bg.org>.
+
+Sat Jan 28 13:06:21 BRST 2006 Juan Carlos C. y Castro <jcastro@vialink.com.br>
+
+	* pt_BR.po: Updated translation.
+
+Thu May 19 01:18:00 BRT 2005  Juan Carlos C. y Castro <jcastro@vialink.com.br>
+
+	* pt_BR.po: Updated translation. Some strings refactored to
+	  reduce window width (esp. Options and About)
+
+Wed Mar 16 01:13:26 BRT 2005  Juan Carlos C. y Castro <jcastro@vialink.com.br>
+
+	* pt_BR.po: Updated translation.
+
+Sun Jan 30 23:33:00 CET 2005  Håvard Kvålen  <havardk@xmms.org>
+
+	* pl.po: Updated translation by 
+	Bartosz Kosiorek <gang65@poczta.onet.pl>
+
+Mon Oct 25 22:12:58 CEST 2004  Håvard Kvålen  <havardk@xmms.org>
+
+	* en_GB.po: New translation by 
+	Matthew Williams <xmms@madskills.org.uk>.
+
+Fri Jul 30 14:44:35 BRT 2004  Juan Carlos C. y Castro <jcastro@vialink.com.br>
+
+	* pt_BR.po: Updated translation.
+
+Mon Apr 19 21:22:17 CEST 2004  Håvard Kvålen  <havardk@xmms.org>
+
+	* sl.po: Updated translation by Matjaz Horvat <matjaz@owca.info>
+
+Mon Apr 12 23:43:09 CEST 2004  Håvard Kvålen  <havardk@xmms.org>
+
+	* sk.po: Fixed an error.
+
+Tue Mar 23 22:14:22 CET 2004  Håvard Kvålen  <havardk@xmms.org>
+
+	* sk.po: Updated translation by Peter Cernak <pcernak@naex.sk>
+
+Wed Mar 17 23:44:53 BRT 2004  Juan Carlos C. y Castro <jcastro@vialink.com.br>
+
+	* pt_BR.po: Updated translation.
+
+Wed Mar 17 04:40:40 CET 2004  Thomas Nilsson  <thomas@xmms.org>
+
+	* fr.po: Updated translation.
+
+Sat Mar 13 16:13:13 BRT 2004  Juan Carlos C. y Castro <jcastro@vialink.com.br>
+
+	* pt_BR.po: Updated translation.
+
+Sat Mar  6 03:59:33 CET 2004  Håvard Kvålen  <havardk@xmms.org>
+
+	* sk.po: Updated translation by Peter Cernak <pcernak@naex.sk>
+
+Fri Feb 27 23:40:32 BRT 2004  Juan Carlos C. y Castro <jcastro@vialink.com.br>
+
+	* pt_BR.po: Updated translation.
+
+Thu Feb 19 23:37:21 CET 2004  Håvard Kvålen  <havardk@xmms.org>
+
+	* mk.po: Updated translation by 
+	Aleksandar Savic <savica@mt.net.mk>
+
+	* vi.po: Updated translation by 
+	Trinh Minh Thanh <tmthanh@yahoo.com>
+
+Thu Feb 12 23:00:15 BRST 2004 Juan Carlos C. y Castro <jcastro@vialink.com.br>
+
+	* pt_BR.po: Updated translation.
+
+Wed Jan 28 20:15:57 CET 2004  Håvard Kvålen  <havardk@xmms.org>
+
+	* nl.po: Updated translation by Bart Coppens <bart@bartcoppens.be>
+
+Tue Jan 27 20:07:54 CET 2004  Håvard Kvålen  <havardk@xmms.org>
+
+	* LINGUAS, uz@Cyrl.po: uz@Cyrl removed.
+
+	* bg.po: Updated translation by 
+	Boyan Ivanov <boyan17@bulgaria.com>
+
+	* el.po: Updated translation by Thanos Kyritsis <djart@linux.gr>
+
+	* nl.po: Updated translation by 
+	Bart Coppens <bart@bartcoppens.be>
+
+	* ro.po: Updated translation by Misu Moldovan <dumol@go.ro>
+
+	* eu.po: Updated translation by 
+	Inigo Salvador Azurmendi <xalba@euskalnet.net>
+
+	* ca.po: Updated translation by 
+	Jordi Mallach <jordi@sindominio.net>
+
+	* ru.po: Updated translation by 
+	Alexandr Kovalenko <never@nevermind.kiev.ua>
+
+	* uz.po: uz@Cyrl.po renamed to uz.po and updated by Mashrab
+	Kuvatov <kmashrab@uni-bremen.de>.  Latin Uzbek dropped.
+
+	* fr.po: Small update by Eric Piel <eric.piel@tremplin-utc.net>
+
+Tue Jan 20 17:10:50 CET 2004  Håvard Kvålen  <havardk@xmms.org>
+
+	* zh_TW.po: Updated translation by 
+	Chun-Chung Chen <cjj@u.washington.edu>
+
+	* th.po: Updated translation by 
+	Supranee Thirawatthanasuk <supranee@opentle.org> and
+	Supphachoke Suntiwichaya <mrchoke@opentle.org>.
+
+	* fr.po: Updated translation by 
+	Arnaud Boissinot <arnaud.boissinot@wanadoo.fr>
+
+	* be.po: Updated translation by
+	Smaliakou Zmicier <damaviku@pisem.net>
+
+Mon Jan 19 17:40:23 CET 2004  Håvard Kvålen  <havardk@xmms.org>
+
+	* cy.po: Fix a couple of errors in c-format strings.
+
+Mon Jan 19 00:34:09 CET 2004  Håvard Kvålen  <havardk@xmms.org>
+
+	* ko.po: Updated translation by Nam SungHyun <namsh@kldp.org>
+
+	* ja.po: Updated translation by Hiroshi Takekawa <sian@big.or.jp>
+
+	* hu.po: Updated translation by Arpad Biro <biro_arpad@yahoo.com>
+
+	* et.po: Updated translation by Marek Laane <bald@online.ee>
+
+	* es.po: Updated translation by 
+	Fabian Mandelbaum <fabman@mandrakesoft.com>
+
+	* de.po: Updated translation by 
+	Colin Marquardt <colin@marquardt-home.de>
+
+	* cy.po: Updated translation by 
+	Rhoslyn Prys <rhoslyn.prys@meddal.org.uk>
+
+	* az.po: Updated translation by Metin Amiroff <metin@karegen.com>
+
+Sat Jan 17 01:22:23 CET 2004  Thomas Nilsson <thomas@xmms.org>
+
+	* *.po: Updated year and fixed 4Front's name.
+
+Sat Jan 17 00:16:18 CET 2004  Håvard Kvålen  <havardk@xmms.org>
+
+	* en.po: Updated.
+
+	* no.po: Fixed an error.  Some updates.
+
+Mon Dec  8 21:03:56 BRDT 2003 Juan Carlos C. y Castro <jcastro@vialink.com.br>
+
+	* pt_BR.po: Updated translation.
+
+Fri Nov  7 20:37:00 BRDT 2003 Juan Carlos C. y Castro <jcastro@vialink.com.br>
+
+	* pt_BR.po: Updated translation.
+
+Fri Nov  7 00:42:13 CET 2003  Håvard Kvålen  <havardk@xmms.org>
+
+	* en.po: Updated.
+
+Thu Sep 11 17:23:56 CEST 2003  Matthieu Sozeau  <mattam@altern.org>
+
+	* fr.po: Fix translation for ALSA about dialog.
+
+Tue Sep  9 22:20:41 CEST 2003  Håvard Kvålen  <havardk@xmms.org>
+
+	* ko.po: Updated translation by Nam SungHyun <namsh@kldp.org>
+
+Sun Sep  7 21:10:12 CEST 2003  Håvard Kvålen  <havardk@xmms.org>
+
+	* LINGUAS: Add ms (Malay).
+
+	* ms.po: New translation by
+	Muhammad Najmi Ahmad Zabidi <mnajem@linuxmail.org>
+
+Thu Sep  4 22:09:36 CEST 2003  Håvard Kvålen  <havardk@xmms.org>
+
+	* *.po: Remove all old translation with 8-bit msgid to stop
+	gettext from complaining.
+
+Tue Sep  2 18:28:15 CEST 2003  Håvard Kvålen  <havardk@xmms.org>
+
+	* vi.po: Updated translation by 
+	Trinh Minh Thanh <tmthanh@yahoo.com>
+
+Tue Sep  2 01:00:56 CEST 2003  Håvard Kvålen  <havardk@xmms.org>
+
+	* LINGUAS: Added sr@Latn, rename zh_CN.GB2312 to zh_CN.
+
+	* wa.po: Updated translation by 
+	Pablo Saratxaga <pablo@mandrakesoft.com>
+
+	* vi.po: Updated translation by 
+	Trinh Minh Thanh <tmthanh@yahoo.com>
+
+	* tr.po: Updated translation by 
+	Ömer Fadýl USTA <omer_fad@hotmail.com>
+
+	* th.po: Updated translation by 
+	Pramote Khuwijitjaru <kmote@hotmail.com>
+
+	* tg.po: Updated translation by 
+	Dilshod Marupov <dma165@hotmail.com>
+
+	* sk.po: Updated translation by 
+	Pavol Cvengros <orpheus@hq.alert.sk>
+
+	* ko.po: Updated translation by Jaegeum Cze <baedaron@hanafos.com>
+
+	* it.po: Updated translation by Daniele Pighin <daniele@dcs.it>
+
+	* id.po: Updated translation by 
+	Budi Rachmanto <rac@linux-mandrake.com>
+
+	* eu.po: Updated translation by 
+	Iñigo Salvador Azurmendi <xalba@euskalnet.net>
+
+	* es.po: Updated translation by 
+	Fabian Mandelbaum <fabman@mandrakesoft.com>
+
+	* da.po: Updated translation by Keld Simonsen <keld@dkuug.dk>
+
+	* cy.po: Updated translation by 
+	Rhoslyn Prys <rhoslyn.prys@meddal.org.uk>
+
+	* bg.po: Updated translation by 
+	Boyan Ivanov <boyan17@bulgaria.com>
+
+	* az.po: Updated translation by Metin Amiroff <metin@karegen.com>
+
+	* af.po: Updated translation by 
+	Schalk W. Cronjé <schalkc@ntaba.co.za>
+
+	* sr.po: New variant of the Serbian tranlation by 
+	Tomislav Jankovic <tomaja@net.yu> and 
+	Mandrake Yugoslavia <office@mandrake.co.yu>.
+
+	* sr@Latn.po: Renamed from "sr.po" and updated by 
+	Mandrake Yugoslavia <office@mandrake.co.yu>.
+
+	* zh_CN.po: Renamed from "zh_CN.GB2312.po" and updated by 
+	Shiyu Tang <shiyutang@netscape.net>.
+
+	* el.po: Removed a spuriouos space.
+
+	* no.po: Updated.
+
+Mon Sep  1 23:01:01 CEST 2003  Håvard Kvålen  <havardk@xmms.org>
+
+	* LINGUAS: Added bs (Bosnian), et (Estonian), fi (Finnish),
+	ka (Georgian), sq (Albanian), and uz (Uzbek).
+
+	* uz@Cyrl.po, uz.po: New tranlations by 
+	Mashrab Kuvatov <kmashrab@uni-bremen.de>
+
+	* sq.po: New tranlation by Naim Daka <naim70@freesurf.ch>.
+
+	* ka.po: New tranlation by Aiet Kolkhi <aiet@gmx.net>.
+
+	* fi.po: New translation by Matias Griese <mahagr@utu.fi> and
+	Thomas Backlund <tmb@iki.fi>.
+
+	* et.po: New translation by Marek Laane <bald@online.ee>.
+
+	* bs.po: New translation by 
+	Vedran Ljubovic <vljubovic@smartnet.ba>,
+	Grabovica Eldin <teddy@smartnet.ba>, and
+	Amila Akagic <bono@linux.org.ba>.
+
+	* de.po: Updated translation by 
+	Colin Marquardt <colin@marquardt-home.de>
+
+	* pl.po: Updated translation by 
+	Bartosz Kosiorek <gang65@poczta.onet.pl>
+
+	* hu.po: Updated translation by Arpad Biro <biro_arpad@yahoo.com>
+
+	* be.po: Updated translation by 
+	Smaliakou Zmicer <damaviku@pisem.net>
+
+Tue Aug 19 12:44:59 CEST 2003  Håvard Kvålen  <havardk@xmms.org>
+
+	* sv.po: Updated translation by 
+	Christian Rose <menthos@menthos.com>
+
+	* ro.po: Updated translation by Misu Moldovan <dumol@go.ro>
+
+	* pt_BR.po: Updated translation by 
+	Juan Carlos Castro y Castro <jcastro@vialink.com.br>
+
+Fri Aug 15 13:16:10 CEST 2003  Håvard Kvålen  <havardk@xmms.org>
+
+	* el.po: Updated translation by Thanos Kyritsis <djart@hellug.gr>
+
+	* ca.po: Updated translation by 
+	Jordi Mallach <jordi@sindominio.net>
+
+	* nl.po: Updated translation by Bart Coppens <bart@bartcoppens.be>
+
+	* ru.po: Updated translation by 
+	Alexandr Kovalenko <never@nevermind.kiev.ua>
+
+Tue Aug 12 22:14:42 CEST 2003  Håvard Kvålen  <havardk@xmms.org>
+
+	* zh_TW.po: Updated translation by 
+	Chun-Chung Chen <cjj@u.washington.edu>
+
+	* sl.po: Updated translation by Tadej Panjtar <panjtar@email.si>
+
+	* ja.po: Updated translation by Hiroshi Takekawa <sian@big.or.jp>
+
+	* fr.po: Updated translation by 
+	Arnaud Boissinot <arnaud.boissinot@wanadoo.fr>
+
+	* cs.po: Updated translation by 
+	Radek Vybiral <Radek.Vybiral@vsb.cz>
+
+	* ca.po: Updated translation by 
+	Jordi Mallach <jordi@sindominio.net>
+
+Sat Aug  9 20:16:14 CEST 2003  Håvard Kvålen  <havardk@xmms.org>
+
+	* *.po: Ran "make update-po".
+
+Fri Aug  8 17:12:10 CEST 2003  Håvard Kvålen  <havardk@xmms.org>
+
+	* sl.po: New translation by Tadej Panjtar <panjtar@email.si>
+
+	* LINGUAS: Add "sl" (Slovenian).
+
+Wed Jul 16 01:41:20 CEST 2003  Håvard Kvålen  <havardk@xmms.org>
+
+	* no.po: Updated.
+
+Mon Jul 14 00:34:06 CEST 2003  Håvard Kvålen  <havardk@xmms.org>
+
+	* en.po: New "translation".  The only things that are translated
+	are non-ascii characters.
+
+	* LINGUAS: Add "en".
+
+Sat Jul  5 02:18:03 CEST 2003  Håvard Kvålen  <havardk@xmms.org>
+
+	* LINGUAS: Add Belarusian (be) and Welsh (cy).
+
+	* cy.po: New translation by: 
+	Rhoslyn Prys <rhoslyn.prys@meddal.org.uk>
+
+	* be.po: New translation by: Smaliakou Zmicer <damaviku@pisem.net>
+
+	* pt.po: Updated translation by Jorge Costa <Jorgercosta@netc.pt>
+
+	* uk.po: Updated translation by 
+	Dmytro Koval'ov <kov@tokyo.email.ne.jp>
+
+Tue Jan  7 23:43:10 CET 2003  Håvard Kvålen  <havardk@xmms.org>
+
+	* ja.po: Updated translation by Hiroshi Takekawa <sian@big.or.jp>.
+
+Wed Dec 11 23:17:10 CET 2002  Håvard Kvålen  <havardk@xmms.org>
+
+	* zh_TW.po: Updated translation by 
+	Chun-Chung Chen <cjj@u.washington.edu>
+
+Fri Nov 22 22:10:48 BRST 2002 Juan Carlos C. y Castro <jcastro@vialink.com.br>
+
+	* pt_BR.po: Updated translation.
+
+Sun Oct 27 20:17:45 CET 2002  Håvard Kvålen  <havardk@xmms.org>
+
+	* ca.po: Updated translation by 
+	Albert Astals Cid <astals11@terra.es>
+
+	* ro.po: Updated translation by Miºu Moldovan <dumol@go.ro>
+
+	* no.po: Updated translation.
+
+Wed Sep 11 11:25:37 CEST 2002  Håvard Kvålen  <havardk@xmms.org>
+
+	* nl.po: Fixed two errors that new gettext's would abort on.
+
+Tue Jul 30 23:24:12 BRT 2002 Juan Carlos C. y Castro <jcastro@vialink.com.br>
+
+	* pt_BR.po: Some language names were missing the ':'.
+
+Tue Jul 30 23:04:05 BRT 2002 Juan Carlos C. y Castro <jcastro@vialink.com.br>
+
+	* pt_BR.po: Updated translation.
+
+Mon Jul 29 12:56:24 CEST 2002  Håvard Kvålen  <havardk@xmms.org>
+
+	* ru.po: Updated translation by 
+	Alexandr P. Kovalenko <never@nevermind.kiev.ua>
+
+	* nl.po: Updated translation by Bart Coppens <coppensbart@pi.be>
+
+Tue May 21 02:09:36 BRT 2002 Juan Carlos C. y Castro <jcastro@vialink.com.br>
+
+	* pt_BR.po: Updated translation.
+
+Sun May 12 17:41:35 CEST 2002  Håvard Kvålen  <havardk@xmms.org>
+
+	* mk.po: New translation by Stojcev Darko <atom1c@linux.net.mk>
+
+Mon May  6 16:50:28 CEST 2002  Håvard Kvålen  <havardk@xmms.org>
+
+	* no.po: Updated translation by 
+	Terje Bjerkelia <terje@bjerkelia.com>
+
+Wed Apr 10 15:19:22 CEST 2002  Håvard Kvålen  <havardk@xmms.org>
+
+	* ru.po: Updated translation by 
+	Alexandr P. Kovalenko <never@nevermind.kiev.ua>
+
+Tue Mar 26 15:20:20 CET 2002  Håvard Kvålen  <havardk@xmms.org>
+
+	* cs.po: One string updated.
+	Patch by Martin Macok <martin.macok@underground.cz>
+
+2002-03-14  Christian Rose  <menthos@menthos.com>
+
+	* sv.po: Changed Swedish translation.
+
+Tue Mar  5 15:47:41 CET 2002  Håvard Kvålen  <havardk@xmms.org>
+
+	* es.po: Updated translation by 
+	Jordi Mallach <jordi@sindominio.net>
+
+2002-03-03  Christian Rose  <menthos@menthos.com>
+
+	* sv.po: Changed Swedish translation.
+
+2002-03-02  Christian Rose  <menthos@menthos.com>
+
+	* sv.po: Updated Swedish translation.
+
+Mon Feb 11 13:08:44 CET 2002  Thomas Nilsson <thomas@xmms.org>
+
+	* *.po: Updated copyright year.
+
+Fri Jan 25 18:48:08 CET 2002  Håvard Kvålen  <havardk@xmms.org>
+
+	* ru.po: Updated translation by 
+	Alexandr P. Kovalenko <never@nevermind.kiev.ua>
+
+Thu Jan 24 19:48:47 BRST 2002 Juan Carlos C. y Castro <jcastro@vialink.com.br>
+
+	* pt_BR.po: Updated translation.
+
+Sun Jan 20 21:35:24 CET 2002  Håvard Kvålen  <havardk@xmms.org>
+
+	* ru.po: Updated translation by 
+	Alexandr P. Kovalenko <never@nevermind.kiev.ua>
+
 2002-01-04  Håvard Kvålen  <havardk@xmms.org>
 
 	* no.po: Updated.

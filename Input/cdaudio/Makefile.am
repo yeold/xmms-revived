@@ -1,6 +1,3 @@
-if HAVE_CDROM
-
-cdaudioltlibs = libcdaudio.la
 cdaudiosources = cdaudio.c \
 configure.c \
 cdaudio.h \
@@ -9,26 +6,28 @@ cdinfo.h \
 cddb.c \
 cddb.h \
 http.c \
-http.h \
-cdindex.c \
-sha_func.c \
-sha.h
+http.h
+
+if HAVE_CDROM
+
+cdaudioltlibs = libcdaudio.la
+cdaudiobuildsources = $(cdaudiosources)
 
 else
 
 cdaudioltlibs =
-cdaudiosources =
+cdaudiobuildsources =
 
 endif
 
-EXTRA_DIST = cdaudio.c configure.c cdaudio.h cdinfo.c cdinfo.h cddb.c cddb.h http.c http.h cdindex.c sha_func.c sha.h
+EXTRA_DIST = $(cdaudiosources)
 
 lib_LTLIBRARIES = $(cdaudioltlibs)
 
 libdir = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
-INCLUDES = @GTK_CFLAGS@ @XML_CFLAGS@ -I$(top_builddir)/intl
+INCLUDES = @GTK_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)
 libcdaudio_la_LDFLAGS = @PLUGIN_LDFLAGS@
-libcdaudio_la_LIBADD = @GTK_LIBS@ @XML_LIBS@
-libcdaudio_la_SOURCES = $(cdaudiosources)
+libcdaudio_la_LIBADD = @GTK_LIBS@
+libcdaudio_la_SOURCES = $(cdaudiobuildsources)
 

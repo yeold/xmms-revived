@@ -263,7 +263,7 @@ void abuffer_configure(void)
 	gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
     
-	ok = gtk_button_new_with_label(_("Ok"));
+	ok = gtk_button_new_with_label(_("OK"));
 	gtk_signal_connect(GTK_OBJECT(ok), "clicked", GTK_SIGNAL_FUNC(configure_win_apply_cb), NULL);
 	gtk_signal_connect_object(GTK_OBJECT(ok), "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(configure_win));
 	GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);

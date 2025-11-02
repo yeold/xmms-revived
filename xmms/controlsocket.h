@@ -1,5 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2000  Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1998-2003  Peter Alm, Mikael Alm, Olle Hallnas,
+ *                           Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1999-2003  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -43,7 +45,11 @@ enum
 	CMD_IS_REPEAT, CMD_IS_SHUFFLE,
 	CMD_GET_EQ, CMD_GET_EQ_PREAMP, CMD_GET_EQ_BAND,
 	CMD_SET_EQ, CMD_SET_EQ_PREAMP, CMD_SET_EQ_BAND,
-	CMD_QUIT, CMD_PLAYLIST_INS_URL_STRING, CMD_PLAYLIST_INS, CMD_PLAY_PAUSE
+	CMD_QUIT, CMD_PLAYLIST_INS_URL_STRING, CMD_PLAYLIST_INS, CMD_PLAY_PAUSE,
+	CMD_PLAYQUEUE_ADD, CMD_GET_PLAYQUEUE_LENGTH, CMD_PLAYQUEUE_REMOVE,
+	CMD_TOGGLE_ADVANCE, CMD_IS_ADVANCE,
+	CMD_PLAYQUEUE_CLEAR, CMD_GET_PLAYQUEUE_POS_FROM_PLAYLIST_POS,
+	CMD_GET_PLAYLIST_POS_FROM_PLAYQUEUE_POS
 };
 
 typedef struct

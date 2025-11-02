@@ -1,7 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2001  Peter Alm, Mikael Alm, Olle Hallnas,
+ *  Copyright (C) 1998-2003  Peter Alm, Mikael Alm, Olle Hallnas,
  *                           Thomas Nilsson and 4Front Technologies
- *  Copyright (C) 1999-2001  Haavard Kvaalen
+ *  Copyright (C) 1999-2003  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 
 static GdkFont *playlist_list_font = NULL;
 
-gint playlist_list_auto_drag_down_func(gpointer data)
+static int playlist_list_auto_drag_down_func(gpointer data)
 {
 	PlayList_List *pl = data;
 
@@ -41,7 +41,7 @@ gint playlist_list_auto_drag_down_func(gpointer data)
 	return FALSE;
 }
 
-gint playlist_list_auto_drag_up_func(gpointer data)
+static int playlist_list_auto_drag_up_func(gpointer data)
 {
 	PlayList_List *pl = data;
 
@@ -61,7 +61,11 @@ void playlist_list_move_up(PlayList_List *pl)
 	GList *list;
 
 	PL_LOCK();
-	list = get_playlist();
+	if ((list = get_playlist()) == NULL)
+	{
+		PL_UNLOCK();
+		return;
+	}
 	if (((PlaylistEntry *) list->data)->selected)
 	{
 		/* We are at the top */
@@ -88,7 +92,11 @@ void playlist_list_move_down(PlayList_List *pl)
 	GList *list;
 
 	PL_LOCK();
-	list = g_list_last(get_playlist());
+	if ((list = g_list_last(get_playlist())) == NULL)
+	{
+		PL_UNLOCK();
+		return;
+	}
 	if (((PlaylistEntry *) list->data)->selected)
 	{
 		/* We are at the bottom */
@@ -135,9 +143,24 @@ void playlist_list_button_press_cb(GtkWidget * widget, GdkEventButton * event, P
 		{
 			if (playlist_select_invert(nr))
 			{
+				if (event->state & GDK_CONTROL_MASK)
+				{
+					if (pl->pl_prev_min == -1)
+					{
+						pl->pl_prev_min =
+							pl->pl_prev_selected;
+						pl->pl_prev_max =
+							pl->pl_prev_selected;
+					}
+					if (nr < pl->pl_prev_min)
+						pl->pl_prev_min = nr;
+					else if (nr > pl->pl_prev_max)
+						pl->pl_prev_max = nr;
+				}
+				else
+					pl->pl_prev_min = -1;
 				pl->pl_prev_selected = nr;
 				pl->pl_drag_pos = nr - pl->pl_first;
-				pl->pl_prev_min = -1;
 			}
 		}
 		if (event->type == GDK_2BUTTON_PRESS)
@@ -364,40 +387,15 @@ void playlist_list_draw_string(PlayList_List *pl, GdkFont *font, gint line, gint
 	gdk_draw_text(pl->pl_widget.parent, font, pl->pl_widget.gc, pl->pl_widget.x, pl->pl_widget.y + line * pl->pl_fheight + font->ascent, text, len);
 }
 
-#if 0
-static GdkPixmap *get_transparency_pixmap()
-{
-	Atom prop, type; 
-	int format;
-	unsigned long length, after;
-	unsigned char *data;
-	static GdkPixmap *retval = NULL;
-	
-	if(retval)
-		return retval;
-
-	prop = XInternAtom(GDK_DISPLAY(), "_XROOTPMAP_ID", True);
-	
-	if(prop==None)
-		return NULL;
-	
-	XGetWindowProperty(GDK_DISPLAY(), GDK_ROOT_WINDOW(), prop, 0L, 1L, False, AnyPropertyType, &type, &format, &length, &after, &data);
-
-	if(type==XA_PIXMAP)
-		retval=gdk_pixmap_foreign_new(*((Pixmap *)data));
-		
-	return retval;
-}
-#endif
-
 void playlist_list_draw(Widget * w)
 {
 	PlayList_List *pl = (PlayList_List *) w;
+	GList *list;
 	GdkGC *gc;
 	GdkPixmap *obj;
-	gint width, height;
-	gchar *text, *title;
-	gint i, tw, max_first;
+	int width, height;
+	char *text, *title;
+	int i, tw, max_first;
 
 	gc = pl->pl_widget.gc;
 	width = pl->pl_widget.width;
@@ -405,84 +403,102 @@ void playlist_list_draw(Widget * w)
 
 	obj = pl->pl_widget.parent;
 
-#if 0
-	if(cfg.playlist_transparent)
-		gdk_draw_pixmap(obj, gc, get_transparency_pixmap(), cfg.playlist_x + pl->pl_widget.x, cfg.playlist_y + pl->pl_widget.y, pl->pl_widget.x, pl->pl_widget.y, width, height);
-/*  	else  */
-/*  	{ */
-#endif
 	gdk_gc_set_foreground(gc, get_skin_color(SKIN_PLEDIT_NORMALBG));
-	gdk_draw_rectangle(obj, gc, TRUE, pl->pl_widget.x, pl->pl_widget.y, width, height);
-/*  	} */
+	gdk_draw_rectangle(obj, gc, TRUE, pl->pl_widget.x, pl->pl_widget.y,
+			   width, height);
 
-	if (playlist_list_font != NULL)
-	{
-		GList *list;
-		PL_LOCK();
-		list = get_playlist();
-		pl->pl_fheight = playlist_list_font->ascent + playlist_list_font->descent + 1;
-		pl->pl_num_visible = height / pl->pl_fheight;
-
-		max_first = (g_list_length(list) - pl->pl_num_visible);
-		if (max_first < 0)
-			max_first = 0;
-		if (pl->pl_first >= max_first)
-			pl->pl_first = max_first;
-		if (pl->pl_first < 0)
-			pl->pl_first = 0;
-		for (i = 0; i < pl->pl_first; i++)
-			list = g_list_next(list);
-		i = pl->pl_first;
-
-		while (list && i < pl->pl_first + pl->pl_num_visible)
-		{
-			PlaylistEntry *entry = (PlaylistEntry *) list->data;
-			if (entry->selected)
-			{
-				gdk_gc_set_foreground(gc, get_skin_color(SKIN_PLEDIT_SELECTEDBG));
-				gdk_draw_rectangle(obj, gc, TRUE, pl->pl_widget.x, pl->pl_widget.y + ((i - pl->pl_first) * pl->pl_fheight), width, pl->pl_fheight);
-			}
-			if (i == __get_playlist_position())
-				gdk_gc_set_foreground(gc, get_skin_color(SKIN_PLEDIT_CURRENT));
-			else
-				gdk_gc_set_foreground(gc, get_skin_color(SKIN_PLEDIT_NORMAL));
-
-			if (entry->title)
-				title = entry->title;
-			else
-				title = g_basename(entry->filename);
-
-			if (entry->length != -1)
-			{
-				gchar length[20];
-				
-				sprintf(length, "%d:%-2.2d", entry->length / 60000, (entry->length / 1000) % 60);
-				gdk_draw_text(obj, playlist_list_font, gc, pl->pl_widget.x + width - gdk_text_width(playlist_list_font, length, strlen(length)) - 2, pl->pl_widget.y + (i - pl->pl_first) * pl->pl_fheight + playlist_list_font->ascent, length, strlen(length));
-				tw = width - gdk_text_width(playlist_list_font, length, strlen(length)) - 5;
-			}
-			else
-				tw = width;
-			if (cfg.show_numbers_in_pl)
-				text = g_strdup_printf("%d. %s", i + 1, title);
-			else
-				text = g_strdup_printf("%s", title);
-
-			if (cfg.use_fontsets)
-				playlist_list_draw_string_wc(pl, playlist_list_font, i - pl->pl_first, tw, text);
-			else
-				playlist_list_draw_string(pl, playlist_list_font, i - pl->pl_first, tw, text);
-			g_free(text);
-
-			list = list->next;
-			i++;
-		}
-		PL_UNLOCK();
-	}
-	else
+	if (playlist_list_font == NULL)
 	{
 		g_log(NULL, G_LOG_LEVEL_CRITICAL,
 		      "Couldn't open playlist font");
+		return;
 	}
+	
+
+	PL_LOCK();
+	list = get_playlist();
+	pl->pl_fheight = playlist_list_font->ascent + playlist_list_font->descent + 1;
+	pl->pl_num_visible = height / pl->pl_fheight;
+
+	max_first = g_list_length(list) - pl->pl_num_visible;
+	if (max_first < 0)
+		max_first = 0;
+	if (pl->pl_first >= max_first)
+		pl->pl_first = max_first;
+	if (pl->pl_first < 0)
+		pl->pl_first = 0;
+	for (i = 0; i < pl->pl_first; i++)
+		list = g_list_next(list);
+
+	for (i = pl->pl_first;
+	     list && i < pl->pl_first + pl->pl_num_visible;
+	     list = list->next,	i++)
+	{
+		char qstr[20] = "", length[40] = "";
+		int pos;
+		
+		PlaylistEntry *entry = (PlaylistEntry *) list->data;
+		if (entry->selected)
+		{
+			gdk_gc_set_foreground(gc, get_skin_color(SKIN_PLEDIT_SELECTEDBG));
+			gdk_draw_rectangle(obj, gc, TRUE, pl->pl_widget.x,
+					   pl->pl_widget.y +
+					   ((i - pl->pl_first) * pl->pl_fheight),
+					   width, pl->pl_fheight);
+		}
+		if (i == __get_playlist_position())
+			gdk_gc_set_foreground(gc, get_skin_color(SKIN_PLEDIT_CURRENT));
+		else
+			gdk_gc_set_foreground(gc, get_skin_color(SKIN_PLEDIT_NORMAL));
+
+		if (entry->title)
+			title = entry->title;
+		else
+			title = g_basename(entry->filename);
+
+		pos = playlist_get_queue_position(entry);
+		
+		if (pos != -1)
+			sprintf(qstr, "|%d|%s", pos + 1,
+				entry->length != -1 ? " " : "");
+
+		if (entry->length != -1)
+			sprintf(length, "%d:%-2.2d", entry->length / 60000,
+				(entry->length / 1000) % 60);
+
+		if (pos != -1 || entry->length != -1)
+		{
+			int x, y;
+			char tail[60];
+
+			sprintf(tail, "%s%s", qstr, length);
+			x = pl->pl_widget.x + width -
+				gdk_text_width(playlist_list_font,
+					       tail, strlen(tail)) - 2;
+			y = pl->pl_widget.y +
+				(i - pl->pl_first) * pl->pl_fheight +
+				playlist_list_font->ascent;
+			gdk_draw_text(obj, playlist_list_font, gc, x, y,
+				      tail, strlen(tail));
+			tw = width - gdk_text_width(playlist_list_font,
+						    tail, strlen(tail)) - 5;
+		}
+		else
+			tw = width;
+		if (cfg.show_numbers_in_pl)
+			text = g_strdup_printf("%d. %s", i + 1, title);
+		else
+			text = g_strdup_printf("%s", title);
+
+		if (cfg.use_fontsets)
+			playlist_list_draw_string_wc(pl, playlist_list_font,
+						     i - pl->pl_first, tw, text);
+		else
+			playlist_list_draw_string(pl, playlist_list_font,
+						  i - pl->pl_first, tw, text);
+		g_free(text);
+	}
+	PL_UNLOCK();
 }
 
 PlayList_List *create_playlist_list(GList ** wlist, GdkPixmap * parent, GdkGC * gc, gint x, gint y, gint w, gint h)

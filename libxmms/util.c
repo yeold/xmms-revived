@@ -11,6 +11,7 @@
 #endif
 
 #ifdef __FreeBSD__
+#include <sys/types.h>
 #include <sys/sysctl.h>
 #endif
 
@@ -79,7 +80,8 @@ gboolean xmms_check_realtime_priority(void)
 	 * before sched_getschedule() (so that we don't get
 	 * non-present syscall warnings in kernel log).
 	 */
-	int val = 0, len;
+	int val = 0;
+	size_t len;
 
 	len = sizeof(val);
 	sysctlbyname("p1003_1b.priority_scheduling", &val, &len, NULL, 0);

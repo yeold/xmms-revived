@@ -1,6 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2001  Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies
- *  Copyright (C) 1999-2001  Håvard Kvålen
+ *  Copyright (C) 1998-2002  Peter Alm, Mikael Alm, Olle Hallnas,
+ *                           Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1999-2002  Haavard Kvaalen
  *  Copyright (C) 2001, Jorn Baayen <jorn@nl.linux.org>
  *
  * This program is free software; you can redistribute it and/or
@@ -28,11 +29,13 @@
 #include <pthread.h>
 #include <glib.h>
 #include <gtk/gtk.h>
+#include <gdk/gdkkeysyms.h>
 #include <ogg/ogg.h>
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
 
 #include "libxmms/util.h"
+#include "libxmms/charset.h"
 #include <xmms/i18n.h>
 
 #include "vorbis.h"
@@ -60,6 +63,15 @@ static GtkWidget *genre_combo, *user_comment_entry;
 static GtkWidget *description_entry, *version_entry, *isrc_entry;
 static GtkWidget *copyright_entry, *organization_entry, *location_entry;
 #endif
+static GtkWidget *rg_track_entry, *rg_album_entry, *rg_track_peak_entry, *rg_album_peak_entry;
+static GtkWidget *rg_track_label, *rg_album_label, *rg_track_peak_label, *rg_album_peak_label;
+static GtkWidget *rg_show_button;
+
+static GtkWidget *bitrate_label, *avgbitrate_label, *rate_label;
+static GtkWidget *channel_label, *length_label, *filesize_label;
+static GtkWidget *replaygain_label, *audiophilegain_label, *peak_label;
+static GtkWidget *filename_entry, *tag_frame, *vendor_label;
+
 
 /* From mpg123.c, as no standardized Ogg Vorbis genres exists. */
 static const gchar *vorbis_genres[] =
@@ -73,7 +85,7 @@ static const gchar *vorbis_genres[] =
 	N_("Euro-Techno"), N_("Ambient"), N_("Trip-Hop"), N_("Vocal"),
 	N_("Jazz+Funk"), N_("Fusion"), N_("Trance"), N_("Classical"),
 	N_("Instrumental"), N_("Acid"), N_("House"), N_("Game"),
-	N_("Sound Clip"), N_("Gospel"), N_("Noise"), N_("Alt"),
+	N_("Sound Clip"), N_("Gospel"), N_("Noise"), N_("AlternRock"),
 	N_("Bass"), N_("Soul"), N_("Punk"), N_("Space"),
 	N_("Meditative"), N_("Instrumental Pop"),
 	N_("Instrumental Rock"), N_("Ethnic"), N_("Gothic"),
@@ -113,7 +125,7 @@ static gchar* get_comment(vorbis_comment *vc, gchar *label)
 {
 	gchar *tag;
 	if (vc && (tag = vorbis_comment_query(vc, label, 0)) != NULL)
-		return convert_from_utf8(tag);
+		return xmms_charset_from_utf8(tag);
 	else
 		return g_strdup("");
 }
@@ -126,7 +138,6 @@ static char** get_comment_list(vorbis_comment *vc)
 	strv = g_new0(char*, vc->comments + 1);
 	for (i = 0; i < vc->comments; i++)
 	{
-		g_message(vc->user_comments[i]);
 		strv[i] = g_strdup(vc->user_comments[i]);
 	}
 
@@ -151,7 +162,7 @@ static char** add_tag(char **list, char *label, char *tag)
 			g_free(*ptr);
 			if (tag != NULL)
 			{
-				tag = convert_to_utf8(tag);
+				tag = xmms_charset_to_utf8(tag);
 				*ptr = g_strconcat(reallabel, tag, NULL);
 				g_free(tag);
 				tag = NULL;
@@ -174,7 +185,7 @@ static char** add_tag(char **list, char *label, char *tag)
 		for (ptr = list; *ptr; ptr++)
 			i++;
 		list = g_renew(char*, list, i + 2);
-		tag = convert_to_utf8(tag);
+		tag = xmms_charset_to_utf8(tag);
 		list[i] = g_strconcat(reallabel, tag, NULL);
 		list[i + 1] = NULL;
 		g_free(tag);
@@ -191,15 +202,12 @@ static void add_list(vorbis_comment *vc, char **comments)
 }
 
 
-static void fail(gchar *error)
+static void fail(char *error)
 {
-	gchar *errorstring;
-	errorstring = g_strdup_printf(_("An error occured:\n%s"), error);
+	char *errorstring;
+	errorstring = g_strdup_printf(_("An error occurred:\n%s"), error);
 	
-	xmms_show_message(
-		_("Error!"),
-		errorstring,
-		_("Ok"), FALSE, NULL, NULL);
+	xmms_show_message(_("Error!"), errorstring, _("OK"), FALSE, NULL, NULL);
 
 	g_free(errorstring);
 	return;
@@ -214,6 +222,7 @@ static void save_cb(GtkWidget * w, gpointer data)
 	gchar *description, *version, *isrc, *copyright, *organization;
 	gchar *location;
 #endif
+	gchar *rg_track_gain, *rg_album_gain, *rg_track_peak, *rg_album_peak;
 	char **comment_list;
 	vcedit_state *state;
 	vorbis_comment *comment;
@@ -251,6 +260,10 @@ static void save_cb(GtkWidget * w, gpointer data)
 	organization = gtk_entry_get_text(GTK_ENTRY(organization_entry));
 	copyright = gtk_entry_get_text(GTK_ENTRY(copyright_entry));
 #endif
+	rg_track_gain = gtk_entry_get_text(GTK_ENTRY(rg_track_entry));
+	rg_album_gain = gtk_entry_get_text(GTK_ENTRY(rg_album_entry));
+	rg_track_peak = gtk_entry_get_text(GTK_ENTRY(rg_track_peak_entry));
+	rg_album_peak = gtk_entry_get_text(GTK_ENTRY(rg_album_peak_entry));
 
 	comment_list = add_tag(comment_list, "title", track_name);
 	comment_list = add_tag(comment_list, "artist", performer);
@@ -258,7 +271,7 @@ static void save_cb(GtkWidget * w, gpointer data)
 	comment_list = add_tag(comment_list, "tracknumber", track_number);
 	comment_list = add_tag(comment_list, "genre", genre);
 	comment_list = add_tag(comment_list, "date", date);
-	comment_list = add_tag(comment_list, "", user_comment); /* "" = user comment */
+	comment_list = add_tag(comment_list, "comment", user_comment);
 
 #ifdef ALL_VORBIS_TAGS
 	comment_list = add_tag(comment_list, "location", location);
@@ -268,6 +281,10 @@ static void save_cb(GtkWidget * w, gpointer data)
 	comment_list = add_tag(comment_list, "organization", organization);
 	comment_list = add_tag(comment_list, "copyright", copyright);
 #endif
+	comment_list = add_tag(comment_list, "replaygain_track_gain", rg_track_gain);
+	comment_list = add_tag(comment_list, "replaygain_album_gain", rg_album_gain);
+	comment_list = add_tag(comment_list, "replaygain_track_peak", rg_track_peak);
+	comment_list = add_tag(comment_list, "replaygain_album_peak", rg_album_peak);
 
 	add_list(comment, comment_list);
 	g_strfreev(comment_list);
@@ -309,6 +326,32 @@ close:
 	vcedit_clear(state);
 	pthread_mutex_unlock(&vf_mutex);
 	gtk_widget_destroy(window);
+}
+
+static void rg_show_cb(GtkWidget * w, gpointer data)
+{
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(rg_show_button)))
+	{
+		gtk_widget_show(rg_track_label);
+		gtk_widget_show(rg_track_entry);
+		gtk_widget_show(rg_album_label);
+		gtk_widget_show(rg_album_entry);
+		gtk_widget_show(rg_track_peak_label);
+		gtk_widget_show(rg_track_peak_entry);
+		gtk_widget_show(rg_album_peak_label);
+		gtk_widget_show(rg_album_peak_entry);
+	}
+	else
+	{
+		gtk_widget_hide(rg_track_label);
+		gtk_widget_hide(rg_track_entry);
+		gtk_widget_hide(rg_album_label);
+		gtk_widget_hide(rg_album_entry);
+		gtk_widget_hide(rg_track_peak_label);
+		gtk_widget_hide(rg_track_peak_entry);
+		gtk_widget_hide(rg_album_peak_label);
+		gtk_widget_hide(rg_album_peak_entry);
+	}
 }
 
 static gint init_files(vcedit_state *state)
@@ -383,16 +426,24 @@ static void label_set_text(GtkWidget * label, char *str, ...)
 	g_free(tempstr);
 }
 
+static void keypress_cb(GtkWidget * w, GdkEventKey * event, gpointer data)
+{
+	if (event && event->keyval == GDK_Escape)
+		gtk_widget_destroy(w);
+}
+
 /***********************************************************************/
 
 void vorbis_file_info_box(char *fn)
 {
-	gchar *track_name, *performer, *album_name, *date, *track_number;
-	gchar *genre, *user_comment, *tmp;
-	gchar *description, *version, *isrc, *copyright, *organization;
-	gchar *location;
+	char *track_name, *performer, *album_name, *date, *track_number;
+	char *genre, *user_comment, *tmp;
+	char *description, *version, *isrc, *copyright, *organization;
+	char *location, *vendor = "N/A";
+	char *rg_track_gain, *rg_album_gain, *rg_track_peak, *rg_album_peak;
 
-	gint time, minutes, seconds, bitrate, rate, channels, filesize, i;
+	int time, minutes, seconds, bitrate, avgbitrate, rate, channels;
+	int filesize, i;
 
 	OggVorbis_File vf;
 	vorbis_info *vi;
@@ -400,23 +451,22 @@ void vorbis_file_info_box(char *fn)
 	FILE *fh;
 	gboolean clear_vf = FALSE;
 
-	static GtkWidget *info_frame, *info_box, *bitrate_label, *rate_label;
-	static GtkWidget *channel_label, *length_label, *filesize_label;
-	static GtkWidget *filename_entry, *tag_frame;
-
 	g_free(vte.filename);
 	vte.filename = g_strdup(fn);
 	
 	if (!window)
 	{
+		GtkWidget *info_frame, *info_box;
 		GtkWidget *hbox, *label, *filename_hbox, *vbox, *left_vbox;
 		GtkWidget *table, *bbox, *cancel_button;
 		GtkWidget *save_button, *remove_button;
 
-		window = gtk_window_new(GTK_WINDOW_DIALOG);
+		window = gtk_window_new(GDK_WINDOW_DIALOG);
 		gtk_window_set_policy(GTK_WINDOW(window), FALSE, FALSE, FALSE);
 		gtk_signal_connect(GTK_OBJECT(window), "destroy", 
 			GTK_SIGNAL_FUNC(gtk_widget_destroyed), &window);
+		gtk_signal_connect(GTK_OBJECT(window), "key_press_event",
+				   keypress_cb, NULL);
 		gtk_container_set_border_width(GTK_CONTAINER(window), 10);
 
 		vbox = gtk_vbox_new(FALSE, 10);
@@ -592,6 +642,55 @@ void vorbis_file_info_box(char *fn)
 				 GTK_FILL | GTK_EXPAND | GTK_SHRINK, 0, 5);
 #endif
 
+		rg_show_button = gtk_check_button_new_with_label(_("ReplayGain Settings:"));
+		gtk_signal_connect(GTK_OBJECT(rg_show_button), "toggled",
+				   GTK_SIGNAL_FUNC(rg_show_cb), NULL);
+		gtk_table_attach(GTK_TABLE(table), rg_show_button, 0, 2, 11, 12,
+				 GTK_FILL, GTK_FILL, 5, 5);
+
+
+		rg_track_label = gtk_label_new(_("Track gain:"));
+		gtk_misc_set_alignment(GTK_MISC(rg_track_label), 1, 0.5);
+		gtk_table_attach(GTK_TABLE(table), rg_track_label, 2, 3, 11, 12,
+				 GTK_FILL, GTK_FILL, 5, 5);
+
+		rg_track_entry = gtk_entry_new();
+		gtk_table_attach(GTK_TABLE(table), rg_track_entry, 3, 4, 11,
+				 12, GTK_FILL |	GTK_EXPAND | GTK_SHRINK,
+				 GTK_FILL | GTK_EXPAND | GTK_SHRINK, 0, 5);
+
+		rg_track_peak_label = gtk_label_new(_("Track peak:"));
+		gtk_misc_set_alignment(GTK_MISC(rg_track_peak_label), 1, 0.5);
+		gtk_table_attach(GTK_TABLE(table), rg_track_peak_label, 2, 3, 12, 13,
+				 GTK_FILL, GTK_FILL, 5, 5);
+
+		rg_track_peak_entry = gtk_entry_new();
+		gtk_table_attach(GTK_TABLE(table), rg_track_peak_entry, 3, 4, 12,
+				 13, GTK_FILL |	GTK_EXPAND | GTK_SHRINK,
+				 GTK_FILL | GTK_EXPAND | GTK_SHRINK, 0, 5);
+
+
+		rg_album_label = gtk_label_new(_("Album gain:"));
+		gtk_misc_set_alignment(GTK_MISC(rg_album_label), 1, 0.5);
+		gtk_table_attach(GTK_TABLE(table), rg_album_label, 2, 3, 13, 14,
+				 GTK_FILL, GTK_FILL, 5, 5);
+
+		rg_album_entry = gtk_entry_new();
+		gtk_table_attach(GTK_TABLE(table), rg_album_entry, 3, 4, 13,
+				 14, GTK_FILL |	GTK_EXPAND | GTK_SHRINK,
+				 GTK_FILL | GTK_EXPAND | GTK_SHRINK, 0, 5);
+
+		rg_album_peak_label = gtk_label_new(_("Album peak:"));
+		gtk_misc_set_alignment(GTK_MISC(rg_album_peak_label), 1, 0.5);
+		gtk_table_attach(GTK_TABLE(table), rg_album_peak_label, 2, 3, 14, 15,
+				 GTK_FILL, GTK_FILL, 5, 5);
+
+		rg_album_peak_entry = gtk_entry_new();
+		gtk_table_attach(GTK_TABLE(table), rg_album_peak_entry, 3, 4, 14,
+				 15, GTK_FILL |	GTK_EXPAND | GTK_SHRINK,
+				 GTK_FILL | GTK_EXPAND | GTK_SHRINK, 0, 5);
+
+
 		bbox = gtk_hbutton_box_new(); 
 		gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox),
 					  GTK_BUTTONBOX_END);
@@ -634,6 +733,13 @@ void vorbis_file_info_box(char *fn)
 				      GTK_JUSTIFY_LEFT);
 		gtk_box_pack_start(GTK_BOX(info_box), bitrate_label, FALSE,
 				   FALSE, 0);
+
+		avgbitrate_label = gtk_label_new("");
+		gtk_misc_set_alignment(GTK_MISC(avgbitrate_label), 0, 0);
+		gtk_label_set_justify(GTK_LABEL(avgbitrate_label),
+				      GTK_JUSTIFY_LEFT);
+		gtk_box_pack_start(GTK_BOX(info_box), avgbitrate_label, FALSE,
+				   FALSE, 0);
 		
 		rate_label = gtk_label_new("");
 		gtk_misc_set_alignment(GTK_MISC(rate_label), 0, 0);
@@ -661,6 +767,34 @@ void vorbis_file_info_box(char *fn)
 				      GTK_JUSTIFY_LEFT);
 		gtk_box_pack_start(GTK_BOX(info_box), filesize_label, FALSE,
 				   FALSE, 0);
+	
+		vendor_label = gtk_label_new("");
+		gtk_misc_set_alignment(GTK_MISC(vendor_label), 0, 0);
+		gtk_label_set_justify(GTK_LABEL(vendor_label),
+				      GTK_JUSTIFY_LEFT);
+		gtk_box_pack_start(GTK_BOX(info_box), vendor_label, FALSE,
+				   FALSE, 0);
+
+		replaygain_label = gtk_label_new("");
+		gtk_misc_set_alignment(GTK_MISC(replaygain_label), 0, 0);
+		gtk_label_set_justify(GTK_LABEL(replaygain_label),
+				      GTK_JUSTIFY_LEFT);
+		gtk_box_pack_start(GTK_BOX(info_box), replaygain_label, FALSE,
+				   FALSE, 0);
+
+		audiophilegain_label = gtk_label_new("");
+		gtk_misc_set_alignment(GTK_MISC(audiophilegain_label), 0, 0);
+		gtk_label_set_justify(GTK_LABEL(audiophilegain_label),
+				      GTK_JUSTIFY_LEFT);
+		gtk_box_pack_start(GTK_BOX(info_box), audiophilegain_label, FALSE,
+				   FALSE, 0);
+
+		peak_label = gtk_label_new("");
+		gtk_misc_set_alignment(GTK_MISC(peak_label), 0, 0);
+		gtk_label_set_justify(GTK_LABEL(peak_label),
+				      GTK_JUSTIFY_LEFT);
+		gtk_box_pack_start(GTK_BOX(info_box), peak_label, FALSE,
+				   FALSE, 0);
 		
 		gtk_widget_show_all(window);
 	} else
@@ -672,10 +806,12 @@ void vorbis_file_info_box(char *fn)
 		gtk_widget_set_sensitive(tag_frame, TRUE);		
 
 	gtk_label_set_text(GTK_LABEL(bitrate_label), "");
+	gtk_label_set_text(GTK_LABEL(avgbitrate_label), "");
 	gtk_label_set_text(GTK_LABEL(rate_label), "");
 	gtk_label_set_text(GTK_LABEL(channel_label), "");
 	gtk_label_set_text(GTK_LABEL(length_label), "");
 	gtk_label_set_text(GTK_LABEL(filesize_label), "");
+	gtk_label_set_text(GTK_LABEL(vendor_label), "");
 
 	if ((fh = fopen(vte.filename, "r")) != NULL)
 	{
@@ -684,17 +820,24 @@ void vorbis_file_info_box(char *fn)
 		if (ov_open(fh, &vf, NULL, 0) == 0)
 		{
 			comment = ov_comment(&vf, -1);
+			if (comment && comment->vendor)
+				vendor = comment->vendor;
+
 			if ((vi = ov_info(&vf, 0)) != NULL)
 			{
 				bitrate = vi->bitrate_nominal/1000;
+				avgbitrate = ov_bitrate(&vf, -1);
+				if (avgbitrate == OV_EINVAL ||
+				    avgbitrate == OV_FALSE)
+					avgbitrate = 0;
 				rate = vi->rate;
 				channels = vi->channels;
-				g_message("version: %d", vi->version);
 				clear_vf = TRUE;
 			}
 			else
 			{
 				bitrate = 0;
+				avgbitrate = 0;
 				rate = 0;
 				channels = 0;
 			}
@@ -706,11 +849,12 @@ void vorbis_file_info_box(char *fn)
 			filesize = ftell(fh);
 
 			label_set_text(bitrate_label, _("Nominal bitrate: %d kbps"), bitrate);
+			label_set_text(avgbitrate_label, _("Average bitrate: %.1f kbps"), ((float) avgbitrate) / 1000);
 			label_set_text(rate_label, _("Samplerate: %d Hz"), rate);
 			label_set_text(channel_label, _("Channels: %d"), channels);
 			label_set_text(length_label, _("Length: %d:%.2d"), minutes, seconds);
 			label_set_text(filesize_label, _("File size: %d B"), filesize);
-
+			label_set_text(vendor_label, _("Vendor: %s"), vendor);
 		}
 		else
 			fclose(fh);
@@ -723,7 +867,7 @@ void vorbis_file_info_box(char *fn)
 	track_number = get_comment(comment, "tracknumber");
 	genre = get_comment(comment, "genre");
 	date = get_comment(comment, "date");
-	user_comment = get_comment(comment, ""); /* "" = user comment */
+	user_comment = get_comment(comment, "comment");
 	location = get_comment(comment, "location");
 	description = get_comment(comment, "description");
 	version = get_comment(comment, "version");
@@ -731,6 +875,25 @@ void vorbis_file_info_box(char *fn)
 	organization = get_comment(comment, "organization");
 	copyright = get_comment(comment, "copyright");
 
+	rg_track_gain = get_comment(comment, "replaygain_track_gain");
+	if (*rg_track_gain == '\0')
+	{
+		g_free(rg_track_gain);
+		rg_track_gain = get_comment(comment, "rg_radio"); /* Old */
+	}
+	rg_album_gain = get_comment(comment, "replaygain_album_gain");
+	if (*rg_album_gain == '\0')
+	{
+		g_free(rg_album_gain);
+		rg_album_gain = get_comment(comment, "rg_audiophile"); /* Old */
+	}
+	rg_track_peak = get_comment(comment, "replaygain_track_peak");
+	if (*rg_track_peak == '\0')
+	{
+		g_free(rg_track_peak);
+		rg_track_peak = get_comment(comment, "rg_peak"); /* Old */
+	}
+	rg_album_peak = get_comment(comment, "replaygain_album_peak"); /* Old had no album peak */
 
 	/* ov_clear closes the file */
 	if (clear_vf)
@@ -756,6 +919,21 @@ void vorbis_file_info_box(char *fn)
 	gtk_entry_set_text(GTK_ENTRY(filename_entry), vte.filename);
 	gtk_editable_set_position(GTK_EDITABLE(filename_entry), -1);
 
+	gtk_entry_set_text(GTK_ENTRY(rg_track_entry), rg_track_gain);
+	gtk_entry_set_text(GTK_ENTRY(rg_album_entry), rg_album_gain);
+	gtk_entry_set_text(GTK_ENTRY(rg_track_peak_entry), rg_track_peak);
+	gtk_editable_set_position(GTK_EDITABLE(rg_track_peak_entry), -1);
+	gtk_entry_set_text(GTK_ENTRY(rg_album_peak_entry), rg_album_peak);
+	gtk_editable_set_position(GTK_EDITABLE(rg_album_peak_entry), -1);
+
+	if (*rg_track_gain == '\0' && *rg_album_gain == '\0' && *rg_track_peak == '\0' && *rg_album_peak == '\0')
+	{
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_show_button), FALSE);
+		rg_show_cb(rg_show_button, NULL);
+	}
+	else
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(rg_show_button), TRUE);
+
 	tmp = g_strdup_printf(_("File Info - %s"), g_basename(vte.filename));
 	gtk_window_set_title(GTK_WINDOW(window), tmp);
 	g_free(tmp);
@@ -765,13 +943,18 @@ void vorbis_file_info_box(char *fn)
 	g_free(track_name);
 	g_free(performer);
 	g_free(album_name);
-	g_free(date);
 	g_free(track_number);
 	g_free(genre);
-	g_free(description);
+	g_free(date);
+	g_free(user_comment);
 	g_free(location);
+	g_free(description);
 	g_free(version);
 	g_free(isrc);
 	g_free(organization);
 	g_free(copyright);
+	g_free(rg_track_gain);
+	g_free(rg_album_gain);
+	g_free(rg_track_peak);
+	g_free(rg_album_peak);
 }

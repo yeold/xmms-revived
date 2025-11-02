@@ -1,13 +1,15 @@
 #include "mpg123.h"
+#include "id3_header.h"
 #include "libxmms/configfile.h"
 #include "libxmms/titlestring.h"
 #include <string.h>
 #include <stdlib.h>
 #include <pthread.h>
 
-static const long outscale = 32768;
+#define CPU_HAS_MMX() (cpu_fflags & 0x800000)
+#define CPU_HAS_3DNOW() (cpu_efflags & 0x80000000)
 
-static struct frame fr, temp_fr;
+static const long outscale = 32768;
 
 PlayerInfo *mpg123_info = NULL;
 static pthread_t decode_thread;
@@ -15,11 +17,12 @@ static pthread_t decode_thread;
 static gboolean audio_error = FALSE, output_opened = FALSE, dopause = FALSE;
 gint mpg123_bitrate, mpg123_frequency, mpg123_length, mpg123_layer, mpg123_lsf;
 gchar *mpg123_title = NULL, *mpg123_filename = NULL;
-static gint disp_bitrate, skip_frames = 0;
+static int disp_bitrate, skip_frames = 0;
+static int cpu_fflags, cpu_efflags;
 gboolean mpg123_stereo, mpg123_mpeg25;
-gint mpg123_mode;
+int mpg123_mode;
 
-const gchar *mpg123_id3_genres[GENRE_MAX] =
+const char *mpg123_id3_genres[GENRE_MAX] =
 {
 	N_("Blues"), N_("Classic Rock"), N_("Country"), N_("Dance"),
 	N_("Disco"), N_("Funk"), N_("Grunge"), N_("Hip-Hop"),
@@ -30,7 +33,7 @@ const gchar *mpg123_id3_genres[GENRE_MAX] =
 	N_("Euro-Techno"), N_("Ambient"), N_("Trip-Hop"), N_("Vocal"),
 	N_("Jazz+Funk"), N_("Fusion"), N_("Trance"), N_("Classical"),
 	N_("Instrumental"), N_("Acid"), N_("House"), N_("Game"),
-	N_("Sound Clip"), N_("Gospel"), N_("Noise"), N_("Alt"),
+	N_("Sound Clip"), N_("Gospel"), N_("Noise"), N_("AlternRock"),
 	N_("Bass"), N_("Soul"), N_("Punk"), N_("Space"),
 	N_("Meditative"), N_("Instrumental Pop"),
 	N_("Instrumental Rock"), N_("Ethnic"), N_("Gothic"),
@@ -76,83 +79,70 @@ double mpg123_compute_tpf(struct frame *fr)
 	return tpf;
 }
 
-void set_mpg123_synth_functions(struct frame *fr)
+static void set_synth_functions(struct frame *fr)
 {
 	typedef int (*func) (real *, int, unsigned char *, int *);
 	typedef int (*func_mono) (real *, unsigned char *, int *);
-#ifdef USE_3DNOW
-	typedef void (*func_dct36)(real *,real *,real *,real *,real *);
-#endif
+	typedef void (*func_dct36)(real *, real *, real *, real *, real *);
+
 	int ds = fr->down_sample;
 	int p8 = 0;
 
-#ifdef USE_3DNOW
-	static func funcs[3][4] =
+	static func funcs[][3] =
 	{
-#else
-	static func funcs[2][4] =
-	{
-#endif
 		{mpg123_synth_1to1,
 		 mpg123_synth_2to1,
-		 mpg123_synth_4to1,
-		 mpg123_synth_ntom},
+		 mpg123_synth_4to1},
 		{mpg123_synth_1to1_8bit,
 		 mpg123_synth_2to1_8bit,
-		 mpg123_synth_4to1_8bit,
-		 mpg123_synth_ntom_8bit}
-#ifdef USE_3DNOW
-  	       ,{ mpg123_synth_1to1_3dnow,
-  		  mpg123_synth_2to1,
- 		  mpg123_synth_4to1,
-  		  mpg123_synth_ntom }
+		 mpg123_synth_4to1_8bit},
+#ifdef USE_SIMD
+		{mpg123_synth_1to1_mmx,
+		 mpg123_synth_2to1,
+		 mpg123_synth_4to1},
+		{mpg123_synth_1to1_3dnow,
+		 mpg123_synth_2to1,
+		 mpg123_synth_4to1}
 #endif
 	};
 
-	static func_mono funcs_mono[2][2][4] =
+	static func_mono funcs_mono[2][4] =
 	{
-		{
-			{mpg123_synth_1to1_mono2stereo,
-			 mpg123_synth_2to1_mono2stereo,
-			 mpg123_synth_4to1_mono2stereo,
-			 mpg123_synth_ntom_mono2stereo},
-			{mpg123_synth_1to1_8bit_mono2stereo,
-			 mpg123_synth_2to1_8bit_mono2stereo,
-			 mpg123_synth_4to1_8bit_mono2stereo,
-			 mpg123_synth_ntom_8bit_mono2stereo}},
-		{
-			{mpg123_synth_1to1_mono,
-			 mpg123_synth_2to1_mono,
-			 mpg123_synth_4to1_mono,
-			 mpg123_synth_ntom_mono},
-			{mpg123_synth_1to1_8bit_mono,
-			 mpg123_synth_2to1_8bit_mono,
-			 mpg123_synth_4to1_8bit_mono,
-			 mpg123_synth_ntom_8bit_mono}}
+		{mpg123_synth_1to1_mono,
+		 mpg123_synth_2to1_mono,
+		 mpg123_synth_4to1_mono},
+		{mpg123_synth_1to1_8bit_mono,
+		 mpg123_synth_2to1_8bit_mono,
+		 mpg123_synth_4to1_8bit_mono}
 	};
 
-#ifdef USE_3DNOW	
-	static func_dct36 funcs_dct36[2] = {dct36 , dct36_3dnow};
+#ifdef USE_SIMD
+	static func_dct36 funcs_dct36[2] = {mpg123_dct36, dct36_3dnow};
 #endif
 
 	if (mpg123_cfg.resolution == 8)
 		p8 = 1;
 	fr->synth = funcs[p8][ds];
-	fr->synth_mono = funcs_mono[1][p8][ds];
+	fr->synth_mono = funcs_mono[p8][ds];
+	fr->synth_type = SYNTH_FPU;
 
-#ifdef USE_3DNOW
-       /* check cpuflags bit 31 (3DNow!) */
-	if( (mpg123_cfg.use_3dnow < 2 ) && 
-	    ((mpg123_cfg.use_3dnow == 1 ) ||
-	     (support_3dnow() == TRUE)) &&
-	    (mpg123_cfg.resolution != 8) )
+#ifdef USE_SIMD
+	fr->dct36 = funcs_dct36[0];
+   
+	if (CPU_HAS_3DNOW() && !p8 &&
+	    (mpg123_cfg.default_synth == SYNTH_3DNOW || 
+	     mpg123_cfg.default_synth == SYNTH_AUTO))
 	{
-		fr->synth = funcs[2][ds]; /* 3DNow! optimized synth_1to1() */
+		fr->synth = funcs[3][ds]; /* 3DNow! optimized synth_1to1() */
 		fr->dct36 = funcs_dct36[1]; /* 3DNow! optimized dct36() */
+		fr->synth_type = SYNTH_3DNOW;
 	}
-	else
+	else if (CPU_HAS_MMX() && !p8 &&
+		 (mpg123_cfg.default_synth == SYNTH_MMX ||
+		  mpg123_cfg.default_synth == SYNTH_AUTO))
 	{
-		fr->dct36 = funcs_dct36[0];
+		fr->synth = funcs[2][ds]; /* MMX optimized synth_1to1() */
+		fr->synth_type = SYNTH_MMX;
 	}
 #endif
 	if (p8)
@@ -170,26 +160,24 @@ static void init(void)
 	mpg123_cfg.resolution = 16;
 	mpg123_cfg.channels = 2;
 	mpg123_cfg.downsample = 0;
-	mpg123_cfg.downsample_custom = 44100;
 	mpg123_cfg.http_buffer_size = 128;
 	mpg123_cfg.http_prebuffer = 25;
 	mpg123_cfg.proxy_port = 8080;
 	mpg123_cfg.proxy_use_auth = FALSE;
 	mpg123_cfg.proxy_user = NULL;
 	mpg123_cfg.proxy_pass = NULL;
-	mpg123_cfg.cast_title_streaming = FALSE;
-	mpg123_cfg.use_udp_channel = TRUE;
+	mpg123_cfg.cast_title_streaming = TRUE;
+	mpg123_cfg.use_udp_channel = FALSE;
 	mpg123_cfg.title_override = FALSE;
 	mpg123_cfg.disable_id3v2 = FALSE;
-	mpg123_cfg.detect_by_content = FALSE;
-	mpg123_cfg.use_3dnow = 0;
+	mpg123_cfg.detect_by = DETECT_EXTENSION;
+	mpg123_cfg.default_synth = SYNTH_AUTO;
 
 	cfg = xmms_cfg_open_default_file();
 
 	xmms_cfg_read_int(cfg, "MPG123", "resolution", &mpg123_cfg.resolution);
 	xmms_cfg_read_int(cfg, "MPG123", "channels", &mpg123_cfg.channels);
 	xmms_cfg_read_int(cfg, "MPG123", "downsample", &mpg123_cfg.downsample);
-	/*xmms_cfg_read_int(cfg,"MPG123","downsample_custom",&mpg123_cfg.downsample_custom); */
 	xmms_cfg_read_int(cfg, "MPG123", "http_buffer_size", &mpg123_cfg.http_buffer_size);
 	xmms_cfg_read_int(cfg, "MPG123", "http_prebuffer", &mpg123_cfg.http_prebuffer);
 	xmms_cfg_read_boolean(cfg, "MPG123", "save_http_stream", &mpg123_cfg.save_http_stream);
@@ -210,10 +198,16 @@ static void init(void)
 	xmms_cfg_read_boolean(cfg, "MPG123", "disable_id3v2", &mpg123_cfg.disable_id3v2);
 	if (!xmms_cfg_read_string(cfg, "MPG123", "id3_format", &mpg123_cfg.id3_format))
 		mpg123_cfg.id3_format = g_strdup("%p - %t");
-	xmms_cfg_read_boolean(cfg, "MPG123", "detect_by_content", &mpg123_cfg.detect_by_content);
-	xmms_cfg_read_int(cfg, "MPG123", "use_3dnow", &mpg123_cfg.use_3dnow);
+	xmms_cfg_read_int(cfg, "MPG123", "detect_by", &mpg123_cfg.detect_by);
+	xmms_cfg_read_int(cfg, "MPG123", "default_synth", &mpg123_cfg.default_synth);
 
 	xmms_cfg_free(cfg);
+
+	if (mpg123_cfg.resolution != 16 && mpg123_cfg.resolution != 8)
+		mpg123_cfg.resolution = 16;
+	mpg123_cfg.channels = CLAMP(mpg123_cfg.channels, 0, 2);
+	mpg123_cfg.downsample = CLAMP(mpg123_cfg.downsample, 0, 2);
+	mpg123_getcpuflags(&cpu_fflags, &cpu_efflags);
 }
 
 /* needed for is_our_file() */
@@ -227,12 +221,6 @@ static int read_n_bytes(FILE * file, guint8 * buf, int n)
 	return TRUE;
 }
 
-static guint32 convert_to_header(guint8 * buf)
-{
-
-	return (buf[0] << 24) + (buf[1] << 16) + (buf[2] << 8) + buf[3];
-}
-
 static guint32 convert_to_long(guint8 * buf)
 {
 
@@ -242,151 +230,81 @@ static guint32 convert_to_long(guint8 * buf)
 static guint16 read_wav_id(char *filename)
 {
 	FILE *file;
-	guint16 wavid;
-	guint8 buf[4];
-	guint32 head;
-	long seek;
+	guint8 buf[4], head[4];
+	long seek = 0;
 
 	if (!(file = fopen(filename, "rb")))
-	{			/* Could not open file */
 		return 0;
-	}
+
 	if (!(read_n_bytes(file, buf, 4)))
+		goto out;
+	if (strncmp(buf, "RIFF", 4))
+		goto out;
+	if (fseek(file, 4, SEEK_CUR) != 0)
+		goto out;
+	if (!(read_n_bytes(file, buf, 4)))
+		goto out;
+	if (strncmp(buf, "WAVE", 4))
+		goto out;
+	do
 	{
-		fclose(file);
-		return 0;
-	}
-	head = convert_to_header(buf);
-	if (head == ('R' << 24) + ('I' << 16) + ('F' << 8) + 'F')
-	{			/* Found a riff -- maybe WAVE */
-		if (fseek(file, 4, SEEK_CUR) != 0)
-		{		/* some error occured */
-			fclose(file);
-			return 0;
-		}
+		/*
+		 * We'll be looking for the fmt-chunk which comes
+		 * before the data-chunk
+		 */
+
+		/*
+		 * A chunk consists of an header identifier (4 bytes),
+		 * the length of the chunk (4 bytes), and the
+		 * chunkdata itself, padded to be an even number of
+		 * bytes.  We'll skip all chunks until we find the
+		 * "data"-one which could contain mpeg-data
+		 */
+		if (seek != 0)
+			if (fseek(file, seek, SEEK_CUR) != 0)
+				goto out;
+		if (!(read_n_bytes(file, head, 4)))
+			goto out;
 		if (!(read_n_bytes(file, buf, 4)))
+			goto out;
+		seek = convert_to_long(buf);
+		/* Has to be even (padding) */
+		seek += (seek % 2);
+		if (seek >= 2 && !strncmp(head, "fmt ", 4))
 		{
+			guint16 wavid;
+			if (!(read_n_bytes(file, buf, 2)))
+				goto out;
+			wavid = buf[0] | buf[1] << 8;
+			seek -= 2;
+			/*
+			 * we could go on looking for other things,
+			 * but all we wanted was the wavid
+			 */
 			fclose(file);
-			return 0;
+			return wavid;
 		}
-		head = convert_to_header(buf);
-		if (head == ('W' << 24) + ('A' << 16) + ('V' << 8) + 'E')
-		{		/* Found a WAVE */
-			seek = 0;
-			do
-			{
-/* we'll be looking for the fmt-chunk which comes before the data-chunk */
-/* A chunk consists of an header identifier (4 bytes), the length of the chunk
-   (4 bytes), and the chunkdata itself, padded to be an even number of bytes.
-   We'll skip all chunks until we find the "data"-one which could contain
-   mpeg-data */
-				if (seek != 0)
-				{
-					if (fseek(file, seek, SEEK_CUR) != 0)
-					{	/* some error occured */
-						fclose(file);
-						return 0;
-					}
-				}
-				if (!(read_n_bytes(file, buf, 4)))
-				{
-					fclose(file);
-					return 0;
-				}
-				head = convert_to_header(buf);
-				if (!(read_n_bytes(file, buf, 4)))
-				{
-					fclose(file);
-					return 0;
-				}
-				seek = convert_to_long(buf);
-				seek = seek + (seek % 2);	/* Has to be even (padding) */
-				if (seek >= 2 && head == ('f' << 24) + ('m' << 16) + ('t' << 8) + ' ')
-				{
-					if (!(read_n_bytes(file, buf, 2)))
-					{
-						fclose(file);
-						return 0;
-					}
-					wavid = buf[0] + 256 * buf[1];
-					seek -= 2;
-					/* we could go on looking for
-                                           other things, but all we
-                                           wanted was the wavid */
-					fclose(file);
-					return wavid;
-				}
-			}
-			while (head != ('d' << 24) + ('a' << 16) + ('t' << 8) + 'a');
-			/* it's RIFF WAVE */
-		}
-		/* it's RIFF */
-	}
-	/* it's not even RIFF */
+	} while (strncmp(head, "data", 4));
+ out:
 	fclose(file);
 	return 0;
 }
 
 #define DET_BUF_SIZE 1024
 
-static gboolean mpg123_detect_by_content(gchar *filename)
+static gboolean mpg123_detect_by_content(char *filename)
 {
 	FILE *file;
-	guchar tmp[4];
-	guint32 head;
 	struct frame fr;
-	guchar buf[DET_BUF_SIZE];
-	gint in_buf, i;
+	gboolean ret;
 
-	if((file = fopen(filename, "rb")) == NULL)
+	if ((file = fopen(filename, "rb")) == NULL)
 		return FALSE;
-	if (fread(tmp, 1, 4, file) != 4)
-		goto done;
-	head = convert_to_header(tmp);
-	while(!mpg123_head_check(head))
-	{
-		/*
-		 * The mpeg-stream can start anywhere in the file,
-		 * so we check the entire file
-		 */
-		/* Optimize this */
-		in_buf = fread(buf, 1, DET_BUF_SIZE, file);
-		if(in_buf == 0)
-			goto done;
 
-		for (i = 0; i < in_buf; i++)
-		{
-			head <<= 8;
-			head |= buf[i];
-			if(mpg123_head_check(head))
-			{
-				fseek(file, i+1-in_buf, SEEK_CUR);
-				break;
-			}
-		}
-	}
-	if (mpg123_decode_header(&fr, head))
-	{
-		/*
-		 * We found something which looks like a MPEG-header.
-		 * We check the next frame too, to be sure
-		 */
-		
-		if (fseek(file, fr.framesize, SEEK_CUR) != 0)
-			goto done;
-		if (fread(tmp, 1, 4, file) != 4)
-			goto done;
-		head = convert_to_header(tmp);
-		if (mpg123_head_check(head) && mpg123_decode_header(&fr, head))
-		{
-			fclose(file);
-			return TRUE;
-		}
-	}
-
- done:
+	ret = mpg123_get_first_frame(file, &fr, NULL);
 	fclose(file);
-	return FALSE;
+
+	return ret;
 }
 
 static int is_our_file(char *filename)
@@ -404,13 +322,16 @@ static int is_our_file(char *filename)
 			if (!strncasecmp(ext, ".rm", 3) || 
 			    !strncasecmp(ext, ".ra", 3)  ||
 			    !strncasecmp(ext, ".rpm", 4)  ||
+			    !strncasecmp(ext, ".fla", 4)  ||
+			    !strncasecmp(ext, ".flac", 5)  ||
 			    !strncasecmp(ext, ".ram", 4))
 				return FALSE;
 		}
 		return TRUE;
 	}
-	if(mpg123_cfg.detect_by_content)
+	if(mpg123_cfg.detect_by == DETECT_CONTENT)
 		return (mpg123_detect_by_content(filename));
+
 	ext = strrchr(filename, '.');
 	if (ext)
 	{
@@ -427,6 +348,9 @@ static int is_our_file(char *filename)
 			}
 		}
 	}
+
+	if(mpg123_cfg.detect_by == DETECT_BOTH)
+		return (mpg123_detect_by_content(filename));
 	return FALSE;
 }
 
@@ -451,44 +375,12 @@ static void play_frame(struct frame *fr)
 	}
 }
 
-static const char *get_id3_genre(unsigned char genre_code)
+const char *mpg123_get_id3_genre(unsigned char genre_code)
 {
 	if (genre_code < GENRE_MAX)
 		return gettext(mpg123_id3_genres[genre_code]);
 
 	return "";
-}
-
-guint mpg123_strip_spaces(char *src, size_t n)
-/* strips trailing spaces from string of length n
-   returns length of adjusted string */
-{
-	gchar *space = NULL,	/* last space in src */
-	     *start = src;
-
-	while (n--)
-		switch (*src++)
-		{
-			case '\0':
-				n = 0;	/* breaks out of while loop */
-
-				src--;
-				break;
-			case ' ':
-				if (space == NULL)
-					space = src - 1;
-				break;
-			default:
-				space = NULL;	/* don't terminate intermediate spaces */
-
-				break;
-		}
-	if (space != NULL)
-	{
-		src = space;
-		*src = '\0';
-	}
-	return src - start;
 }
 
 /*
@@ -514,26 +406,28 @@ static gchar *extname(const char *filename)
  *    Convert ID3v1 tag `v1' to ID3v2 tag `v2'.
  *
  */
-void mpg123_id3v1_to_id3v2(struct id3v1tag_t *v1, struct id3tag_t *v2)
+struct id3v2tag_t* mpg123_id3v1_to_id3v2(struct id3v1tag_t *v1)
 {
-	memset(v2,0,sizeof(struct id3tag_t));
-	strncpy(v2->title, v1->title, 30);
-	strncpy(v2->artist, v1->artist, 30);
-	strncpy(v2->album, v1->album, 30);
-	strncpy(v2->comment, v1->u.v1_0.comment, 30);
-	strncpy(v2->genre, get_id3_genre(v1->genre), sizeof (v2->genre));
-	g_strstrip(v2->title);
-	g_strstrip(v2->artist);
-	g_strstrip(v2->album);
-	g_strstrip(v2->comment);
-	g_strstrip(v2->genre);
-	v2->year = atoi(v1->year);
+	char *year;
+	struct id3v2tag_t *v2 = g_malloc0(sizeof (struct id3v2tag_t));
+
+	v2->title = g_strstrip(g_strndup(v1->title, 30));
+	v2->artist = g_strstrip(g_strndup(v1->artist, 30));
+	v2->album = g_strstrip(g_strndup(v1->album, 30));
+	v2->comment = g_strstrip(g_strndup(v1->u.v1_0.comment, 30));
+	v2->genre = g_strstrip(g_strdup(mpg123_get_id3_genre(v1->genre)));
+	
+	year = g_strndup(v1->year, 4);
+	v2->year = atoi(year);
+	g_free(year);
 
 	/* Check for v1.1 tags. */
 	if (v1->u.v1_1.__zero == 0)
 		v2->track_number = v1->u.v1_1.track_number;
 	else
 		v2->track_number = 0;
+
+	return v2;
 }
 
 static char* mpg123_getstr(char* str)
@@ -550,9 +444,9 @@ static char* mpg123_getstr(char* str)
  *    return it.  The title must be subsequently freed using g_free().
  *
  */
-gchar *mpg123_format_song_title(struct id3tag_t *tag, gchar * filename)
+char *mpg123_format_song_title(struct id3v2tag_t *tag, char *filename)
 {
-	gchar *ret = NULL;
+	char *ret = NULL, *path, *temp;
 	TitleInput *input;
 
 	XMMS_NEW_TITLEINPUT(input);
@@ -567,13 +461,18 @@ gchar *mpg123_format_song_title(struct id3tag_t *tag, gchar * filename)
 		input->genre = mpg123_getstr(tag->genre);
 		input->comment = mpg123_getstr(tag->comment);
 	}
+	path = g_strdup(filename);
+	temp = strrchr(path, '/');
+	if (temp)
+		*temp = '\0';
 	input->file_name = g_basename(filename);
-	input->file_path = filename;
+	input->file_path = g_strdup_printf("%s/", path);
 	input->file_ext = extname(filename);
 	ret = xmms_get_titlestring(mpg123_cfg.title_override ?
 				   mpg123_cfg.id3_format :
 				   xmms_get_gentitle_format(), input);
 	g_free(input);
+	g_free(path);
 
 	if (!ret)
 	{
@@ -588,6 +487,36 @@ gchar *mpg123_format_song_title(struct id3tag_t *tag, gchar * filename)
 	return ret;
 }
 
+static int id3v2_get_num(struct id3_tag *id3d, int id)
+{
+	int r = 0, num;
+	struct id3_frame *id3frm = id3_get_frame(id3d, id, 1);
+	if (id3frm && (num = id3_get_text_number(id3frm)) > 0)
+		r = num;
+	return r;
+}
+
+static char* id3v2_get_text(struct id3_tag *id3d, int id)
+{
+	char *c;
+	struct id3_frame *id3frm = id3_get_frame(id3d, id, 1);
+	if (!id3frm)
+		return NULL;
+	switch (id)
+	{
+		case ID3_COMM:
+			c = id3_get_comment(id3frm);
+			break;
+		case ID3_TCON:
+			c = id3_get_content(id3frm);
+			break;
+		default:
+			c = id3_get_text(id3frm);
+			break;
+	}
+	return c;
+}
+
 /*
  * Function mpg123_get_id3v2 (id3d, tag)
  *
@@ -595,53 +524,34 @@ gchar *mpg123_format_song_title(struct id3tag_t *tag, gchar * filename)
  *    `tag'. 
  *
  */
-void mpg123_get_id3v2(id3_t * id3d, struct id3tag_t *tag)
+struct id3v2tag_t* mpg123_id3v2_get(struct id3_tag *id3d)
 {
-	id3_frame_t *id3frm;
-	gchar *txt;
-	gint tlen, num;
+	struct id3v2tag_t *tag = g_malloc0(sizeof (struct id3v2tag_t));
 
-#define ID3_SET(_tid,_fld) 						\
-{									\
-	id3frm = id3_get_frame( id3d, _tid, 1 );			\
-	if (id3frm) {							\
-		txt = _tid == ID3_TCON ? id3_get_content(id3frm)	\
-		    : id3_get_text(id3frm);				\
-		if(txt)							\
-		{							\
-			tlen = strlen(txt);				\
-			if ( tlen >= sizeof(tag->_fld) ) 		\
-				tlen = sizeof(tag->_fld)-1;		\
-			strncpy( tag->_fld, txt, tlen );		\
-			tag->_fld[tlen] = 0;				\
-		}							\
-		else							\
-			tag->_fld[0] = 0;				\
-	} else {							\
-		tag->_fld[0] = 0;					\
-	}								\
+	tag->title = id3v2_get_text(id3d, ID3_TIT2);
+	tag->artist = id3v2_get_text(id3d, ID3_TPE1);
+	if (!tag->artist)
+		tag->artist = id3v2_get_text(id3d, ID3_TPE2);
+	tag->album = id3v2_get_text(id3d, ID3_TALB);
+	tag->year = id3v2_get_num(id3d, ID3_TYER);
+	tag->track_number = id3v2_get_num(id3d, ID3_TRCK);
+	tag->comment = id3v2_get_text(id3d, ID3_COMM);
+	tag->genre = id3v2_get_text(id3d, ID3_TCON);
+
+	return tag;
 }
 
-#define ID3_SET_NUM(_tid,_fld)				\
-{							\
-	id3frm = id3_get_frame(id3d, _tid, 1);		\
-	if (id3frm) {					\
-		num = id3_get_text_number(id3frm);	\
-		tag->_fld = num >= 0 ? num : 0;		\
-	} else						\
-		tag->_fld = 0;				\
+void mpg123_id3v2_destroy(struct id3v2tag_t* tag)
+{
+	g_free(tag->title);
+	g_free(tag->artist);
+	g_free(tag->album);
+	g_free(tag->comment);
+	g_free(tag->genre);
+
+	g_free(tag);
 }
 
-	ID3_SET		(ID3_TIT2, title);
-	ID3_SET		(ID3_TPE1, artist);
-	if (strlen(tag->artist) == 0)
-		ID3_SET(ID3_TPE2, artist);
-	ID3_SET		(ID3_TALB, album);
-	ID3_SET_NUM	(ID3_TYER, year);
-	ID3_SET_NUM	(ID3_TRCK, track_number);
-	ID3_SET		(ID3_TXXX, comment);
-	ID3_SET		(ID3_TCON, genre);
-}
 
 /*
  * Function get_song_title (fd, filename)
@@ -656,12 +566,12 @@ static gchar *get_song_title(FILE * fd, char *filename)
 {
 	FILE *file = fd;
 	char *ret = NULL;
-	struct id3v1tag_t id3v1tag;
-	struct id3tag_t id3tag;
 
 	if (file || (file = fopen(filename, "rb")) != 0)
 	{
-		id3_t *id3 = NULL;
+		struct id3_tag *id3 = NULL;
+		struct id3v1tag_t id3v1tag;
+		struct id3v2tag_t *id3tag;
 
 		/*
 		 * Try reading ID3v2 tag.
@@ -672,8 +582,9 @@ static gchar *get_song_title(FILE * fd, char *filename)
 			id3 = id3_open_fp(file, 0);
 			if (id3)
 			{
-				mpg123_get_id3v2(id3, &id3tag);
-				ret = mpg123_format_song_title(&id3tag, filename);
+				id3tag = mpg123_id3v2_get(id3);
+				ret = mpg123_format_song_title(id3tag, filename);
+				mpg123_id3v2_destroy(id3tag);
 				id3_close(id3);
 			}
 		}
@@ -685,8 +596,9 @@ static gchar *get_song_title(FILE * fd, char *filename)
 		    (fread(&id3v1tag, 1, sizeof (id3v1tag), file) == sizeof (id3v1tag)) &&
 		    (strncmp(id3v1tag.tag, "TAG", 3) == 0))
 		{
-			mpg123_id3v1_to_id3v2(&id3v1tag, &id3tag);
-			ret = mpg123_format_song_title(&id3tag, filename);
+			id3tag = mpg123_id3v1_to_id3v2(&id3v1tag);
+			ret = mpg123_format_song_title(id3tag, filename);
+			mpg123_id3v2_destroy(id3tag);
 		}
 
 		if (!fd)
@@ -705,52 +617,161 @@ static gchar *get_song_title(FILE * fd, char *filename)
 	return ret;
 }
 
+static long get_song_length(FILE *file)
+{
+	int len;
+	char tmp[4];
+
+	fseek(file, 0, SEEK_END);
+	len = ftell(file);
+	fseek(file, -128, SEEK_END);
+	fread(tmp, 1, 3, file);
+	if (!strncmp(tmp, "TAG", 3))
+		len -= 128;
+	return len;
+}
+
+static int head_read(FILE *f, guint32 *head)
+{
+	guint8 tmp[4];
+	if (fread(tmp, 1, 4, f) != 4)
+		return FALSE;
+	*head = tmp[0] << 24 | tmp[1] << 16 | tmp[2] << 8 | tmp[3];
+	return TRUE;
+}	
+
+static int head_shift(FILE *f, guint32 *head)
+{
+	guint8 tmp[1];
+	*head <<= 8;
+	if (fread(tmp, 1, 1, f) != 1)
+		return FALSE;
+	*head |= tmp[0];
+	return TRUE;
+}	
+
+/*
+ * Check if we are at the beginning of a id3v2 tag and skip it if we
+ * are.  Returns FALSE on error.
+ */
+
+static int skip_id3v2(FILE *f, guint32 head)
+{
+	guint32 id3v2size;
+	guint8 tmp[6];
+	
+	if (!((head & 0xffffff00) == (('I' << 24) | ('D' << 16) | ('3' << 8))))
+		return TRUE;
+
+	if (fread(tmp, 1, 6, f) != 6)
+		return FALSE;
+		
+	id3v2size = ID3_GET_SIZE28(tmp[2], tmp[3], tmp[4], tmp[5]);
+
+	if (tmp[1] & 0x10)
+		/* Footer */
+		id3v2size += 10;
+	/* Let this fseek fail silently and continue parsing the file */
+	fseek(f, id3v2size, SEEK_CUR);
+	return TRUE;
+}
+
+
+/*
+ * Locate the first frame in a file and return a 'struct frame'.  If
+ * 'buffer' is non null, there will be allocated memory and the first
+ * frame will be read into it.
+ *
+ * Returns TRUE on success and zero on failure.
+ */
+gboolean mpg123_get_first_frame(FILE *fh, struct frame *frm, guint8 **buffer)
+{
+	guint32 h, h2;
+	/*
+	 * Mask of things that we don't expect to change between
+	 * frames.  This includes: MPEG version, layer, sample rate
+	 * and channel mode.
+	 */
+	guint32 mask = 0xFFFE0CC0;
+	int skip = 0;
+
+	rewind(fh);
+	if (!head_read(fh, &h))
+		return FALSE;
+	for (;;)
+	{
+		int offset;
+		struct frame tmp;
+		
+		while (!mpg123_head_check(h) ||
+		       !mpg123_decode_header(frm, h))
+		{
+			if (!skip_id3v2(fh, h))
+				return FALSE;
+			if (!head_shift(fh, &h))
+				return FALSE;
+			if (skip++ > MAX_SKIP_LENGTH)
+				return FALSE;
+		}
+
+		offset = frm->framesize;
+		if (fseek(fh, offset, SEEK_CUR) || !head_read(fh, &h2))
+			return FALSE;
+		
+		if (fseek(fh, -(offset + 4), SEEK_CUR))
+			return FALSE;
+
+		if (mpg123_head_check(h2) &&
+		    mpg123_decode_header(&tmp, h2) &&
+		    (h & mask) == (h2 & mask))
+		{
+			if (fseek(fh, -4, SEEK_CUR))
+				return FALSE;
+			if (buffer)
+			{
+				*buffer = g_malloc(offset + 4);
+				if (fread(*buffer, 1, offset + 4, fh) != offset + 4 || 
+				    fseek(fh, -(offset + 4), SEEK_CUR))
+				{
+					g_free(*buffer);
+					return FALSE;
+				}
+			}
+
+			return TRUE;
+		}
+
+		if (!head_shift(fh, &h))
+			return FALSE;
+		skip++;
+	}
+}
+
 static guint get_song_time(FILE * file)
 {
-	guint32 head;
-	guchar tmp[4], *buf;
+	guint8 *buf;
 	struct frame frm;
-	XHEADDATA xing_header;
+	xing_header_t xing_header;
 	double tpf, bpf;
 	guint32 len;
 
 	if (!file)
 		return -1;
 
-	fseek(file, 0, SEEK_SET);
-	if (fread(tmp, 1, 4, file) != 4)
+	if (!mpg123_get_first_frame(file, &frm, &buf))
 		return 0;
-	head = convert_to_header(tmp);
-	while (!mpg123_head_check(head))
+
+	tpf = mpg123_compute_tpf(&frm);
+	if (mpg123_get_xing_header(&xing_header, buf))
 	{
-		head <<= 8;
-		if (fread(tmp, 1, 1, file) != 1)
-			return 0;
-		head |= tmp[0];
-	}
-	if (mpg123_decode_header(&frm, head))
-	{
-		buf = g_malloc(frm.framesize + 4);
-		fseek(file, -4, SEEK_CUR);
-		fread(buf, 1, frm.framesize + 4, file);
-		xing_header.toc = NULL;
-		tpf = mpg123_compute_tpf(&frm);
-		if (mpg123_get_xing_header(&xing_header, buf))
-		{
-			g_free(buf);
-			return ((guint) (tpf * xing_header.frames * 1000));
-		}
 		g_free(buf);
-		bpf = mpg123_compute_bpf(&frm);
-		fseek(file, 0, SEEK_END);
-		len = ftell(file);
-		fseek(file, -128, SEEK_END);
-		fread(tmp, 1, 3, file);
-		if (!strncmp(tmp, "TAG", 3))
-			len -= 128;
-		return ((guint) ((guint)(len / bpf) * tpf * 1000));
+		return (tpf * xing_header.frames * 1000);
 	}
-	return 0;
+
+	g_free(buf);
+	bpf = mpg123_compute_bpf(&frm);
+	len = get_song_length(file);
+	return ((guint)(len / bpf) * tpf * 1000);
 }
 
 static void get_song_info(char *filename, char **title_real, int *len_real)
@@ -774,7 +795,7 @@ static void get_song_info(char *filename, char **title_real, int *len_real)
 	}
 }
 
-static int open_output(void)
+static int open_output(struct frame fr)
 {
 	int r;
 	AFormat fmt = mpg123_cfg.resolution == 16 ? FMT_S16_NE : FMT_U8;
@@ -791,13 +812,41 @@ static int open_output(void)
 	return r;
 }
 
+
+static int mpg123_seek(struct frame *fr, xing_header_t *xh, gboolean vbr, int time)
+{
+	int jumped = -1;
+	
+	if (xh)
+	{
+		int percent = ((double) time * 100.0) /
+			(mpg123_info->num_frames * mpg123_info->tpf);
+		int byte = mpg123_seek_point(xh, percent);
+		jumped = mpg123_stream_jump_to_byte(fr, byte);
+	}
+	else if (vbr && mpg123_length > 0)
+	{
+		int byte = ((guint64)time * 1000 * mpg123_info->filesize) /
+			mpg123_length;
+		jumped = mpg123_stream_jump_to_byte(fr, byte);
+	}
+	else
+	{
+		int frame = time / mpg123_info->tpf;
+		jumped = mpg123_stream_jump_to_frame(fr, frame);
+	}
+
+	return jumped;
+}
+
+
 static void *decode_loop(void *arg)
 {
+	struct frame fr = {0}, temp_fr;
 	gboolean have_xing_header = FALSE, vbr = FALSE;
-	gint disp_count = 0, temp_time;
-	gchar *filename = arg;
-	XHEADDATA xing_header;
-	unsigned char xing_toc[100];
+	int disp_count = 0, temp_time;
+	char *filename = arg;
+	xing_header_t xing_header;
 
 	/* This is used by fileinfo on http streams */
 	mpg123_bitrate = 0;
@@ -820,24 +869,30 @@ static void *decode_loop(void *arg)
 
 		fr.down_sample = mpg123_cfg.downsample;
 		fr.down_sample_sblimit = SBLIMIT >> mpg123_cfg.downsample;
-		set_mpg123_synth_functions(&fr);
+		set_synth_functions(&fr);
 		mpg123_init_layer3(fr.down_sample_sblimit);
 
 		mpg123_info->tpf = mpg123_compute_tpf(&fr);
 		if (strncasecmp(filename, "http://", 7))
 		{
-			xing_header.toc = xing_toc;
 			if (mpg123_stream_check_for_xing_header(&fr, &xing_header))
 			{
 				mpg123_info->num_frames = xing_header.frames;
 				have_xing_header = TRUE;
+				if (xing_header.bytes == 0)
+				{
+					if (mpg123_info->filesize > 0)
+						xing_header.bytes = mpg123_info->filesize;
+					else
+						have_xing_header = FALSE;
+				}
 				mpg123_read_frame(&fr);
 			}
 		}
 
-		for(;;)
+		for (;;)
 		{
-			memcpy(&temp_fr,&fr,sizeof(struct frame));
+			memcpy(&temp_fr, &fr, sizeof(struct frame));
 			if (!mpg123_read_frame(&temp_fr))
 			{
 				mpg123_info->eof = TRUE;
@@ -850,13 +905,13 @@ static void *decode_loop(void *arg)
 			else
 				break;
 		}
-		if(!have_xing_header && strncasecmp(filename, "http://", 7))
-		{
-			mpg123_info->num_frames = mpg123_calc_numframes(&fr);
-		}
 
-		memcpy(&fr,&temp_fr,sizeof(struct frame));
-		mpg123_bitrate = disp_bitrate = tabsel_123[fr.lsf][fr.lay - 1][fr.bitrate_index];
+		if (!have_xing_header && strncasecmp(filename, "http://", 7))
+			mpg123_info->num_frames = mpg123_calc_numframes(&fr);
+
+		memcpy(&fr, &temp_fr, sizeof(struct frame));
+		mpg123_bitrate = tabsel_123[fr.lsf][fr.lay - 1][fr.bitrate_index];
+		disp_bitrate = mpg123_bitrate;
 		mpg123_frequency = mpg123_freqs[fr.sampling_frequency];
 		mpg123_stereo = fr.stereo;
 		mpg123_layer = fr.lay;
@@ -866,7 +921,8 @@ static void *decode_loop(void *arg)
 
 		if (strncasecmp(filename, "http://", 7))
 		{
-			mpg123_length = mpg123_info->num_frames * mpg123_info->tpf * 1000;
+			mpg123_length =
+				mpg123_info->num_frames * mpg123_info->tpf * 1000;
 			if (!mpg123_title)
 				mpg123_title = get_song_title(NULL,filename);
 		}
@@ -876,9 +932,12 @@ static void *decode_loop(void *arg)
 				mpg123_title = mpg123_http_get_title(filename);
 			mpg123_length = -1;
 		}
-		mpg123_ip.set_info(mpg123_title, mpg123_length, mpg123_bitrate * 1000, mpg123_freqs[fr.sampling_frequency], fr.stereo);
+		mpg123_ip.set_info(mpg123_title, mpg123_length,
+				   mpg123_bitrate * 1000,
+				   mpg123_freqs[fr.sampling_frequency],
+				   fr.stereo);
 		output_opened = TRUE;
-		if (!open_output())
+		if (!open_output(fr))
 		{
 			audio_error = TRUE;
 			mpg123_info->eof = TRUE;
@@ -892,22 +951,16 @@ static void *decode_loop(void *arg)
 	{
 		if (mpg123_info->jump_to_time != -1)
 		{
-			int jumped = -1;
-
+			void *xp = NULL;
 			if (have_xing_header)
-				jumped = mpg123_stream_jump_to_byte(&fr, mpg123_seek_point(xing_toc, xing_header.bytes, ((double) mpg123_info->jump_to_time * 100.0) / ((double) mpg123_info->num_frames * mpg123_info->tpf)));
-			else if (vbr && mpg123_length > 0)
-				jumped = mpg123_stream_jump_to_byte(&fr, ((guint64)mpg123_info->jump_to_time * 1000 * mpg123_info->filesize) / mpg123_length);
-			else
-				jumped = mpg123_stream_jump_to_frame(&fr, mpg123_info->jump_to_time / mpg123_info->tpf);
-
-			if (jumped > -1)
+				xp = &xing_header;
+			if (mpg123_seek(&fr, xp, vbr,
+					mpg123_info->jump_to_time) > -1)
 			{
 				mpg123_ip.output->flush(mpg123_info->jump_to_time * 1000);
 				mpg123_info->eof = FALSE;
 			}
 			mpg123_info->jump_to_time = -1;
-
 		}
 		if (!mpg123_info->eof)
 		{
@@ -915,7 +968,7 @@ static void *decode_loop(void *arg)
 			{
 				if(fr.lay != mpg123_layer || fr.lsf != mpg123_lsf)
 				{
-					memcpy(&temp_fr,&fr,sizeof(struct frame));
+					memcpy(&temp_fr, &fr, sizeof(struct frame));
 					if(mpg123_read_frame(&temp_fr) != 0)
 					{
 						if(fr.lay == temp_fr.lay && fr.lsf == temp_fr.lsf)
@@ -923,7 +976,6 @@ static void *decode_loop(void *arg)
 							mpg123_layer = fr.lay;
 							mpg123_lsf = fr.lsf;
 							memcpy(&fr,&temp_fr,sizeof(struct frame));
-							set_mpg123_synth_functions(&fr);
 						}
 						else
 						{
@@ -962,7 +1014,6 @@ static void *decode_loop(void *arg)
 							mpg123_ip.output->flush(temp_time);
 							mpg123_ip.set_info(mpg123_title, mpg123_length, mpg123_bitrate * 1000, mpg123_frequency, mpg123_stereo);
 							memcpy(&fr,&temp_fr,sizeof(struct frame));
-							set_mpg123_synth_functions(&fr);
 						}
 						else
 						{
@@ -982,6 +1033,7 @@ static void *decode_loop(void *arg)
 					disp_count = 20;
 					if (mpg123_bitrate != disp_bitrate)
 					{
+						/* FIXME networks streams */
 						disp_bitrate = mpg123_bitrate;
 						if(!have_xing_header && strncasecmp(filename,"http://",7))
 						{
@@ -1034,9 +1086,6 @@ static void *decode_loop(void *arg)
 
 static void play_file(char *filename)
 {
-	memset(&fr, 0, sizeof (struct frame));
-	memset(&temp_fr, 0, sizeof (struct frame));
-
 	mpg123_info = g_malloc0(sizeof (PlayerInfo));
 	mpg123_info->going = 1;
 	mpg123_info->first_frame = TRUE;
@@ -1099,7 +1148,7 @@ static void aboutbox(void)
 		_("About MPEG Layer 1/2/3 plugin"),
 		_("mpg123 decoding engine by Michael Hipp <mh@mpg123.de>\n"
 		  "Plugin by The XMMS team"),
-		_("Ok"), FALSE, NULL, NULL);
+		_("OK"), FALSE, NULL, NULL);
 
 	gtk_signal_connect(GTK_OBJECT(aboutbox), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &aboutbox);

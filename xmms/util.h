@@ -26,6 +26,7 @@ gchar *find_file_recursively(const char *dirname, const char *file);
 void del_directory(const char *dirname);
 GdkImage *create_dblsize_image(GdkImage * img);
 char *read_ini_string(const char *filename, const char *section, const char *key);
+char *read_ini_string_no_comment(const char *filename, const char *section, const char *key);
 GArray *read_ini_array(const gchar * filename, const gchar * section, const gchar * key);
 GArray *string_to_garray(const gchar * str);
 void glist_movedown(GList * list);
@@ -39,6 +40,7 @@ GdkFont *util_font_load(gchar *name);
 void util_set_cursor(GtkWidget *window);
 void util_dump_menu_rc(void);
 void util_read_menu_rc(void);
+void util_dialog_keypress_cb(GtkWidget *w, GdkEventKey *event, gpointer data);
 
 #if ENABLE_NLS
     gchar* util_menu_translate(const gchar *path, gpointer func_data);

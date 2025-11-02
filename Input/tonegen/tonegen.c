@@ -47,11 +47,12 @@ static void tone_about(void)
 	static GtkWidget *box;
 	box = xmms_show_message(
 		_("About Tone Generator"),
-		_("Sinus tone generator by Håvard Kvålen <havardk@xmms.org>\n"
+/* I18N: UTF-8 Translation: "Haavard Kvaalen" -> "H\303\245vard Kv\303\245len" */
+		_("Sinus tone generator by Haavard Kvaalen <havardk@xmms.org>\n"
 		  "Modified by Daniel J. Peng <danielpeng@bigfoot.com>\n\n"
 		  "To use it, add a URL: tone://frequency1;frequency2;frequency3;...\n"
 		  "e.g. tone://2000;2005 to play a 2000Hz tone and a 2005Hz tone"),
-		_("Ok"), FALSE, NULL, NULL);
+		_("OK"), FALSE, NULL, NULL);
 	gtk_signal_connect(GTK_OBJECT(box), "destroy",
 			   gtk_widget_destroyed, &box);
 }

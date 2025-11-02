@@ -1,17 +1,22 @@
-/*      xmms - esound output plugin
- *    Copyright (C) 1999      Galex Yen
- *      
- *      this program is free software
- *      
- *      Description:
- *              This program is an output plugin for xmms v0.9 or greater.
- *              The program uses the esound daemon to output audio in order
- *              to allow more than one program to play audio on the same
- *              device at the same time.
+/*  XMMS - Cross-platform multimedia player
+ *  Copyright (C) 1998-2003  Peter Alm, Mikael Alm, Olle Hallnas,
+ *                           Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1999       Galex Yen
+ *  Copyright (C) 1999-2004  Haavard Kvaalen
  *
- *              Contains code Copyright (C) 1998-1999 Mikael Alm, Olle Hallnas,
- *              Thomas Nillson and 4Front Technologies
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
 #include "esdout.h"
@@ -25,6 +30,7 @@ void esdout_init(void)
 {
 	ConfigFile *cfgfile;
 	char *env;
+	int l = 100, r = 100;
 
 	memset(&esd_cfg, 0, sizeof (ESDConfig));
 	esd_cfg.port = ESD_DEFAULT_PORT;
@@ -59,6 +65,10 @@ void esdout_init(void)
 			      &esd_cfg.use_oss_mixer);
 	xmms_cfg_read_int(cfgfile, "ESD", "buffer_size", &esd_cfg.buffer_size);
 	xmms_cfg_read_int(cfgfile, "ESD", "prebuffer", &esd_cfg.prebuffer);
+	xmms_cfg_read_int(cfgfile, "ESD", "volume_l", &l);
+	xmms_cfg_read_int(cfgfile, "ESD", "volume_r", &r);
+	esdout_mixer_init_vol(l, r);
+	
 	xmms_cfg_free(cfgfile);
 
 	if (!esd_cfg.server)

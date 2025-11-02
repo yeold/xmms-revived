@@ -87,7 +87,7 @@ void esdout_configure(void)
 		return;
 	}
 
-	configure_win = gtk_window_new(GTK_WINDOW_DIALOG);
+	configure_win = gtk_window_new(GDK_WINDOW_DIALOG);
 	gtk_signal_connect(GTK_OBJECT(configure_win), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed),
 			   &configure_win);
@@ -126,7 +126,7 @@ void esdout_configure(void)
 				     esd_cfg.use_oss_mixer);
 	gtk_box_pack_start(GTK_BOX(server_btn_hbox),
 			   server_oss_mixer, TRUE, TRUE, 0);
-#if !defined(HAVE_SYS_SOUNDCARD_H) && !defined(HAVE_MACHINE_SOUNDCARD_H)
+#ifndef HAVE_OSS
 	gtk_widget_set_sensitive(server_oss_mixer, FALSE);
 #endif
 	server_hbox = gtk_hbox_new(FALSE, 5);
@@ -205,7 +205,7 @@ void esdout_configure(void)
 	gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
-	ok = gtk_button_new_with_label(_("Ok"));
+	ok = gtk_button_new_with_label(_("OK"));
 	gtk_signal_connect(GTK_OBJECT(ok), "clicked",
 			   GTK_SIGNAL_FUNC(configure_win_ok_cb), NULL);
 	GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);

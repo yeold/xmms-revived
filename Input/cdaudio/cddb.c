@@ -1,5 +1,5 @@
 /*
- *  cddb.c  Copyright 1999-2001 Håvard Kvålen <havardk@xmms.org>
+ *  cddb.c  Copyright 1999-2003 Haavard Kvaalen <havardk@xmms.org>
  *
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -19,14 +19,15 @@
 
 
 #include "cddb.h"
+#include "http.h"
 #include "cdaudio.h"
 #include "cdinfo.h"
-#include "http.h"
 #include <libxmms/util.h>
 #include <gtk/gtk.h>
 #include <stdarg.h>
 #include <dirent.h>
 #include <pthread.h>
+#include "xmms/i18n.h"
 
 
 static guint32 cached_id = 0;
@@ -121,11 +122,7 @@ static gchar * cddb_generate_hello_string(void)
 
 	if (buffer == NULL)
 	{
-		char hostn[CDDB_HOSTNAME_LEN];
 		char *env, *client = NULL, *version = NULL, **strs = NULL;
-		if (gethostname(hostn, CDDB_HOSTNAME_LEN) < 0)
-			/* Failed, supply a dummy name */
-			strcpy(hostn, "localhost"); 
 
 		env = getenv("XMMS_CDDB_CLIENT_NAME");
 		if (env)
@@ -144,8 +141,7 @@ static gchar * cddb_generate_hello_string(void)
 			version = VERSION;
 		}
 		
-		buffer = g_strdup_printf("&hello=%s+%s+%s+%s",
-					 g_get_user_name(), hostn,
+		buffer = g_strdup_printf("&hello=nobody+localhost+%s+%s",
 					 client, version);
 		if (strs)
 			g_strfreev(strs);
@@ -161,7 +157,7 @@ static gint cddb_http_open_connection(gchar * server, gint port)
 	if((sock = http_open_connection(server, 80)) == 0)
 		status = "Failed";
 	else
-		status = "Ok";
+		status = "OK";
 	
 	cddb_log("Connecting to CDDB-server %s: %s", server, status);
 	return sock;
@@ -693,12 +689,14 @@ static gchar* cddb_position_string(gchar * input)
 
 static void cddb_server_dialog_ok_cb(GtkWidget *w, gpointer data)
 {
-	gchar *text;
+	char *text;
+	int pos;
 	GtkEntry *entry = GTK_ENTRY(data);
 
 	if (!GTK_CLIST(server_clist)->selection)
 		return;
-	gtk_clist_get_text(GTK_CLIST(server_clist), (gint) GTK_CLIST(server_clist)->selection->data, 0, &text);
+	pos = GPOINTER_TO_INT(GTK_CLIST(server_clist)->selection->data);
+	gtk_clist_get_text(GTK_CLIST(server_clist), pos, 0, &text);
 	cdda_cddb_set_server(text);
 	gtk_entry_set_text(entry, text);
 	gtk_widget_destroy(server_dialog);
@@ -707,51 +705,56 @@ static void cddb_server_dialog_ok_cb(GtkWidget *w, gpointer data)
 static void cddb_server_dialog_select(GtkWidget *w, gint row, gint column, GdkEvent *event, gpointer data)
 {
 	if (event->type == GDK_2BUTTON_PRESS)
-		cddb_server_dialog_ok_cb(NULL, NULL);
+		cddb_server_dialog_ok_cb(NULL, data);
 }
 
 void cdda_cddb_show_server_dialog(GtkWidget *w, gpointer data)
 {
 	GtkWidget *vbox, *bbox, *okbutton, *cancelbutton;
 	GtkEntry *server_entry = GTK_ENTRY(data);
-	gchar *titles[] = {"Server", "Latitude", "Longitude", "Description"};
+	char *titles[4], *server;
 	GList *servers;
-	gchar *server;
-	gint level;
+	int level;
 
 	if (server_dialog)
 		return;
+
+	titles[0] = _("Server");
+	titles[1] = _("Latitude");
+	titles[2] = _("Longitude");
+	titles[3] = _("Description");
 
 	server = gtk_entry_get_text(server_entry);
 
 	if ((level = cddb_check_protocol_level(server)) < 3)
 	{
 		if (!level)
-			xmms_show_message("CDDB",
-					  "Unable to connect to CDDB-server",
-					  "Ok", FALSE, NULL, NULL);
+			xmms_show_message(_("CDDB"),
+					  _("Unable to connect to CDDB-server"),
+					  _("OK"), FALSE, NULL, NULL);
 		else
 			/* CDDB level < 3 has the "sites" command,
 			   but the format is different. Not supported yet */
-			xmms_show_message("CDDB",
-					  "Can't get server list from the current CDDB-server\n"
-					  "Unsupported CDDB protocol level",
-					  "Ok", FALSE, NULL, NULL);
+			xmms_show_message(_("CDDB"),
+					  _("Can't get server list from the "
+					    "current CDDB-server\n"
+					    "Unsupported CDDB protocol level"),
+					  _("OK"), FALSE, NULL, NULL);
 		return;
 	}
 
 	if ((servers = cddb_get_server_list(server, level)) == NULL)
 	{
-		xmms_show_message("CDDB",
-				  "No site information available",
-				  "Ok", FALSE, NULL, NULL);
+		xmms_show_message(_("CDDB"),
+				  _("No site information available"),
+				  _("OK"), FALSE, NULL, NULL);
 		return;
 	}
 
 	server_dialog = gtk_dialog_new();
 	gtk_signal_connect(GTK_OBJECT(server_dialog), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &server_dialog);
-	gtk_window_set_title(GTK_WINDOW(server_dialog), "CDDB servers");
+	gtk_window_set_title(GTK_WINDOW(server_dialog), _("CDDB servers"));
 	gtk_window_set_modal(GTK_WINDOW(server_dialog), TRUE);
 
 	vbox = gtk_vbox_new(FALSE, 0);
@@ -760,7 +763,7 @@ void cdda_cddb_show_server_dialog(GtkWidget *w, gpointer data)
 
 	server_clist = gtk_clist_new_with_titles(4, titles);
 	gtk_signal_connect(GTK_OBJECT(server_clist), "select-row",
-			   GTK_SIGNAL_FUNC(cddb_server_dialog_select), NULL);
+			   cddb_server_dialog_select, data);
 	gtk_box_pack_start(GTK_BOX(vbox), server_clist, TRUE, TRUE, 0);
 
 	bbox = gtk_hbutton_box_new();
@@ -768,11 +771,11 @@ void cdda_cddb_show_server_dialog(GtkWidget *w, gpointer data)
 	gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(server_dialog)->action_area), bbox, TRUE, TRUE, 0);
 
-	okbutton = gtk_button_new_with_label("Ok");
+	okbutton = gtk_button_new_with_label(_("OK"));
 	gtk_signal_connect(GTK_OBJECT(okbutton), "clicked",
 			   GTK_SIGNAL_FUNC(cddb_server_dialog_ok_cb), data);
 	gtk_box_pack_start(GTK_BOX(bbox), okbutton, TRUE, TRUE, 0);
-	cancelbutton = gtk_button_new_with_label("Cancel");
+	cancelbutton = gtk_button_new_with_label(_("Cancel"));
 	gtk_signal_connect_object(GTK_OBJECT(cancelbutton), "clicked",
 				  GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(server_dialog));
 	gtk_box_pack_start(GTK_BOX(bbox), cancelbutton, TRUE, TRUE, 0);
@@ -841,7 +844,7 @@ void cdda_cddb_show_network_window(GtkWidget *w, gpointer data)
 	if (debug_window)
 		return;
 	
-	debug_window = gtk_window_new(GTK_WINDOW_DIALOG);
+	debug_window = gtk_window_new(GDK_WINDOW_DIALOG);
 	gtk_signal_connect(GTK_OBJECT(debug_window), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &debug_window);
 	gtk_window_set_title(GTK_WINDOW(debug_window), "CDDB networkdebug");
@@ -871,7 +874,7 @@ void cdda_cddb_show_network_window(GtkWidget *w, gpointer data)
 	gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
-	close = gtk_button_new_with_label("Close");
+	close = gtk_button_new_with_label(_("Close"));
 	gtk_signal_connect_object(GTK_OBJECT(close), "clicked",
 				  GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(debug_window));
 	GTK_WIDGET_SET_FLAGS(close, GTK_CAN_DEFAULT);

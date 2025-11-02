@@ -21,7 +21,7 @@
 
 /*==============================================================================
 
-  $Id: drv_xmms.c,v 1.3 2000/01/12 22:59:02 peter Exp $
+  $Id: drv_xmms.c,v 1.4 2002/04/27 18:47:08 havard Exp $
 
   Output data to xmms
 
@@ -65,7 +65,7 @@ static BOOL xmms_Init(void)
 	if (!(audiobuffer = (SBYTE *) g_malloc0(buffer_size)))
 		return 1;
 	
-	fmt = (md_mode & DMODE_16BITS) ? FMT_S16_LE : FMT_U8;
+	fmt = (md_mode & DMODE_16BITS) ? FMT_S16_NE : FMT_U8;
 	nch = (md_mode & DMODE_STEREO) ? 2 : 1;
 
 	if (audio_open)
@@ -117,6 +117,10 @@ static BOOL xmms_Reset(void)
 	return VC_Init();
 }
 
+static void xmms_CommandLine(CHAR * commandLine)
+{
+}
+
 MDRIVER drv_xmms =
 {
 	NULL,
@@ -127,6 +131,7 @@ MDRIVER drv_xmms =
         "xmms",
         NULL,
 #endif
+        xmms_CommandLine, 
         xmms_IsThere, 
 	VC_SampleLoad,
 	VC_SampleUnload,

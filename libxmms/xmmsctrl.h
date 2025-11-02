@@ -1,5 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2000  Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1998-2003  Peter Alm, Mikael Alm, Olle Hallnas,
+ *                           Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1999-2004  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -67,8 +69,10 @@ void xmms_remote_playlist_add_url_string(gint session, gchar * string);
 gboolean xmms_remote_is_running(gint session);
 void xmms_remote_toggle_repeat(gint session);
 void xmms_remote_toggle_shuffle(gint session);
+void xmms_remote_toggle_advance(gint session);
 gboolean xmms_remote_is_repeat(gint session);
 gboolean xmms_remote_is_shuffle(gint session);
+gboolean xmms_remote_is_advance(gint session);
 void xmms_remote_get_eq(gint session, gfloat *preamp, gfloat **bands);
 gfloat xmms_remote_get_eq_preamp(gint session);
 gfloat xmms_remote_get_eq_band(gint session, gint band);
@@ -80,9 +84,17 @@ void xmms_remote_quit(gint session);
 /* Added in XMMS 1.2.6 */
 void xmms_remote_play_pause(gint session);
 void xmms_remote_playlist_ins_url_string(gint session, gchar * string, gint pos);
+/* Added in XMMS 1.2.11 */
+void xmms_remote_playqueue_add(gint session, gint pos);
+void xmms_remote_playqueue_remove(gint session, gint pos);
+void xmms_remote_playqueue_clear(gint session);
+gint xmms_remote_get_playqueue_length(gint session);
+gint xmms_remote_get_playqueue_pos_from_playlist_pos(gint session, gint pos);
+gint xmms_remote_get_playlist_pos_from_playqueue_pos(gint session, gint pos);
 
+	
 #ifdef __cplusplus
-};
+}
 #endif
 
 /* Deprecated APIs */

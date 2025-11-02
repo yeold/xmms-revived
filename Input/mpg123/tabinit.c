@@ -5,8 +5,7 @@
 
 real mpg123_decwin[512 + 32];
 static real cos64[16], cos32[8], cos16[4], cos8[2], cos4[1];
-real *mpg123_pnts[] =
-{cos64, cos32, cos16, cos8, cos4};
+real *mpg123_pnts[] = {cos64, cos32, cos16, cos8, cos4};
 
 static unsigned char *mpg123_conv16to8_buf = NULL;
 unsigned char *mpg123_conv16to8;
@@ -40,18 +39,21 @@ static long intwinbase[] =
 	64019, 65290, 66494, 67629, 68692, 69679, 70590, 71420, 72169, 72835,
 	73415, 73908, 74313, 74630, 74856, 74992, 75038};
 
-void mpg123_make_decode_tables(long scaleval)
+void mpg123_make_decode_tables_fpu(long scaleval);
+void mpg123_make_decode_tables_mmx(long scaleval);
+
+void mpg123_make_decode_tables_fpu(long scaleval)
 {
-	int i, j, k, kr, divv;
+	int i, j;
 	real *table, *costab;
 
 	for (i = 0; i < 5; i++)
 	{
-		kr = 0x10 >> i;
-		divv = 0x40 >> i;
+		int kr = 0x10 >> i;
+		int divv = 0x40 >> i;
 		costab = mpg123_pnts[i];
-		for (k = 0; k < kr; k++)
-			costab[k] = 1.0 / (2.0 * cos(M_PI * ((double) k * 2.0 + 1.0) / (double) divv));
+		for (j = 0; j < kr; j++)
+			costab[j] = 1.0 / (2.0 * cos(M_PI * ((double) j * 2.0 + 1.0) / (double) divv));
 	}
 
 	table = mpg123_decwin;
@@ -77,6 +79,57 @@ void mpg123_make_decode_tables(long scaleval)
 	}
 }
 
+#ifdef USE_SIMD
+
+gint16 mpg123_decwins[(512 + 32) * 2];
+
+void mpg123_make_decode_tables_mmx(long scaleval)
+{
+	int i, j, p, a;
+
+	scaleval = -scaleval;
+	a = 1;
+	for (i = 0, j = 0, p = 0; i < 512; i++, j += a, p += 32)
+	{
+		if (p < 512 + 16)
+		{
+			int val = ((gint64)intwinbase[j] * scaleval) >> 17;
+			val = CLAMP(val, -32767, 32767);
+			if (p < 512)
+			{
+				int n = 1055 - p;
+				mpg123_decwins[n - 16] = val;
+				mpg123_decwins[n] = val;
+			}
+			if (!(p & 1))
+				val = -val;
+			mpg123_decwins[p + 16] = val;
+			mpg123_decwins[p] = val;
+		}
+		if (i % 32 == 31)
+			p -= 1023;
+		if (i % 64 == 63)
+			scaleval = -scaleval;
+		if (i == 256)
+			a = -1;
+	}
+}
+
+#else
+void mpg123_make_decode_tables_mmx(long scaleval)
+{
+}
+#endif
+
+void mpg123_make_decode_tables(long scaleval)
+{
+	mpg123_make_decode_tables_fpu(scaleval);
+	mpg123_make_decode_tables_mmx(scaleval);
+}
+
+
+
+
 void mpg123_make_conv16to8_table(void)
 {
 	int i;
@@ -87,12 +140,7 @@ void mpg123_make_conv16to8_table(void)
 
 	if (!mpg123_conv16to8_buf)
 	{
-		mpg123_conv16to8_buf = (unsigned char *) g_malloc(8192);
-		if (!mpg123_conv16to8_buf)
-		{
-			fprintf(stderr, "Can't allocate 16 to 8 converter table!\n");
-/*      exit(1); */
-		}
+		mpg123_conv16to8_buf = g_malloc(8192);
 		mpg123_conv16to8 = mpg123_conv16to8_buf + 4096;
 	}
 

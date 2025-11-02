@@ -1,7 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2001  Peter Alm, Mikael Alm, Olle Hallnas,
+ *  Copyright (C) 1998-2003  Peter Alm, Mikael Alm, Olle Hallnas,
  *                           Thomas Nilsson and 4Front Technologies
- *  Copyright (C) 1999-2001  Haavard Kvaalen
+ *  Copyright (C) 1999-2005  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 
 #define NFRAGS		32
 
-static gint fd = 0;
+static gint fd = -1;
 static char *buffer;
 static gboolean going, prebuffer, paused, unpause, do_pause, remove_prebuffer;
 static gint device_buffer_used, buffer_size, prebuffer_size, blk_size;
@@ -37,6 +37,7 @@ static pthread_t buffer_thread;
 static gboolean realtime, select_works;
 
 static int (*oss_convert_func)(void **data, int length);
+static int (*oss_stereo_convert_func)(void **data, int length, int fmt);
 
 struct format_info {
 	union {
@@ -235,7 +236,7 @@ static inline ssize_t write_all(int fd, const void *buf, size_t count)
 {
 	ssize_t done = 0;
 	do {
-		ssize_t n = write(fd, buf, count - done);
+		ssize_t n = write(fd, (char *)buf + done, count - done);
 		if (n == -1)
 		{
 			if (errno == EINTR)
@@ -272,8 +273,10 @@ static void oss_write_audio(gpointer data, int length)
 	{
 		output_time_offset += (output_bytes * 1000) / output.bps;
 		output_bytes = 0;
+#ifndef __FreeBSD__
 		close(fd);
 		fd = open(device_name,O_WRONLY);
+#endif
 		oss_setup_format(new_format, new_frequency, new_channels);
 	}
 	if (effects_enabled() && ep && ep->mod_samples)
@@ -293,6 +296,10 @@ static void oss_write_audio(gpointer data, int length)
 
 	if (oss_convert_func != NULL)
 		length = oss_convert_func(&data, length);
+
+	if (oss_stereo_convert_func != NULL)
+		length = oss_stereo_convert_func(&data, length,
+						 output.format.oss);
 
 	if (effect.frequency == output.frequency)
 		output_bytes += write_all(fd, data, length);
@@ -475,9 +482,10 @@ void oss_close(void)
 	{
 		ioctl(fd, SNDCTL_DSP_RESET, 0);
 		close(fd);
+		fd = -1;
 	}
 	g_free(device_name);
-	oss_get_convert_buffer(0);
+	oss_free_convert_buffer();
 	wr_index = 0;
 	rd_index = 0;
 }
@@ -493,8 +501,10 @@ void oss_flush(gint time)
 	else
 	{
 		ioctl(fd, SNDCTL_DSP_RESET, 0);
+#ifndef __FreeBSD__
 		close(fd);
 		fd = open(device_name, O_WRONLY);
+#endif
 		oss_set_audio_params();
 		output_time_offset = time;
 		written = ((guint64)time * input.bps) / 1000;
@@ -563,8 +573,10 @@ void *oss_loop(void *arg)
 		else if (unpause && paused)
 		{
 			unpause = FALSE;
+#ifndef __FreeBSD__
 			close(fd);
 			fd = open(device_name, O_WRONLY);
+#endif
 			oss_set_audio_params();
 			paused = FALSE;
 		}
@@ -578,8 +590,10 @@ void *oss_loop(void *arg)
 			 */
 
 			ioctl(fd, SNDCTL_DSP_RESET, 0);
+#ifndef __FreeBSD__
 			close(fd);
 			fd = open(device_name, O_WRONLY);
+#endif
 			oss_set_audio_params();
 			output_time_offset = flush;
 			written = ((guint64)flush * input.bps) / 1000;
@@ -592,6 +606,7 @@ void *oss_loop(void *arg)
 
 	ioctl(fd, SNDCTL_DSP_RESET, 0);
 	close(fd);
+	fd = -1;
 	g_free(buffer);
 	pthread_exit(NULL);
 }
@@ -605,14 +620,22 @@ void oss_set_audio_params(void)
 	ioctl(fd, SNDCTL_DSP_RESET, 0);
 	frag = (NFRAGS << 16) | fragsize;
 	ioctl(fd, SNDCTL_DSP_SETFRAGMENT, &frag);
+	/*
+	 * Set the stream format.  This ioctl() might fail, but should
+	 * return a format that works if it does.
+	 */
 	ioctl(fd, SNDCTL_DSP_SETFMT, &output.format.oss);
 	if (ioctl(fd, SNDCTL_DSP_SETFMT, &output.format.oss) == -1)
 		g_warning("SNDCTL_DSP_SETFMT ioctl failed: %s",
 			  strerror(errno));
 
-	/* FIXME: Handle mono/stereo only soundcards */
 	stereo = output.channels - 1;
 	ioctl(fd, SNDCTL_DSP_STEREO, &stereo);
+	output.channels = stereo + 1;
+
+	oss_stereo_convert_func = oss_get_stereo_convert_func(output.channels,
+							      effect.channels);
+
 	if (ioctl(fd, SNDCTL_DSP_SPEED, &output.frequency) == -1)
 		g_warning("SNDCTL_DSP_SPEED ioctl failed: %s", strerror(errno));
 
@@ -693,4 +716,9 @@ gint oss_open(AFormat fmt, gint rate, gint nch)
 	if (!realtime)
 		pthread_create(&buffer_thread, NULL, oss_loop, NULL);
 	return 1;
+}
+
+int oss_get_fd(void)
+{
+	return fd;
 }

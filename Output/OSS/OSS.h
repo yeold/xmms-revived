@@ -1,5 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2000  Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1998-2003  Peter Alm, Mikael Alm, Olle Hallnas,
+ *                           Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1999-2003  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -26,11 +28,6 @@
 #include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <sys/time.h>
-#ifdef HAVE_SYS_SOUNDCARD_H
-#include <sys/soundcard.h>
-#elif defined(HAVE_MACHINE_SOUNDCARD_H)
-#include <machine/soundcard.h>
-#endif
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -39,6 +36,20 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+#ifdef __FreeBSD__
+#include <sys/soundcard.h>
+#else
+#include "soundcard.h"
+#endif
+
+#ifndef SNDCTL_DSP_GETPLAYVOL
+#define SNDCTL_DSP_GETPLAYVOL	SOUND_MIXER_READ_PCM
+#endif
+
+#ifndef SNDCTL_DSP_SETPLAYVOL
+#define SNDCTL_DSP_SETPLAYVOL	SOUND_MIXER_WRITE_PCM
+#endif
 
 #include "xmms/plugin.h"
 #include "libxmms/configfile.h"
@@ -83,7 +94,10 @@ int oss_get_output_time(void);
 int oss_get_written_time(void);
 void oss_set_audio_params(void);
 
-void* oss_get_convert_buffer(size_t size);
+int oss_get_fd(void);
+
+void oss_free_convert_buffer(void);
 int (*oss_get_convert_func(int output, int input))(void **, int);
+int (*oss_get_stereo_convert_func(int output, int input))(void **, int, int);
 
 #endif

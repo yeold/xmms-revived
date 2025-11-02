@@ -175,7 +175,7 @@ void oss_configure(void)
 		return;
 	}
 
-	configure_win = gtk_window_new(GTK_WINDOW_DIALOG);
+	configure_win = gtk_window_new(GDK_WINDOW_DIALOG);
 	gtk_signal_connect(GTK_OBJECT(configure_win), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &configure_win);
 	gtk_window_set_title(GTK_WINDOW(configure_win), _("OSS Driver configuration"));
 	gtk_window_set_policy(GTK_WINDOW(configure_win), FALSE, FALSE, FALSE);
@@ -305,7 +305,7 @@ void oss_configure(void)
 	gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
-	ok = gtk_button_new_with_label(_("Ok"));
+	ok = gtk_button_new_with_label(_("OK"));
 	gtk_signal_connect(GTK_OBJECT(ok), "clicked", GTK_SIGNAL_FUNC(configure_win_ok_cb), NULL);
 	GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);

@@ -16,7 +16,7 @@
 #include "ir.h"
 
 /* Important stuff to know */
-static gboolean keepGoing = FALSE;
+static volatile gboolean keepGoing = FALSE;
 
 /* The thread handle */
 static pthread_t irapp_thread;
@@ -193,6 +193,7 @@ void irapp_init_port(gchar * ir_port)
 			ir_usleep(IR_HANDSHAKE_GAP);
 			ir_write_char('R');
 			ir_set_enabled(1);
+			ir_clear_buffer(); /* Take the 'OK' */
 		}
 	}
 }

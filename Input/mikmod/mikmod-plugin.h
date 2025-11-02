@@ -19,14 +19,15 @@ enum {
 
 typedef struct
 {
-	gint mixing_freq;
-	gint volumefadeout;
-	gint surround;
-	gint force8bit;
-	gint hidden_patterns;
-	gint force_mono;
-	gint interpolation;
-	gint def_pansep;
+	int mixing_freq;
+	int volumefadeout;
+	int surround;
+	int force8bit;
+	int hidden_patterns;
+	int force_mono;
+	int interpolation;
+	int filename_titles;
+	int def_pansep;
 }
 MIKMODConfig;
 

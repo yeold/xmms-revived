@@ -205,7 +205,7 @@ static void show_error_message(gchar *error)
 	if(!error_dialog)
 	{
 		GDK_THREADS_ENTER();
-		error_dialog = xmms_show_message(_("Error"), error, _("Ok"), FALSE,
+		error_dialog = xmms_show_message(_("Error"), error, _("OK"), FALSE,
 						 NULL, NULL);
 		gtk_signal_connect(GTK_OBJECT(error_dialog),
 				   "destroy",
@@ -218,7 +218,7 @@ static void show_error_message(gchar *error)
 int mpg123_http_read(gpointer data, gint length)
 {
 	gint len, cnt, off = 0, meta_len, meta_off = 0, i;
-	gchar *meta_data, **tags, *temp, *title;
+	char *meta_data, **tags;
 
 	http_wait_for_data(length);
 
@@ -252,8 +252,8 @@ int mpg123_http_read(gpointer data, gint length)
 					{
 						if (!strncasecmp(tags[i], "StreamTitle=", 12))
 						{
-							temp = g_strdup(tags[i] + 13);
-							title = g_strdup_printf("%s (%s)", temp, icy_name);
+							char *temp = tags[i] + 13;
+							char *title = g_strdup_printf("%s (%s)", temp, icy_name);
 							mpg123_ip.set_info(title, -1, mpg123_bitrate * 1000, mpg123_frequency, mpg123_stereo);
 							g_free(title);
 						}
@@ -328,12 +328,18 @@ static void *http_buffer_loop(void *arg)
 	gchar line[1024], *user, *pass, *host, *filename,
 	     *status, *url, *temp, *file;
 	gchar *chost;
-	gint cnt, written, error, err_len, port, cport;
+	gint cnt, written, error, port, cport;
+	socklen_t err_len;
 	gboolean redirect;
 	int udp_sock = 0;
 	fd_set set;
+#ifdef USE_IPV6
+	struct addrinfo hints, *res, *res0;
+	char service[6];
+#else
 	struct hostent *hp;
 	struct sockaddr_in address;
+#endif
 	struct timeval tv;
 
 	url = (gchar *) arg;
@@ -355,6 +361,45 @@ static void *http_buffer_loop(void *arg)
 		chost = mpg123_cfg.use_proxy ? mpg123_cfg.proxy_host : host;
 		cport = mpg123_cfg.use_proxy ? mpg123_cfg.proxy_port : port;
 
+#ifdef USE_IPV6
+		g_snprintf(service, 6, "%d", cport);
+		memset(&hints, 0, sizeof(hints));
+		hints.ai_socktype = SOCK_STREAM;
+		if (! getaddrinfo(chost, service, &hints, &res0)) {
+			eof = TRUE;
+			for (res = res0; res; res = res->ai_next) {
+				if ((sock = socket (res->ai_family, res->ai_socktype, res->ai_protocol)) < 0)
+					continue;
+				fcntl(sock, F_SETFL, O_NONBLOCK);
+				status = g_strdup_printf(_("CONNECTING TO %s:%d"), chost, cport);
+				mpg123_ip.set_info_text(status);
+				g_free(status);
+				((struct sockaddr_in6 *)res->ai_addr)->sin6_port = htons(cport);
+				if (connect(sock, res->ai_addr, res->ai_addrlen) < 0) {
+					if (errno != EINPROGRESS) {
+						close(sock);
+						continue;
+					}
+				}
+				eof = FALSE;
+				break;
+			}
+			freeaddrinfo(res0);
+			if (eof) {
+				status = g_strdup_printf(_("Couldn't connect to host %s:%d"), chost, cport);
+				show_error_message(status);
+				g_free(status);
+				mpg123_ip.set_info_text(NULL);
+			}
+		} else {
+			status = g_strdup_printf(_("Couldn't look up host %s"), chost);
+			show_error_message(status);
+			g_free(status);
+
+			mpg123_ip.set_info_text(NULL);
+			eof = TRUE;
+		}
+#else
 		sock = socket(AF_INET, SOCK_STREAM, 0);
 		fcntl(sock, F_SETFL, O_NONBLOCK);
 		address.sin_family = AF_INET;
@@ -372,9 +417,11 @@ static void *http_buffer_loop(void *arg)
 			mpg123_ip.set_info_text(NULL);
 			eof = TRUE;
 		}
+#endif
 
 		if (!eof)
 		{
+#ifndef USE_IPV6
 			memcpy(&address.sin_addr.s_addr, *(hp->h_addr_list), sizeof (address.sin_addr.s_addr));
 			address.sin_port = g_htons(cport);
 
@@ -393,6 +440,7 @@ static void *http_buffer_loop(void *arg)
 					eof = TRUE;
 				}
 			}
+#endif
 			while (going)
 			{
 				tv.tv_sec = 0;
@@ -569,18 +617,28 @@ static void *http_buffer_loop(void *arg)
 	
 	if (mpg123_cfg.save_http_stream)
 	{
-		gchar *output_name;
+		char *output_name, *fname, *temp;
+		int i = 1;
+
 		file = mpg123_http_get_title(url);
-		output_name = file;
-		if (!strncasecmp(output_name, "http://", 7))
-			output_name += 7;
-		temp = strrchr(output_name, '.');
+		fname = file;
+		if (!strncasecmp(fname, "http://", 7))
+			fname += 7;
+		temp = strrchr(fname, '.');
 		if (temp && !strcasecmp(temp, ".mp3"))
 			*temp = '\0';
 
-		while ((temp = strchr(output_name, '/')))
+		while ((temp = strchr(fname, '/')))
 			*temp = '_';
-		output_name = g_strdup_printf("%s/%s.mp3", mpg123_cfg.save_http_path, output_name);
+		output_name = g_strdup_printf("%s/%s.mp3",
+					      mpg123_cfg.save_http_path, fname);
+		while (!access(output_name, F_OK) && i < 100000)
+		{
+			g_free(output_name);
+			output_name = g_strdup_printf("%s/%s-%d.mp3",
+						      mpg123_cfg.save_http_path,
+						      fname, i++);
+		}
 
 		g_free(file);
 
@@ -697,23 +755,37 @@ char *mpg123_http_get_title(char *url)
 /* Find a good local udp port and bind udp_sock to it, return the port */
 static int udp_establish_listener(int *sock)
 {
+#ifdef USE_IPV6
+	struct sockaddr_in6 sin;
+	socklen_t sinlen = sizeof (struct sockaddr_in6);
+#else
 	struct sockaddr_in sin;
 	socklen_t sinlen = sizeof (struct sockaddr_in);
+#endif
 	
 #ifdef DEBUG_UDP
 	fprintf (stderr,"Establishing udp listener\n");
 #endif
 	
+#ifdef USE_IPV6
+	if ((*sock = socket(AF_INET6, SOCK_DGRAM, 0)) < 0)
+#else
 	if ((*sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0)
+#endif
 	{
 		g_log(NULL, G_LOG_LEVEL_CRITICAL,
-		      "udp_establish_listener(): unable to create socket");
+		      "udp_establish_listener(): unable to create socket: %s",
+		      strerror(errno));
 		return -1;
 	}
 
 	memset(&sin, 0, sinlen);
+#ifdef USE_IPV6
+	sin.sin6_family = AF_INET6;
+#else
 	sin.sin_family = AF_INET;
 	sin.sin_addr.s_addr = g_htonl(INADDR_ANY);
+#endif
 			
 	if (bind(*sock, (struct sockaddr *)&sin, sinlen) < 0)
 	{
@@ -743,7 +815,11 @@ static int udp_establish_listener(int *sock)
 	fprintf (stderr,"Listening on local %s:%d\n", inet_ntoa(sin.sin_addr), g_ntohs(sin.sin_port));
 #endif
 	
+#ifdef USE_IPV6
+	return g_ntohs(sin.sin6_port);
+#else
 	return g_ntohs(sin.sin_port);
+#endif
 }
 
 static int udp_check_for_data(int sock)
@@ -752,10 +828,14 @@ static int udp_check_for_data(int sock)
 	char *valptr;
 	gchar *title;
 	gint len, i;
+#ifdef USE_IPV6
+	struct sockaddr_in6 from;
+#else
 	struct sockaddr_in from;
+#endif
 	socklen_t fromlen;
 
-	fromlen = sizeof(struct sockaddr_in);
+	fromlen = sizeof(from);
 	
 	if ((len = recvfrom(sock, buf, 1024, 0, (struct sockaddr *)&from, &fromlen)) < 0)
 	{
@@ -811,7 +891,7 @@ static int udp_check_for_data(int sock)
 		else if (strstr(lines[i], "x-audiocast-streammsg") != NULL)
 		{
 			/*  mpg123_ip.set_info(title, -1, mpg123_bitrate * 1000, mpg123_frequency, mpg123_stereo); */
-/*  			xmms_show_message(_("Message"), valptr, _("Ok"), */
+/*  			xmms_show_message(_("Message"), valptr, _("OK"), */
 /*  					  FALSE, NULL, NULL); */
 			g_message("Stream_message: %s", valptr);
 		}
@@ -840,7 +920,14 @@ static int udp_check_for_data(int sock)
 #ifdef DEBUG_UDP
 			else
 				fprintf(stderr,"Sent ack: %s", obuf);
+#ifdef USE_IPV6
+{
+			char adr[INET6_ADDRSTRLEN];
+			inet_ntop(AF_INET6, &from.sin6_addr, adr, INET6_ADDRSTRLEN);
+			fprintf (stderr,"Remote: [%s]:%d\n", adr, g_ntohs(from.sin6_port));
+#else
 			fprintf (stderr,"Remote: %s:%d\n", inet_ntoa(from.sin_addr), g_ntohs(from.sin_port));
+#endif
 #endif
 		}
 	}

@@ -1,7 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2001  Peter Alm, Mikael Alm, Olle Hallnas,
+ *  Copyright (C) 1998-2003  Peter Alm, Mikael Alm, Olle Hallnas,
  *                           Thomas Nilsson and 4Front Technologies
- *  Copyright (C) 1999-2001  Haavard Kvaalen
+ *  Copyright (C) 1999-2003  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@
  * to something more sophisticated
  */
 
-extern gint bitrate, frequency, numchannels;
 extern HSlider *mainwin_balance;
 extern TButton *mainwin_repeat, *mainwin_shuffle;
 
@@ -139,15 +138,37 @@ void start_ctrlsocket(void)
 	pthread_mutex_unlock(&start_mutex);
 }
 
-static void ctrl_write_packet(gint fd, gpointer data, gint length)
+int write_all(int fd, const void *buf, size_t count)
+{
+	size_t left = count;
+	/* FIXME: This can take forever */
+	do {
+		int written = write(fd, buf, left);
+		if (written < 0)
+		{
+			g_warning("ctrl_write_packet(): "
+				  "Failed to send data: %s",
+				  strerror(errno));
+			return -1;
+		}
+		left -= written;
+		buf = (char *)buf + written;
+	} while (left > 0);
+	return count;
+}
+
+void ctrl_write_packet(gint fd, gpointer data, gint length)
 {
 	ServerPktHeader pkthdr;
 
+	/* Not strictly necessary, but zeroes padding */
+	memset(&pkthdr, 0, sizeof (pkthdr));
 	pkthdr.version = XMMS_PROTOCOL_VERSION;
 	pkthdr.data_length = length;
-	write(fd, &pkthdr, sizeof (ServerPktHeader));
+	if (write_all(fd, &pkthdr, sizeof (ServerPktHeader)) < 0)
+		return;
 	if (data && length > 0)
-		write(fd, data, length);
+		write_all(fd, data, length);
 }
 
 static void ctrl_write_gint(gint fd, gint val)
@@ -179,6 +200,20 @@ static void ctrl_ack_packet(PacketNode * pkt)
 	g_free(pkt);
 }
 
+static int read_all(int fd, void *buf, size_t count)
+{
+	size_t left = count;
+	int r;
+	do {
+		r = read(fd, buf, left);
+		if (r < 0)
+			return -1;
+		left -= r;
+		buf = (char *)buf + r;
+	} while (left > 0 && r > 0);
+	return count - left;
+}
+
 void *ctrlsocket_func(void *arg)
 {
 	fd_set set;
@@ -207,11 +242,18 @@ void *ctrlsocket_func(void *arg)
 			continue;
 
 		pkt = g_malloc0(sizeof (PacketNode));
-		read(fd, &pkt->hdr, sizeof (ClientPktHeader));
+		read_all(fd, &pkt->hdr, sizeof (ClientPktHeader));
 		if (pkt->hdr.data_length)
 		{
 			pkt->data = g_malloc0(pkt->hdr.data_length);
-			read(fd, pkt->data, pkt->hdr.data_length);
+			if (read_all(fd, pkt->data, pkt->hdr.data_length) < 0)
+			{
+				g_free(pkt->data);
+				g_free(pkt);
+				g_warning("ctrlsocket_func(): Incomplete data "
+					  "packet dropped");
+				continue;
+			}
 		}
 		pkt->fd = fd;
 		switch (pkt->hdr.command)
@@ -237,12 +279,15 @@ void *ctrlsocket_func(void *arg)
 				ctrl_ack_packet(pkt);
 				break;
 			case CMD_GET_OUTPUT_TIME:
-				if (get_input_playing())
-					ctrl_write_gint(pkt->fd, input_get_time());
+			{
+				int time = input_get_time();
+				if (time > 0)
+					ctrl_write_gint(pkt->fd, time);
 				else
 					ctrl_write_gint(pkt->fd, 0);
 				ctrl_ack_packet(pkt);
 				break;
+			}
 			case CMD_GET_VOLUME:
 				input_get_volume(&v[0], &v[1]);
 				ctrl_write_packet(pkt->fd, v, sizeof (v));
@@ -296,12 +341,16 @@ void *ctrlsocket_func(void *arg)
 				ctrl_ack_packet(pkt);
 				break;
 			case CMD_GET_INFO:
-				info[0] = bitrate;
-				info[1] = frequency;
-				info[2] = numchannels;
+			{
+				int rate, freq, chn;
+				mainwin_get_song_info(&rate, &freq, &chn);
+				info[0] = rate;
+				info[1] = freq;
+				info[2] = chn;
 				ctrl_write_packet(pkt->fd, info, 3 * sizeof (gint));
 				ctrl_ack_packet(pkt);
 				break;
+			}
 			case CMD_GET_EQ_DATA:
 			case CMD_SET_EQ_DATA:
 				/* obsolete */
@@ -351,6 +400,8 @@ void *ctrlsocket_func(void *arg)
 			case CMD_PLAYLIST_CLEAR:
 				GDK_THREADS_ENTER();
 				playlist_clear();
+				mainwin_clear_song_info();
+				mainwin_set_info_text();
 				GDK_THREADS_LEAVE();
 				ctrl_ack_packet(pkt);
 				break;
@@ -374,6 +425,10 @@ void *ctrlsocket_func(void *arg)
 				ctrl_write_gboolean(pkt->fd, cfg.shuffle);
 				ctrl_ack_packet(pkt);
 				break;
+			case CMD_IS_ADVANCE:
+				ctrl_write_gboolean(pkt->fd, !cfg.no_playlist_advance);
+				ctrl_ack_packet(pkt);
+				break;
 			case CMD_GET_EQ:
 				fval[0] = equalizerwin_get_preamp();
 				for(i = 0; i < 10; i++)
@@ -388,6 +443,20 @@ void *ctrlsocket_func(void *arg)
 			case CMD_GET_EQ_BAND:
 				i = *((guint32 *) pkt->data);
 				ctrl_write_gfloat(pkt->fd, equalizerwin_get_band(i));
+				ctrl_ack_packet(pkt);
+				break;
+			case CMD_GET_PLAYQUEUE_LENGTH:
+				ctrl_write_gint(pkt->fd, get_playlist_queue_length());
+				ctrl_ack_packet(pkt);
+				break;
+			case CMD_GET_PLAYQUEUE_POS_FROM_PLAYLIST_POS:
+				i = *((guint32 *) pkt->data);
+				ctrl_write_gint(pkt->fd, playlist_get_playqueue_position_from_playlist_position(i));
+				ctrl_ack_packet(pkt);
+				break;
+			case CMD_GET_PLAYLIST_POS_FROM_PLAYQUEUE_POS:
+				i = *((guint32 *) pkt->data);
+				ctrl_write_gint(pkt->fd, playlist_get_playlist_position_from_playqueue_position(i));
 				ctrl_ack_packet(pkt);
 				break;
 			default:
@@ -432,7 +501,7 @@ void check_ctrlsocket(void)
 				break;
 			case CMD_STOP:
 				input_stop();
-				mainwin_set_song_info(0, 0, 0);
+				mainwin_clear_song_info();
 				break;
 			case CMD_PLAY_PAUSE:
 				if (get_input_playing())
@@ -454,7 +523,7 @@ void check_ctrlsocket(void)
 			case CMD_SET_VOLUME:
 				v[0] = ((guint32 *) data)[0];
 				v[1] = ((guint32 *) data)[1];
-				for (i = 1; i < 2; i++)
+				for (i = 0; i < 2; i++)
 				{
 					if (v[i] > 100)
 						v[i] = 100;
@@ -489,7 +558,7 @@ void check_ctrlsocket(void)
 				break;
 			case CMD_PLAYLIST_NEXT:
 				playlist_next();
-			break;
+				break;
 			case CMD_TOGGLE_REPEAT:
 				mainwin_repeat_pushed(!cfg.repeat);
 				tbutton_set_toggled(mainwin_repeat, GTK_CHECK_MENU_ITEM(gtk_item_factory_get_widget(mainwin_options_menu, "/Repeat"))->active);
@@ -497,6 +566,10 @@ void check_ctrlsocket(void)
 			case CMD_TOGGLE_SHUFFLE:
 				mainwin_shuffle_pushed(!cfg.shuffle);
 				tbutton_set_toggled(mainwin_shuffle, GTK_CHECK_MENU_ITEM(gtk_item_factory_get_widget(mainwin_options_menu, "/Shuffle"))->active);
+				break;
+			case CMD_TOGGLE_ADVANCE:
+				mainwin_advance_pushed(!cfg.no_playlist_advance);
+				/* there is no real button, so no need to call tbutton_set_toggled() */
 				break;
 			case CMD_MAIN_WIN_TOGGLE:
 				tbool = *((gboolean *) data);
@@ -532,6 +605,19 @@ void check_ctrlsocket(void)
 				 */
 				pthread_mutex_unlock(&packet_list_mutex);
 				mainwin_quit_cb();
+				break;
+			case CMD_PLAYQUEUE_ADD:
+				num = *((guint32 *) data);
+				if (num < get_playlist_length())
+					playlist_queue_position(num);
+				break;
+			case CMD_PLAYQUEUE_REMOVE:
+				num = *((guint32 *) data);
+				if (num < get_playlist_length())
+					playlist_queue_remove(num);
+				break;
+			case CMD_PLAYQUEUE_CLEAR:
+				playlist_clear_queue();
 				break;
 			default:
 				g_log(NULL, G_LOG_LEVEL_MESSAGE, "Unknown socket command received");
