@@ -8,6 +8,7 @@ wmxmms.1
 xmms-config
 xmms.1
 **/.deps
+**/.libs
 po/Makefile.in
 po/POTFILES
 xmms/i18n.h
@@ -17,3 +18,5 @@ xmms.spec
 autom4te.cache
 
 *.o
+*.lo
+*.la
