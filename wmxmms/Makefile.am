@@ -8,7 +8,7 @@ getopt1.c \
 getopt.h \
 wmxmms.c
 
-INCLUDES = @GTK_CFLAGS@ @XMMS_DEFINES@ -I$(top_builddir)/intl -I$(top_srcdir)
+AM_CPPFLAGS = @GTK_CFLAGS@ @XMMS_DEFINES@ -I$(top_builddir)/intl -I$(top_srcdir)
 
 wmxmmsdir = $(pkgdatadir)
 

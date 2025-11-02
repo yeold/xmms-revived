@@ -19,7 +19,7 @@ EXTRA_DIST = sun.c sun.h audio.c convert.c mixer.c mixer.h configure.c about.c r
 libdir = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
 lib_LTLIBRARIES = $(sunltlibs)
 
-INCLUDES = @GTK_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)
+AM_CPPFLAGS = @GTK_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)
 libsun_la_LDFLAGS = @PLUGIN_LDFLAGS@
 libsun_la_LIBADD = @GTK_LIBS@ @PTHREAD_LIBS@
 libsun_la_SOURCES= $(sunsources)

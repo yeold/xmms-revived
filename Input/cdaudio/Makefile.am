@@ -26,7 +26,7 @@ lib_LTLIBRARIES = $(cdaudioltlibs)
 
 libdir = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
-INCLUDES = @GTK_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)
+AM_CPPFLAGS = @GTK_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)
 libcdaudio_la_LDFLAGS = @PLUGIN_LDFLAGS@
 libcdaudio_la_LIBADD = @GTK_LIBS@
 libcdaudio_la_SOURCES = $(cdaudiobuildsources)

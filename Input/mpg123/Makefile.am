@@ -52,4 +52,4 @@ EXTRA_DIST = decode.c decode_i386.c decode_i586.s decode_3dnow.s dct64_i386.c \
 libmpg123_la_SOURCES = $(COMMON_SRC) $(EXTRA_SRC)
 libmpg123_la_LDFLAGS = @PLUGIN_LDFLAGS@
 libmpg123_la_LIBADD = @GTK_LIBS@ @PTHREAD_LIBS@ @Z_LIBS@ $(top_builddir)/libxmms/libxmms.la
-INCLUDES = @GTK_CFLAGS@ @ARCH_DEFINES@ -I$(top_builddir)/intl -I$(top_srcdir)
+AM_CPPFLAGS = @GTK_CFLAGS@ @ARCH_DEFINES@ -I$(top_builddir)/intl -I$(top_srcdir)

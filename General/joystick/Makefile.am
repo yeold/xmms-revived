@@ -24,4 +24,4 @@ libjoy_la_LIBADD = @GTK_LIBS@ @PTHREAD_LIBS@
 
 libjoy_la_SOURCES = $(joysources)
 
-INCLUDES = @GTK_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)
+AM_CPPFLAGS = @GTK_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)

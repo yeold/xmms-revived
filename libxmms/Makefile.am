@@ -5,7 +5,7 @@ lib_LTLIBRARIES = libxmms.la
 
 libxmms_la_LDFLAGS = -export-dynamic -version-info $(LIBXMMS_MAJOR_VERSION):$(LIBXMMS_MINOR_VERSION):$(LIBXMMS_MICRO_VERSION)
 libxmms_la_LIBADD = @GTK_LIBS@ @POSIX_LIBS@
-INCLUDES = @GTK_CFLAGS@ -I../intl -I..
+AM_CPPFLAGS = @GTK_CFLAGS@ -I../intl -I..
 
 libxmms_la_SOURCES = \
 configfile.c configfile.h \

@@ -26,4 +26,4 @@ libdir = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
 libALSA_la_LDFLAGS = @PLUGIN_LDFLAGS@
 libALSA_la_LIBADD = @GTK_LIBS@ @PTHREAD_LIBS@ @ALSA_LIBS@
 libALSA_la_SOURCES= $(alsabuildsources)
-INCLUDES = @GTK_CFLAGS@ @ALSA_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)
+AM_CPPFLAGS = @GTK_CFLAGS@ @ALSA_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)

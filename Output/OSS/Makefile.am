@@ -29,4 +29,4 @@ libdir = $(plugindir)/$(OUTPUT_PLUGIN_DIR)
 libOSS_la_LDFLAGS = @PLUGIN_LDFLAGS@
 libOSS_la_LIBADD = @GTK_LIBS@ @PTHREAD_LIBS@
 libOSS_la_SOURCES= $(ossbuildsources)
-INCLUDES = @GTK_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)
+AM_CPPFLAGS = @GTK_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)
