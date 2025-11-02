@@ -904,8 +904,8 @@ GtkWidget * util_create_filebrowser(gboolean play_button)
 		arg.name = "GtkWidget::parent";
 		gtk_object_arg_get(GTK_OBJECT(fb->ok_button), &arg, NULL);
 		button = gtk_button_new_with_label(_("Add"));
-		gtk_signal_connect(GTK_OBJECT(button), "clicked",
-				   filebrowser_add, filebrowser);
+	g_signal_connect(G_OBJECT(button), "clicked",
+		   G_CALLBACK(filebrowser_add), filebrowser);
 		GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 		gtk_box_pack_start(GTK_BOX(arg.d.object_data),
 				   button, TRUE, TRUE, 0);

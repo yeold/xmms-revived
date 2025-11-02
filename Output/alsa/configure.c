@@ -65,7 +65,7 @@ void alsa_save_config(void)
 	xmms_cfg_free(cfgfile);
 }
 
-static int get_cards(GtkOptionMenu *omenu, GtkSignalFunc cb, int active)
+static int get_cards(GtkOptionMenu *omenu, GCallback cb, int active)
 {
 	GtkWidget *menu, *item;
 	int card = -1, err, set = 0, curr = -1;
@@ -88,9 +88,9 @@ static int get_cards(GtkOptionMenu *omenu, GtkSignalFunc cb, int active)
 			break;
 		}
 
-		item = gtk_menu_item_new_with_label(label);
-		gtk_signal_connect(GTK_OBJECT(item), "activate", cb,
-				   GINT_TO_POINTER(card));
+	item = gtk_menu_item_new_with_label(label);
+	g_signal_connect(G_OBJECT(item), "activate",
+			 (GCallback)cb, GINT_TO_POINTER(card));
 		gtk_widget_show(item);
 		gtk_menu_append(GTK_MENU(menu), item);
 		if ((err = snd_card_next(&card)) != 0)
@@ -268,9 +268,8 @@ void alsa_configure(void)
 	}
 
 	configure_win = gtk_window_new(GDK_WINDOW_DIALOG);
-	gtk_signal_connect(GTK_OBJECT(configure_win), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed),
-			   &configure_win);
+	g_signal_connect(G_OBJECT(configure_win), "destroy",
+					 G_CALLBACK(gtk_widget_destroyed), &configure_win);
 	gtk_window_set_title(GTK_WINDOW(configure_win),
 			     _("ALSA Driver configuration"));
 	gtk_window_set_policy(GTK_WINDOW(configure_win),
@@ -326,7 +325,7 @@ void alsa_configure(void)
 
 	mixer_card_om = gtk_option_menu_new();
 	mset = get_cards(GTK_OPTION_MENU(mixer_card_om),
-			 mixer_card_cb, alsa_cfg.mixer_card);
+			 (GCallback)mixer_card_cb, alsa_cfg.mixer_card);
 
 	gtk_table_attach(GTK_TABLE(mixer_table), mixer_card_om,
 			 1, 2, 0, 1, GTK_FILL | GTK_EXPAND, GTK_FILL, 0, 0);
@@ -345,8 +344,8 @@ void alsa_configure(void)
 	gtk_table_attach(GTK_TABLE(mixer_table), mixer_devices_combo,
 			 1, 2, 1, 2, GTK_FILL | GTK_EXPAND, 0, 0, 0);
 
-	gtk_signal_connect(GTK_OBJECT(softvolume_toggle_button), "toggled",
-			   softvolume_toggle_cb, mixer_card_om);
+	g_signal_connect(G_OBJECT(softvolume_toggle_button), "toggled",
+					 G_CALLBACK(softvolume_toggle_cb), mixer_card_om);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(softvolume_toggle_button),
 				     alsa_cfg.soft_volume);
 
@@ -435,14 +434,15 @@ void alsa_configure(void)
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
 	ok = gtk_button_new_with_label(_("OK"));
-	gtk_signal_connect(GTK_OBJECT(ok), "clicked", configure_win_ok_cb, NULL);
+	g_signal_connect(G_OBJECT(ok), "clicked",
+					 G_CALLBACK(configure_win_ok_cb), NULL);
 	GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);
 	gtk_widget_grab_default(ok);
 
 	cancel = gtk_button_new_with_label(_("Cancel"));
-	gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked",
-				  gtk_widget_destroy, GTK_OBJECT(configure_win));
+	g_signal_connect_swapped(G_OBJECT(cancel), "clicked",
+							 G_CALLBACK(gtk_widget_destroy), configure_win);
 	GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
 

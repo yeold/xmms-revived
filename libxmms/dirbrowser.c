@@ -307,12 +307,12 @@ GtkWidget *xmms_create_dir_browser(char *title, char *current_path, GtkSelection
 	gtk_clist_set_column_auto_resize(GTK_CLIST(tree), 0, TRUE);
 	gtk_clist_set_selection_mode(GTK_CLIST(tree), mode);
 	gtk_ctree_set_line_style(ctree, GTK_CTREE_LINES_DOTTED);
-	gtk_signal_connect(GTK_OBJECT(tree), "tree_expand",
-			   GTK_SIGNAL_FUNC(expand_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(tree), "select_row",
-			   GTK_SIGNAL_FUNC(select_row_cb), NULL);
-	gtk_signal_connect(GTK_OBJECT(window), "show",
-			   GTK_SIGNAL_FUNC(show_cb), tree);
+	g_signal_connect(G_OBJECT(tree), "tree_expand",
+					 G_CALLBACK(expand_cb), NULL);
+	g_signal_connect(G_OBJECT(tree), "select_row",
+					 G_CALLBACK(select_row_cb), NULL);
+	g_signal_connect(G_OBJECT(window), "show",
+					 G_CALLBACK(show_cb), tree);
 	gtk_container_add(GTK_CONTAINER(scroll_win), tree);
 	gtk_object_set_user_data(GTK_OBJECT(tree), handler);
 
@@ -344,16 +344,15 @@ GtkWidget *xmms_create_dir_browser(char *title, char *current_path, GtkSelection
 	GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
 	gtk_window_set_default(GTK_WINDOW(window), ok);
 	gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);
-	gtk_signal_connect(GTK_OBJECT(ok), "clicked",
-			   GTK_SIGNAL_FUNC(ok_clicked), tree);
+	g_signal_connect(G_OBJECT(ok), "clicked",
+					 G_CALLBACK(ok_clicked), tree);
 	gtk_widget_show(ok);
 
 	cancel = gtk_button_new_with_label(_("Cancel"));
 	GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
-	gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked",
-				  GTK_SIGNAL_FUNC(gtk_widget_destroy),
-				  GTK_OBJECT(window));
+	g_signal_connect_swapped(G_OBJECT(cancel), "clicked",
+							 G_CALLBACK(gtk_widget_destroy), window);
 	gtk_widget_show(cancel);
 
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);

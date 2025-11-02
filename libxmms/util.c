@@ -58,8 +58,8 @@ GtkWidget *xmms_show_message(gchar * title, gchar * text, gchar * button_text, g
 
 	button = gtk_button_new_with_label(button_text);
 	if (button_action)
-		gtk_signal_connect(GTK_OBJECT(button), "clicked", button_action, action_data);
-	gtk_signal_connect_object(GTK_OBJECT(button), "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(dialog));
+		g_signal_connect(G_OBJECT(button), "clicked", G_CALLBACK(button_action), action_data);
+	g_signal_connect_swapped(G_OBJECT(button), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(dialog));
 	gtk_box_pack_start(GTK_BOX(bbox), button, FALSE, FALSE, 0);
 	GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 	gtk_widget_grab_default(button);

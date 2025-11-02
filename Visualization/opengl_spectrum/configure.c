@@ -71,15 +71,14 @@ void oglspectrum_configure (void)
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
 	ok = gtk_button_new_with_label(_("OK"));
-	gtk_signal_connect(GTK_OBJECT(ok), "clicked", GTK_SIGNAL_FUNC(configure_ok), NULL);
+	g_signal_connect(G_OBJECT(ok), "clicked", G_CALLBACK(configure_ok), NULL);
 	GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);
 	gtk_widget_show(ok);
 	
 
 	cancel = gtk_button_new_with_label(_("Cancel"));
-	gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy),
-				  GTK_OBJECT(configure_win));
+	g_signal_connect_swapped(G_OBJECT(cancel), "clicked", G_CALLBACK(gtk_widget_destroy), configure_win);
 	GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
 	gtk_widget_show(cancel);

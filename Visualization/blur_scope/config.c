@@ -81,7 +81,7 @@ void bscope_configure (void)
 
 	options_colorpicker = gtk_color_selection_new();
 	gtk_color_selection_set_color(GTK_COLOR_SELECTION(options_colorpicker), color);
-	gtk_signal_connect(GTK_OBJECT(options_colorpicker), "color_changed", GTK_SIGNAL_FUNC(color_changed), NULL);
+	g_signal_connect(G_OBJECT(options_colorpicker), "color_changed", G_CALLBACK(color_changed), NULL);
 
 	gtk_box_pack_start(GTK_BOX(options_vbox), options_colorpicker, FALSE, FALSE, 0);
         gtk_widget_show(options_colorpicker);
@@ -99,17 +99,17 @@ void bscope_configure (void)
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
 	ok = gtk_button_new_with_label(_("OK"));
-	gtk_signal_connect(GTK_OBJECT(ok), "clicked",
-			   GTK_SIGNAL_FUNC(configure_ok), NULL);
+	g_signal_connect(G_OBJECT(ok), "clicked",
+					 G_CALLBACK(configure_ok), NULL);
 	GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);
 	gtk_widget_show(ok);
 	
 
 	cancel = gtk_button_new_with_label(_("Cancel"));
-	gtk_signal_connect(GTK_OBJECT(cancel), "clicked",
-			   GTK_SIGNAL_FUNC(configure_cancel),
-			   GUINT_TO_POINTER(bscope_cfg.color));
+	g_signal_connect(G_OBJECT(cancel), "clicked",
+					 G_CALLBACK(configure_cancel),
+					 GUINT_TO_POINTER(bscope_cfg.color));
 	GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
 	gtk_widget_show(cancel);
