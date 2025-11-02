@@ -684,7 +684,7 @@ static gchar* cddb_position_string(gchar * input)
 	deg[3] = '\0';
 	strncpy(min, input + 5, 2);
 	min[2] = '\0';
-	return g_strdup_printf("%2d°%s'%c", atoi(deg), min, input[0]);
+	return g_strdup_printf("%2dï¿½%s'%c", atoi(deg), min, input[0]);
 }
 
 static void cddb_server_dialog_ok_cb(GtkWidget *w, gpointer data)
@@ -752,8 +752,8 @@ void cdda_cddb_show_server_dialog(GtkWidget *w, gpointer data)
 	}
 
 	server_dialog = gtk_dialog_new();
-	gtk_signal_connect(GTK_OBJECT(server_dialog), "destroy",
-			   GTK_SIGNAL_FUNC(gtk_widget_destroyed), &server_dialog);
+	g_signal_connect(G_OBJECT(server_dialog), "destroy",
+			   G_CALLBACK(gtk_widget_destroyed), &server_dialog);
 	gtk_window_set_title(GTK_WINDOW(server_dialog), _("CDDB servers"));
 	gtk_window_set_modal(GTK_WINDOW(server_dialog), TRUE);
 
@@ -762,8 +762,8 @@ void cdda_cddb_show_server_dialog(GtkWidget *w, gpointer data)
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(server_dialog)->vbox), vbox, TRUE, TRUE, 0);
 
 	server_clist = gtk_clist_new_with_titles(4, titles);
-	gtk_signal_connect(GTK_OBJECT(server_clist), "select-row",
-			   cddb_server_dialog_select, data);
+	g_signal_connect(G_OBJECT(server_clist), "select-row",
+			   G_CALLBACK(cddb_server_dialog_select), data);
 	gtk_box_pack_start(GTK_BOX(vbox), server_clist, TRUE, TRUE, 0);
 
 	bbox = gtk_hbutton_box_new();
@@ -772,12 +772,12 @@ void cdda_cddb_show_server_dialog(GtkWidget *w, gpointer data)
 	gtk_box_pack_start(GTK_BOX(GTK_DIALOG(server_dialog)->action_area), bbox, TRUE, TRUE, 0);
 
 	okbutton = gtk_button_new_with_label(_("OK"));
-	gtk_signal_connect(GTK_OBJECT(okbutton), "clicked",
-			   GTK_SIGNAL_FUNC(cddb_server_dialog_ok_cb), data);
+	g_signal_connect(G_OBJECT(okbutton), "clicked",
+			   G_CALLBACK(cddb_server_dialog_ok_cb), data);
 	gtk_box_pack_start(GTK_BOX(bbox), okbutton, TRUE, TRUE, 0);
 	cancelbutton = gtk_button_new_with_label(_("Cancel"));
-	gtk_signal_connect_object(GTK_OBJECT(cancelbutton), "clicked",
-				  GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(server_dialog));
+	g_signal_connect_swapped(G_OBJECT(cancelbutton), "clicked",
+				  G_CALLBACK(gtk_widget_destroy), server_dialog);
 	gtk_box_pack_start(GTK_BOX(bbox), cancelbutton, TRUE, TRUE, 0);
 	GTK_WIDGET_SET_FLAGS(okbutton, GTK_CAN_DEFAULT);
 	GTK_WIDGET_SET_FLAGS(cancelbutton, GTK_CAN_DEFAULT);

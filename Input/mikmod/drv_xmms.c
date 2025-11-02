@@ -131,7 +131,7 @@ MDRIVER drv_xmms =
         "xmms",
         NULL,
 #endif
-        xmms_CommandLine, 
+		(void (*)(const CHAR *))xmms_CommandLine, 
         xmms_IsThere, 
 	VC_SampleLoad,
 	VC_SampleUnload,

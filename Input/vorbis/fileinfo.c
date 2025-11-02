@@ -463,10 +463,10 @@ void vorbis_file_info_box(char *fn)
 
 		window = gtk_window_new(GDK_WINDOW_DIALOG);
 		gtk_window_set_policy(GTK_WINDOW(window), FALSE, FALSE, FALSE);
-		gtk_signal_connect(GTK_OBJECT(window), "destroy", 
-			GTK_SIGNAL_FUNC(gtk_widget_destroyed), &window);
-		gtk_signal_connect(GTK_OBJECT(window), "key_press_event",
-				   keypress_cb, NULL);
+		g_signal_connect(G_OBJECT(window), "destroy", 
+			G_CALLBACK(gtk_widget_destroyed), &window);
+		g_signal_connect(G_OBJECT(window), "key_press_event",
+				   G_CALLBACK(keypress_cb), NULL);
 		gtk_container_set_border_width(GTK_CONTAINER(window), 10);
 
 		vbox = gtk_vbox_new(FALSE, 10);
@@ -643,8 +643,8 @@ void vorbis_file_info_box(char *fn)
 #endif
 
 		rg_show_button = gtk_check_button_new_with_label(_("ReplayGain Settings:"));
-		gtk_signal_connect(GTK_OBJECT(rg_show_button), "toggled",
-				   GTK_SIGNAL_FUNC(rg_show_cb), NULL);
+		g_signal_connect(G_OBJECT(rg_show_button), "toggled",
+				   G_CALLBACK(rg_show_cb), NULL);
 		gtk_table_attach(GTK_TABLE(table), rg_show_button, 0, 2, 11, 12,
 				 GTK_FILL, GTK_FILL, 5, 5);
 
@@ -698,24 +698,21 @@ void vorbis_file_info_box(char *fn)
 		gtk_box_pack_start(GTK_BOX(left_vbox), bbox, FALSE, FALSE, 0);
 		
 		save_button = gtk_button_new_with_label(_("Save"));
-		gtk_signal_connect(GTK_OBJECT(save_button), "clicked", 
-				   GTK_SIGNAL_FUNC(save_cb), NULL);
+		g_signal_connect(G_OBJECT(save_button), "clicked", 
+				   G_CALLBACK(save_cb), NULL);
 		GTK_WIDGET_SET_FLAGS(save_button, GTK_CAN_DEFAULT);
 		gtk_box_pack_start(GTK_BOX(bbox), save_button, TRUE, TRUE, 0);
 		gtk_widget_grab_default(save_button);
 
 		remove_button = gtk_button_new_with_label(_("Remove Tag"));
-		gtk_signal_connect_object(GTK_OBJECT(remove_button),
-					  "clicked", 
-					  GTK_SIGNAL_FUNC(remove_cb), NULL);
+		g_signal_connect(G_OBJECT(remove_button), "clicked",
+						 G_CALLBACK(remove_cb), NULL);
 		GTK_WIDGET_SET_FLAGS(remove_button, GTK_CAN_DEFAULT);
 		gtk_box_pack_start(GTK_BOX(bbox),remove_button, TRUE, TRUE, 0);
 
 		cancel_button = gtk_button_new_with_label(_("Cancel"));
-		gtk_signal_connect_object(GTK_OBJECT(cancel_button),
-					  "clicked", 
-					  GTK_SIGNAL_FUNC(gtk_widget_destroy),
-					  GTK_OBJECT(window));
+		g_signal_connect(G_OBJECT(cancel_button), "clicked",
+						 G_CALLBACK(gtk_widget_destroy), window);
 		GTK_WIDGET_SET_FLAGS(cancel_button, GTK_CAN_DEFAULT);
 		gtk_box_pack_start(GTK_BOX(bbox),cancel_button, TRUE, TRUE, 0);
 

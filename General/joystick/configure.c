@@ -179,35 +179,44 @@ void joy_configure(void)
 			}
 		}
 
-		/* -------------------------------------------------- */
-		frame = gtk_frame_new(_("Directionals:"));
-		gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 0);
-		dir_pack = gtk_packer_new();
-		gtk_container_set_border_width(GTK_CONTAINER(dir_pack), 5);
-		gtk_container_add(GTK_CONTAINER(frame), dir_pack);
-		hist_val[0] = joy_cfg.up;
-		hist_val[1] = joy_cfg.down;
-		hist_val[2] = joy_cfg.left;
-		hist_val[3] = joy_cfg.right;
+	/* -------------------------------------------------- */
+	frame = gtk_frame_new(_("Directionals:"));
+	gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 0);
+	dir_pack = gtk_table_new(3, 3, TRUE);
+	gtk_container_set_border_width(GTK_CONTAINER(dir_pack), 5);
+	gtk_container_add(GTK_CONTAINER(frame), dir_pack);
+	hist_val[0] = joy_cfg.up;
+	hist_val[1] = joy_cfg.down;
+	hist_val[2] = joy_cfg.left;
+	hist_val[3] = joy_cfg.right;
 
-		for (i = 0; i < 4; i++)
-		{
-			blist = gtk_option_menu_new();
-			gtk_widget_set_usize(blist, 120, -1);
-			gtk_packer_add(GTK_PACKER(dir_pack), blist, pack_pos[i], GTK_ANCHOR_CENTER, 0, 0, 5, 5, 0, 0);
-			gtk_option_menu_remove_menu(GTK_OPTION_MENU(blist));
-			gtk_option_menu_set_menu(GTK_OPTION_MENU(blist), joy_menus[i]);
-			gtk_option_menu_set_history(GTK_OPTION_MENU(blist), hist_val[i]);
-			gtk_widget_show(blist);
-		}
+	/* Arrange in a cross pattern: up=top, down=bottom, left=left, right=right */
+	for (i = 0; i < 4; i++)
+	{
+		blist = gtk_option_menu_new();
+		gtk_widget_set_usize(blist, 120, -1);
+		
+		/* Position: 0=up(top), 1=down(bottom), 2=left(left), 3=right(right) */
+		if (i == 0) /* up */
+			gtk_table_attach_defaults(GTK_TABLE(dir_pack), blist, 1, 2, 0, 1);
+		else if (i == 1) /* down */
+			gtk_table_attach_defaults(GTK_TABLE(dir_pack), blist, 1, 2, 2, 3);
+		else if (i == 2) /* left */
+			gtk_table_attach_defaults(GTK_TABLE(dir_pack), blist, 0, 1, 1, 2);
+		else /* right */
+			gtk_table_attach_defaults(GTK_TABLE(dir_pack), blist, 2, 3, 1, 2);
+			
+		gtk_option_menu_remove_menu(GTK_OPTION_MENU(blist));
+		gtk_option_menu_set_menu(GTK_OPTION_MENU(blist), joy_menus[i]);
+		gtk_option_menu_set_history(GTK_OPTION_MENU(blist), hist_val[i]);
+		gtk_widget_show(blist);
+	}
 
-		gtk_widget_show(dir_pack);
-		gtk_widget_show(frame);
-
-		/* -------------------------------------------------- */
+	gtk_widget_show(dir_pack);
+	gtk_widget_show(frame);		/* -------------------------------------------------- */
 		frame = gtk_frame_new(_("Directionals (alternate):"));
 		gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 0);
-		dir_pack = gtk_packer_new();
+		dir_pack = gtk_table_new(3, 3, TRUE);
 		gtk_container_set_border_width(GTK_CONTAINER(dir_pack), 5);
 		gtk_container_add(GTK_CONTAINER(frame), dir_pack);
 		hist_val[0] = joy_cfg.alt_up;
@@ -215,11 +224,22 @@ void joy_configure(void)
 		hist_val[2] = joy_cfg.alt_left;
 		hist_val[3] = joy_cfg.alt_right;
 
+		/* Arrange in a cross pattern: up=top, down=bottom, left=left, right=right */
 		for (i = 0; i < 4; i++)
 		{
 			blist = gtk_option_menu_new();
 			gtk_widget_set_usize(blist, 120, -1);
-			gtk_packer_add(GTK_PACKER(dir_pack), blist, pack_pos[i], GTK_ANCHOR_CENTER, 0, 0, 5, 5, 0, 0);
+			
+			/* Position: 0=up(top), 1=down(bottom), 2=left(left), 3=right(right) */
+			if (i == 0) /* up */
+				gtk_table_attach_defaults(GTK_TABLE(dir_pack), blist, 1, 2, 0, 1);
+			else if (i == 1) /* down */
+				gtk_table_attach_defaults(GTK_TABLE(dir_pack), blist, 1, 2, 2, 3);
+			else if (i == 2) /* left */
+				gtk_table_attach_defaults(GTK_TABLE(dir_pack), blist, 0, 1, 1, 2);
+			else /* right */
+				gtk_table_attach_defaults(GTK_TABLE(dir_pack), blist, 2, 3, 1, 2);
+				
 			gtk_option_menu_remove_menu(GTK_OPTION_MENU(blist));
 			gtk_option_menu_set_menu(GTK_OPTION_MENU(blist), joy_menus[4 + i]);
 			gtk_option_menu_set_history(GTK_OPTION_MENU(blist), hist_val[i]);
