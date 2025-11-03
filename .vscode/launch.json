@@ -33,6 +33,16 @@
                     "ignoreFailures": true
                 },
                 {
+                    "description": "Set debug file directory for system libraries",
+                    "text": "-gdb-set debug-file-directory /usr/lib/debug",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set source directories for system libraries",
+                    "text": "-gdb-set directories /usr/src/debug:${workspaceFolder}",
+                    "ignoreFailures": true
+                },
+                {
                     "description": "Handle SIGPIPE gracefully",
                     "text": "-gdb-set debug-expr 1",
                     "ignoreFailures": true
@@ -63,6 +73,16 @@
                 {
                     "description": "Enable pretty-printing for gdb",
                     "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set debug file directory for system libraries",
+                    "text": "-gdb-set debug-file-directory /usr/lib/debug",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set source directories for system libraries",
+                    "text": "-gdb-set directories /usr/src/debug:${workspaceFolder}",
                     "ignoreFailures": true
                 },
                 {
@@ -100,6 +120,16 @@
                     "description": "Enable pretty-printing for gdb",
                     "text": "-enable-pretty-printing",
                     "ignoreFailures": true
+                },
+                {
+                    "description": "Set debug file directory for system libraries",
+                    "text": "-gdb-set debug-file-directory /usr/lib/debug",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set source directories for system libraries",
+                    "text": "-gdb-set directories /usr/src/debug:${workspaceFolder}",
+                    "ignoreFailures": true
                 }
             ],
             "preLaunchTask": "build-debug",
@@ -116,6 +146,16 @@
                 {
                     "description": "Enable pretty-printing for gdb",
                     "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set debug file directory for system libraries",
+                    "text": "-gdb-set debug-file-directory /usr/lib/debug",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set source directories for system libraries",
+                    "text": "-gdb-set directories /usr/src/debug:${workspaceFolder}",
                     "ignoreFailures": true
                 }
             ]

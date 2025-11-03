@@ -7,6 +7,35 @@ This document describes how to set up and use debugging for the XMMS project.
 - GDB (GNU Debugger) - ✅ Installed at `/usr/bin/gdb` (version 16.3)
 - VS Code with C/C++ extension
 - Build dependencies (GTK+2, GLib2, etc.)
+- GTK2 Debug Symbols - ✅ Installed and configured
+
+## GTK2 Debug Symbols Setup
+
+The following debug packages have been installed for comprehensive GTK2 debugging:
+
+### Installed Debug Packages
+- `libgtk-2_0-0-debuginfo` - Core GTK2 library debug symbols
+- `gtk2-devel-debuginfo` - GTK2 development tools debug symbols
+- `glib2-devel-debuginfo` - GLib2 library debug symbols
+- `libgdk_pixbuf-2_0-0-debuginfo` - GDK-PixBuf debug symbols
+- `libpango-1_0-0-debuginfo` - Pango text rendering debug symbols
+- `libcairo-gobject2-debuginfo` - Cairo graphics debug symbols
+
+### Debug File Locations
+- **Debug symbols**: `/usr/lib/debug/usr/lib64/`
+- **Source code**: `/usr/src/debug/gtk-2.24.33/` and `/usr/src/debug/glib-2.86.1/`
+
+### GDB Configuration
+VS Code debug configurations are set up to automatically:
+- Load debug symbols from `/usr/lib/debug`
+- Find source code in `/usr/src/debug`
+- Enable step-through debugging of GTK2 functions
+
+This allows you to:
+- Step into GTK2 function calls (gtk_widget_*, g_*, etc.)
+- View GTK2 source code during debugging
+- Get meaningful stack traces with symbol names
+- Inspect GTK2 data structures with proper type information
 
 ## Quick Start
 
