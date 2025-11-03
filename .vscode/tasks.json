@@ -5,7 +5,7 @@
             "label": "build-debug",
             "type": "shell",
             "command": "make",
-            "args": ["CFLAGS=-g3 -O0 -Wall -Wpointer-arith -finline-functions", "-j${input:jobCount}"],
+            "args": ["CFLAGS=-g3 -O0 -Wall -Wpointer-arith -finline-functions", "-j$(nproc)"],
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -29,7 +29,7 @@
             "label": "build-debug-clean",
             "type": "shell",
             "command": "make",
-            "args": ["clean", "&&", "make", "CFLAGS=-g3 -O0 -Wall -Wpointer-arith -finline-functions", "-j${input:jobCount}"],
+            "args": ["clean", "&&", "make", "CFLAGS=-g3 -O0 -Wall -Wpointer-arith -finline-functions", "-j$(nproc)"],
             "group": "build",
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -50,7 +50,7 @@
             "label": "build-debug-incremental",
             "type": "shell",
             "command": "make",
-            "args": ["CFLAGS=-g3 -O0 -Wall -Wpointer-arith -finline-functions", "-j${input:jobCount}"],
+            "args": ["CFLAGS=-g3 -O0 -Wall -Wpointer-arith -finline-functions", "-j$(nproc)"],
             "group": "build",
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -71,7 +71,7 @@
             "label": "build-release",
             "type": "shell", 
             "command": "make",
-            "args": ["-j${input:jobCount}"],
+            "args": ["-j$(nproc)"],
             "group": "build",
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -182,14 +182,6 @@
                 "clear": false
             },
             "dependsOn": "build-debug"
-        }
-    ],
-    "inputs": [
-        {
-            "id": "jobCount",
-            "description": "Number of parallel jobs for make",
-            "default": "4",
-            "type": "promptString"
         }
     ]
 }
