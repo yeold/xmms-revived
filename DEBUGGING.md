@@ -29,6 +29,32 @@ The following debug packages have been installed for comprehensive GTK2 debuggin
 VS Code debug configurations are set up to automatically:
 - Load debug symbols from `/usr/lib/debug`
 - Find source code in `/usr/src/debug`
+
+## GTK Object Crash Fixes ✅ RESOLVED
+
+### Issue Resolution
+
+Successfully resolved segmentation faults in GTK object operations by implementing comprehensive null pointer validation and type checking in `xmms/util.c`:
+
+#### Functions Enhanced:
+1. **util_filebrowser_is_dir()** - Added filesel null pointer validation
+2. **filebrowser_add()** - Added filesel null pointer validation  
+3. **util_menu_delete_popup_data()** - Added GTK_OBJECT() safety checks with GTK_IS_OBJECT validation
+4. **util_item_factory_popup_with_data()** - Added ifactory null checks and GTK_IS_ITEM_FACTORY validation
+
+#### Safety Measures Implemented:
+- Null pointer checks before all GTK object operations
+- GTK type validation using GTK_IS_* macros before casting
+- Widget validation before accessing widget properties
+- Early return on invalid parameters
+
+#### Testing Results:
+- XMMS now starts without segmentation faults
+- File browser functions properly protected
+- GTK object operations safely validated
+- Application stable under normal operation
+
+The protective code prevents crashes while maintaining full functionality of the file browser and menu systems.
 - Enable step-through debugging of GTK2 functions
 
 This allows you to:

@@ -460,6 +460,22 @@ static void util_menu_position(GtkMenu *menu, gint *x, gint *y, gpointer data)
 static void util_menu_delete_popup_data(GtkObject *object,
 					GtkItemFactory *ifactory)
 {
+	/* Add null pointer checks to prevent segmentation fault */
+	if (!object) {
+		g_warning("util_menu_delete_popup_data: object is NULL");
+		return;
+	}
+	
+	if (!ifactory) {
+		g_warning("util_menu_delete_popup_data: ifactory is NULL");
+		return;
+	}
+	
+	if (!GTK_IS_OBJECT(ifactory)) {
+		g_warning("util_menu_delete_popup_data: ifactory is not a valid GtkObject");
+		return;
+	}
+	
 	g_signal_handlers_disconnect_by_func(G_OBJECT(object), G_CALLBACK(util_menu_delete_popup_data), ifactory);
 	gtk_object_remove_data_by_id(GTK_OBJECT(ifactory), quark_popup_data);
 }
@@ -480,6 +496,22 @@ void util_item_factory_popup_with_data(GtkItemFactory * ifactory,
 {
 	static GQuark quark_user_menu_pos = 0;
 	struct MenuPos *pos;
+
+	/* Add null pointer checks to prevent segmentation fault */
+	if (!ifactory) {
+		g_warning("util_item_factory_popup_with_data: ifactory is NULL");
+		return;
+	}
+	
+	if (!GTK_IS_ITEM_FACTORY(ifactory)) {
+		g_warning("util_item_factory_popup_with_data: ifactory is not a valid GtkItemFactory");
+		return;
+	}
+	
+	if (!ifactory->widget) {
+		g_warning("util_item_factory_popup_with_data: ifactory->widget is NULL");
+		return;
+	}
 
 	if (!quark_user_menu_pos)
 		quark_user_menu_pos =
