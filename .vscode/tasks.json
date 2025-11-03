@@ -5,11 +5,53 @@
             "label": "build-debug",
             "type": "shell",
             "command": "make",
-            "args": ["clean", "&&", "make", "CFLAGS=-g3 -O0 -Wall -Wpointer-arith -finline-functions", "-j${input:jobCount}"],
+            "args": ["CFLAGS=-g3 -O0 -Wall -Wpointer-arith -finline-functions", "-j${input:jobCount}"],
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "build-debug-clean",
+            "type": "shell",
+            "command": "make",
+            "args": ["clean", "&&", "make", "CFLAGS=-g3 -O0 -Wall -Wpointer-arith -finline-functions", "-j${input:jobCount}"],
+            "group": "build",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "build-debug-incremental",
+            "type": "shell",
+            "command": "make",
+            "args": ["CFLAGS=-g3 -O0 -Wall -Wpointer-arith -finline-functions", "-j${input:jobCount}"],
+            "group": "build",
             "options": {
                 "cwd": "${workspaceFolder}"
             },
