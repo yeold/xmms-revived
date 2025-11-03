@@ -220,7 +220,7 @@ void vorbis_configure(void)
 		return;
 	}
 
-	vorbis_configurewin = gtk_window_new(GDK_WINDOW_DIALOG);
+	vorbis_configurewin = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_signal_connect(G_OBJECT(vorbis_configurewin), "destroy", G_CALLBACK(gtk_widget_destroyed), &vorbis_configurewin);
 	g_signal_connect(G_OBJECT(vorbis_configurewin), "destroy", G_CALLBACK(configure_destroy), &vorbis_configurewin);
 	gtk_window_set_title(GTK_WINDOW(vorbis_configurewin), _("Ogg Vorbis Configuration"));

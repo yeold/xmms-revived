@@ -239,7 +239,7 @@ void mpg123_configure(void)
 		gdk_window_raise(mpg123_configurewin->window);
 		return;
 	}
-	mpg123_configurewin = gtk_window_new(GDK_WINDOW_DIALOG);
+	mpg123_configurewin = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_signal_connect(G_OBJECT(mpg123_configurewin), "destroy", G_CALLBACK(gtk_widget_destroyed), &mpg123_configurewin);
 	g_signal_connect(G_OBJECT(mpg123_configurewin), "destroy", G_CALLBACK(configure_destroy), &mpg123_configurewin);
 	gtk_window_set_title(GTK_WINDOW(mpg123_configurewin), _("MPG123 Configuration"));

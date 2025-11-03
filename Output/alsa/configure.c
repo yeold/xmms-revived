@@ -267,7 +267,7 @@ void alsa_configure(void)
 		return;
 	}
 
-	configure_win = gtk_window_new(GDK_WINDOW_DIALOG);
+	configure_win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	g_signal_connect(G_OBJECT(configure_win), "destroy",
 					 G_CALLBACK(gtk_widget_destroyed), &configure_win);
 	gtk_window_set_title(GTK_WINDOW(configure_win),

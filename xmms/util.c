@@ -551,7 +551,7 @@ GtkWidget* util_create_add_url_window(gchar *caption, GCallback ok_func, GCallba
 {
 	GtkWidget *win, *vbox, *bbox, *ok, *enqueue, *cancel, *combo;
 
-	win = gtk_window_new(GDK_WINDOW_DIALOG);
+	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title(GTK_WINDOW(win), caption);
 	gtk_window_set_position(GTK_WINDOW(win), GTK_WIN_POS_MOUSE);
 	gtk_window_set_default_size(GTK_WINDOW(win), 400, -1);
