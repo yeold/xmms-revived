@@ -678,7 +678,29 @@ gboolean util_filebrowser_is_dir(GtkFileSelection * filesel)
 	struct stat buf;
 	gboolean retv = FALSE;
 
-	text = g_strdup(gtk_file_selection_get_filename(filesel));
+	/* Add null pointer check */
+	if (!filesel) {
+		g_warning("util_filebrowser_is_dir: filesel is NULL");
+		return FALSE;
+	}
+
+	if (!GTK_IS_FILE_SELECTION(filesel)) {
+		g_warning("util_filebrowser_is_dir: filesel is not a valid GtkFileSelection");
+		return FALSE;
+	}
+
+	/* Check if gtk_file_selection_get_filename returns a valid string */
+	const gchar *filename = gtk_file_selection_get_filename(filesel);
+	if (!filename) {
+		g_warning("util_filebrowser_is_dir: gtk_file_selection_get_filename returned NULL");
+		return FALSE;
+	}
+	
+	text = g_strdup(filename);
+	if (!text) {
+		g_warning("util_filebrowser_is_dir: Failed to duplicate filename string");
+		return FALSE;
+	}
 	if (strlen(text) == 0)
 	{
 		/*
@@ -688,7 +710,14 @@ gboolean util_filebrowser_is_dir(GtkFileSelection * filesel)
 		 * dir.
 		 */
 		g_free(text);
-		text = g_strdup(gtk_entry_get_text(GTK_ENTRY(filesel->selection_entry)));
+		
+		/* Check if selection_entry is valid before accessing it */
+		if (filesel->selection_entry && GTK_IS_ENTRY(filesel->selection_entry)) {
+			text = g_strdup(gtk_entry_get_text(GTK_ENTRY(filesel->selection_entry)));
+		} else {
+			g_warning("util_filebrowser_is_dir: selection_entry is not valid");
+			return FALSE;
+		}
 	}
 
 	if ((stat(text, &buf) == 0 && S_ISDIR(buf.st_mode)) || strlen(text) == 0)
@@ -723,6 +752,12 @@ static void filebrowser_add_files(GtkFileSelection * filesel)
 	const char *text;
 	char *ptr;
 
+	/* Check for NULL pointer early to prevent segmentation faults */
+	if (!filesel) {
+		g_warning("filebrowser_add_files: filesel is NULL");
+		return;
+	}
+
 	if (cfg.filesel_path)
 		g_free(cfg.filesel_path);
 
@@ -733,11 +768,44 @@ static void filebrowser_add_files(GtkFileSelection * filesel)
 	/* This will give an extra slash if the current dir is the root. */
 	cfg.filesel_path = g_strconcat(ptr, "/", NULL);
 
-	node = GTK_CLIST(filesel->file_list)->selection;
-	while (node)
-	{
-		sel_list = g_list_prepend(sel_list, node->data);
-		node = g_list_next(node);
+	/* Add null pointer checks to prevent segmentation fault */
+	if (!filesel->file_list) {
+		g_warning("filebrowser_add_files: file_list is NULL");
+		return;
+	}
+
+	/* Check if file_list is a GtkCList or GtkTreeView */
+	if (GTK_IS_CLIST(filesel->file_list)) {
+		/* Handle traditional GtkCList */
+		node = GTK_CLIST(filesel->file_list)->selection;
+		while (node)
+		{
+			sel_list = g_list_prepend(sel_list, node->data);
+			node = g_list_next(node);
+		}
+	} else if (GTK_IS_TREE_VIEW(filesel->file_list)) {
+		/* Handle newer GtkTreeView - get selection differently */
+		GtkTreeSelection *selection;
+		GtkTreeModel *model;
+		GList *selected_rows, *iter;
+		
+		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(filesel->file_list));
+		selected_rows = gtk_tree_selection_get_selected_rows(selection, &model);
+		
+		for (iter = selected_rows; iter != NULL; iter = iter->next) {
+			GtkTreePath *path = (GtkTreePath *)iter->data;
+			GtkTreeIter tree_iter;
+			
+			if (gtk_tree_model_get_iter(model, &tree_iter, path)) {
+				gint row = gtk_tree_path_get_indices(path)[0];
+				sel_list = g_list_prepend(sel_list, GINT_TO_POINTER(row));
+			}
+			gtk_tree_path_free(path);
+		}
+		g_list_free(selected_rows);
+	} else {
+		g_warning("filebrowser_add_files: file_list is neither GtkCList nor GtkTreeView");
+		return;
 	}
 	sel_list = g_list_sort(sel_list, int_compare_func);
 
@@ -748,12 +816,36 @@ static void filebrowser_add_files(GtkFileSelection * filesel)
 		do {
 			char *tmp;
 			char *nonconst_text;
-			gtk_clist_get_text(GTK_CLIST(filesel->file_list),
-					   GPOINTER_TO_INT(node->data), 0, &nonconst_text);
-			text = nonconst_text;
-			tmp = g_strconcat(cfg.filesel_path, text, NULL);
-			playlist_add(tmp);
-			g_free(tmp);
+			
+			/* Get text differently based on widget type */
+			if (GTK_IS_CLIST(filesel->file_list)) {
+				gtk_clist_get_text(GTK_CLIST(filesel->file_list),
+						   GPOINTER_TO_INT(node->data), 0, &nonconst_text);
+			} else if (GTK_IS_TREE_VIEW(filesel->file_list)) {
+				/* For GtkTreeView, we need to get the text from the model */
+				GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(filesel->file_list));
+				GtkTreeIter iter;
+				GtkTreePath *path = gtk_tree_path_new_from_indices(GPOINTER_TO_INT(node->data), -1);
+				
+				if (gtk_tree_model_get_iter(model, &iter, path)) {
+					gtk_tree_model_get(model, &iter, 0, &nonconst_text, -1);
+				} else {
+					nonconst_text = NULL;
+				}
+				gtk_tree_path_free(path);
+			} else {
+				nonconst_text = NULL;
+			}
+			
+			if (nonconst_text) {
+				text = nonconst_text;
+				tmp = g_strconcat(cfg.filesel_path, text, NULL);
+				playlist_add(tmp);
+				g_free(tmp);
+				if (GTK_IS_TREE_VIEW(filesel->file_list)) {
+					g_free(nonconst_text); /* TreeView allocates the string */
+				}
+			}
 		} while ((node = g_list_next(node)) != NULL);
 	}
 	else
@@ -776,30 +868,91 @@ static void filebrowser_add_files(GtkFileSelection * filesel)
 
 static void filebrowser_add(GtkWidget * w, GtkWidget * filesel)
 {
+	/* Add null pointer checks to prevent segmentation fault */
+	if (!filesel) {
+		g_warning("filebrowser_add: filesel is NULL");
+		return;
+	}
+
+	if (!GTK_IS_FILE_SELECTION(filesel)) {
+		g_warning("filebrowser_add: filesel is not a valid GtkFileSelection");
+		return;
+	}
+
 	if (util_filebrowser_is_dir(GTK_FILE_SELECTION(filesel)))
 		return;
+	
+	/* Additional safety check before calling filebrowser_add_files */
+	if (!GTK_IS_FILE_SELECTION(filesel)) {
+		g_warning("filebrowser_add: filesel became invalid before filebrowser_add_files call");
+		return;
+	}
+	
 	gtk_widget_hide(filesel);
 	filebrowser_add_files(GTK_FILE_SELECTION(filesel));
-	gtk_widget_destroy(filesel);
+	
+	/* Final check before destroying the widget */
+	if (GTK_IS_WIDGET(filesel)) {
+		gtk_widget_destroy(filesel);
+	} else {
+		g_warning("filebrowser_add: filesel is not a valid widget before destroy");
+	}
 }
 
 static void filebrowser_play(GtkWidget * w, GtkWidget * filesel)
 {
+	/* Add null pointer checks to prevent segmentation fault */
+	if (!filesel) {
+		g_warning("filebrowser_play: filesel is NULL");
+		return;
+	}
+
+	if (!GTK_IS_FILE_SELECTION(filesel)) {
+		g_warning("filebrowser_play: filesel is not a valid GtkFileSelection");
+		return;
+	}
+
 	if (util_filebrowser_is_dir(GTK_FILE_SELECTION(filesel)))
 		return;
 	playlist_clear();
 	gtk_widget_hide(filesel);
 	filebrowser_add_files(GTK_FILE_SELECTION(filesel));
-	gtk_widget_destroy(filesel);
+	
+	/* Final check before destroying the widget */
+	if (GTK_IS_WIDGET(filesel)) {
+		gtk_widget_destroy(filesel);
+	} else {
+		g_warning("filebrowser_play: filesel is not a valid widget before destroy");
+	}
 	playlist_play();
 }
 
 static void filebrowser_add_selected_files(GtkWidget * w, gpointer data)
 {
-	GtkFileSelection *filesel = GTK_FILE_SELECTION(data);
+	GtkFileSelection *filesel;
+	
+	/* Add null pointer checks to prevent segmentation fault */
+	if (!data) {
+		g_warning("filebrowser_add_selected_files: data is NULL");
+		return;
+	}
+
+	if (!GTK_IS_FILE_SELECTION(data)) {
+		g_warning("filebrowser_add_selected_files: data is not a valid GtkFileSelection");
+		return;
+	}
+
+	filesel = GTK_FILE_SELECTION(data);
 
 	filebrowser_add_files(filesel);
-	gtk_clist_unselect_all(GTK_CLIST(filesel->file_list));
+	
+	/* Only use GtkCList functions if it's actually a GtkCList */
+	if (GTK_IS_CLIST(filesel->file_list)) {
+		gtk_clist_unselect_all(GTK_CLIST(filesel->file_list));
+	} else if (GTK_IS_TREE_VIEW(filesel->file_list)) {
+		GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(filesel->file_list));
+		gtk_tree_selection_unselect_all(selection);
+	}
 
 	/*HACK*/
 	gtk_entry_set_text(GTK_ENTRY(filesel->selection_entry), "");
@@ -807,18 +960,46 @@ static void filebrowser_add_selected_files(GtkWidget * w, gpointer data)
 
 static void filebrowser_add_all_files(GtkWidget * w, gpointer data)
 {
-	GtkFileSelection *filesel = GTK_FILE_SELECTION(data);
+	GtkFileSelection *filesel;
+	
+	/* Add null pointer checks to prevent segmentation fault */
+	if (!data) {
+		g_warning("filebrowser_add_all_files: data is NULL");
+		return;
+	}
 
-	gtk_clist_freeze(GTK_CLIST(filesel->file_list));
-	gtk_clist_select_all(GTK_CLIST(filesel->file_list));
+	if (!GTK_IS_FILE_SELECTION(data)) {
+		g_warning("filebrowser_add_all_files: data is not a valid GtkFileSelection");
+		return;
+	}
+
+	filesel = GTK_FILE_SELECTION(data);
+
+	/* Only use GtkCList functions if it's actually a GtkCList */
+	if (GTK_IS_CLIST(filesel->file_list)) {
+		gtk_clist_freeze(GTK_CLIST(filesel->file_list));
+		gtk_clist_select_all(GTK_CLIST(filesel->file_list));
+	} else if (GTK_IS_TREE_VIEW(filesel->file_list)) {
+		GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(filesel->file_list));
+		gtk_tree_selection_select_all(selection);
+	}
+	
 	filebrowser_add_files(filesel);
 	/*
 	 * We want gtk_clist_undo_selection() but it seems to be buggy
 	 * in GTK+ 1.2.6
 	 */
 	/*  gtk_clist_undo_selection(GTK_CLIST(GTK_FILE_SELECTION(filesel)->file_list)); */
-	gtk_clist_unselect_all(GTK_CLIST(filesel->file_list));
-	gtk_clist_thaw(GTK_CLIST(filesel->file_list));
+	
+	/* Only use GtkCList functions if it's actually a GtkCList */
+	if (GTK_IS_CLIST(filesel->file_list)) {
+		gtk_clist_unselect_all(GTK_CLIST(filesel->file_list));
+		gtk_clist_thaw(GTK_CLIST(filesel->file_list));
+	} else if (GTK_IS_TREE_VIEW(filesel->file_list)) {
+		GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(filesel->file_list));
+		gtk_tree_selection_unselect_all(selection);
+		/* GtkTreeView doesn't need freeze/thaw */
+	}
 
 	gtk_entry_set_text(GTK_ENTRY(filesel->selection_entry), "");
 }
@@ -838,12 +1019,29 @@ GtkWidget * util_create_filebrowser(gboolean play_button)
 	filebrowser = gtk_file_selection_new(title);
 	fb = GTK_FILE_SELECTION(filebrowser);
 
-	gtk_clist_set_selection_mode(GTK_CLIST(fb->file_list),
-				     GTK_SELECTION_EXTENDED);
+	/* Only set selection mode if it's actually a GtkCList */
+	if (GTK_IS_CLIST(fb->file_list)) {
+		gtk_clist_set_selection_mode(GTK_CLIST(fb->file_list),
+					     GTK_SELECTION_EXTENDED);
+	} else if (GTK_IS_TREE_VIEW(fb->file_list)) {
+		/* For GtkTreeView, set selection mode on the selection object */
+		GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(fb->file_list));
+		gtk_tree_selection_set_mode(selection, GTK_SELECTION_MULTIPLE);
+	}
+
         g_signal_connect(fb->selection_entry, "changed",
                            G_CALLBACK(filebrowser_entry_changed), filebrowser);
-        g_signal_connect(fb->dir_list, "select_row",
-                           G_CALLBACK(filebrowser_dir_select), filebrowser);
+
+	/* Only connect select_row signal if it's a GtkCList */
+	if (GTK_IS_CLIST(fb->dir_list)) {
+		g_signal_connect(fb->dir_list, "select_row",
+				   G_CALLBACK(filebrowser_dir_select), filebrowser);
+	} else if (GTK_IS_TREE_VIEW(fb->dir_list)) {
+		/* For GtkTreeView, use different signal */
+		GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(fb->dir_list));
+		g_signal_connect(selection, "changed",
+				   G_CALLBACK(filebrowser_dir_select), filebrowser);
+	}
         if (play_button)
                 sf = (GCallback)filebrowser_play;
         else
