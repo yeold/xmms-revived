@@ -4060,9 +4060,12 @@ void segfault_handler(int sig)
 static gboolean pposition_configure(GtkWidget *w, GdkEventConfigure *event, gpointer data)
 {
 	gint x,y;
-	gdk_window_get_deskrelative_origin(w->window, &x, &y);
-	if(x != 0 || y != 0)
-		pposition_broken = TRUE;
+	GdkWindow *window = gtk_widget_get_window(w);
+	if (window) {
+		gdk_window_get_origin(window, &x, &y);
+		if(x != 0 || y != 0)
+			pposition_broken = TRUE;
+	}
 	gtk_widget_destroy(w);
 
 	return FALSE;
@@ -4070,33 +4073,10 @@ static gboolean pposition_configure(GtkWidget *w, GdkEventConfigure *event, gpoi
 
 void check_pposition(void)
 {
-	GtkWidget *window;
-	GdkBitmap *mask;
-	GdkGC *gc;
-	GdkColor pattern;
-
-	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_wmclass(GTK_WINDOW(window), "XMMS_Player", "xmms");
-	g_signal_connect(G_OBJECT(window), "configure_event",
-			   G_CALLBACK(pposition_configure), NULL);
-	gtk_widget_set_uposition(window, 0, 0);
-	gtk_widget_realize(window);
-
-	gtk_widget_set_usize(window, 1, 1);
-	gdk_window_set_decorations(window->window, 0);
-
-	mask = gdk_pixmap_new(window->window, 1, 1, 1);
-	gc = gdk_gc_new(mask);
-	pattern.pixel = 0;
-	gdk_gc_set_foreground(gc, &pattern);
-	gdk_draw_rectangle(mask, gc, TRUE, 0, 0, 1, 1);
-	gdk_gc_destroy(gc);
-	gtk_widget_shape_combine_mask(window, mask, 0, 0);
-
-	gtk_widget_show(window);
-
-	while (g_main_iteration(FALSE))
-		;
+	/* This function checked for broken window positioning in old window managers.
+	 * Modern window managers don't have this issue, and the GTK+ 2.0 version
+	 * of this check causes crashes. We'll assume window positioning works. */
+	pposition_broken = FALSE;
 }
 
 #if 0
