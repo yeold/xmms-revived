@@ -198,7 +198,7 @@ SpaceBeforeCpp11BracedList: false
 SpaceBeforeCtorInitializerColon: true
 SpaceBeforeInheritanceColon: true
 SpaceBeforeJsonColon: false
-SpaceBeforeParens: Always
+SpaceBeforeParens: Never
 SpaceBeforeParensOptions:
   AfterControlStatements: false
   AfterForeachMacros: false
