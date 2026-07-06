@@ -259,7 +259,7 @@ static char **add_tag(char **list, char *label, char *tag)
    */
   while (*ptr != NULL)
   {
-    if (!g_strncasecmp(reallabel, *ptr, strlen(reallabel)))
+    if (!g_ascii_strcnasecmp(reallabel, *ptr, strlen(reallabel)))
     {
       g_free(*ptr);
       if (tag != NULL)
@@ -326,7 +326,7 @@ static void save_cb(GtkWidget *w, gpointer data)
   vcedit_state *state;
   vorbis_comment *comment;
 
-  if (!g_strncasecmp(vte.filename, "http://", 7))
+  if (!g_ascii_strcnasecmp(vte.filename, "http://", 7))
     return;
 
   state = vcedit_new_state();
@@ -402,7 +402,7 @@ static void remove_cb(GtkWidget *w, gpointer data)
   vcedit_state *state;
   vorbis_comment *comment;
 
-  if (!g_strncasecmp(vte.filename, "http://", 7))
+  if (!g_ascii_strcnasecmp(vte.filename, "http://", 7))
     return;
 
   state = vcedit_new_state();
@@ -649,7 +649,7 @@ void vorbis_file_info_box(char *fn)
     {
       for (i = 0; i < sizeof(vorbis_genres) / sizeof(*vorbis_genres); i++)
         genre_list = g_list_prepend(genre_list, _(vorbis_genres[i]));
-      genre_list = g_list_sort(genre_list, (GCompareFunc)g_strcasecmp);
+      genre_list = g_list_sort(genre_list, (GCompareFunc)g_ascii_strcasecmp);
     }
     gtk_combo_set_popdown_strings(GTK_COMBO(genre_combo), genre_list);
     gtk_table_attach(GTK_TABLE(table), genre_combo, 1, 4, 5, 6, GTK_FILL | GTK_EXPAND | GTK_SHRINK,
@@ -827,7 +827,7 @@ void vorbis_file_info_box(char *fn)
   else
     gdk_window_raise(window->window);
 
-  if (!g_strncasecmp(vte.filename, "http://", 7))
+  if (!g_ascii_strcnasecmp(vte.filename, "http://", 7))
     gtk_widget_set_sensitive(tag_frame, FALSE);
   else
     gtk_widget_set_sensitive(tag_frame, TRUE);

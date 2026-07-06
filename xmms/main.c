@@ -4024,12 +4024,12 @@ void handle_cmd_line_options(struct cmdlineopt *opt, gboolean remote)
   {
     if (opt->shuffle)
     {
-      if (g_strcasecmp(opt->shuffle, "on") == 0)
+      if (g_ascii_strcasecmp(opt->shuffle, "on") == 0)
       {
         if (!xmms_remote_is_shuffle(opt->session))
           xmms_remote_toggle_shuffle(opt->session);
       }
-      else if (g_strcasecmp(opt->shuffle, "off") == 0)
+      else if (g_ascii_strcasecmp(opt->shuffle, "off") == 0)
       {
         if (xmms_remote_is_shuffle(opt->session))
           xmms_remote_toggle_shuffle(opt->session);
@@ -4054,12 +4054,12 @@ void handle_cmd_line_options(struct cmdlineopt *opt, gboolean remote)
   {
     if (opt->repeat)
     {
-      if (g_strcasecmp(opt->repeat, "on") == 0)
+      if (g_ascii_strcasecmp(opt->repeat, "on") == 0)
       {
         if (!xmms_remote_is_repeat(opt->session))
           xmms_remote_toggle_repeat(opt->session);
       }
-      else if (g_strcasecmp(opt->repeat, "off") == 0)
+      else if (g_ascii_strcasecmp(opt->repeat, "off") == 0)
       {
         if (xmms_remote_is_repeat(opt->session))
           xmms_remote_toggle_repeat(opt->session);
@@ -4080,12 +4080,12 @@ void handle_cmd_line_options(struct cmdlineopt *opt, gboolean remote)
   {
     if (opt->advance)
     {
-      if (g_strcasecmp(opt->advance, "on") == 0)
+      if (g_ascii_strcasecmp(opt->advance, "on") == 0)
       {
         if (!xmms_remote_is_advance(opt->session))
           xmms_remote_toggle_advance(opt->session);
       }
-      else if (g_strcasecmp(opt->advance, "off") == 0)
+      else if (g_ascii_strcasecmp(opt->advance, "off") == 0)
       {
         if (xmms_remote_is_advance(opt->session))
           xmms_remote_toggle_advance(opt->session);
