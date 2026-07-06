@@ -259,7 +259,7 @@ static char **add_tag(char **list, char *label, char *tag)
    */
   while (*ptr != NULL)
   {
-    if (!g_ascii_strcnasecmp(reallabel, *ptr, strlen(reallabel)))
+    if (!g_ascii_strncasecmp(reallabel, *ptr, strlen(reallabel)))
     {
       g_free(*ptr);
       if (tag != NULL)
@@ -326,7 +326,7 @@ static void save_cb(GtkWidget *w, gpointer data)
   vcedit_state *state;
   vorbis_comment *comment;
 
-  if (!g_ascii_strcnasecmp(vte.filename, "http://", 7))
+  if (!g_ascii_strncasecmp(vte.filename, "http://", 7))
     return;
 
   state = vcedit_new_state();
@@ -402,7 +402,7 @@ static void remove_cb(GtkWidget *w, gpointer data)
   vcedit_state *state;
   vorbis_comment *comment;
 
-  if (!g_ascii_strcnasecmp(vte.filename, "http://", 7))
+  if (!g_ascii_strncasecmp(vte.filename, "http://", 7))
     return;
 
   state = vcedit_new_state();
@@ -827,7 +827,7 @@ void vorbis_file_info_box(char *fn)
   else
     gdk_window_raise(window->window);
 
-  if (!g_ascii_strcnasecmp(vte.filename, "http://", 7))
+  if (!g_ascii_strncasecmp(vte.filename, "http://", 7))
     gtk_widget_set_sensitive(tag_frame, FALSE);
   else
     gtk_widget_set_sensitive(tag_frame, TRUE);

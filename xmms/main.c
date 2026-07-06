@@ -1719,7 +1719,7 @@ static void mainwin_jump_to_file_edit_real(GtkWidget *widget, gpointer userdata)
 
   PL_LOCK();
   playlist = get_playlist();
-  key = g_strdup(gtk_entry_get_text(GTK_ENTRY(widget)));
+  key = g_ascii_strdown(gtk_entry_get_text(GTK_ENTRY(widget)), -1);
   clist = GTK_CLIST(userdata);
 
   /* Figure out what is currently selected */
@@ -1728,9 +1728,6 @@ static void mainwin_jump_to_file_edit_real(GtkWidget *widget, gpointer userdata)
   gint *tmp = gtk_clist_get_row_data(clist, clist->focus_row);
   if (tmp != NULL)
     prev_focus = *tmp;
-
-  /* lowercase the key string */
-  g_strdown(key);
 
   /* Chop the key string into ' '-separeted key words */
   for (ptr = key; nw < 20; ptr = strchr(ptr, ' '))
