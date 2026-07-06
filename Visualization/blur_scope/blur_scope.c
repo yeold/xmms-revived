@@ -90,7 +90,7 @@ void bscope_read_config(void)
 		
 		if (cfg)
 		{
-			xmms_cfg_read_int(cfg, "BlurScope", "color", &bscope_cfg.color);
+			xmms_cfg_read_int(cfg, "BlurScope", "color", (gint32*)&bscope_cfg.color);
 			xmms_cfg_free(cfg);
 		}
 		g_free(filename);

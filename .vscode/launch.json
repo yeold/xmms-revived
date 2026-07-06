@@ -3,11 +3,11 @@
     "configurations": [
         {
             "name": "Debug XMMS",
-            "type": "cppdbg",
+            "type": "lldb",
             "request": "launch",
             "program": "${workspaceFolder}/xmms/.libs/xmms",
             "args": [],
-            "stopAtEntry": true,
+            "stopOnEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [
                 {
@@ -20,16 +20,11 @@
                 }
             ],
             "externalConsole": false,
-            "MIMode": "gdb",
+            "MIMode": "lldb",
             "setupCommands": [
                 {
-                    "description": "Enable pretty-printing for gdb",
+                    "description": "Enable pretty-printing for LLDB",
                     "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                },
-                {
-                    "description": "Set Disassembly Flavor to Intel",
-                    "text": "-gdb-set disassembly-flavor intel",
                     "ignoreFailures": true
                 },
                 {
@@ -49,59 +44,21 @@
                 }
             ],
             "preLaunchTask": "build-debug",
-            "miDebuggerPath": "/usr/bin/gdb",
-            "logging": {
-                "moduleLoad": false,
-                "trace": false,
-                "engineLogging": false,
-                "programOutput": true,
-                "exceptions": false
-            }
+            "miDebuggerPath": "/usr/bin/lldb"
         },
         {
             "name": "Debug XMMS (with wrapper)",
-            "type": "cppdbg",
+            "type": "lldb",
             "request": "launch",
             "program": "/bin/bash",
             "args": ["-c", "cd '${workspaceFolder}' && exec ./xmms/xmms"],
-            "stopAtEntry": false,
+            "stopOnEntry": false,
             "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                },
-                {
-                    "description": "Set debug file directory for system libraries",
-                    "text": "-gdb-set debug-file-directory /usr/lib/debug",
-                    "ignoreFailures": true
-                },
-                {
-                    "description": "Set source directories for system libraries",
-                    "text": "-gdb-set directories /usr/src/debug:${workspaceFolder}",
-                    "ignoreFailures": true
-                },
-                {
-                    "description": "Set follow-fork to child",
-                    "text": "-gdb-set follow-fork-mode child",
-                    "ignoreFailures": true
-                },
-                {
-                    "description": "Set detach-on-fork off",
-                    "text": "-gdb-set detach-on-fork off",
-                    "ignoreFailures": true
-                }
-            ],
             "preLaunchTask": "build-debug",
-            "miDebuggerPath": "/usr/bin/gdb"
         },
         {
             "name": "Debug XMMS (with args)",
-            "type": "cppdbg",
+            "type": "lldb",
             "request": "launch",
             "program": "${workspaceFolder}/xmms/.libs/xmms",
             "args": ["${input:audioFile}"],
@@ -114,10 +71,10 @@
                 }
             ],
             "externalConsole": false,
-            "MIMode": "gdb",
+            "MIMode": "lldb",
             "setupCommands": [
                 {
-                    "description": "Enable pretty-printing for gdb",
+                    "description": "Enable pretty-printing for LLDB",
                     "text": "-enable-pretty-printing",
                     "ignoreFailures": true
                 },
@@ -133,18 +90,18 @@
                 }
             ],
             "preLaunchTask": "build-debug",
-            "miDebuggerPath": "/usr/bin/gdb"
+            "miDebuggerPath": "/usr/bin/lldb"
         },
         {
             "name": "Attach to XMMS",
-            "type": "cppdbg",
+            "type": "lldb",
             "request": "attach",
             "program": "${workspaceFolder}/xmms/.libs/xmms",
             "processId": "${command:pickProcess}",
-            "MIMode": "gdb",
+            "MIMode": "lldb",
             "setupCommands": [
                 {
-                    "description": "Enable pretty-printing for gdb",
+                    "description": "Enable pretty-printing for LLDB",
                     "text": "-enable-pretty-printing",
                     "ignoreFailures": true
                 },

@@ -17427,8 +17427,7 @@ printf %s "checking for libmikmod - version >= $min_libmikmod_version... " >&6; 
     if test "x$enable_libmikmodtest" = "xyes" ; then
       ac_save_CFLAGS="$CFLAGS"
       ac_save_LIBS="$LIBS"
-
-	  ac_ext=c
+      ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
@@ -17446,33 +17445,17 @@ else case e in #(
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <mikmod.h>
 
-char* my_strdup (char *str)
-{
-  char *new_str;
-
-  if (str) {
-    new_str = (char *) malloc ((strlen (str) + 1) * sizeof(char));
-    strcpy (new_str, str);
-  } else
-    new_str = NULL;
-
-  return new_str;
-}
-
-int main()
+int main (void)
 {
   int major,minor,micro;
   int libmikmod_major_version,libmikmod_minor_version,libmikmod_micro_version;
-  char *tmp_version;
+  FILE *fp = fopen("conf.mikmodtest", "w");
 
-  system("touch conf.mikmodtest");
+  if (fp) fclose(fp);
 
-  /* HP/UX 9 (%@#!) writes to sscanf strings */
-  tmp_version = my_strdup("$min_libmikmod_version");
-  if (sscanf(tmp_version, "%d.%d.%d", &major, &minor, &micro) != 3) {
+  if (sscanf("$min_libmikmod_version", "%d.%d.%d", &major, &minor, &micro) != 3) {
      printf("%s, bad version string\n", "$min_libmikmod_version");
      exit(1);
    }
@@ -17548,7 +17531,7 @@ fi
 
        CFLAGS="$ac_save_CFLAGS"
        LIBS="$ac_save_LIBS"
-	   ac_ext=c
+       ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
@@ -17575,8 +17558,7 @@ printf "%s\n" "no" >&6; }
           echo "*** Could not run libmikmod test program, checking why..."
           CFLAGS="$CFLAGS $LIBMIKMOD_CFLAGS"
           LIBS="$LIBS $LIBMIKMOD_LIBS"
-
-		  ac_ext=c
+          ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
@@ -17618,7 +17600,7 @@ rm -f core conftest.err conftest.$ac_objext conftest.beam \
     conftest$ac_exeext conftest.$ac_ext
           CFLAGS="$ac_save_CFLAGS"
           LIBS="$ac_save_LIBS"
-		  ac_ext=c
+          ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
