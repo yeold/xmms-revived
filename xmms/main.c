@@ -4221,10 +4221,7 @@ int main(int argc, char **argv)
 
   signal(SIGPIPE, SIG_IGN); /* for controlsocket.c */
   signal(SIGSEGV, segfault_handler);
-  g_thread_init(NULL);
   gtk_set_locale();
-  if (!g_thread_supported())
-    g_error(_("GLib does not support threads."));
 
   parse_cmd_line(argc, argv, &options);
 
@@ -4339,7 +4336,7 @@ int main(int argc, char **argv)
 
   draw_main_window(TRUE);
 
-  mainwin_timeout_tag = gtk_timeout_add(10, idle_func, NULL);
+  mainwin_timeout_tag = g_timeout_add(10, idle_func, NULL);
   playlist_start_get_info_thread();
 
   enable_x11r5_session_management(argc, argv);
