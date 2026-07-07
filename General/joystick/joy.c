@@ -177,8 +177,11 @@ static void init(void)
 /* ---------------------------------------------------------------------- */
 static void cleanup(void)
 {
-	keep_going = FALSE;
-	pthread_join(joyapp_thread, NULL);
+	if (keep_going)
+	{
+		keep_going = FALSE;
+		pthread_join(joyapp_thread, NULL);
+	}
 	if (joy_fd1 > 0)
 		close(joy_fd1);
 	if (joy_fd2 > 0)

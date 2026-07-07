@@ -49,14 +49,13 @@ typedef struct
 }
 irConfig;
 
-extern pthread_t irapp_thread;
-extern gboolean keepGoing;
 extern irConfig ircfg;
 extern gboolean irconf_is_going;
 
 
 void ir_about(void);
 void ir_configure(void);
+
 void irapp_read_config(void);
 void irapp_save_config(void);
 void irapp_init_port(gchar * ir_port);

@@ -1,4 +1,4 @@
-XMMS - X Multimedia System (C)1998-2001
+XMMS - X Multimedia System (C) 1997-2004
 
        Main Programming: Peter Alm
 
@@ -16,6 +16,8 @@ XMMS - X Multimedia System (C)1998-2001
                          Logan Hanks
                          Eric L. Hernes (FreeBSD patches)
                          Ville Herva
+			 Ian 'Hixie' Hickson
+                         higway (MMX)
                          Michael Hipp and others (MPG123 engine)
                          Olle Hällnäs (compiling fixes)
                          David Jacoby
@@ -28,17 +30,23 @@ XMMS - X Multimedia System (C)1998-2001
                          Colin Marquardt
                          Willem Monsuwe
                          John Riddoch (Solaris plugin)
+                         Josip Rodin
                          Pablo Saratxaga (i18n)
                          Carl van Schaik (pro logic plugin)
                          Jörg Schuler
                          Charles Sielski (irman plugin)
                          Espen Skoglund
+			 Matthieu Sozeau (ALSA plugin)
                          Kimura Takuhiro (3DNow!)
                          Zinx Verituse
                          Ryan Weaver (RPMs among other things)
                          Chris Wilson
                          Dave Yearke
                          Stephan K. Zitz
+
+           Default skin: Leonard "Blayde" Tan
+                         Robin Sylvestre (Equalizer and Playlist)
+                         Thomas Nilsson (New titles, and cleanups)
 
   Homepage and Graphics: Thomas Nilsson
 

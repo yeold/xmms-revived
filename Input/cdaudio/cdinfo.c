@@ -1,6 +1,6 @@
 /*
  *  cdinfo.c   Copyright 1999 Espen Skoglund <esk@ira.uka.de>
- *             Copyright 1999 Håvard Kvålen <havardk@sol.no>
+ *             Copyright 1999-2006 Håvard Kvålen <havardk@xmms.org>
  *
  *
  *  This program is free software; you can redistribute it and/or modify
@@ -34,7 +34,7 @@
 void cdda_cdinfo_flush(cdinfo_t * cdinfo)
 {
 	trackinfo_t *t;
-	gint i;
+	int i;
 
 	if (cdinfo->albname)
 		g_free(cdinfo->albname);
@@ -94,14 +94,15 @@ cdinfo_t *cdda_cdinfo_new(void)
  *    NULL.
  *
  */
-void cdda_cdinfo_track_set(cdinfo_t * cdinfo, gint num, gchar * artist, gchar * title)
+void cdda_cdinfo_track_set(cdinfo_t *cdinfo, int num, char *artist, char *title)
 {
-	trackinfo_t *track = cdinfo->tracks + num;
+	trackinfo_t *track;
 
 	/* Check bounds */
 	if (num < 1 || num >= 100)
 		return;
 
+	track = cdinfo->tracks + num;
 	track->artist = artist;
 	track->title = title;
 	track->num = num;
@@ -116,7 +117,7 @@ void cdda_cdinfo_track_set(cdinfo_t * cdinfo, gint num, gchar * artist, gchar * 
  *    `artist' should be set to NULL.
  *
  */
-void cdda_cdinfo_cd_set(cdinfo_t * cdinfo, gchar * cdname, gchar * cdartist)
+void cdda_cdinfo_cd_set(cdinfo_t *cdinfo, char *cdname, char *cdartist)
 {
 	cdinfo->albname = cdname;
 	cdinfo->artname = cdartist;
@@ -133,7 +134,7 @@ void cdda_cdinfo_cd_set(cdinfo_t * cdinfo, gchar * cdname, gchar * cdartist)
  *    freed using g_free().
  *
  */
-gint cdda_cdinfo_get(cdinfo_t * cdinfo, gint num, gchar ** artist, gchar ** album, gchar ** title)
+int cdda_cdinfo_get(cdinfo_t *cdinfo, int num, char **artist, char **album, char **title)
 {
 	trackinfo_t *track = cdinfo->tracks + num;
 
@@ -164,10 +165,10 @@ void cdda_cdinfo_write_file(guint32 cddb_discid, cdinfo_t *cdinfo)
 	 * Maybe it would be smarter to use the cdindex id instead?
 	 */
 	
-	gchar *filename;
+	char *filename;
 	ConfigFile *cfg;
-	gchar sectionname[10], trackstr[16];
-	gint i, numtracks = cddb_discid & 0xff;
+	char sectionname[10], trackstr[16];
+	int i, numtracks = CLAMP(cddb_discid & 0xff, 0, 99);
 
 	sprintf(sectionname, "%08x", cddb_discid);
 	
@@ -213,7 +214,7 @@ gboolean cdda_cdinfo_read_file(guint32 cddb_discid, cdinfo_t *cdinfo)
 	gchar *filename;
 	ConfigFile *cfg;
 	gchar sectionname[10], trackstr[16];
-	gint i, numtracks = cddb_discid & 0xff;
+	gint i, numtracks = CLAMP(cddb_discid & 0xff, 0, 99);
 	gboolean track_found;
 
 	sprintf(sectionname, "%08x", cddb_discid);

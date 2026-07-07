@@ -1,0 +1,51 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug XMMS",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/xmms/.libs/xmms",
+            "args": [],
+            "stopOnEntry": false,
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "build-debug",
+        },
+        {
+            "name": "Debug XMMS (with wrapper)",
+            "type": "lldb",
+            "request": "launch",
+            "program": "/bin/bash",
+            "args": ["-c", "cd '${workspaceFolder}' && exec ./xmms/xmms"],
+            "stopOnEntry": false,
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "build-debug",
+            "terminal": "integrated"
+        },
+        {
+            "name": "Debug XMMS (with args)",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/xmms/.libs/xmms",
+            "args": ["${input:audioFile}"],
+            "stopOnEntry": false,
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "build-debug",
+        },
+        {
+            "name": "Attach to XMMS",
+            "type": "lldb",
+            "request": "attach",
+            "program": "${workspaceFolder}/xmms/.libs/xmms",
+            "pid": "${command:pickProcess}",
+        }
+    ],
+    "inputs": [
+        {
+            "id": "audioFile",
+            "description": "Audio file to debug with",
+            "default": "",
+            "type": "promptString"
+        }
+    ]
+}

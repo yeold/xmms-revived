@@ -10,4 +10,4 @@ echo.c \
 echo.h \
 gui.c
 
-INCLUDES = @GTK_CFLAGS@ -I$(top_builddir)/intl
+AM_CPPFLAGS = @GTK_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)

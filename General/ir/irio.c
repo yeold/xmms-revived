@@ -8,7 +8,7 @@
 #include "ir.h"
 
 /* wrapper for ir_close_port() for use by atexit() */
-// static RETSIGTYPE ir_close_port_on_exit(void) { (void) ir_close_port(); }
+/* static RETSIGTYPE ir_close_port_on_exit(void) { (void) ir_close_port(); } */
 
 static int portfd = 0;
 static int portflags = 0;
@@ -79,7 +79,7 @@ int ir_open_port(char *filename)
 	 * the port for us, which is fine as we haven't changed anything yet.
 	 */
 
-//  atexit(ir_close_port_on_exit);
+/*  atexit(ir_close_port_on_exit); */
 
 	/* copy old attrs into new structure */
 	portterm = oldterm;

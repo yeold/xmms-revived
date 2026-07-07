@@ -22,7 +22,7 @@ real mpg123_muls[27][64];	/* also used by layer 1 */
 /* Used by the getbits macros */
 static unsigned long rval;
 
-void mpg123_init_layer2(void)
+void mpg123_init_layer2(gboolean mmx)
 {
 	static double mulmul[27] = {
 		0.0, -2.0 / 3.0, 2.0 / 3.0, 2.0 / 7.0, 2.0 / 15.0,
@@ -58,8 +58,13 @@ void mpg123_init_layer2(void)
 	for (k = 0; k < 27; k++)
 	{
 		double m = mulmul[k];
-
 		table = mpg123_muls[k];
+#ifdef USE_SIMD
+		if (mmx)
+			for(j = 3, i = 0; i < 63; i++, j--)
+				*table++ = 16384 * m * pow(2.0,(double) j / 3.0);
+		else
+#endif
 		for (j = 3, i = 0; i < 63; i++, j--)
 			*table++ = m * pow(2.0, (double) j / 3.0);
 		*table++ = 0.0;

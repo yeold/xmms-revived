@@ -1,35 +1,173 @@
-/*********************************************************************
- * 
- *    Copyright (C) 1999,  Espen Skoglund
- *    Department of Computer Science, University of Tromsø
- * 
- * Filename:      id3_frame_content.c
- * Description:   Code for handling ID3 content frames.
- * Author:        Espen Skoglund <espensk@stud.cs.uit.no>
- * Created at:    Mon Feb  8 17:13:46 1999
- *                
- * $Id: id3_frame_content.c,v 1.5 2001/12/16 23:14:07 havard Exp $
- * 
+/*
+ *    Copyright (C) 1999, 2002,  Espen Skoglund
+ *    Copyright (C) 2000 - 2004  Haavard Kvaalen
+ *
+ * $Id: id3_frame_content.c,v 1.15 2007/07/05 13:59:48 shd Exp $
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * 
- ********************************************************************/
+ */
 #include <stdio.h>
 #include "mpg123.h"
 
 #include "id3.h"
 
+enum {
+	CTYPE_NUM,
+	CTYPE_STR,
+};
+
+struct element {
+	int type;
+	union {
+		int num;
+		char *str;
+	} c;
+};
+
+static GSList* push_element(GSList *l, int num, char *str)
+{
+	struct element *elem = g_malloc(sizeof (struct element));
+
+	if (num != -1)
+	{
+		elem->type = CTYPE_NUM;
+		elem->c.num = num;
+	}
+	else
+	{
+		elem->type = CTYPE_STR;
+		elem->c.str = g_strdup(str);
+	}
+	return g_slist_prepend(l, elem);
+}
+
+static char *pop_element(GSList **l)
+{
+	struct element *elem = (*l)->data;
+	GSList *tmp;
+	char *ret;
+
+	if (elem->type == CTYPE_NUM)
+		ret = g_strdup(mpg123_get_id3_genre(elem->c.num));
+	else
+		ret = elem->c.str;
+
+	/* Remove link */
+	tmp = *l;
+	*l = g_slist_remove_link(*l, *l);
+	g_slist_free_1(tmp);
+	return ret;
+}
+
+static GSList* id3_get_content_v23(struct id3_frame *frame)
+{
+	GSList *list = NULL;
+	char *input, *ptr;
+
+	input = id3_string_decode(ID3_TEXT_FRAME_ENCODING(frame),
+				  ID3_TEXT_FRAME_PTR(frame));
+
+	if (!input)
+		return NULL;
+
+	ptr = input;
+	while (ptr[0] == '(' && ptr[1] != '(')
+	{
+		if (!strchr(ptr, ')'))
+			break;
+
+		if (strncmp(ptr, "(RX)", 4) == 0)
+		{
+			list = push_element(list, -1, _("Remix"));
+			ptr += 4;
+		}
+		else if (strncmp(ptr, "(CR)", 4) == 0)
+		{
+			list = push_element(list, -1, _("Cover"));
+			ptr += 4;
+		}
+		else
+		{
+			/* Get ID3v1 genre number */
+			int num;
+			char *endptr;
+			num = strtol(ptr + 1, &endptr, 10);
+			if (*endptr == ')' && num >= 0 && num <= 255)
+			{
+				list = push_element(list, num, NULL);
+				ptr = endptr + 1;
+			}
+			else if (*endptr == ')')
+				ptr = endptr + 1;
+			else
+				break;
+		}
+	}
+
+	if (*ptr == 0) {
+		/* Unexpected end of ID */
+		g_slist_free(list);
+		g_free(input);
+		return NULL;
+	}
+
+	/*
+	 * Add plaintext refinement.
+	 */
+	if (strncmp(ptr, "((", 2))
+		ptr++;
+	list = push_element(list, -1, ptr);
+	g_free(input);
+
+	return list;
+}
+
+static GSList* id3_get_content_v24(struct id3_frame *frame)
+{
+	GSList *list = NULL;
+	int offset = 0;
+	
+	while (offset < frame->fr_size - 1)
+	{
+		int num;
+		char *input, *endptr;
+
+		input = id3_string_decode(ID3_TEXT_FRAME_ENCODING(frame),
+					  ID3_TEXT_FRAME_PTR(frame) + offset);
+
+		if (!input)
+			break;
+
+		/* Get ID3v1 genre number */
+		num = strtol(input, &endptr, 10);
+		if (endptr && endptr != input && *endptr == '\0' &&
+		    num >= 0 && num < 256)
+			list = push_element(list, num, NULL);
+		else if (!strcmp(input, "RX"))
+			list = push_element(list, -1, _("Remix"));
+		else if (!strcmp(input, "CR"))
+			list = push_element(list, -1, _("Cover"));
+		else
+			list = push_element(list, -1, input);
+
+		offset += id3_string_size(ID3_TEXT_FRAME_ENCODING(frame),
+					  ID3_TEXT_FRAME_PTR(frame) + offset);
+	}
+
+	return list;
+}
 
 /*
  * Function id3_get_content (frame)
@@ -38,90 +176,38 @@
  *    upon error.
  *
  */
-char *id3_get_content(id3_frame_t *frame)
+char *id3_get_content(struct id3_frame *frame)
 {
-    char *text, *ptr;
-    char *buffer = frame->fr_owner->id3_buffer;
-    int spc = sizeof( frame->fr_owner->id3_buffer ) - 1;
+	GSList *list;
+	char **str_array, *ret;
+	int len;
 
-    /* Type check */
-    if ( frame->fr_desc->fd_id != ID3_TCON )
-	return NULL;
+	g_return_val_if_fail(frame->fr_desc->fd_id == ID3_TCON, NULL);
 
-    /* Check if frame is compressed */
-    if (id3_decompress_frame(frame) == -1)
-	    return NULL;
+	/* Check if frame is compressed */
+	if (id3_decompress_frame(frame) == -1)
+		return NULL;
 
-    text = (char *) frame->fr_data + 1;
+	if (frame->fr_owner->id3_version == 3)
+		list = id3_get_content_v23(frame);
+	else
+		list = id3_get_content_v24(frame);
 
-    /*
-     * If content is just plain text, return it.
-     */
-    if ( text[0] != '(' )
-	return text;
+	len = g_slist_length(list);
 
-    /*
-     * Expand ID3v1 genre numbers.
-     */
-    ptr = buffer;
-    while ( text[0] == '(' && text[1] != '(' && spc > 0 ) {
-	char *genre;
-	int num = 0;
-
-	if ( text[1] == 'R' && text[2] == 'X' ) {
-	    text += 4;
-	    genre =  _(" (Remix)");
-	    if (ptr == buffer)
-		genre++;
-
-	} else if ( text[1] == 'C' && text[2] == 'R' ) {
-	    text += 4;
-	    genre = _(" (Cover)");
-	    if (ptr == buffer)
-		genre++;
-
-	} else {
-	    /* Get ID3v1 genre number */
-	    text++;
-	    while ( *text != ')' ) {
-		num *= 10;
-		num += *text++ - '0';
-	    }
-	    text++;
-
-	    /* Boundary check */
-	    if ( num >= sizeof(mpg123_id3_genres) / sizeof(char *) )
-		continue;
-
-	    genre = gettext(mpg123_id3_genres[num]);
-
-	    if ( ptr != buffer && spc-- > 0 )
-		*ptr++ = '/';
-	}
+	if (len == 0)
+		return g_strdup("");
 	
-	/* Expand string into buffer */
-	while ( *genre != '\0' && spc > 0 ) {
-	    *ptr++ = *genre++;
-	    spc--;
-	}
-    }
+	str_array = g_malloc0(sizeof (char *) * (len + 1));
 
-    /*
-     * Add plaintext refinement.
-     */
-    if ( *text == '(' )
-	text++;
-    if ( *text != '\0' && ptr != buffer && spc-- > 0 )
-	*ptr++ = ' ';
-    while ( *text != '\0' && spc > 0 ) {
-	*ptr++ = *text++;
-	spc--;
-    }
-    *ptr = '\0';
+	while (len-- && list)
+		str_array[len] = pop_element(&list);
 
+	if (len != -1 || list)
+		g_warning("len: %d; list: %p", len, list);
 
-    /*
-     * Return the expanded content string.
-     */
-    return buffer;
+	ret = g_strjoinv(", ", str_array);
+	g_strfreev(str_array);
+
+	return ret;
 }

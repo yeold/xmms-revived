@@ -141,7 +141,7 @@ static void irconf_control_cb(GtkWidget * w, gchar * data)
 
 		keepConfGoing = TRUE;
 		irbutton_to_edit = data;
-		irconf_controlwin = gtk_window_new(GTK_WINDOW_DIALOG);
+		irconf_controlwin = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 		gtk_signal_connect(GTK_OBJECT(irconf_controlwin), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &irconf_controlwin);
 		tmp=g_strdup_printf(_("`%s' Button Setup"),_(data));
 		gtk_window_set_title(GTK_WINDOW(irconf_controlwin), tmp);
@@ -202,7 +202,7 @@ static void irconf_control_cb(GtkWidget * w, gchar * data)
 		gtk_button_box_set_spacing(GTK_BUTTON_BOX(box), 5);
 		gtk_box_pack_start(GTK_BOX(vbox), box, FALSE, FALSE, 0);
 
-		button = gtk_button_new_with_label(_("Ok"));
+		button = gtk_button_new_with_label(_("OK"));
 		gtk_signal_connect_object(GTK_OBJECT(button), "clicked", GTK_SIGNAL_FUNC(irconf_control_ok_cb), NULL);
 		GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 		gtk_box_pack_start(GTK_BOX(box), button, TRUE, TRUE, 0);
@@ -250,7 +250,7 @@ void ir_configure(void)
 	if (!irconf_mainwin)
 	{
 
-		irconf_mainwin = gtk_window_new(GTK_WINDOW_DIALOG);
+		irconf_mainwin = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 		gtk_signal_connect(GTK_OBJECT(irconf_mainwin), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &irconf_mainwin);
 		gtk_window_set_title(GTK_WINDOW(irconf_mainwin), _("XMMS IRman Configuration"));
 		gtk_window_set_policy(GTK_WINDOW(irconf_mainwin), FALSE, FALSE, FALSE);
@@ -302,7 +302,6 @@ void ir_configure(void)
 		gtk_box_pack_start(GTK_BOX(box), frame, FALSE, FALSE, 0);
 
 		vbox2 = gtk_vbox_new(FALSE, 0);
-//              gtk_container_set_border_width(GTK_CONTAINER(vbox2),0);
 		gtk_container_add(GTK_CONTAINER(frame), vbox2);
 
 		table = gtk_table_new(5, 3, TRUE);
@@ -374,7 +373,7 @@ void ir_configure(void)
 		gtk_button_box_set_spacing(GTK_BUTTON_BOX(box), 5);
 		gtk_box_pack_start(GTK_BOX(vbox), box, FALSE, FALSE, 0);
 
-		button = gtk_button_new_with_label(_("Ok"));
+		button = gtk_button_new_with_label(_("OK"));
 		gtk_signal_connect(GTK_OBJECT(button), "clicked", GTK_SIGNAL_FUNC(irconf_ok_cb), NULL);
 		GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
 		gtk_box_pack_start(GTK_BOX(box), button, TRUE, TRUE, 0);

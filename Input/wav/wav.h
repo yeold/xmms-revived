@@ -47,10 +47,9 @@ extern InputPlugin wav_ip;
 typedef struct
 {
 	FILE *file;
-	short format_tag, channels, block_align, bits_per_sample, eof,
-	      going;
+	short format_tag, channels, block_align, bits_per_sample, eof, going;
 	long samples_per_sec, avg_bytes_per_sec;
-	int position, length;
+	unsigned long position, length;
 	int seek_to, data_offset;
 	pid_t pid;
 }

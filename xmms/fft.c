@@ -88,8 +88,7 @@ fft_state *fft_init(void) {
     fft_state *state;
     unsigned int i;
 
-    state = (fft_state *) g_malloc (sizeof(fft_state));
-    if(!state) return NULL;
+    state = g_malloc(sizeof (fft_state));
 
     for(i = 0; i < FFT_BUFFER_SIZE; i++) {
 	bitReverse[i] = reverseBits(i);
@@ -134,7 +133,8 @@ void fft_perform(const sound_sample *input, float *output, fft_state *state) {
  * Free the state.
  */
 void fft_close(fft_state *state) {
-    if(state) free(state);
+    if (state)
+        g_free(state);
 }
 
 /* ########################### */

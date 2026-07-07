@@ -1,6 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2000  Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies
- *  Copyright (C) 1999,2000  Håvard Kvålen
+ *  Copyright (C) 1998-2002  Peter Alm, Mikael Alm, Olle Hallnas,
+ *                           Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1999-2004  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,10 +23,10 @@
 #define PLAYLIST_HEIGHT (cfg.playlist_shaded ? 14 : cfg.playlist_height)
 
 void playlistwin_update_list(void);
-gboolean playlistwin_item_visible(gint index);
+gboolean playlistwin_item_visible(int index);
 gint playlistwin_get_toprow(void);
 void playlistwin_set_toprow(gint top);
-void playlistwin_set_shade(gboolean);
+void playlistwin_set_shade_menu_cb(gboolean shaded);
 void playlistwin_raise(void);
 void playlistwin_create(void);
 void playlistwin_recreate(void);
@@ -37,12 +38,8 @@ void playlistwin_real_show(void);
 void playlistwin_real_hide(void);
 void playlistwin_set_back_pixmap(void);
 void playlistwin_scroll(int num);
-void playlistwin_scroll_up_pushed(void);
-void playlistwin_scroll_down_pushed(void);
 void playlistwin_vis_disable(void);
 void playlistwin_vis_enable(void);
-void playlistwin_create_mask(void);
-void playlistwin_set_hints(void);
 
 extern Vis *playlistwin_vis;
 

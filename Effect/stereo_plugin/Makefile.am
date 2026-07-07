@@ -8,4 +8,4 @@ libstereo_la_LIBADD = @GTK_LIBS@
 libstereo_la_SOURCES = 	\
 stereo.c
 
-INCLUDES = @GTK_CFLAGS@ -I$(top_builddir)/intl
+AM_CPPFLAGS = @GTK_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)

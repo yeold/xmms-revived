@@ -7,4 +7,4 @@ libsong_change_la_LIBADD = @GTK_LIBS@ @PTHREAD_LIBS@
 
 libsong_change_la_SOURCES = song_change.c
 
-INCLUDES = @GTK_CFLAGS@ -I$(top_builddir)/intl
+AM_CPPFLAGS = @GTK_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)

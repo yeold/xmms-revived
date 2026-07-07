@@ -10,15 +10,13 @@ static GtkWidget *decode_res_frame, *decode_res_vbox, *decode_res_16, *decode_re
 static GtkWidget *decode_ch_frame, *decode_ch_vbox, *decode_ch_stereo, *decode_ch_mono;
 static GtkWidget *decode_freq_frame, *decode_freq_vbox, *decode_freq_1to1,
          *decode_freq_1to2, *decode_freq_1to4;
-static GtkWidget *option_frame, *option_vbox, *detect_by_content;
-#ifdef USE_3DNOW
-static GtkWidget *decoder_frame, *decoder_vbox, *auto_select, *decoder_3dnow, *decoder_fpu;
+static GtkWidget *option_frame, *option_vbox, *detect_by_content, *detect_by_extension, *detect_by_both;
+#ifdef USE_SIMD
+static GtkWidget *auto_select, *decoder_3dnow, *decoder_mmx, *decoder_fpu;
+
+static void auto_select_cb(GtkWidget * w, gpointer data);
 #endif
 
-/* unused
-   static GtkWidget *decode_freq_custom,*decode_freq_custom_hbox,*decode_freq_custom_spin,*decode_freq_custom_label;
-   static GtkObject *decode_freq_custom_adj;
- */
 static GtkObject *streaming_size_adj, *streaming_pre_adj;
 static GtkWidget *streaming_proxy_use, *streaming_proxy_host_entry;
 static GtkWidget *streaming_proxy_port_entry, *streaming_save_use, *streaming_save_entry;
@@ -31,15 +29,6 @@ static GtkWidget *streaming_save_hbox, *title_id3_box, *title_tag_desc;
 static GtkWidget *title_override, *title_id3_entry, *title_id3v2_disable;
 
 MPG123Config mpg123_cfg;
-
-#ifdef USE_3DNOW
-int support_3dnow(void)
-{
-	if((mpg123_getcpuflags() & 0x80800000) == 0x80800000)
-		return TRUE;
-	return FALSE;
-}
-#endif
 
 static void mpg123_configurewin_ok(GtkWidget * widget, gpointer data)
 {
@@ -62,18 +51,24 @@ static void mpg123_configurewin_ok(GtkWidget * widget, gpointer data)
 		mpg123_cfg.downsample = 1;
 	if (GTK_TOGGLE_BUTTON(decode_freq_1to4)->active)
 		mpg123_cfg.downsample = 2;
-	mpg123_cfg.detect_by_content = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(detect_by_content));
-/*
-   if(GTK_TOGGLE_BUTTON(decode_freq_custom)->active)
-   mpg123_cfg.downsample=3;
-   mpg123_cfg.downsample_custom=(gint)GTK_ADJUSTMENT(decode_freq_custom_adj)->value;
- */
-#ifdef USE_3DNOW
+
+	if (GTK_TOGGLE_BUTTON(detect_by_content)->active)
+		mpg123_cfg.detect_by = DETECT_CONTENT;
+	else if (GTK_TOGGLE_BUTTON(detect_by_extension)->active)
+		mpg123_cfg.detect_by = DETECT_EXTENSION;
+	else if (GTK_TOGGLE_BUTTON(detect_by_both)->active)
+		mpg123_cfg.detect_by = DETECT_BOTH;
+	else mpg123_cfg.detect_by = DETECT_EXTENSION;
+
+#ifdef USE_SIMD
 	if (GTK_TOGGLE_BUTTON(auto_select)->active)
-                mpg123_cfg.use_3dnow = 0;
+                mpg123_cfg.default_synth = SYNTH_AUTO;
         else if (GTK_TOGGLE_BUTTON(decoder_fpu)->active)
-                mpg123_cfg.use_3dnow = 2;
-        else mpg123_cfg.use_3dnow = 1;
+                mpg123_cfg.default_synth = SYNTH_FPU;
+        else if (GTK_TOGGLE_BUTTON(decoder_mmx)->active)
+                mpg123_cfg.default_synth = SYNTH_MMX;
+        else mpg123_cfg.default_synth = SYNTH_3DNOW;
+
 #endif
 	mpg123_cfg.http_buffer_size = (gint) GTK_ADJUSTMENT(streaming_size_adj)->value;
 	mpg123_cfg.http_prebuffer = (gint) GTK_ADJUSTMENT(streaming_pre_adj)->value;
@@ -118,7 +113,6 @@ static void mpg123_configurewin_ok(GtkWidget * widget, gpointer data)
 	xmms_cfg_write_int(cfg, "MPG123", "resolution", mpg123_cfg.resolution);
 	xmms_cfg_write_int(cfg, "MPG123", "channels", mpg123_cfg.channels);
 	xmms_cfg_write_int(cfg, "MPG123", "downsample", mpg123_cfg.downsample);
-/*      xmms_cfg_write_int(cfg,"MPG123","downsample_custom",mpg123_cfg.downsample_custom); */
 	xmms_cfg_write_int(cfg, "MPG123", "http_buffer_size", mpg123_cfg.http_buffer_size);
 	xmms_cfg_write_int(cfg, "MPG123", "http_prebuffer", mpg123_cfg.http_prebuffer);
 	xmms_cfg_write_boolean(cfg, "MPG123", "use_proxy", mpg123_cfg.use_proxy);
@@ -140,9 +134,9 @@ static void mpg123_configurewin_ok(GtkWidget * widget, gpointer data)
 	xmms_cfg_write_boolean(cfg, "MPG123", "title_override", mpg123_cfg.title_override);
 	xmms_cfg_write_boolean(cfg, "MPG123", "disable_id3v2", mpg123_cfg.disable_id3v2);
 	xmms_cfg_write_string(cfg, "MPG123", "id3_format", mpg123_cfg.id3_format);
-	xmms_cfg_write_boolean(cfg, "MPG123", "detect_by_content", mpg123_cfg.detect_by_content);
-#ifdef USE_3DNOW
-	xmms_cfg_write_int(cfg, "MPG123", "use_3dnow", mpg123_cfg.use_3dnow);
+	xmms_cfg_write_int(cfg, "MPG123", "detect_by", mpg123_cfg.detect_by);
+#ifdef USE_SIMD
+	xmms_cfg_write_int(cfg, "MPG123", "default_synth", mpg123_cfg.default_synth);
 #endif
 	xmms_cfg_write_file(cfg, filename);
 	xmms_cfg_free(cfg);
@@ -150,51 +144,16 @@ static void mpg123_configurewin_ok(GtkWidget * widget, gpointer data)
 	gtk_widget_destroy(mpg123_configurewin);
 }
 
-#ifdef USE_3DNOW
+#ifdef USE_SIMD
 static void auto_select_cb(GtkWidget * w, gpointer data)
 {
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(auto_select)) == TRUE) {
-	  gtk_widget_set_sensitive(decoder_fpu, FALSE);
-	  gtk_widget_set_sensitive(decoder_3dnow, FALSE);
-	  if (support_3dnow() == TRUE) 
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(decoder_3dnow), TRUE);
-	  else
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(decoder_fpu), TRUE);
-	} else {
-	    gtk_widget_set_sensitive(decoder_3dnow, TRUE);
-	    gtk_widget_set_sensitive(decoder_fpu, TRUE);
-	}
+	gboolean autom = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(w));
+
+	gtk_widget_set_sensitive(decoder_fpu, !autom);
+	gtk_widget_set_sensitive(decoder_mmx, !autom);
+	gtk_widget_set_sensitive(decoder_3dnow, !autom);
 }
 
-static void use_3dnow_cb(GtkWidget * w, gpointer data)
-{
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(decoder_3dnow)) == TRUE) {
-		mpg123_cfg.resolution = 16;
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(decode_res_16), TRUE);
-		gtk_widget_set_sensitive(decode_res_8, FALSE);
-
-		mpg123_cfg.channels = 2;
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(decode_ch_stereo), TRUE);
-		gtk_widget_set_sensitive(decode_ch_mono, FALSE);
-
-		mpg123_cfg.downsample = 0;
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(decode_freq_1to1), TRUE);
-		gtk_widget_set_sensitive(decode_freq_1to2, FALSE);
-		gtk_widget_set_sensitive(decode_freq_1to4, FALSE);
-	}
-}
-
-static void use_fpu_cb(GtkWidget * w, gpointer data)
-{
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(decoder_fpu)) == TRUE) {
-		gtk_widget_set_sensitive(decode_res_8, TRUE);
-
-		gtk_widget_set_sensitive(decode_ch_mono, TRUE);
-
-		gtk_widget_set_sensitive(decode_freq_1to2, TRUE);
-		gtk_widget_set_sensitive(decode_freq_1to4, TRUE);
-	}
-}
 #endif
 
 static void proxy_use_cb(GtkWidget * w, gpointer data)
@@ -228,9 +187,9 @@ static void streaming_save_browse_cb(GtkWidget * w, gpointer data)
 {
 	if (!streaming_save_dirbrowser)
 	{
-		streaming_save_dirbrowser = xmms_create_dir_browser(_("Select the directory where you want to store the MPEG streams:"),
-								    mpg123_cfg.save_http_path, GTK_SELECTION_SINGLE, streaming_save_dirbrowser_cb);
-		gtk_signal_connect(GTK_OBJECT(streaming_save_dirbrowser), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &streaming_save_dirbrowser);
+	streaming_save_dirbrowser = xmms_create_dir_browser(_("Select the directory where you want to store the MPEG streams:"),
+				    mpg123_cfg.save_http_path, GTK_SELECTION_SINGLE, streaming_save_dirbrowser_cb);
+	g_signal_connect(G_OBJECT(streaming_save_dirbrowser), "destroy", G_CALLBACK(gtk_widget_destroyed), &streaming_save_dirbrowser);
 		gtk_window_set_transient_for(GTK_WINDOW(streaming_save_dirbrowser), GTK_WINDOW(mpg123_configurewin));
 		gtk_widget_show(streaming_save_dirbrowser);
 	}
@@ -273,16 +232,16 @@ void mpg123_configure(void)
 	GtkWidget *title_frame, *title_id3_vbox, *title_id3_label;
 	GtkWidget *bbox, *ok, *cancel;
 
-	gchar *temp;
+	char *temp;
 
 	if (mpg123_configurewin != NULL)
 	{
 		gdk_window_raise(mpg123_configurewin->window);
 		return;
 	}
-	mpg123_configurewin = gtk_window_new(GTK_WINDOW_DIALOG);
-	gtk_signal_connect(GTK_OBJECT(mpg123_configurewin), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &mpg123_configurewin);
-	gtk_signal_connect(GTK_OBJECT(mpg123_configurewin), "destroy", GTK_SIGNAL_FUNC(configure_destroy), &mpg123_configurewin);
+	mpg123_configurewin = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	g_signal_connect(G_OBJECT(mpg123_configurewin), "destroy", G_CALLBACK(gtk_widget_destroyed), &mpg123_configurewin);
+	g_signal_connect(G_OBJECT(mpg123_configurewin), "destroy", G_CALLBACK(configure_destroy), &mpg123_configurewin);
 	gtk_window_set_title(GTK_WINDOW(mpg123_configurewin), _("MPG123 Configuration"));
 	gtk_window_set_policy(GTK_WINDOW(mpg123_configurewin), FALSE, FALSE, FALSE);
 	/*  gtk_window_set_position(GTK_WINDOW(mpg123_configurewin), GTK_WIN_POS_MOUSE); */
@@ -318,16 +277,6 @@ void mpg123_configure(void)
 
 	gtk_box_pack_start(GTK_BOX(decode_res_vbox), decode_res_8, FALSE, FALSE, 0);
 
-#ifdef USE_3DNOW
-	if (((support_3dnow() == TRUE) && (mpg123_cfg.use_3dnow !=2 )) ||
-		((support_3dnow() == FALSE) && (mpg123_cfg.use_3dnow == 1)))
-	{
-		mpg123_cfg.resolution = 16;
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(decode_res_16), TRUE);
-		gtk_widget_set_sensitive(decode_res_8, FALSE);
-	}
-#endif
-
 	decode_ch_frame = gtk_frame_new(_("Channels:"));
 	gtk_box_pack_start(GTK_BOX(decode_hbox1), decode_ch_frame, TRUE, TRUE, 0);
 
@@ -346,16 +295,6 @@ void mpg123_configure(void)
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(decode_ch_mono), TRUE);
 
 	gtk_box_pack_start(GTK_BOX(decode_ch_vbox), decode_ch_mono, FALSE, FALSE, 0);
-
-#ifdef USE_3DNOW
-	if (((support_3dnow() == TRUE) && (mpg123_cfg.use_3dnow !=2 )) ||
-		((support_3dnow() == FALSE) && (mpg123_cfg.use_3dnow == 1)))
-	{
-		mpg123_cfg.channels = 2;
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(decode_ch_stereo), TRUE);
-		gtk_widget_set_sensitive(decode_ch_mono, FALSE);
-	}
-#endif
 
 	decode_freq_frame = gtk_frame_new(_("Down sample:"));
 	gtk_box_pack_start(GTK_BOX(decode_vbox), decode_freq_frame, FALSE, FALSE, 0);
@@ -379,34 +318,12 @@ void mpg123_configure(void)
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(decode_freq_1to4), TRUE);
 
 	gtk_box_pack_start(GTK_BOX(decode_freq_vbox), decode_freq_1to4, FALSE, FALSE, 0);
-#ifdef USE_3DNOW
-	if (((support_3dnow() == TRUE) && (mpg123_cfg.use_3dnow !=2 )) ||
-		((support_3dnow() == FALSE) && (mpg123_cfg.use_3dnow == 1)))
-	{
-		mpg123_cfg.downsample = 0;
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(decode_freq_1to1), TRUE);
-		gtk_widget_set_sensitive(decode_freq_1to2, FALSE);
-		gtk_widget_set_sensitive(decode_freq_1to4, FALSE);
-	}
-#endif
-	/*decode_freq_custom_hbox=gtk_hbox_new(FALSE,5);
-	   gtk_box_pack_start(GTK_BOX(decode_freq_vbox),decode_freq_custom_hbox,FALSE,FALSE,0);
-
-	   decode_freq_custom=gtk_radio_button_new_with_label(gtk_radio_button_group(GTK_RADIO_BUTTON(decode_freq_1to1)),_("Custom"));
-	   if(mpg123_cfg.downsample==3)
-	   gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(decode_freq_custom),TRUE);
-	   gtk_box_pack_start(GTK_BOX(decode_freq_custom_hbox),decode_freq_custom,FALSE,FALSE,0);
-
-	   decode_freq_custom_adj=gtk_adjustment_new(mpg123_cfg.downsample_custom,8000,48000,25,25,25);
-	   decode_freq_custom_spin=gtk_spin_button_new(GTK_ADJUSTMENT(decode_freq_custom_adj),25,0);
-	   gtk_widget_set_usize(decode_freq_custom_spin,60,-1);
-	   gtk_box_pack_start(GTK_BOX(decode_freq_custom_hbox),decode_freq_custom_spin,FALSE,FALSE,0);
-
-	   decode_freq_custom_label=gtk_label_new(_("Hz"));
-	   gtk_box_pack_start(GTK_BOX(decode_freq_custom_hbox),decode_freq_custom_label,FALSE,FALSE,0); */
 
 
-#ifdef USE_3DNOW
+#ifdef USE_SIMD
+{
+	GtkWidget *decoder_frame, *decoder_vbox;
+
 	decoder_frame = gtk_frame_new(_("Decoder:"));
 	gtk_box_pack_start(GTK_BOX(decode_vbox), decoder_frame, FALSE, FALSE, 0);
 
@@ -414,38 +331,74 @@ void mpg123_configure(void)
 	gtk_container_set_border_width(GTK_CONTAINER(decoder_vbox), 5);
 	gtk_container_add(GTK_CONTAINER(decoder_frame), decoder_vbox);
 
-	auto_select = gtk_check_button_new_with_label(_("Enable Automatic detection"));
-	if (mpg123_cfg.use_3dnow == 0)
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(auto_select), TRUE);
+	auto_select = gtk_check_button_new_with_label(_("Automatic detection"));
 	gtk_box_pack_start(GTK_BOX(decoder_vbox), auto_select, FALSE, FALSE, 0);
-	gtk_signal_connect(GTK_OBJECT(auto_select), "clicked", GTK_SIGNAL_FUNC(auto_select_cb), NULL);
+	g_signal_connect(G_OBJECT(auto_select), "clicked", G_CALLBACK(auto_select_cb), NULL);
 
-	decoder_3dnow = gtk_radio_button_new_with_label(NULL, _("use 3DNow! optimized decoder"));
-	if (((support_3dnow() == TRUE) && mpg123_cfg.use_3dnow != 2) || (mpg123_cfg.use_3dnow == 1))
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(decoder_3dnow), TRUE);
+	decoder_3dnow = gtk_radio_button_new_with_label(NULL, _("3DNow! optimized decoder"));
 	gtk_box_pack_start(GTK_BOX(decoder_vbox), decoder_3dnow, FALSE, FALSE, 0);
-	gtk_signal_connect(GTK_OBJECT(decoder_3dnow), "clicked", GTK_SIGNAL_FUNC(use_3dnow_cb), NULL);
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(auto_select)) == TRUE)
-		gtk_widget_set_sensitive(decoder_3dnow, FALSE);
+		
+	decoder_mmx = gtk_radio_button_new_with_label_from_widget(
+		GTK_RADIO_BUTTON(decoder_3dnow), _("MMX optimized decoder"));
+	gtk_box_pack_start(GTK_BOX(decoder_vbox), decoder_mmx, FALSE, FALSE, 0);
 
-	decoder_fpu = gtk_radio_button_new_with_label(gtk_radio_button_group(GTK_RADIO_BUTTON(decoder_3dnow)), _("use FPU decoder"));
-	if (((support_3dnow() == FALSE) && mpg123_cfg.use_3dnow != 1) || (mpg123_cfg.use_3dnow == 2))
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(decoder_fpu), TRUE);
+	decoder_fpu = gtk_radio_button_new_with_label_from_widget(
+		GTK_RADIO_BUTTON(decoder_3dnow), _("FPU decoder"));
 	gtk_box_pack_start(GTK_BOX(decoder_vbox), decoder_fpu, FALSE, FALSE, 0);
-	gtk_signal_connect(GTK_OBJECT(decoder_fpu), "clicked", GTK_SIGNAL_FUNC(use_fpu_cb), NULL);
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(auto_select)) == TRUE)
-		gtk_widget_set_sensitive(decoder_fpu, FALSE);
 
+	switch (mpg123_cfg.default_synth)
+	{
+		case SYNTH_3DNOW:
+			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(decoder_3dnow), TRUE);
+			break;
+		case SYNTH_MMX:
+			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(decoder_mmx), TRUE);
+			break;
+		case SYNTH_FPU:
+			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(decoder_fpu), TRUE);
+			break;
+		default:
+			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(decoder_fpu), TRUE);
+			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(auto_select), TRUE);
+			break;
+	}
+}
 #endif
 	option_frame = gtk_frame_new(_("Options"));
 	gtk_box_pack_start(GTK_BOX(decode_vbox), option_frame, FALSE, FALSE, 0);
 
 	option_vbox = gtk_vbox_new(FALSE, 5);
+	gtk_container_set_border_width(GTK_CONTAINER(option_vbox), 5);
 	gtk_container_add(GTK_CONTAINER(option_frame), option_vbox);
 
-	detect_by_content = gtk_check_button_new_with_label(_("Detect files by content (instead of file extention)"));
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(detect_by_content), mpg123_cfg.detect_by_content);
+	detect_by_content = gtk_radio_button_new_with_label(NULL,
+			_("Content"));
+
+	detect_by_extension = gtk_radio_button_new_with_label(
+			gtk_radio_button_group(GTK_RADIO_BUTTON(detect_by_content)),
+			_("Extension"));
+
+	detect_by_both = gtk_radio_button_new_with_label(
+			gtk_radio_button_group(GTK_RADIO_BUTTON(detect_by_content)),
+			_("Extension and content"));
+
+	switch (mpg123_cfg.detect_by)
+	{
+		case DETECT_CONTENT:
+			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(detect_by_content), TRUE);
+			break;
+		case DETECT_BOTH:
+			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(detect_by_both), TRUE);
+			break;
+		case DETECT_EXTENSION:
+		default:
+			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(detect_by_extension), TRUE);
+			break;
+	}
+
 	gtk_box_pack_start(GTK_BOX(option_vbox), detect_by_content, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(option_vbox), detect_by_extension, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(option_vbox), detect_by_both, FALSE, FALSE, 0);
 
 	gtk_notebook_append_page(GTK_NOTEBOOK(notebook), decode_vbox, gtk_label_new(_("Decoder")));
 
@@ -492,7 +445,7 @@ void mpg123_configure(void)
 
 	streaming_proxy_use = gtk_check_button_new_with_label(_("Use proxy"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(streaming_proxy_use), mpg123_cfg.use_proxy);
-	gtk_signal_connect(GTK_OBJECT(streaming_proxy_use), "clicked", GTK_SIGNAL_FUNC(proxy_use_cb), NULL);
+	g_signal_connect(G_OBJECT(streaming_proxy_use), "clicked", G_CALLBACK(proxy_use_cb), NULL);
 	gtk_box_pack_start(GTK_BOX(streaming_proxy_vbox), streaming_proxy_use, FALSE, FALSE, 0);
 
 	streaming_proxy_hbox = gtk_hbox_new(FALSE, 5);
@@ -519,7 +472,7 @@ void mpg123_configure(void)
 	streaming_proxy_auth_use = gtk_check_button_new_with_label(_("Use authentication"));
 	gtk_widget_set_sensitive(streaming_proxy_auth_use, mpg123_cfg.use_proxy);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(streaming_proxy_auth_use), mpg123_cfg.proxy_use_auth);
-	gtk_signal_connect(GTK_OBJECT(streaming_proxy_auth_use), "clicked", GTK_SIGNAL_FUNC(proxy_auth_use_cb), NULL);
+	g_signal_connect(G_OBJECT(streaming_proxy_auth_use), "clicked", G_CALLBACK(proxy_auth_use_cb), NULL);
 	gtk_box_pack_start(GTK_BOX(streaming_proxy_vbox), streaming_proxy_auth_use, FALSE, FALSE, 0);
 
 	streaming_proxy_auth_hbox = gtk_hbox_new(FALSE, 5);
@@ -557,7 +510,7 @@ void mpg123_configure(void)
 
 	streaming_save_use = gtk_check_button_new_with_label(_("Save stream to disk"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(streaming_save_use), mpg123_cfg.save_http_stream);
-	gtk_signal_connect(GTK_OBJECT(streaming_save_use), "clicked", GTK_SIGNAL_FUNC(streaming_save_use_cb), NULL);
+	g_signal_connect(G_OBJECT(streaming_save_use), "clicked", G_CALLBACK(streaming_save_use_cb), NULL);
 	gtk_box_pack_start(GTK_BOX(streaming_save_vbox), streaming_save_use, FALSE, FALSE, 0);
 
 	streaming_save_hbox = gtk_hbox_new(FALSE, 5);
@@ -572,7 +525,7 @@ void mpg123_configure(void)
 	gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_entry, TRUE, TRUE, 0);
 
 	streaming_save_browse = gtk_button_new_with_label(_("Browse"));
-	gtk_signal_connect(GTK_OBJECT(streaming_save_browse), "clicked", GTK_SIGNAL_FUNC(streaming_save_browse_cb), NULL);
+	g_signal_connect(G_OBJECT(streaming_save_browse), "clicked", G_CALLBACK(streaming_save_browse_cb), NULL);
 	gtk_box_pack_start(GTK_BOX(streaming_save_hbox), streaming_save_browse, FALSE, FALSE, 0);
 
 	streaming_cast_frame = gtk_frame_new(_("SHOUT/Icecast:"));
@@ -606,7 +559,7 @@ void mpg123_configure(void)
 
 	title_override = gtk_check_button_new_with_label(_("Override generic titles"));
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(title_override), mpg123_cfg.title_override);
-	gtk_signal_connect(GTK_OBJECT(title_override), "clicked", title_override_cb, NULL);
+	g_signal_connect(G_OBJECT(title_override), "clicked", G_CALLBACK(title_override_cb), NULL);
 	gtk_box_pack_start(GTK_BOX(title_id3_vbox), title_override, FALSE, FALSE, 0);
 
 	title_id3_box = gtk_hbox_new(FALSE, 5);
@@ -630,14 +583,14 @@ void mpg123_configure(void)
 	gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
 	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
 
-	ok = gtk_button_new_with_label(_("Ok"));
-	gtk_signal_connect(GTK_OBJECT(ok), "clicked", GTK_SIGNAL_FUNC(mpg123_configurewin_ok), NULL);
+	ok = gtk_button_new_with_label(_("OK"));
+	g_signal_connect(G_OBJECT(ok), "clicked", G_CALLBACK(mpg123_configurewin_ok), NULL);
 	GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), ok, TRUE, TRUE, 0);
 	gtk_widget_grab_default(ok);
 
 	cancel = gtk_button_new_with_label(_("Cancel"));
-	gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(mpg123_configurewin));
+	g_signal_connect_swapped(G_OBJECT(cancel), "clicked", G_CALLBACK(gtk_widget_destroy), mpg123_configurewin);
 	GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), cancel, TRUE, TRUE, 0);
 

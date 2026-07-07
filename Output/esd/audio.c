@@ -206,7 +206,7 @@ gint esdout_get_output_time(void)
 	if (!paused)
 		bytes -= (bytes < latency ? bytes : latency);
 	
-	return output_time_offset + (gint) ((bytes * 1000) / ebps);
+	return output_time_offset + (bytes * 1000) / ebps;
 }
 
 gint esdout_used(void)
@@ -274,7 +274,7 @@ static void esdout_write_audio(gpointer data,gint length)
 	
 	if(new_format != format || new_frequency != frequency || new_channels != channels)
 	{
-		output_time_offset += (gint) ((output_bytes * 1000) / ebps);
+		output_time_offset += (output_bytes * 1000) / ebps;
 		output_bytes = 0;
 		esdout_setup_format(new_format, new_frequency, new_channels);
 		frequency = new_frequency;
@@ -337,6 +337,7 @@ void esdout_close(void)
 	rd_index = 0;
 	g_free(esd_cfg.playername);
 	esd_cfg.playername = NULL;
+	esdout_reset_playerid();
 }
 
 void esdout_flush(gint time)
@@ -413,8 +414,10 @@ void esdout_set_audio_params(void)
 		ebps *= 2;
 }
 
-gint esdout_open(AFormat fmt, gint rate, gint nch)
-{	
+int esdout_open(AFormat fmt, int rate, int nch)
+{
+	static unsigned int playercnt = 0;
+
 	esdout_setup_format(fmt,rate,nch);
 	
 	input_format = format;
@@ -441,7 +444,8 @@ gint esdout_open(AFormat fmt, gint rate, gint nch)
 	paused = FALSE;
 	remove_prebuffer = FALSE;
 
-	esd_cfg.playername = g_strdup_printf("xmms - plugin (%d)", getpid());
+	esd_cfg.playername = g_strdup_printf("xmms - plugin (%d-%u)",
+					     getpid(), playercnt++);
 
 	if (esd_cfg.hostname)
 		g_free(esd_cfg.hostname);

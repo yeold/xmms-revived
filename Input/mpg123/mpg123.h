@@ -19,6 +19,12 @@
 
 #include <math.h>
 
+enum {
+	DETECT_EXTENSION,
+	DETECT_CONTENT,
+	DETECT_BOTH
+};
+
 #include <gtk/gtk.h>
 
 #include "xmms/plugin.h"
@@ -29,7 +35,6 @@
 
 #define real float
 
-/*  #define         MAX_NAME_SIZE           81 */
 #define         SBLIMIT                 32
 #define         SCALE_BLOCK             12
 #define         SSLIMIT                 18
@@ -38,6 +43,16 @@
 #define         MPG_MD_JOINT_STEREO     1
 #define         MPG_MD_DUAL_CHANNEL     2
 #define         MPG_MD_MONO             3
+
+#define MAXFRAMESIZE 1792
+#define MAX_SKIP_LENGTH (2000 * 1000)
+
+enum {
+	SYNTH_AUTO,
+	SYNTH_FPU,
+	SYNTH_3DNOW,
+	SYNTH_MMX,
+};
 
 struct id3v1tag_t {
 	char tag[3]; /* always "TAG": defines ID3v1 tag 128 bytes before EOF */
@@ -58,24 +73,23 @@ struct id3v1tag_t {
 	unsigned char genre;
 };
 
-struct id3tag_t {
-	char title[64];
-	char artist[64];
-	char album[64];
-	char comment[256];
-	char genre[256];
-	gint year;
-	gint track_number;
+struct id3v2tag_t {
+	char *title;
+	char *artist;
+	char *album;
+	char *comment;
+	char *genre;
+	int year;
+	int track_number;
 };
 
 typedef struct
 {
-	gint going, num_frames, eof, jump_to_time, eq_active;
-	gint songtime;
-	gdouble tpf;
-	gfloat eq_mul[576];
-	gboolean output_audio;
-	gboolean first_frame;
+	int going, num_frames, eof, jump_to_time, eq_active;
+	int songtime;
+	double tpf;
+	float eq_mul[576];
+	gboolean output_audio, first_frame, network_stream;
 	guint32 filesize;	/* Filesize without junk */
 }
 PlayerInfo;
@@ -97,7 +111,7 @@ struct frame
 	struct al_table *alloc;
 	int (*synth) (real *, int, unsigned char *, int *);
 	int (*synth_mono) (real *, unsigned char *, int *);
-#ifdef USE_3DNOW
+#ifdef USE_SIMD
 	void (*dct36)(real *,real *,real *,real *,real *);
 #endif
 	int stereo;
@@ -122,6 +136,7 @@ struct frame
 	int original;
 	int emphasis;
 	int framesize;		/* computed framesize */
+	int synth_type;
 };
 
 void mpg123_configure(void);
@@ -131,7 +146,6 @@ typedef struct
 	gint resolution;
 	gint channels;
 	gint downsample;
-	gint downsample_custom;
 	gint http_buffer_size;
 	gint http_prebuffer;
 	gboolean use_proxy;
@@ -145,8 +159,8 @@ typedef struct
 	gboolean use_udp_channel;
 	gchar *id3_format;
 	gboolean title_override, disable_id3v2;
-	gboolean detect_by_content;
-        gint use_3dnow;
+	int detect_by;
+	int default_synth;
 }
 MPG123Config;
 
@@ -165,8 +179,9 @@ extern struct bitstream_info bsi;
 extern int mpg123_http_open(char *url);
 int mpg123_http_read(gpointer data, gint length);
 void mpg123_http_close(void);
-gchar *mpg123_http_get_title(gchar * url);
-gint mpg123_http_get_icy_br(void);
+char *mpg123_http_get_title(char * url);
+int mpg123_http_get_length(void);
+void mpg123_http_seek(long pos);
 
 /* ------ Declarations from "common.c" ------ */
 extern unsigned int mpg123_get1bit(void);
@@ -222,17 +237,13 @@ extern int mpg123_read_frame(struct frame *fr);
 extern int mpg123_back_frame(struct frame *fr, int num);
 int mpg123_stream_jump_to_frame(struct frame *fr, int frame);
 int mpg123_stream_jump_to_byte(struct frame *fr, int byte);
-int mpg123_stream_check_for_xing_header(struct frame *fr, XHEADDATA * xhead);
+int mpg123_stream_check_for_xing_header(struct frame *fr, xing_header_t * xhead);
 int mpg123_calc_numframes(struct frame *fr);
 
 extern int mpg123_do_layer3(struct frame *fr);
 extern int mpg123_do_layer2(struct frame *fr);
 extern int mpg123_do_layer1(struct frame *fr);
 
-#ifdef I386_ASSEM
-extern int mpg123_synth_1to1_pent(real *, int, unsigned char *);
-
-#endif
 extern int mpg123_synth_1to1(real *, int, unsigned char *, int *);
 extern int mpg123_synth_1to1_8bit(real *, int, unsigned char *, int *);
 extern int mpg123_synth_1to1_mono(real *, unsigned char *, int *);
@@ -254,22 +265,6 @@ extern int mpg123_synth_4to1_mono2stereo(real *, unsigned char *, int *);
 extern int mpg123_synth_4to1_8bit_mono(real *, unsigned char *, int *);
 extern int mpg123_synth_4to1_8bit_mono2stereo(real *, unsigned char *, int *);
 
-extern int mpg123_synth_ntom(real *, int, unsigned char *, int *);
-extern int mpg123_synth_ntom_8bit(real *, int, unsigned char *, int *);
-extern int mpg123_synth_ntom_mono(real *, unsigned char *, int *);
-extern int mpg123_synth_ntom_mono2stereo(real *, unsigned char *, int *);
-extern int mpg123_synth_ntom_8bit_mono(real *, unsigned char *, int *);
-extern int mpg123_synth_ntom_8bit_mono2stereo(real *, unsigned char *, int *);
-
-/* 3DNow! optimizations */
-#ifdef USE_3DNOW
-extern int mpg123_getcpuflags(void);
-extern int support_3dnow(void);
-extern void dct36(real *,real *,real *,real *,real *);
-extern void dct36_3dnow(real *,real *,real *,real *,real *);
-extern int mpg123_synth_1to1_3dnow(real *,int,unsigned char *,int *);
-#endif
-
 extern void mpg123_rewindNbits(int bits);
 extern int mpg123_hsstell(void);
 extern void mpg123_set_pointer(long);
@@ -277,32 +272,49 @@ extern void mpg123_huffman_decoder(int, int *);
 extern void mpg123_huffman_count1(int, int *);
 extern int mpg123_get_songlen(struct frame *fr, int no);
 
-extern void mpg123_init_layer3(int);
-extern void mpg123_init_layer2(void);
-extern void mpg123_make_decode_tables(long scale);
-extern void mpg123_make_conv16to8_table(void);
-extern void mpg123_dct64(real *, real *, real *);
+#ifdef USE_SIMD
+void mpg123_dct64_mmx(real *,real *,real *);
+int mpg123_synth_1to1_mmx(real *, int, unsigned char *, int *);
 
-extern void mpg123_synth_ntom_set_step(long, long);
+void mpg123_dct36(real *,real *,real *,real *,real *);
+void dct36_3dnow(real *,real *,real *,real *,real *);
+int mpg123_synth_1to1_3dnow(real *,int,unsigned char *,int *);
+
+int mpg123_getcpuflags(guint32 *fflags, guint32 *efflags);
+#else
+#define mpg123_getcpuflags(a, b)		\
+do {						\
+	*(a) = 0;				\
+	*(b) = 0;				\
+} while (0)
+#endif
+
+void mpg123_init_layer3(int);
+void mpg123_init_layer2(gboolean);
+void mpg123_make_decode_tables(long scaleval);
+void mpg123_make_conv16to8_table(void);
+void mpg123_dct64(real *, real *, real *);
 
 int mpg123_decode_header(struct frame *fr, unsigned long newhead);
 double mpg123_compute_bpf(struct frame *fr);
 double mpg123_compute_tpf(struct frame *fr);
 guint mpg123_strip_spaces(char *src, size_t n);
-void mpg123_get_id3v2(id3_t * id3d, struct id3tag_t *tag);
-gchar *mpg123_format_song_title(struct id3tag_t *tag, gchar *filename);
+struct id3v2tag_t* mpg123_id3v2_get(struct id3_tag *id3d);
+void mpg123_id3v2_destroy(struct id3v2tag_t* tag);
+char *mpg123_format_song_title(struct id3v2tag_t *tag, char *filename);
 double mpg123_relative_pos(void);
-
+gboolean mpg123_get_first_frame(FILE *fh, struct frame *frm, guint8 **buffer);
+const char *mpg123_get_id3_genre(unsigned char genre_code);
 
 
 extern unsigned char *mpg123_conv16to8;
-extern long mpg123_freqs[9];
+extern const int mpg123_freqs[9];
 extern real mpg123_muls[27][64];
 extern real mpg123_decwin[512 + 32];
 extern real *mpg123_pnts[5];
 
 #define GENRE_MAX 0x94
-extern const gchar *mpg123_id3_genres[GENRE_MAX];
-extern int tabsel_123[2][3][16];
+extern const char *mpg123_id3_genres[GENRE_MAX];
+extern const int tabsel_123[2][3][16];
 
 #endif

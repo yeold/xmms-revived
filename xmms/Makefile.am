@@ -5,10 +5,12 @@ xmmsincludedir = $(includedir)/xmms
 bin_PROGRAMS = xmms
 
 xmms_LDFLAGS = -export-dynamic
-xmms_LDADD += @GTK_LIBS@ @PTHREAD_LIBS@ @SM_LIBS@ @VM_LIBS@ \
-@POSIX_LIBS@ $(top_builddir)/libxmms/libxmms.la @INTLLIBS@
+xmms_LDADD = @GTK_LIBS@ @PTHREAD_LIBS@ @SM_LIBS@ @VM_LIBS@ \
+@POSIX_LIBS@ $(top_builddir)/libxmms/libxmms.la @LTLIBINTL@ -lX11 -lm -lgthread-2.0
 
-INCLUDES = @GTK_CFLAGS@ @XMMS_DEFINES@ @ARCH_DEFINES@ -I$(top_builddir)/intl
+AM_CPPFLAGS = @GTK_CFLAGS@ @XMMS_DEFINES@ @ARCH_DEFINES@ \
+-I$(top_builddir)/intl -I$(top_srcdir)
+
 
 xmms_SOURCES =  bmp.c bmp.h \
 skin.c skin.h \

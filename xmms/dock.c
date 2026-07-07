@@ -619,7 +619,7 @@ static gboolean configure_event(GtkWidget *w, GdkEventConfigure *event, gpointer
 GList *dock_add_window(GList *list, GtkWidget *w)
 {
 	list = g_list_append(list, w);
-	gtk_signal_connect(GTK_OBJECT(w), "configure_event", GTK_SIGNAL_FUNC(configure_event), NULL);
+	g_signal_connect(G_OBJECT(w), "configure_event", G_CALLBACK(configure_event), NULL);
 	return list;
 }
 	

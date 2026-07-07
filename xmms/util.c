@@ -1,7 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
  *  Copyright (C) 1998-2001  Peter Alm, Mikael Alm, Olle Hallnas,
  *                           Thomas Nilsson and 4Front Technologies
- *  Copyright (C) 1999-2001  Haavard Kvaalen <havardk@xmms.org>
+ *  Copyright (C) 1999-2006  Haavard Kvaalen <havardk@xmms.org>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ static GQuark quark_popup_data;
 
 
 /*
- * find_file_recursively() by Jörg Schuler Wed, 17 Feb 1999 23:50:52
+ * find_file_recursively() by Jï¿½rg Schuler Wed, 17 Feb 1999 23:50:52
  * +0100 Placed under GPL version 2 or (at your option) any later
  * version
  */
@@ -125,7 +125,7 @@ void del_directory(const char *dirname)
 	FTS *fts;
 	FTSENT *p;
 
-	fts = fts_open(argv, FTS_PHYSICAL, (int (*)())NULL);
+	        fts = fts_open(argv, FTS_PHYSICAL, NULL);
 	while ((p = fts_read(fts)) != NULL) {
 		switch (p->fts_info) {
 		case FTS_D:
@@ -141,6 +141,7 @@ void del_directory(const char *dirname)
 			break;
 		}
 	}
+	fts_close(fts);
 #else /* !HAVE_FTS_H */
 	DIR *dir;
 	struct dirent *dirent;
@@ -174,10 +175,10 @@ GdkImage *create_dblsize_image(GdkImage * img)
 	 * This needs to be optimized
 	 */
 
-	dblimg = gdk_image_new(GDK_IMAGE_NORMAL, gdk_visual_get_best(), img->width << 1, img->height << 1);
+	dblimg = gdk_image_new(GDK_IMAGE_NORMAL, gdk_visual_get_best_with_depth(img->depth), img->width << 1, img->height << 1);
 	if (dblimg->bpp == 1)
 	{
-		register guint8 *srcptr, *ptr, *ptr2, pix;
+		char *srcptr, *ptr, *ptr2;
 
 		srcptr = GDK_IMAGE_XIMAGE(img)->data;
 		ptr = GDK_IMAGE_XIMAGE(dblimg)->data;
@@ -187,7 +188,7 @@ GdkImage *create_dblsize_image(GdkImage * img)
 		{
 			for (x = 0; x < img->width; x++)
 			{
-				pix = *srcptr++;
+				gint8 pix = *srcptr++;
 				*ptr++ = pix;
 				*ptr++ = pix;
 				*ptr2++ = pix;
@@ -200,7 +201,7 @@ GdkImage *create_dblsize_image(GdkImage * img)
 	}
 	if (dblimg->bpp == 2)
 	{
-		guint16 *srcptr, *ptr, *ptr2, pix;
+		guint16 *srcptr, *ptr, *ptr2;
 
 		srcptr = (guint16 *) GDK_IMAGE_XIMAGE(img)->data;
 		ptr = (guint16 *) GDK_IMAGE_XIMAGE(dblimg)->data;
@@ -210,7 +211,7 @@ GdkImage *create_dblsize_image(GdkImage * img)
 		{
 			for (x = 0; x < img->width; x++)
 			{
-				pix = *srcptr++;
+				guint16 pix = *srcptr++;
 				*ptr++ = pix;
 				*ptr++ = pix;
 				*ptr2++ = pix;
@@ -223,7 +224,7 @@ GdkImage *create_dblsize_image(GdkImage * img)
 	}
 	if (dblimg->bpp == 3)
 	{
-		register guint8 *srcptr, *ptr, *ptr2, pix1, pix2, pix3;
+		char *srcptr, *ptr, *ptr2;
 
 		srcptr = GDK_IMAGE_XIMAGE(img)->data;
 		ptr = GDK_IMAGE_XIMAGE(dblimg)->data;
@@ -233,9 +234,9 @@ GdkImage *create_dblsize_image(GdkImage * img)
 		{
 			for (x = 0; x < img->width; x++)
 			{
-				pix1 = *srcptr++;
-				pix2 = *srcptr++;
-				pix3 = *srcptr++;
+				char pix1 = *srcptr++;
+				char pix2 = *srcptr++;
+				char pix3 = *srcptr++;
 				*ptr++ = pix1;
 				*ptr++ = pix2;
 				*ptr++ = pix3;
@@ -281,11 +282,11 @@ GdkImage *create_dblsize_image(GdkImage * img)
 	return dblimg;
 }
 
-char *read_ini_string(const char *filename, const char *section, const char *key)
+static char *read_string(const char *filename, const char *section, const char *key, gboolean comment)
 {
 	FILE *file;
 	char *buffer, *ret_buffer = NULL;
-	int found_section = 0, found_key = 0, off = 0, len = 0;
+	int found_section = 0, off = 0, len = 0;
 	struct stat statbuf;
 
 	if (!filename)
@@ -294,87 +295,85 @@ char *read_ini_string(const char *filename, const char *section, const char *key
 	if ((file = fopen(filename, "r")) == NULL)
 		return NULL;
 
-	stat(filename, &statbuf);
+	if (stat(filename, &statbuf) < 0)
+	{
+		fclose(file);
+		return NULL;
+	}
+
 	buffer = g_malloc(statbuf.st_size);
 	fread(buffer, 1, statbuf.st_size, file);
-	while (!found_key && off < statbuf.st_size)
+	while (!ret_buffer && off < statbuf.st_size)
 	{
-		while ((buffer[off] == '\r' || buffer[off] == '\n' ||
-			buffer[off] == ' ' || buffer[off] == '\t') &&
-		       off < statbuf.st_size)
+		while (off < statbuf.st_size &&
+		       (buffer[off] == '\r' || buffer[off] == '\n' ||
+			buffer[off] == ' ' || buffer[off] == '\t'))
 			off++;
 		if (off >= statbuf.st_size)
 			break;
 		if (buffer[off] == '[')
 		{
+			int slen = strlen(section);
 			off++;
+			found_section = 0;
+			if (off + slen + 1 < statbuf.st_size &&
+			    !strncasecmp(section, &buffer[off], slen))
+			{
+				off += slen;
+				if (buffer[off] == ']')
+				{
+					off++;
+					found_section = 1;
+				}
+			}
+		}
+		else if (found_section && off + strlen(key) < statbuf.st_size &&
+			 !strncasecmp(key, &buffer[off], strlen(key)))
+		{
+			off += strlen(key);
+			while (off < statbuf.st_size &&
+			       (buffer[off] == ' ' || buffer[off] == '\t'))
+				off++;
 			if (off >= statbuf.st_size)
 				break;
-			if (off < statbuf.st_size - strlen(section))
+			if (buffer[off] == '=')
 			{
-				if (!strncasecmp(section, &buffer[off],
-						 strlen(section)))
-				{
-					off += strlen(section);
-					if (off >= statbuf.st_size)
-						break;
-					if (buffer[off] == ']')
-						found_section = 1;
-					else
-						found_section = 0;
+				off++;
+				while (off < statbuf.st_size &&
+				       (buffer[off] == ' ' ||
+					buffer[off] == '\t'))
 					off++;
-					if (off >= statbuf.st_size)
-						break;
-				}
-				else
-					found_section = 0;
-			}
-			else
-				found_section = 0;
-			
-		}
-		else if (found_section)
-		{
-			if (off < statbuf.st_size - strlen(key))
-			{
-				if (!strncasecmp(key, &buffer[off], strlen(key)))
-				{
-					off += strlen(key);
-					while ((buffer[off] == ' ' ||
-						buffer[off] == '\t') &&
-					       off < statbuf.st_size)
-						off++;
-					if (off >= statbuf.st_size)
-						break;
-					if (buffer[off] == '=')
-					{
-						off++;
-						while ((buffer[off] == ' ' ||
-							buffer[off] == '\t') &&
-						       off < statbuf.st_size)
-							off++;
-						if (off >= statbuf.st_size)
-							break;
-						len = 0;
-						while (buffer[off + len] != '\r' && buffer[off + len] != '\n' && buffer[off + len] != ';' && off + len < statbuf.st_size)
-							len++;
-						ret_buffer =  g_malloc(len + 1);
-						strncpy(ret_buffer, &buffer[off], len);
-						ret_buffer[len] = '\0';
-						off += len;
-						found_key = 1;
-					}
-				}
+				if (off >= statbuf.st_size)
+					break;
+				len = 0;
+				while (off + len < statbuf.st_size &&
+				       buffer[off + len] != '\r' &&
+				       buffer[off + len] != '\n' &&
+				       (!comment ||
+					buffer[off + len] != ';'))
+					len++;
+				ret_buffer = g_strndup(&buffer[off], len);
+				off += len;
 			}
 		}
-		while (buffer[off] != '\r' && buffer[off] != '\n' &&
-		       off < statbuf.st_size)
+		while (off < statbuf.st_size &&
+		       buffer[off] != '\r' && buffer[off] != '\n')
 			off++;
 	}
 
 	g_free(buffer);
 	fclose(file);
 	return ret_buffer;
+}
+
+char *read_ini_string(const char *filename, const char *section, const char *key)
+{
+	return read_string(filename, section, key, TRUE);
+}
+
+char *read_ini_string_no_comment(const char *filename, const char *section, const char *key)
+{
+	return read_string(filename, section, key, FALSE);
 }
 
 GArray *string_to_garray(const gchar * str)
@@ -450,10 +449,10 @@ static void util_menu_position(GtkMenu *menu, gint *x, gint *y, gpointer data)
 	struct MenuPos *pos = data;
 
 	gtk_widget_size_request(GTK_WIDGET(menu), &requisition);
-      
+
 	screen_width = gdk_screen_width();
 	screen_height = gdk_screen_height();
-	  
+
 	*x = CLAMP(pos->x - 2, 0, MAX(0, screen_width - requisition.width));
 	*y = CLAMP(pos->y - 2, 0, MAX(0, screen_height - requisition.height));
 }
@@ -461,9 +460,23 @@ static void util_menu_position(GtkMenu *menu, gint *x, gint *y, gpointer data)
 static void util_menu_delete_popup_data(GtkObject *object,
 					GtkItemFactory *ifactory)
 {
-	gtk_signal_disconnect_by_func(object,
-				      GTK_SIGNAL_FUNC(util_menu_delete_popup_data),
-				      ifactory);
+	/* Add null pointer checks to prevent segmentation fault */
+	if (!object) {
+		g_warning("util_menu_delete_popup_data: object is NULL");
+		return;
+	}
+	
+	if (!ifactory) {
+		g_warning("util_menu_delete_popup_data: ifactory is NULL");
+		return;
+	}
+	
+	if (!GTK_IS_OBJECT(ifactory)) {
+		g_warning("util_menu_delete_popup_data: ifactory is not a valid GtkObject");
+		return;
+	}
+	
+	g_signal_handlers_disconnect_by_func(G_OBJECT(object), G_CALLBACK(util_menu_delete_popup_data), ifactory);
 	gtk_object_remove_data_by_id(GTK_OBJECT(ifactory), quark_popup_data);
 }
 
@@ -484,6 +497,22 @@ void util_item_factory_popup_with_data(GtkItemFactory * ifactory,
 	static GQuark quark_user_menu_pos = 0;
 	struct MenuPos *pos;
 
+	/* Add null pointer checks to prevent segmentation fault */
+	if (!ifactory) {
+		g_warning("util_item_factory_popup_with_data: ifactory is NULL");
+		return;
+	}
+	
+	if (!GTK_IS_ITEM_FACTORY(ifactory)) {
+		g_warning("util_item_factory_popup_with_data: ifactory is not a valid GtkItemFactory");
+		return;
+	}
+	
+	if (!ifactory->widget) {
+		g_warning("util_item_factory_popup_with_data: ifactory->widget is NULL");
+		return;
+	}
+
 	if (!quark_user_menu_pos)
 		quark_user_menu_pos =
 			g_quark_from_static_string("user_menu_pos");
@@ -499,7 +528,7 @@ void util_item_factory_popup_with_data(GtkItemFactory * ifactory,
 		pos = g_malloc0(sizeof (struct MenuPos));
 
 		gtk_object_set_data_by_id_full(GTK_OBJECT(ifactory->widget),
-					       quark_user_menu_pos, pos, g_free_func);
+					       quark_user_menu_pos, pos, g_free);
 	}
 	pos->x = x;
 	pos->y = y;
@@ -509,10 +538,10 @@ void util_item_factory_popup_with_data(GtkItemFactory * ifactory,
 		gtk_object_set_data_by_id_full(GTK_OBJECT (ifactory),
 					       quark_popup_data,
 					       data, destroy);
-		gtk_signal_connect(GTK_OBJECT(ifactory->widget),
-				   "selection-done",
-				   GTK_SIGNAL_FUNC(util_menu_delete_popup_data),
-				   ifactory);
+	g_signal_connect(G_OBJECT(ifactory->widget),
+		   "selection-done",
+		   G_CALLBACK(util_menu_delete_popup_data),
+		   ifactory);
 	}
 
 	gtk_menu_popup(GTK_MENU(ifactory->widget), NULL, NULL,
@@ -534,7 +563,7 @@ static gint util_find_compare_func(gconstpointer a, gconstpointer b)
 
 static void util_add_url_callback(GtkWidget *w, GtkWidget *entry)
 {
-	gchar *text;
+	const gchar *text;
 	GList *node;
 
 	text = gtk_entry_get_text(GTK_ENTRY(entry));
@@ -550,62 +579,62 @@ static void util_add_url_callback(GtkWidget *w, GtkWidget *entry)
 	}
 }
 
-GtkWidget* util_create_add_url_window(gchar *caption, GtkSignalFunc ok_func, GtkSignalFunc enqueue_func)
+GtkWidget* util_create_add_url_window(gchar *caption, GCallback ok_func, GCallback enqueue_func)
 {
 	GtkWidget *win, *vbox, *bbox, *ok, *enqueue, *cancel, *combo;
-	
-	win = gtk_window_new(GTK_WINDOW_DIALOG);
+
+	win = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title(GTK_WINDOW(win), caption);
 	gtk_window_set_position(GTK_WINDOW(win), GTK_WIN_POS_MOUSE);
 	gtk_window_set_default_size(GTK_WINDOW(win), 400, -1);
 	gtk_container_set_border_width(GTK_CONTAINER(win), 10);
-	
+
 	vbox = gtk_vbox_new(FALSE, 10);
 	gtk_container_add(GTK_CONTAINER(win), vbox);
 
 	combo = gtk_combo_new();
 	if(cfg.url_history)
 		gtk_combo_set_popdown_strings(GTK_COMBO(combo), cfg.url_history);
-	gtk_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "activate", util_add_url_callback, GTK_COMBO(combo)->entry);
-	gtk_signal_connect(GTK_OBJECT(GTK_COMBO(combo)->entry), "activate", ok_func, GTK_COMBO(combo)->entry);
+	g_signal_connect(GTK_COMBO(combo)->entry, "activate", G_CALLBACK(util_add_url_callback), GTK_COMBO(combo)->entry);
+	g_signal_connect(GTK_COMBO(combo)->entry, "activate", ok_func, GTK_COMBO(combo)->entry);
 	gtk_box_pack_start(GTK_BOX(vbox), combo, FALSE, FALSE, 0);
 	gtk_window_set_focus(GTK_WINDOW(win), GTK_COMBO(combo)->entry);
 	gtk_entry_set_text(GTK_ENTRY(GTK_COMBO(combo)->entry), "");
 	gtk_combo_set_use_arrows_always(GTK_COMBO(combo), TRUE);
 	gtk_widget_show(combo);
-	
+
 	bbox = gtk_hbutton_box_new();
+	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
+	gtk_widget_show(bbox);
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
 	gtk_button_box_set_spacing(GTK_BUTTON_BOX(bbox), 5);
-	
-	ok = gtk_button_new_with_label(_("Ok"));
-	gtk_signal_connect(GTK_OBJECT(ok), "clicked", util_add_url_callback, GTK_COMBO(combo)->entry);
-	gtk_signal_connect(GTK_OBJECT(ok), "clicked", ok_func, GTK_COMBO(combo)->entry);
-	
+
+	ok = gtk_button_new_with_label(_("OK"));
+	g_signal_connect(ok, "clicked", G_CALLBACK(util_add_url_callback), GTK_COMBO(combo)->entry);
+	g_signal_connect(ok, "clicked", ok_func, GTK_COMBO(combo)->entry);
+
 	GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
-	gtk_window_set_default(GTK_WINDOW(win), ok);
+	gtk_widget_grab_default(ok);
 	gtk_box_pack_start(GTK_BOX(bbox), ok, FALSE, FALSE, 0);
 	gtk_widget_show(ok);
 
-	if(enqueue_func)
+	if (enqueue_func)
 	{
-		/* I18N note: "Enqueue" here means "Add to playlist" */
+		/* I18N: "Enqueue" here means "Add to playlist" */
 		enqueue = gtk_button_new_with_label(_("Enqueue"));
-		gtk_signal_connect(GTK_OBJECT(enqueue), "clicked", util_add_url_callback, GTK_COMBO(combo)->entry);
-		gtk_signal_connect(GTK_OBJECT(enqueue), "clicked", enqueue_func, GTK_COMBO(combo)->entry);
+                g_signal_connect(enqueue, "clicked", G_CALLBACK(util_add_url_callback), GTK_COMBO(combo)->entry);
+                g_signal_connect(enqueue, "clicked", enqueue_func, GTK_COMBO(combo)->entry);
 		GTK_WIDGET_SET_FLAGS(enqueue, GTK_CAN_DEFAULT);
 		gtk_box_pack_start(GTK_BOX(bbox), enqueue, FALSE, FALSE, 0);
 		gtk_widget_show(enqueue);
 	}
-	
+
 	cancel = gtk_button_new_with_label(_("Cancel"));
-	gtk_signal_connect_object(GTK_OBJECT(cancel), "clicked", GTK_SIGNAL_FUNC(gtk_widget_destroy), GTK_OBJECT(win));
+	g_signal_connect_swapped(G_OBJECT(cancel), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(win));
 	GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
 	gtk_box_pack_start(GTK_BOX(bbox), cancel, FALSE, FALSE, 0);
 	gtk_widget_show(cancel);
-	
-	gtk_box_pack_start(GTK_BOX(vbox), bbox, FALSE, FALSE, 0);
-	gtk_widget_show(bbox);
+
 	gtk_widget_show(vbox);
 	return win;
 }
@@ -620,29 +649,30 @@ static int int_compare_func(gconstpointer a, gconstpointer b)
 		return 0;
 }
 
-static void filebrowser_changed(GtkWidget * w, GtkFileSelection * filesel)
+static void filebrowser_changed(GtkFileSelection * filesel)
 {
-	gchar *current = "./", *parent = "../";
-	gchar *text = gtk_entry_get_text(GTK_ENTRY(w));
 	GList *list, *node;
+	char *filename = (char *)gtk_file_selection_get_filename(filesel);
 
-	if ((!text || !(*text)) &&
-	    (list = input_scan_dir(gtk_file_selection_get_filename(GTK_FILE_SELECTION(filesel)))) != NULL)
+	if ((list = input_scan_dir(filename)) != NULL)
 	{
 		/*
-		 * We enter a directory that has been "hijacked" by a
+		 * We enter a directory that has been "hijacked" by an
 		 * input-plugin. This is used by the CDDA plugin
 		 */
+		char *current = "./", *parent = "../";
+
 		gtk_clist_clear(GTK_CLIST(filesel->dir_list));
 		gtk_clist_append(GTK_CLIST(filesel->dir_list), &current);
 		gtk_clist_append(GTK_CLIST(filesel->dir_list), &parent);
-		
+
 		gtk_clist_freeze(GTK_CLIST(filesel->file_list));
 		gtk_clist_clear(GTK_CLIST(filesel->file_list));
 		node = list;
 		while (node)
 		{
-			gtk_clist_append(GTK_CLIST(filesel->file_list), (gchar **) & node->data);
+			gtk_clist_append(GTK_CLIST(filesel->file_list),
+					 (gchar **) & node->data);
 			g_free(node->data);
 			node = g_list_next(node);
 		}
@@ -651,16 +681,78 @@ static void filebrowser_changed(GtkWidget * w, GtkFileSelection * filesel)
 	}
 }
 
+static int filebrowser_idle_changed(gpointer data)
+{
+	GDK_THREADS_ENTER();
+	filebrowser_changed(GTK_FILE_SELECTION(data));
+	GDK_THREADS_LEAVE();
+
+	return FALSE;
+}
+
+static void filebrowser_entry_changed(GtkEditable *entry, gpointer data)
+{
+	const char *text = gtk_entry_get_text(GTK_ENTRY(entry));
+
+	if (!text || !(*text))
+		filebrowser_changed(GTK_FILE_SELECTION(data));
+}
+
+static void filebrowser_dir_select(GtkCList *clist, int row, int col, GdkEventButton *event, gpointer data)
+{
+	if (event && event->type == GDK_2BUTTON_PRESS)
+		gtk_idle_add(filebrowser_idle_changed, data);
+}
+
 gboolean util_filebrowser_is_dir(GtkFileSelection * filesel)
 {
 	char *text;
 	struct stat buf;
 	gboolean retv = FALSE;
-	
-	text = g_strdup(gtk_file_selection_get_filename(filesel));
 
-	if (stat(text, &buf) == 0 &&
-	    S_ISDIR(buf.st_mode))
+	/* Add null pointer check */
+	if (!filesel) {
+		g_warning("util_filebrowser_is_dir: filesel is NULL");
+		return FALSE;
+	}
+
+	if (!GTK_IS_FILE_SELECTION(filesel)) {
+		g_warning("util_filebrowser_is_dir: filesel is not a valid GtkFileSelection");
+		return FALSE;
+	}
+
+	/* Check if gtk_file_selection_get_filename returns a valid string */
+	const gchar *filename = gtk_file_selection_get_filename(filesel);
+	if (!filename) {
+		g_warning("util_filebrowser_is_dir: gtk_file_selection_get_filename returned NULL");
+		return FALSE;
+	}
+	
+	text = g_strdup(filename);
+	if (!text) {
+		g_warning("util_filebrowser_is_dir: Failed to duplicate filename string");
+		return FALSE;
+	}
+	if (strlen(text) == 0)
+	{
+		/*
+		 * This is a weird special case.  If the "current" dir
+		 * don't exist, gtk_file_selection_get_filename()
+		 * return an empty string, even if the user typed in a
+		 * dir.
+		 */
+		g_free(text);
+		
+		/* Check if selection_entry is valid before accessing it */
+		if (filesel->selection_entry && GTK_IS_ENTRY(filesel->selection_entry)) {
+			text = g_strdup(gtk_entry_get_text(GTK_ENTRY(filesel->selection_entry)));
+		} else {
+			g_warning("util_filebrowser_is_dir: selection_entry is not valid");
+			return FALSE;
+		}
+	}
+
+	if ((stat(text, &buf) == 0 && S_ISDIR(buf.st_mode)) || strlen(text) == 0)
 	{
 		/* Selected directory */
 		int len = strlen(text);
@@ -689,8 +781,14 @@ gboolean util_filebrowser_is_dir(GtkFileSelection * filesel)
 static void filebrowser_add_files(GtkFileSelection * filesel)
 {
 	GList *sel_list = NULL, *node;
-	gchar *text, *text2, *ptr;
-	gint *clear_on_ok;
+	const char *text;
+	char *ptr;
+
+	/* Check for NULL pointer early to prevent segmentation faults */
+	if (!filesel) {
+		g_warning("filebrowser_add_files: filesel is NULL");
+		return;
+	}
 
 	if (cfg.filesel_path)
 		g_free(cfg.filesel_path);
@@ -702,45 +800,85 @@ static void filebrowser_add_files(GtkFileSelection * filesel)
 	/* This will give an extra slash if the current dir is the root. */
 	cfg.filesel_path = g_strconcat(ptr, "/", NULL);
 
-	node = GTK_CLIST(filesel->file_list)->selection;
-	while (node)
-	{
-		sel_list = g_list_prepend(sel_list, node->data);
-		node = g_list_next(node);
+	/* Add null pointer checks to prevent segmentation fault */
+	if (!filesel->file_list) {
+		g_warning("filebrowser_add_files: file_list is NULL");
+		return;
+	}
+
+	/* Check if file_list is a GtkCList or GtkTreeView */
+	if (GTK_IS_CLIST(filesel->file_list)) {
+		/* Handle traditional GtkCList */
+		node = GTK_CLIST(filesel->file_list)->selection;
+		while (node)
+		{
+			sel_list = g_list_prepend(sel_list, node->data);
+			node = g_list_next(node);
+		}
+	} else if (GTK_IS_TREE_VIEW(filesel->file_list)) {
+		/* Handle newer GtkTreeView - get selection differently */
+		GtkTreeSelection *selection;
+		GtkTreeModel *model;
+		GList *selected_rows, *iter;
+		
+		selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(filesel->file_list));
+		selected_rows = gtk_tree_selection_get_selected_rows(selection, &model);
+		
+		for (iter = selected_rows; iter != NULL; iter = iter->next) {
+			GtkTreePath *path = (GtkTreePath *)iter->data;
+			GtkTreeIter tree_iter;
+			
+			if (gtk_tree_model_get_iter(model, &tree_iter, path)) {
+				gint row = gtk_tree_path_get_indices(path)[0];
+				sel_list = g_list_prepend(sel_list, GINT_TO_POINTER(row));
+			}
+			gtk_tree_path_free(path);
+		}
+		g_list_free(selected_rows);
+	} else {
+		g_warning("filebrowser_add_files: file_list is neither GtkCList nor GtkTreeView");
+		return;
 	}
 	sel_list = g_list_sort(sel_list, int_compare_func);
 
-	if (cfg.open_rev_order)
-		node = g_list_last(sel_list);
-	else
-		node = sel_list;
+	node = sel_list;
 
-	clear_on_ok = gtk_object_get_data(GTK_OBJECT(filesel),
-					  "clear_pl_on_ok");
-	if (clear_on_ok && *clear_on_ok == 2)
-	{
-		/*
-		 * clear the playlist if we're called
-		 * from the eject button
-		 */
-		playlist_clear();
-		*clear_on_ok = 1;
-	}
-
-	
 	if (node)
 	{
-		while (node)
-		{
-			gtk_clist_get_text(GTK_CLIST(filesel->file_list), GPOINTER_TO_INT(node->data), 0, &text);
-			text2 = g_strconcat(cfg.filesel_path, text, NULL);
-			playlist_add(text2);
-			g_free(text2);
-			if(cfg.open_rev_order)
-				node = g_list_previous(node);
-			else
-				node = g_list_next(node);
-		}
+		do {
+			char *tmp;
+			char *nonconst_text;
+			
+			/* Get text differently based on widget type */
+			if (GTK_IS_CLIST(filesel->file_list)) {
+				gtk_clist_get_text(GTK_CLIST(filesel->file_list),
+						   GPOINTER_TO_INT(node->data), 0, &nonconst_text);
+			} else if (GTK_IS_TREE_VIEW(filesel->file_list)) {
+				/* For GtkTreeView, we need to get the text from the model */
+				GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(filesel->file_list));
+				GtkTreeIter iter;
+				GtkTreePath *path = gtk_tree_path_new_from_indices(GPOINTER_TO_INT(node->data), -1);
+				
+				if (gtk_tree_model_get_iter(model, &iter, path)) {
+					gtk_tree_model_get(model, &iter, 0, &nonconst_text, -1);
+				} else {
+					nonconst_text = NULL;
+				}
+				gtk_tree_path_free(path);
+			} else {
+				nonconst_text = NULL;
+			}
+			
+			if (nonconst_text) {
+				text = nonconst_text;
+				tmp = g_strconcat(cfg.filesel_path, text, NULL);
+				playlist_add(tmp);
+				g_free(tmp);
+				if (GTK_IS_TREE_VIEW(filesel->file_list)) {
+					g_free(nonconst_text); /* TreeView allocates the string */
+				}
+			}
+		} while ((node = g_list_next(node)) != NULL);
 	}
 	else
 	{
@@ -749,33 +887,104 @@ static void filebrowser_add_files(GtkFileSelection * filesel)
 		 * typed a filename.
 		 */
 		text = gtk_file_selection_get_filename(filesel);
-		if (text[strlen(text) - 1] != '/')
-			playlist_add(text);
+		if (text[strlen(text) - 1] != '/') {
+			char *nonconst_text = g_strdup(text);
+			playlist_add(nonconst_text);
+			g_free(nonconst_text);
+		}
 		gtk_file_selection_set_filename(filesel, "");
 	}
 	g_list_free(sel_list);
 	playlistwin_update_list();
 }
 
-static void filebrowser_ok(GtkWidget * w, GtkWidget * filesel)
+static void filebrowser_add(GtkWidget * w, GtkWidget * filesel)
 {
-	gboolean *clear_on_ok = gtk_object_get_data(GTK_OBJECT(filesel),
-						    "clear_pl_on_ok");
+	/* Add null pointer checks to prevent segmentation fault */
+	if (!filesel) {
+		g_warning("filebrowser_add: filesel is NULL");
+		return;
+	}
+
+	if (!GTK_IS_FILE_SELECTION(filesel)) {
+		g_warning("filebrowser_add: filesel is not a valid GtkFileSelection");
+		return;
+	}
+
 	if (util_filebrowser_is_dir(GTK_FILE_SELECTION(filesel)))
 		return;
+	
+	/* Additional safety check before calling filebrowser_add_files */
+	if (!GTK_IS_FILE_SELECTION(filesel)) {
+		g_warning("filebrowser_add: filesel became invalid before filebrowser_add_files call");
+		return;
+	}
+	
 	gtk_widget_hide(filesel);
 	filebrowser_add_files(GTK_FILE_SELECTION(filesel));
-	if (clear_on_ok && *clear_on_ok > 0)
-		playlist_play();
-	gtk_widget_destroy(filesel);
+	
+	/* Final check before destroying the widget */
+	if (GTK_IS_WIDGET(filesel)) {
+		gtk_widget_destroy(filesel);
+	} else {
+		g_warning("filebrowser_add: filesel is not a valid widget before destroy");
+	}
+}
+
+static void filebrowser_play(GtkWidget * w, GtkWidget * filesel)
+{
+	/* Add null pointer checks to prevent segmentation fault */
+	if (!filesel) {
+		g_warning("filebrowser_play: filesel is NULL");
+		return;
+	}
+
+	if (!GTK_IS_FILE_SELECTION(filesel)) {
+		g_warning("filebrowser_play: filesel is not a valid GtkFileSelection");
+		return;
+	}
+
+	if (util_filebrowser_is_dir(GTK_FILE_SELECTION(filesel)))
+		return;
+	playlist_clear();
+	gtk_widget_hide(filesel);
+	filebrowser_add_files(GTK_FILE_SELECTION(filesel));
+	
+	/* Final check before destroying the widget */
+	if (GTK_IS_WIDGET(filesel)) {
+		gtk_widget_destroy(filesel);
+	} else {
+		g_warning("filebrowser_play: filesel is not a valid widget before destroy");
+	}
+	playlist_play();
 }
 
 static void filebrowser_add_selected_files(GtkWidget * w, gpointer data)
 {
-	GtkFileSelection *filesel = GTK_FILE_SELECTION(data);
+	GtkFileSelection *filesel;
 	
+	/* Add null pointer checks to prevent segmentation fault */
+	if (!data) {
+		g_warning("filebrowser_add_selected_files: data is NULL");
+		return;
+	}
+
+	if (!GTK_IS_FILE_SELECTION(data)) {
+		g_warning("filebrowser_add_selected_files: data is not a valid GtkFileSelection");
+		return;
+	}
+
+	filesel = GTK_FILE_SELECTION(data);
+
 	filebrowser_add_files(filesel);
-	gtk_clist_unselect_all(GTK_CLIST(filesel->file_list));
+	
+	/* Only use GtkCList functions if it's actually a GtkCList */
+	if (GTK_IS_CLIST(filesel->file_list)) {
+		gtk_clist_unselect_all(GTK_CLIST(filesel->file_list));
+	} else if (GTK_IS_TREE_VIEW(filesel->file_list)) {
+		GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(filesel->file_list));
+		gtk_tree_selection_unselect_all(selection);
+	}
 
 	/*HACK*/
 	gtk_entry_set_text(GTK_ENTRY(filesel->selection_entry), "");
@@ -783,42 +992,96 @@ static void filebrowser_add_selected_files(GtkWidget * w, gpointer data)
 
 static void filebrowser_add_all_files(GtkWidget * w, gpointer data)
 {
-	GtkFileSelection *filesel = GTK_FILE_SELECTION(data);
+	GtkFileSelection *filesel;
+	
+	/* Add null pointer checks to prevent segmentation fault */
+	if (!data) {
+		g_warning("filebrowser_add_all_files: data is NULL");
+		return;
+	}
 
-	gtk_clist_freeze(GTK_CLIST(filesel->file_list));
-	gtk_clist_select_all(GTK_CLIST(filesel->file_list));
+	if (!GTK_IS_FILE_SELECTION(data)) {
+		g_warning("filebrowser_add_all_files: data is not a valid GtkFileSelection");
+		return;
+	}
+
+	filesel = GTK_FILE_SELECTION(data);
+
+	/* Only use GtkCList functions if it's actually a GtkCList */
+	if (GTK_IS_CLIST(filesel->file_list)) {
+		gtk_clist_freeze(GTK_CLIST(filesel->file_list));
+		gtk_clist_select_all(GTK_CLIST(filesel->file_list));
+	} else if (GTK_IS_TREE_VIEW(filesel->file_list)) {
+		GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(filesel->file_list));
+		gtk_tree_selection_select_all(selection);
+	}
+	
 	filebrowser_add_files(filesel);
 	/*
 	 * We want gtk_clist_undo_selection() but it seems to be buggy
 	 * in GTK+ 1.2.6
 	 */
 	/*  gtk_clist_undo_selection(GTK_CLIST(GTK_FILE_SELECTION(filesel)->file_list)); */
-	gtk_clist_unselect_all(GTK_CLIST(filesel->file_list));
-	gtk_clist_thaw(GTK_CLIST(filesel->file_list));
+	
+	/* Only use GtkCList functions if it's actually a GtkCList */
+	if (GTK_IS_CLIST(filesel->file_list)) {
+		gtk_clist_unselect_all(GTK_CLIST(filesel->file_list));
+		gtk_clist_thaw(GTK_CLIST(filesel->file_list));
+	} else if (GTK_IS_TREE_VIEW(filesel->file_list)) {
+		GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(filesel->file_list));
+		gtk_tree_selection_unselect_all(selection);
+		/* GtkTreeView doesn't need freeze/thaw */
+	}
 
 	gtk_entry_set_text(GTK_ENTRY(filesel->selection_entry), "");
 }
 
-GtkWidget * util_create_filebrowser(gboolean clear_pl_on_ok)
+GtkWidget * util_create_filebrowser(gboolean play_button)
 {
 	GtkWidget *filebrowser, *bbox, *add_selected, *add_all, *label;
 	GtkFileSelection *fb;
-	gboolean *ptr;
+	GtkSignalFunc sf;
+	char *title;
 
-	filebrowser = gtk_file_selection_new(_("Load file(s)"));
+	if (play_button)
+		title = _("Play files");
+	else
+		title = _("Load files");
+
+	filebrowser = gtk_file_selection_new(title);
 	fb = GTK_FILE_SELECTION(filebrowser);
-		
-	gtk_clist_set_selection_mode(GTK_CLIST(fb->file_list),
-				     GTK_SELECTION_EXTENDED);
-	gtk_signal_connect(GTK_OBJECT(fb->selection_entry), "changed",
-			   GTK_SIGNAL_FUNC(filebrowser_changed), filebrowser);
-	gtk_signal_connect(GTK_OBJECT(fb->ok_button), "clicked",
-			   GTK_SIGNAL_FUNC(filebrowser_ok), filebrowser);
-	gtk_signal_connect_object(GTK_OBJECT(fb->cancel_button), "clicked",
-				  GTK_SIGNAL_FUNC(gtk_widget_destroy),
-				  GTK_OBJECT(filebrowser));
 
-	if (cfg.filesel_path)
+	/* Only set selection mode if it's actually a GtkCList */
+	if (GTK_IS_CLIST(fb->file_list)) {
+		gtk_clist_set_selection_mode(GTK_CLIST(fb->file_list),
+					     GTK_SELECTION_EXTENDED);
+	} else if (GTK_IS_TREE_VIEW(fb->file_list)) {
+		/* For GtkTreeView, set selection mode on the selection object */
+		GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(fb->file_list));
+		gtk_tree_selection_set_mode(selection, GTK_SELECTION_MULTIPLE);
+	}
+
+        g_signal_connect(fb->selection_entry, "changed",
+                           G_CALLBACK(filebrowser_entry_changed), filebrowser);
+
+	/* Only connect select_row signal if it's a GtkCList */
+	if (GTK_IS_CLIST(fb->dir_list)) {
+		g_signal_connect(fb->dir_list, "select_row",
+				   G_CALLBACK(filebrowser_dir_select), filebrowser);
+	} else if (GTK_IS_TREE_VIEW(fb->dir_list)) {
+		/* For GtkTreeView, use different signal */
+		GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(fb->dir_list));
+		g_signal_connect(selection, "changed",
+				   G_CALLBACK(filebrowser_dir_select), filebrowser);
+	}
+        if (play_button)
+                sf = (GCallback)filebrowser_play;
+        else
+                sf = (GCallback)filebrowser_add;
+        g_signal_connect(fb->ok_button, "clicked", sf, filebrowser);
+        g_signal_connect_swapped(fb->cancel_button, "clicked",
+                                  G_CALLBACK(gtk_widget_destroy),
+                                  filebrowser);	if (cfg.filesel_path)
 		gtk_file_selection_set_filename(fb, cfg.filesel_path);
 	bbox = gtk_hbutton_box_new();
 	gtk_button_box_set_layout(GTK_BUTTON_BOX(bbox), GTK_BUTTONBOX_END);
@@ -826,44 +1089,72 @@ GtkWidget * util_create_filebrowser(gboolean clear_pl_on_ok)
 	gtk_box_pack_end(GTK_BOX(fb->action_area), bbox, TRUE, TRUE, 0);
 	add_selected  = gtk_button_new_with_label(_("Add selected files"));
 	gtk_box_pack_start(GTK_BOX(bbox), add_selected, FALSE, FALSE, 0);
-	gtk_signal_connect(GTK_OBJECT(add_selected), "clicked",
-			   GTK_SIGNAL_FUNC(filebrowser_add_selected_files),
-			   filebrowser);
+	g_signal_connect(add_selected, "clicked",
+			   G_CALLBACK(filebrowser_add_selected_files), filebrowser);
 	add_all = gtk_button_new_with_label(_("Add all files in directory"));
 	gtk_box_pack_start(GTK_BOX(bbox), add_all, FALSE, FALSE, 0);
-	gtk_signal_connect(GTK_OBJECT(add_all), "clicked",
-			   GTK_SIGNAL_FUNC(filebrowser_add_all_files),
-			   filebrowser);
+	g_signal_connect(add_all, "clicked",
+			   G_CALLBACK(filebrowser_add_all_files), filebrowser);
 	gtk_widget_show_all(bbox);
 
 	/*
-	 * This is ugly.
 	 * Change the Cancel buttons caption to Close.
 	 */
-	
+
 	label = gtk_label_new(_("Close"));
 	gtk_misc_set_alignment(GTK_MISC(label), 0.5, 0.5);
 	gtk_container_remove(GTK_CONTAINER(fb->cancel_button),
-			     gtk_container_children(GTK_CONTAINER(fb->cancel_button))->data);
+			     GTK_BIN(fb->cancel_button)->child);
 	gtk_container_add(GTK_CONTAINER(fb->cancel_button), label);
 	gtk_widget_show(label);
 
-	ptr = g_malloc(sizeof (gint));
-	*ptr = !!clear_pl_on_ok * 2;
-	gtk_object_set_data_full(GTK_OBJECT(filebrowser), "clear_pl_on_ok", ptr, g_free_func);
+	/*
+	 * Change the OK buttons caption to Add or Play.
+	 */
+
+	if (play_button)
+		label = gtk_label_new(_("Play"));
+	else
+		label = gtk_label_new(_("Add"));
+	gtk_misc_set_alignment(GTK_MISC(label), 0.5, 0.5);
+	gtk_container_remove(GTK_CONTAINER(fb->ok_button),
+			     GTK_BIN(fb->ok_button)->child);
+	gtk_container_add(GTK_CONTAINER(fb->ok_button), label);
+	gtk_widget_show(label);
+
+	/* if (play_button)
+	{
+		GtkArg arg;
+
+		 *
+		 * The amount of fiddling we do with the filesel
+		 * internals are starting to get ridicolous.  Maybe we
+		 * should copy the entire filesel code instead.
+		 *
+		arg.name = "GtkWidget::parent";
+		gtk_object_arg_get(GTK_OBJECT(fb->ok_button), &arg, NULL);
+		button = gtk_button_new_with_label(_("Add"));
+	g_signal_connect(G_OBJECT(button), "clicked",
+		   G_CALLBACK(filebrowser_add), filebrowser);
+		GTK_WIDGET_SET_FLAGS(button, GTK_CAN_DEFAULT);
+		gtk_box_pack_start(GTK_BOX(arg.d.object_data),
+				   button, TRUE, TRUE, 0);
+		gtk_box_reorder_child(GTK_BOX(arg.d.object_data), button, 1);
+		gtk_widget_show(button);
+	} */
 
 	gtk_widget_show(filebrowser);
 	return filebrowser;
 }
 
-GdkFont *util_font_load(gchar *name)
+GdkFont *util_font_load(char *name)
 {
 	GdkFont *font;
 
 	/* First try the prefered way, then just try to get some font */
 
 	if (!cfg.use_fontsets)
-	{	
+	{
 		if ((font = gdk_font_load(name)) == NULL)
 			font = gdk_fontset_load(name);
 	}
@@ -872,11 +1163,18 @@ GdkFont *util_font_load(gchar *name)
 		if ((font = gdk_fontset_load(name)) == NULL)
 			font = gdk_font_load(name);
 	}
+
+	if (!font)
+	{
+		g_warning("Failed to open font: \"%s\".", name);
+		font = gdk_font_load("fixed");
+	}
+
 	return font;
 }
 
 #ifdef ENABLE_NLS
-gchar* util_menu_translate(const gchar *path, gpointer func_data)
+char* util_menu_translate(const char *path, void *func_data)
 {
 	char *translation = gettext(path);
 
@@ -911,41 +1209,24 @@ void util_set_cursor(GtkWidget *window)
 
 void util_dump_menu_rc(void)
 {
+	/* TODO use https://developer.gnome.org/gtk2/stable/gtk2-Resource-Files.html ?
 	char *filename = g_strconcat(g_get_home_dir(), "/.xmms/menurc", NULL);
 	gtk_item_factory_dump_rc(filename, NULL, FALSE);
 	g_free(filename);
+	*/
 }
 
 void util_read_menu_rc(void)
 {
+	/* TODO use https://developer.gnome.org/gtk2/stable/gtk2-Resource-Files.html ?
 	char *filename = g_strconcat(g_get_home_dir(), "/.xmms/menurc", NULL);
 	gtk_item_factory_parse_rc(filename);
 	g_free(filename);
+	*/
 }
 
-
-#if defined(USE_DMALLOC)
-
-/*
- * We sometimes need a function pointer for g_free().  If dmalloc is
- * used we must create such a function in place of the g_free function
- * which is expanded as a macro.
- */
-void g_free_func (gpointer mem)
+void util_dialog_keypress_cb(GtkWidget *w, GdkEventKey *event, gpointer data)
 {
-	g_free (mem);
+	if (event && event->keyval == GDK_Escape)
+		gtk_widget_destroy(w);
 }
-
-/*
- * When allocating via, say, g_strdup the wrapper macro must free the
- * previously allocated string through the original g_free function.
- */
-void g_free_orig (gpointer mem)
-{
-#undef g_free
-	void g_free (gpointer);
-	g_free (mem);
-}
-
-#endif
-

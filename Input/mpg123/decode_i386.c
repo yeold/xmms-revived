@@ -17,6 +17,8 @@
 
 #include "mpg123.h"
 
+int mpg123_synth_1to1_pent(real *, int, unsigned char *);
+
 #if 0
  /* old WRITE_SAMPLE */
 #define WRITE_SAMPLE(samples,sum,clip) \
@@ -76,6 +78,7 @@ int mpg123_synth_1to1_8bit_mono(real * bandPtr, unsigned char *samples, int *pnt
 	return ret;
 }
 
+#if 0
 int mpg123_synth_1to1_8bit_mono2stereo(real * bandPtr, unsigned char *samples, int *pnt)
 {
 	short samples_tmp[64];
@@ -96,6 +99,7 @@ int mpg123_synth_1to1_8bit_mono2stereo(real * bandPtr, unsigned char *samples, i
 
 	return ret;
 }
+#endif
 
 int mpg123_synth_1to1_mono(real * bandPtr, unsigned char *samples, int *pnt)
 {
@@ -118,6 +122,7 @@ int mpg123_synth_1to1_mono(real * bandPtr, unsigned char *samples, int *pnt)
 	return ret;
 }
 
+#if 0
 int mpg123_synth_1to1_mono2stereo(real * bandPtr, unsigned char *samples, int *pnt)
 {
 	int i, ret;
@@ -133,10 +138,11 @@ int mpg123_synth_1to1_mono2stereo(real * bandPtr, unsigned char *samples, int *p
 
 	return ret;
 }
+#endif
 
 int mpg123_synth_1to1(real * bandPtr, int channel, unsigned char *out, int *pnt)
 {
-#if 0
+#ifndef I386_ASSEM
 	static real buffs[2][2][0x110];
 	static const int step = 2;
 	static int bo = 1;
@@ -146,9 +152,6 @@ int mpg123_synth_1to1(real * bandPtr, int channel, unsigned char *out, int *pnt)
 	int clip = 0;
 	int bo1;
 
-#endif
-
-#if 0
 	if (!channel)
 	{
 		bo--;
@@ -255,3 +258,18 @@ int mpg123_synth_1to1(real * bandPtr, int channel, unsigned char *out, int *pnt)
 	}
 #endif
 }
+
+#ifdef USE_SIMD
+int mpg123_synth_MMX(real *, int, short *, short *, int *);
+
+int mpg123_synth_1to1_mmx(real * bandPtr, int channel, unsigned char *out, int *pnt)
+{
+	static short buffs[2][2][0x110];
+	static int bo = 1;
+	short *samples = (short *) (out + *pnt);
+
+	mpg123_synth_MMX(bandPtr, channel, samples, (short *) buffs, &bo);
+	*pnt += 128;
+	return 0;
+}
+#endif

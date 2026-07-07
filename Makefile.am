@@ -1,4 +1,6 @@
-SUBDIRS = intl libxmms xmms Output Input Effect General Visualization wmxmms gnomexmms po
+SUBDIRS = libxmms xmms Output Input Effect General Visualization wmxmms po
+
+ACLOCAL_AMFLAGS = -I m4
 
 bin_SCRIPTS = xmms-config
 
@@ -7,4 +9,4 @@ EXTRA_DIST = xmms.spec xmms.spec.in FAQ xmms.m4
 m4datadir = $(datadir)/aclocal
 m4data_DATA = xmms.m4
 
-man_MANS = xmms.1 wmxmms.1 gnomexmms.1
+man_MANS = xmms.1 wmxmms.1

@@ -16,7 +16,7 @@ Formatter *xmms_formatter_new(void)
 
 void xmms_formatter_destroy(Formatter *formatter)
 {
-	gint i;
+	int i;
 
 	for(i = 0; i < 256; i++)
 		if(formatter->values[i])
@@ -24,7 +24,7 @@ void xmms_formatter_destroy(Formatter *formatter)
 	g_free(formatter);
 }
 
-void xmms_formatter_associate(Formatter *formatter, guchar id, gchar *value)
+void xmms_formatter_associate(Formatter *formatter, guchar id, char *value)
 {
 	xmms_formatter_dissociate(formatter, id);
 	formatter->values[id] = g_strdup(value);
@@ -37,28 +37,34 @@ void xmms_formatter_dissociate(Formatter *formatter, guchar id)
 	formatter->values[id] = 0;
 }
 
-gchar *xmms_formatter_format(Formatter *formatter, gchar *format)
+gchar *xmms_formatter_format(Formatter *formatter, char *format)
 {
-	gchar *p, *q, *buffer;
-	gint len;
+	char *p, *q, *buffer;
+	int len;
 
 	for(p = format, len = 0; *p; p++)
 		if(*p == '%') {
-			if(formatter->values[(gint)*++p])
-				len += strlen(formatter->values[(gint)*p]);
-			else
+			if(formatter->values[(int)*++p])
+				len += strlen(formatter->values[(int)*p]);
+			else if (!*p) {
+				len += 1;
+				p--;
+			} else
 				len += 2;
 		} else
 			len++;
 	buffer = g_malloc(len + 1);
 	for(p = format, q = buffer; *p; p++)
 		if(*p == '%') {
-			if(formatter->values[(gint)*++p]) {
-				strcpy(q, formatter->values[(gint)*p]);
+			if(formatter->values[(int)*++p]) {
+				strcpy(q, formatter->values[(int)*p]);
 				q += strlen(q);
 			} else {
 				*q++ = '%';
-				*q++ = *p;
+				if (*p != '\0')
+					*q++ = *p;
+				else
+					p--;
 			}
 		} else
 			*q++ = *p;

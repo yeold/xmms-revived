@@ -1,6 +1,6 @@
 bin_PROGRAMS = wmxmms
 
-wmxmms_LDADD = @GTK_LIBS@ $(top_builddir)/libxmms/libxmms.la @INTLLIBS@
+wmxmms_LDADD = @GTK_LIBS@ $(top_builddir)/libxmms/libxmms.la @LTLIBINTL@ -lX11 -lm -lgthread-2.0
 
 wmxmms_SOURCES = 	\
 getopt.c \
@@ -8,7 +8,7 @@ getopt1.c \
 getopt.h \
 wmxmms.c
 
-INCLUDES = @GTK_CFLAGS@ @XMMS_DEFINES@ -I$(top_builddir)/intl
+AM_CPPFLAGS = @GTK_CFLAGS@ @XMMS_DEFINES@ -I$(top_builddir)/intl -I$(top_srcdir)
 
 wmxmmsdir = $(pkgdatadir)
 

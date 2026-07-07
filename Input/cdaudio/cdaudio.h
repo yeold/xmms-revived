@@ -1,5 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2000  Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1998-2002  Peter Alm, Mikael Alm, Olle Hallnas,
+ *                           Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1999-2002  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -36,10 +38,8 @@
 
 #include "cdinfo.h"
 
-#ifdef HAVE_SYS_SOUNDCARD_H
-#include <sys/soundcard.h>
-#elif defined HAVE_MACHINE_SOUNDCARD_H
-#include <machine/soundcard.h>
+#ifdef HAVE_OSS
+#include <Output/OSS/soundcard.h>
 #endif
 
 #ifdef HAVE_MNTENT_H
@@ -56,6 +56,34 @@
 #define CD_FRAMES 75
 #endif
 
+#ifdef HAVE_LINUX_CDROM_H
+#include <linux/cdrom.h>
+#elif defined HAVE_SYS_CDIO_H
+#include <sys/cdio.h>
+#endif
+#if defined HAVE_SYS_CDRIO_H
+#include <sys/cdrio.h>
+#endif
+
+#if defined(CDROMREADAUDIO) || defined(CDIOCREADAUDIO) || defined(CDROMCDDA) || defined(CDRIOCSETBLOCKSIZE)
+# define CDDA_HAS_READAUDIO
+#endif
+
+#ifndef CD_FRAMESIZE_RAW
+# define CD_FRAMESIZE_RAW 2352
+#endif
+
+/* Number of frames that are read at once in dae mode */
+#define CDDA_DAE_FRAMES 8
+
+#ifndef CDDA_HAS_READAUDIO
+#warning "Digital audio extraction has not been ported to this platform"
+#define read_audio_data(fd, pos, num, buf) -1
+#else
+int read_audio_data(int fd, int pos, int num, void *buf);
+#endif
+
+
 #ifdef __FreeBSD__
 /*
  * FreeBSD won't be able to detect media changes if using O_NONBLOCK
@@ -68,21 +96,26 @@
 
 #define CDDB_DEFAULT_SERVER "freedb.freedb.org"
 
+struct driveinfo {
+	char *device, *directory;
+	int mixer, oss_mixer;
+	gboolean valid;
+	int dae;
+};
+
 typedef struct
 {
-	gchar *device;
-	gchar *directory;
-	gboolean use_oss_mixer;
+	GList *drives;
 
-	gchar *cddb_server;
-	gint cddb_protocol_level;
+	char *cddb_server;
+	int cddb_protocol_level;
 	gboolean use_cddb;
 
-	gchar *cdin_server;
+	char *cdin_server;
 	gboolean use_cdin;
 
 	gboolean title_override;
-	gchar *name_format;
+	char *name_format;
 }
 CDDAConfig;
 
@@ -96,8 +129,14 @@ struct cdda_msf
 	} flags;
 };
 
+/*
+ * Note: This macro will convert to a LBA representation of the MSF
+ * address, not to a true LBA address, as we don't subtract the offset
+ */
 #define LBA(msf) ((msf.minute * 60 + msf.second) * 75 + msf.frame)
-	
+
+#define CDDA_MSF_OFFSET 150
+
 typedef struct
 {
 	guint8 first_track, last_track;
@@ -107,15 +146,27 @@ typedef struct
 
 extern CDDAConfig cdda_cfg;
 
+enum {
+	CDDA_MIXER_NONE,
+	CDDA_MIXER_DRIVE,
+	CDDA_MIXER_OSS,
+};
+
+enum {
+	CDDA_READ_ANALOG,
+	CDDA_READ_DAE,
+};
+
 void cdda_configure(void);
-gboolean cdda_get_toc(cdda_disc_toc_t *info);
+gboolean cdda_get_toc(cdda_disc_toc_t *info, char *device);
 guint32 cdda_cddb_compute_discid(cdda_disc_toc_t *info);
 void cdda_cddb_get_info(cdda_disc_toc_t *toc, cdinfo_t *info);
 void cdda_cdindex_get_idx(cdda_disc_toc_t *toc, cdinfo_t *cdinfo);
+struct driveinfo* cdda_find_drive(char *filename);
 
 
 void cdda_cddb_show_server_dialog(GtkWidget *w, gpointer data);
-void cdda_cddb_set_server(gchar *new_server);
+void cdda_cddb_set_server(char *new_server);
 void cddb_quit(void);
 
 #endif

@@ -80,7 +80,7 @@ gchar *xmms_get_titlestring(gchar *fmt, TitleInput *input);
 GtkWidget* xmms_titlestring_descriptions(char* tags, int rows);
 
 #ifdef __cplusplus
-};
+}
 #endif
 
 #endif /* !XMMS_TITLESTRING_H */

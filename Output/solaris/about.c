@@ -21,7 +21,7 @@ void aboutSunAudio(void)
 		_("XMMS Solaris Audio Driver\n\n"
 		  "Written by John Riddoch (jr@scms.rgu.ac.uk)\n"
 		  "with help from many contributors."),
-		_("Ok"), FALSE, NULL, NULL);
+		_("OK"), FALSE, NULL, NULL);
 
 	gtk_signal_connect(GTK_OBJECT(about_dialog), "destroy",
 			   GTK_SIGNAL_FUNC(gtk_widget_destroyed),

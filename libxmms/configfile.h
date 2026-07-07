@@ -1,5 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2000  Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1998-2000  Peter Alm, Mikael Alm, Olle Hallnas,
+ *                           Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1999-2004  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -66,7 +68,7 @@ void xmms_cfg_write_double(ConfigFile * cfg, gchar * section, gchar * key, gdoub
 void xmms_cfg_remove_key(ConfigFile * cfg, gchar * section, gchar * key);
 
 #ifdef __cplusplus
-};
+}
 #endif
 
 #endif

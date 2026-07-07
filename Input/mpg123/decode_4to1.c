@@ -61,6 +61,7 @@ int mpg123_synth_4to1_8bit_mono(real * bandPtr, unsigned char *samples, int *pnt
 	return ret;
 }
 
+#if 0
 int mpg123_synth_4to1_8bit_mono2stereo(real * bandPtr, unsigned char *samples, int *pnt)
 {
 	short samples_tmp[16];
@@ -81,6 +82,7 @@ int mpg123_synth_4to1_8bit_mono2stereo(real * bandPtr, unsigned char *samples, i
 
 	return ret;
 }
+#endif
 
 int mpg123_synth_4to1_mono(real * bandPtr, unsigned char *samples, int *pnt)
 {
@@ -103,6 +105,7 @@ int mpg123_synth_4to1_mono(real * bandPtr, unsigned char *samples, int *pnt)
 	return ret;
 }
 
+#if 0
 int mpg123_synth_4to1_mono2stereo(real * bandPtr, unsigned char *samples, int *pnt)
 {
 	int i, ret;
@@ -118,6 +121,7 @@ int mpg123_synth_4to1_mono2stereo(real * bandPtr, unsigned char *samples, int *p
 
 	return ret;
 }
+#endif
 
 int mpg123_synth_4to1(real * bandPtr, int channel, unsigned char *out, int *pnt)
 {

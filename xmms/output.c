@@ -1,5 +1,7 @@
 /*  XMMS - Cross-platform multimedia player
- *  Copyright (C) 1998-2000  Peter Alm, Mikael Alm, Olle Hallnas, Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1998-2002  Peter Alm, Mikael Alm, Olle Hallnas,
+ *                           Thomas Nilsson and 4Front Technologies
+ *  Copyright (C) 1999-2002  Haavard Kvaalen
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -26,7 +28,11 @@ OutputPlugin *get_current_output_plugin(void)
 
 void set_current_output_plugin(int i)
 {
-	op_data->current_output_plugin = (OutputPlugin *) g_list_nth(op_data->output_list, i)->data;
+	GList *node = g_list_nth(op_data->output_list, i);
+	if (node)
+		op_data->current_output_plugin = node->data;
+	else
+		op_data->current_output_plugin = NULL;
 }
 
 GList *get_output_list(void)

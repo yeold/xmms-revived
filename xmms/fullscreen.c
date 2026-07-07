@@ -2,7 +2,7 @@
  *  Copyright (C) 1998-2000  Zinx Verituse
  *
  *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public Licensse as published by
+ *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  (at your option) any later version.
  *
@@ -480,7 +480,7 @@ GSList *xmms_fullscreen_modelist(GtkWidget * win)
 
 void xmms_fullscreen_modelist_free(GSList * modes)
 {
-	g_slist_foreach(modes, (GFunc) g_free_func, NULL);
+	g_slist_foreach(modes, (GFunc) g_free, NULL);
 	g_slist_free(modes);
 }
 

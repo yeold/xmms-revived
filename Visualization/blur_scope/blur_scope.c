@@ -90,7 +90,7 @@ void bscope_read_config(void)
 		
 		if (cfg)
 		{
-			xmms_cfg_read_int(cfg, "BlurScope", "color", &bscope_cfg.color);
+			xmms_cfg_read_int(cfg, "BlurScope", "color", (gint32*)&bscope_cfg.color);
 			xmms_cfg_free(cfg);
 		}
 		g_free(filename);
@@ -153,14 +153,14 @@ static void bscope_init(void)
 		return;
 	bscope_read_config();
 
-	window = gtk_window_new(GTK_WINDOW_DIALOG);
+	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title(GTK_WINDOW(window),_("Blur scope"));
 	gtk_window_set_policy(GTK_WINDOW(window), FALSE, FALSE, FALSE);
 	gtk_widget_realize(window);
 	bg_pixmap = gdk_pixmap_create_from_xpm_d(window->window,NULL,NULL,bscope_xmms_logo_xpm);
 	gdk_window_set_back_pixmap(window->window,bg_pixmap,0);
 	gtk_signal_connect(GTK_OBJECT(window),"destroy",GTK_SIGNAL_FUNC(bscope_destroy_cb),NULL);
-	gtk_signal_connect(GTK_OBJECT(window), "destroy", GTK_SIGNAL_FUNC(gtk_widget_destroyed), &window);
+	g_signal_connect_swapped(G_OBJECT(window), "destroy", G_CALLBACK(gtk_widget_destroyed), &window);
 	gtk_widget_set_usize(window, WIDTH, HEIGHT);
 	
 	area = gtk_drawing_area_new();

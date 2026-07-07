@@ -7,7 +7,7 @@ libbscope_la_LIBADD = @GTK_LIBS@ @PTHREAD_LIBS@
 
 COMMON_SRC = blur_scope.c blur_scope.h config.c
 
-if ARCH_X86
+if USE_X86ASM
 
 EXTRA_SRC = blur_8.s
 
@@ -17,4 +17,4 @@ EXTRA_DIST = blur_8.s xmms_logo.xpm
 
 libbscope_la_SOURCES =  $(COMMON_SRC) $(EXTRA_SRC)
 
-INCLUDES = @GTK_CFLAGS@ @ARCH_DEFINES@ -I$(top_builddir)/intl
+AM_CPPFLAGS = @GTK_CFLAGS@ @ARCH_DEFINES@ -I$(top_builddir)/intl -I$(top_srcdir)
