@@ -1,0 +1,37 @@
+{
+    "makefile.buildLog": "./build.log",
+    "makefile.launchConfigurations": [
+        {
+<<<<<<< HEAD
+            "cwd": "~/repos/xmms-revived/xmms",
+            "binaryPath": "~/repos/xmms-revived/xmms/.libs/xmms",
+=======
+            "cwd": "/home/isac/repos/xmms-revived/xmms",
+            "binaryPath": "/home/isac/repos/xmms-revived/xmms/.libs/xmms",
+>>>>>>> 0eaa317 (dev (#1))
+            "binaryArgs": []
+        }
+    ],
+    "C_Cpp.default.compilerPath": "/usr/bin/gcc",
+    "C_Cpp.default.cStandard": "c99",
+    "C_Cpp.default.intelliSenseMode": "linux-gcc-x64",
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}",
+        "${workspaceFolder}/libxmms",
+        "/usr/include/gtk-2.0",
+        "/usr/include/glib-2.0",
+        "/usr/lib64/glib-2.0/include",
+        "/usr/lib64/gtk-2.0/include",
+        "/usr/include/pango-1.0",
+        "/usr/include/atk-1.0",
+        "/usr/include/gdk-pixbuf-2.0"
+    ],
+    "C_Cpp.default.defines": [
+        "HAVE_CONFIG_H",
+        "_GNU_SOURCE"
+    ],
+    "files.associations": {
+        "*.h": "c",
+        "*.c": "c"
+    }
+}
