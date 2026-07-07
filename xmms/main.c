@@ -1945,6 +1945,7 @@ static void mainwin_jump_to_file(void)
   mainwin_jtf = gtk_window_new(GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title(GTK_WINDOW(mainwin_jtf), _("Jump to file"));
   gtk_window_set_transient_for(GTK_WINDOW(mainwin_jtf), GTK_WINDOW(mainwin));
+  g_signal_connect(G_OBJECT(mainwin_jtf), "destroy", G_CALLBACK(gtk_widget_destroyed), &mainwin_jtf);
   g_signal_connect(G_OBJECT(mainwin_jtf), "destroy", G_CALLBACK(mainwin_jump_to_file_cleanup),
                    edit_clist_qlist_and_queue);
   gtk_container_border_width(GTK_CONTAINER(mainwin_jtf), 10);
@@ -2265,6 +2266,7 @@ void mainwin_queue_manager(void)
   mainwin_qm = gtk_window_new(GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title(GTK_WINDOW(mainwin_qm), _("Jump to file"));
   gtk_window_set_transient_for(GTK_WINDOW(mainwin_qm), GTK_WINDOW(mainwin));
+  g_signal_connect(G_OBJECT(mainwin_qm), "destroy", G_CALLBACK(gtk_widget_destroyed), &mainwin_qm);
   g_signal_connect(G_OBJECT(mainwin_qm), "destroy", G_CALLBACK(mainwin_jump_to_file_cleanup),
                    edit_clist_qlist_and_queue);
   gtk_container_border_width(GTK_CONTAINER(mainwin_qm), 10);
@@ -2548,7 +2550,7 @@ void mainwin_eject_pushed(void)
     return;
   }
   filebrowser = util_create_filebrowser(TRUE);
-  g_signal_connect_swapped(G_OBJECT(filebrowser), "destroy", G_CALLBACK(gtk_widget_destroyed), &filebrowser);
+  g_signal_connect(G_OBJECT(filebrowser), "destroy", G_CALLBACK(gtk_widget_destroyed), &filebrowser);
   g_signal_connect(G_OBJECT(filebrowser), "key-press-event", G_CALLBACK(util_dialog_keypress_cb), NULL);
 }
 
