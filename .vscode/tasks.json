@@ -5,7 +5,37 @@
             "label": "build-debug",
             "type": "shell",
             "command": "make",
-            "args": ["CFLAGS=-g3 -O0 -Wall -Wpointer-arith -finline-functions", "-j$(nproc)"],
+            "args": [
+                "CFLAGS=-g3 -O0 -Wall -Wpointer-arith -finline-functions -fsanitize=address",
+                "LDFLAGS=-fsanitize=address",
+                "-j$(nproc)"
+            ],
+            "group": "build",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "build-debug-clean",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "clean",
+                "&&",
+                "make",
+                "CFLAGS=-g3 -O0 -Wall -Wpointer-arith -finline-functions -fsanitize=address",
+                "LDFLAGS=-fsanitize=address",
+                "-j$(nproc)"
+            ],
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -21,36 +51,17 @@
                 "showReuseMessage": true,
                 "clear": false
             },
-            "problemMatcher": [
-                "$gcc"
-            ]
-        },
-        {
-            "label": "build-debug-clean",
-            "type": "shell",
-            "command": "make",
-            "args": ["clean", "&&", "make", "CFLAGS=-g3 -O0 -Wall -Wpointer-arith -finline-functions", "-j$(nproc)"],
-            "group": "build",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared",
-                "showReuseMessage": true,
-                "clear": false
-            },
-            "problemMatcher": [
-                "$gcc"
-            ]
+            "problemMatcher": []
         },
         {
             "label": "build-debug-incremental",
             "type": "shell",
             "command": "make",
-            "args": ["CFLAGS=-g3 -O0 -Wall -Wpointer-arith -finline-functions", "-j$(nproc)"],
+            "args": [
+                "CFLAGS=-g3 -O0 -Wall -Wpointer-arith -finline-functions -fsanitize=address",
+                "LDFLAGS=-fsanitize=address",
+                "-j$(nproc)"
+            ],
             "group": "build",
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -69,9 +80,11 @@
         },
         {
             "label": "build-release",
-            "type": "shell", 
+            "type": "shell",
             "command": "make",
-            "args": ["-j$(nproc)"],
+            "args": [
+                "-j$(nproc)"
+            ],
             "group": "build",
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -92,7 +105,9 @@
             "label": "clean",
             "type": "shell",
             "command": "make",
-            "args": ["clean"],
+            "args": [
+                "clean"
+            ],
             "group": "build",
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -110,7 +125,10 @@
             "label": "reconfigure-debug",
             "type": "shell",
             "command": "bash",
-            "args": ["-c", "make distclean || true && CFLAGS='-g3 -O0' ./configure --enable-debug --prefix=/usr/local"],
+            "args": [
+                "-c",
+                "make distclean || true && CFLAGS='-g3 -O0' ./configure --enable-debug --prefix=/usr/local"
+            ],
             "group": "build",
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -128,7 +146,9 @@
             "label": "install",
             "type": "shell",
             "command": "make",
-            "args": ["install"],
+            "args": [
+                "install"
+            ],
             "group": "build",
             "options": {
                 "cwd": "${workspaceFolder}"
@@ -165,7 +185,9 @@
             "label": "run-xmms-debug-binary",
             "type": "shell",
             "command": "${workspaceFolder}/xmms/.libs/xmms",
-            "args": ["--version"],
+            "args": [
+                "--version"
+            ],
             "group": "test",
             "options": {
                 "cwd": "${workspaceFolder}",
