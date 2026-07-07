@@ -437,7 +437,7 @@ void playlist_list_draw(Widget *w)
       gdk_gc_set_foreground(gc, get_skin_color(SKIN_PLEDIT_NORMAL));
 
     if (entry->title)
-      title = entry->title;
+      title = g_strdup(entry->title);
     else
       title = g_path_get_basename(entry->filename);
 

@@ -1018,7 +1018,7 @@ char *playlist_get_info_text(void)
   }
 
   if (playlist_position->title)
-    title = playlist_position->title;
+    title = g_strdup(playlist_position->title);
   else
     title = g_path_get_basename(playlist_position->filename);
 
