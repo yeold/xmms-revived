@@ -1,4 +1,4 @@
-lib_LTLIBRARIES = libmpg123.la
+lib_LTLIBRARIES = libinput_mpg123.la
 
 libdir = $(plugindir)/$(INPUT_PLUGIN_DIR)
 
@@ -49,7 +49,7 @@ EXTRA_DIST = decode.c decode_i386.c decode_i586.s decode_3dnow.s dct64_i386.c \
              getbits.c dct64.c dct64_3dnow.s dct36_3dnow.s getcpuflags.s \
              dct64_MMX.s decode_MMX.s
 
-libmpg123_la_SOURCES = $(COMMON_SRC) $(EXTRA_SRC)
-libmpg123_la_LDFLAGS = @PLUGIN_LDFLAGS@
-libmpg123_la_LIBADD = @GTK_LIBS@ @PTHREAD_LIBS@ @Z_LIBS@ $(top_builddir)/libxmms/libxmms.la
+libinput_mpg123_la_SOURCES = $(COMMON_SRC) $(EXTRA_SRC)
+libinput_mpg123_la_LDFLAGS = @PLUGIN_LDFLAGS@
+libinput_mpg123_la_LIBADD = @GTK_LIBS@ @PTHREAD_LIBS@ @Z_LIBS@ $(top_builddir)/libxmms/libxmms.la
 AM_CPPFLAGS = @GTK_CFLAGS@ @ARCH_DEFINES@ -I$(top_builddir)/intl -I$(top_srcdir)

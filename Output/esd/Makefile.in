@@ -137,21 +137,22 @@ am__uninstall_files_from_dir = { \
   }
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
-libesdout_la_DEPENDENCIES =
-am__libesdout_la_SOURCES_DIST = esd.c esdout.h mixer.c about.c \
+liboutput_esd_la_DEPENDENCIES =
+am__liboutput_esd_la_SOURCES_DIST = esd.c esdout.h mixer.c about.c \
 	configure.c audio.c init.c
 @HAVE_ESD_TRUE@am__objects_1 = esd.lo mixer.lo about.lo configure.lo \
 @HAVE_ESD_TRUE@	audio.lo init.lo
-am_libesdout_la_OBJECTS = $(am__objects_1)
-libesdout_la_OBJECTS = $(am_libesdout_la_OBJECTS)
+am_liboutput_esd_la_OBJECTS = $(am__objects_1)
+liboutput_esd_la_OBJECTS = $(am_liboutput_esd_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-libesdout_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libesdout_la_LDFLAGS) $(LDFLAGS) -o $@
-@HAVE_ESD_TRUE@am_libesdout_la_rpath = -rpath $(libdir)
+liboutput_esd_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(liboutput_esd_la_LDFLAGS) $(LDFLAGS) \
+	-o $@
+@HAVE_ESD_TRUE@am_liboutput_esd_la_rpath = -rpath $(libdir)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -189,8 +190,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libesdout_la_SOURCES)
-DIST_SOURCES = $(am__libesdout_la_SOURCES_DIST)
+SOURCES = $(liboutput_esd_la_SOURCES)
+DIST_SOURCES = $(am__liboutput_esd_la_SOURCES_DIST)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -413,7 +414,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 xmmsdir = @xmmsdir@
 @HAVE_ESD_FALSE@esdltlibs = 
-@HAVE_ESD_TRUE@esdltlibs = libesdout.la
+@HAVE_ESD_TRUE@esdltlibs = liboutput_esd.la
 @HAVE_ESD_FALSE@esdsources = 
 @HAVE_ESD_TRUE@esdsources = esd.c esdout.h \
 @HAVE_ESD_TRUE@mixer.c \
@@ -425,9 +426,9 @@ xmmsdir = @xmmsdir@
 EXTRA_DIST = esd.c esdout.h mixer.c about.c configure.c audio.c init.c
 lib_LTLIBRARIES = $(esdltlibs)
 AM_CPPFLAGS = @GTK_CFLAGS@ @ESD_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)
-libesdout_la_LDFLAGS = @PLUGIN_LDFLAGS@
-libesdout_la_LIBADD = @GTK_LIBS@ @ESD_LIBS@
-libesdout_la_SOURCES = $(esdsources)
+liboutput_esd_la_LDFLAGS = @PLUGIN_LDFLAGS@
+liboutput_esd_la_LIBADD = @GTK_LIBS@ @ESD_LIBS@
+liboutput_esd_la_SOURCES = $(esdsources)
 all: all-am
 
 .SUFFIXES:
@@ -495,8 +496,8 @@ clean-libLTLIBRARIES:
 	echo rm -f $${locs}; \
 	$(am__rm_f) $${locs}
 
-libesdout.la: $(libesdout_la_OBJECTS) $(libesdout_la_DEPENDENCIES) $(EXTRA_libesdout_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(libesdout_la_LINK) $(am_libesdout_la_rpath) $(libesdout_la_OBJECTS) $(libesdout_la_LIBADD) $(LIBS)
+liboutput_esd.la: $(liboutput_esd_la_OBJECTS) $(liboutput_esd_la_DEPENDENCIES) $(EXTRA_liboutput_esd_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(liboutput_esd_la_LINK) $(am_liboutput_esd_la_rpath) $(liboutput_esd_la_OBJECTS) $(liboutput_esd_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
