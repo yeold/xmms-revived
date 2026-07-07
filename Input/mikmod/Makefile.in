@@ -137,17 +137,18 @@ am__uninstall_files_from_dir = { \
   }
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
-libmikmod_la_DEPENDENCIES =
-am_libmikmod_la_OBJECTS = drv_xmms.lo plugin.lo
-libmikmod_la_OBJECTS = $(am_libmikmod_la_OBJECTS)
+libinput_mikmod_la_DEPENDENCIES =
+am_libinput_mikmod_la_OBJECTS = drv_xmms.lo plugin.lo
+libinput_mikmod_la_OBJECTS = $(am_libinput_mikmod_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-libmikmod_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libmikmod_la_LDFLAGS) $(LDFLAGS) -o $@
-@HAVE_MIKMOD_TRUE@am_libmikmod_la_rpath = -rpath $(libdir)
+libinput_mikmod_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libinput_mikmod_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
+@HAVE_MIKMOD_TRUE@am_libinput_mikmod_la_rpath = -rpath $(libdir)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -183,8 +184,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libmikmod_la_SOURCES)
-DIST_SOURCES = $(libmikmod_la_SOURCES)
+SOURCES = $(libinput_mikmod_la_SOURCES)
+DIST_SOURCES = $(libinput_mikmod_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -409,13 +410,13 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 xmmsdir = @xmmsdir@
-@HAVE_MIKMOD_TRUE@lib_LTLIBRARIES = libmikmod.la
+@HAVE_MIKMOD_TRUE@lib_LTLIBRARIES = libinput_mikmod.la
 AM_CPPFLAGS = @GTK_CFLAGS@ @LIBMIKMOD_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)
-libmikmod_la_LDFLAGS = @PLUGIN_LDFLAGS@
-libmikmod_la_LIBADD = @GTK_LIBS@ @PTHREAD_LIBS@ \
+libinput_mikmod_la_LDFLAGS = @PLUGIN_LDFLAGS@
+libinput_mikmod_la_LIBADD = @GTK_LIBS@ @PTHREAD_LIBS@ \
 @LIBMIKMOD_LIBS@ @LIBMIKMOD_LDADD@ 
 
-libmikmod_la_SOURCES = drv_xmms.c mikmod-plugin.h plugin.c mikmod.xpm
+libinput_mikmod_la_SOURCES = drv_xmms.c mikmod-plugin.h plugin.c mikmod.xpm
 all: all-am
 
 .SUFFIXES:
@@ -483,8 +484,8 @@ clean-libLTLIBRARIES:
 	echo rm -f $${locs}; \
 	$(am__rm_f) $${locs}
 
-libmikmod.la: $(libmikmod_la_OBJECTS) $(libmikmod_la_DEPENDENCIES) $(EXTRA_libmikmod_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(libmikmod_la_LINK) $(am_libmikmod_la_rpath) $(libmikmod_la_OBJECTS) $(libmikmod_la_LIBADD) $(LIBS)
+libinput_mikmod.la: $(libinput_mikmod_la_OBJECTS) $(libinput_mikmod_la_DEPENDENCIES) $(EXTRA_libinput_mikmod_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libinput_mikmod_la_LINK) $(am_libinput_mikmod_la_rpath) $(libinput_mikmod_la_OBJECTS) $(libinput_mikmod_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
