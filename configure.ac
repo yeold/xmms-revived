@@ -12,9 +12,6 @@ AM_CONFIG_HEADER([config.h xmms/i18n.h])
 
 AM_INIT_AUTOMAKE([1.18.1])
 
-m4_pattern_allow([AM_GNU_GETTEXT])
-m4_pattern_allow([AM_GNU_GETTEXT_VERSION])
-
 AC_ARG_ENABLE([one-plugin-dir],
 [  --enable-one-plugin-dir  use a single plugin dir [default=no]],,
 		enable_one_plugin_dir="no")
@@ -293,6 +290,7 @@ ALL_LINGUAS="af az be bg bs ca cs cy da de el en en_GB eo es et eu fi fr ga gl h
 
 # Turn on GNU gettext (use system autopoint/gettext infrastructure)
 AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION([0.21])
 
 AC_CHECK_HEADERS([locale.h])
 AC_CHECK_FUNCS([setlocale])
