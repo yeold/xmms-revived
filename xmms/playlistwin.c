@@ -629,8 +629,8 @@ void playlistwin_show_add_url_window(void)
     playlistwin_url_window =
         util_create_add_url_window(_("Enter URL to add:"), G_CALLBACK(playlistwin_url_ok_clicked), NULL);
     gtk_window_set_transient_for(GTK_WINDOW(playlistwin_url_window), GTK_WINDOW(playlistwin));
-    g_signal_connect_swapped(G_OBJECT(playlistwin_url_window), "destroy", G_CALLBACK(gtk_widget_destroyed),
-                             &playlistwin_url_window);
+    g_signal_connect(G_OBJECT(playlistwin_url_window), "destroy", G_CALLBACK(gtk_widget_destroyed),
+                     &playlistwin_url_window);
     gtk_widget_show(playlistwin_url_window);
   }
 }
@@ -651,7 +651,7 @@ static void playlistwin_show_dirbrowser(void)
 
   dir_browser = xmms_create_dir_browser(_("Select directory to add:"), cfg.filesel_path, GTK_SELECTION_EXTENDED,
                                         playlistwin_add_dir_handler);
-  g_signal_connect_swapped(G_OBJECT(dir_browser), "destroy", G_CALLBACK(gtk_widget_destroyed), &dir_browser);
+  g_signal_connect(G_OBJECT(dir_browser), "destroy", G_CALLBACK(gtk_widget_destroyed), &dir_browser);
   gtk_window_set_transient_for(GTK_WINDOW(dir_browser), GTK_WINDOW(playlistwin));
   gtk_widget_show(dir_browser);
 }
@@ -729,7 +729,7 @@ static void playlistwin_save_playlist_error(char *path, GtkWidget *filesel)
   gtk_box_pack_start(GTK_BOX(GTK_DIALOG(dialog)->action_area), bbox, FALSE, FALSE, 0);
 
   close = gtk_button_new_with_label(_("OK"));
-  g_signal_connect_swapped(G_OBJECT(close), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(dialog));
+  g_signal_connect(G_OBJECT(close), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(dialog));
   GTK_WIDGET_SET_FLAGS(close, GTK_CAN_DEFAULT);
   gtk_box_pack_start(GTK_BOX(bbox), close, FALSE, FALSE, 0);
   gtk_widget_grab_default(close);
@@ -777,12 +777,12 @@ static void playlistwin_check_overwrite(GtkWidget *filesel, char *filename, int 
 
   overwrite = gtk_button_new_with_label(_("Overwrite"));
   g_signal_connect(G_OBJECT(overwrite), "clicked", G_CALLBACK(playlistwin_check_overwrite_cb), data);
-  g_signal_connect_swapped(G_OBJECT(overwrite), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(dialog));
+  g_signal_connect(G_OBJECT(overwrite), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(dialog));
   GTK_WIDGET_SET_FLAGS(overwrite, GTK_CAN_DEFAULT);
   gtk_box_pack_start(GTK_BOX(bbox), overwrite, FALSE, FALSE, 0);
   cancel = gtk_button_new_with_label(_("Cancel"));
   g_signal_connect_swapped(G_OBJECT(cancel), "clicked", G_CALLBACK(g_free), data);
-  g_signal_connect_swapped(G_OBJECT(cancel), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(dialog));
+  g_signal_connect(G_OBJECT(cancel), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(dialog));
   GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
   gtk_box_pack_start(GTK_BOX(bbox), cancel, FALSE, FALSE, 0);
   gtk_widget_grab_default(overwrite);
@@ -905,7 +905,7 @@ static void playlistwin_show_load_filesel(void)
   g_signal_connect(G_OBJECT(object), "clicked", G_CALLBACK(playlistwin_load_filesel_ok), load_filesel);
   object = GTK_OBJECT(GTK_FILE_SELECTION(load_filesel)->cancel_button);
   g_signal_connect_swapped(G_OBJECT(object), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(load_filesel));
-  g_signal_connect_swapped(G_OBJECT(load_filesel), "destroy", G_CALLBACK(gtk_widget_destroyed), &load_filesel);
+  g_signal_connect(G_OBJECT(load_filesel), "destroy", G_CALLBACK(gtk_widget_destroyed), &load_filesel);
   gtk_widget_show(load_filesel);
 }
 
@@ -933,7 +933,7 @@ static void playlistwin_show_save_filesel(void)
   g_signal_connect(G_OBJECT(object), "clicked", G_CALLBACK(playlistwin_save_filesel_ok), filesel);
   object = GTK_OBJECT(GTK_FILE_SELECTION(filesel)->cancel_button);
   g_signal_connect_swapped(G_OBJECT(object), "clicked", G_CALLBACK(gtk_widget_hide), G_OBJECT(filesel));
-  g_signal_connect_swapped(G_OBJECT(filesel), "destroy", G_CALLBACK(gtk_widget_destroyed), &filesel);
+  g_signal_connect(G_OBJECT(filesel), "destroy", G_CALLBACK(gtk_widget_destroyed), &filesel);
   /*
    * I18N: "Save options" here is "options for saving, not "save
    * the options"
@@ -1403,8 +1403,8 @@ static void playlistwin_physically_delete(void)
   ok = gtk_button_new_with_label(_("OK"));
   cancel = gtk_button_new_with_label(_("Cancel"));
   g_signal_connect(G_OBJECT(ok), "clicked", G_CALLBACK(playlistwin_physically_delete_cb), selected_list);
-  g_signal_connect_swapped(G_OBJECT(ok), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(dialog));
-  g_signal_connect_swapped(G_OBJECT(cancel), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(dialog));
+  g_signal_connect(G_OBJECT(ok), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(dialog));
+  g_signal_connect(G_OBJECT(cancel), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(dialog));
   gtk_box_pack_start(GTK_BOX(bbox), ok, FALSE, FALSE, 0);
   GTK_WIDGET_SET_FLAGS(ok, GTK_CAN_DEFAULT);
   gtk_box_pack_start(GTK_BOX(bbox), cancel, FALSE, FALSE, 0);
