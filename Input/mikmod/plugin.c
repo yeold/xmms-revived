@@ -359,7 +359,12 @@ static void play_file(char *filename)
   md_pansep = mikmod_cfg.def_pansep;
 
 #if (LIBMIKMOD_VERSION > 0x30106)
-  MikMod_Init("");
+  if (MikMod_Init(""))
+  {
+    mikmod_ip.set_info_text(_("Could not initialize sound driver"));
+    mikmod_going = 0;
+    return;
+  }
 #else
   MikMod_Init();
 #endif
