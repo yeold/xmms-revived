@@ -1,3 +1,20 @@
+xmms 1.3.0 alpha
+  
+	6813 since last release. XMMS is now 18 years old (congrats to being a legal adult!) 
+	
+	I felt like reviving this for two reasons:
+	* Nostaliga
+	* To challenge myself
+
+	Major changes:
+	* Migrated to gtk 2 since it's still supported and made migration a bit easier
+	* Migrated to glib 2 for the same reason
+
+	This is still experimental so there will be bugs!
+
+	For now music playback works, as long as you have the correct plugins installed.
+	
+
 xmms 1.2.11
 
 	The '1211 days since last release' release.  XMMS was 10 years
