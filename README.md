@@ -6,9 +6,6 @@ Migrated to GTK2 and glib2
 
 ![XMMS](./xmms.png)
 
-
-![XMMS running](./xmms_running.png)
-
 [Build instructions](./BUILDING.md)
 
 [Debuggning instructions](./DEBUGGING.md)
