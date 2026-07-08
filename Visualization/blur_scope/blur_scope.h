@@ -6,7 +6,7 @@ void bscope_read_config(void);
 
 typedef struct
 {
-        guint32 color;
+  guint32 color;
 } BlurScopeConfig;
 
 extern BlurScopeConfig bscope_cfg;
@@ -14,4 +14,3 @@ extern BlurScopeConfig bscope_cfg;
 void generate_cmap(void);
 
 #endif
-
