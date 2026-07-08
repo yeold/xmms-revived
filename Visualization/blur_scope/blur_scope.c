@@ -105,7 +105,7 @@ void bscope_blur_8(guchar *ptr, gint w, gint h, gint bpl)
   register guchar *iptr;
 
   iptr = ptr + bpl + 1;
-  i = bpl * h;
+  i = bpl * h - 2;
   while (i--)
   {
     sum = (iptr[-bpl] + iptr[-1] + iptr[1] + iptr[bpl]) >> 2;
