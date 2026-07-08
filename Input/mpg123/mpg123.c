@@ -548,6 +548,7 @@ char *mpg123_format_song_title(struct id3v2tag_t *tag, char *filename)
   input->file_ext = extname(filename);
   ret = xmms_get_titlestring(mpg123_cfg.title_override ? mpg123_cfg.id3_format : xmms_get_gentitle_format(), input);
   g_free(input->file_name);
+  g_free(input->file_path);
   g_free(input);
   g_free(path);
 

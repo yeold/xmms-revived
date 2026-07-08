@@ -273,7 +273,9 @@ static gchar *get_title(gchar *filename)
   TitleInput *input;
   gchar *temp, *ext, *title;
   if (((temp = Player_LoadTitle(filename)) != NULL) && (mikmod_cfg.filename_titles == 0))
+  {
     title = g_strdup(temp);
+  }
   else
   {
     XMMS_NEW_TITLEINPUT(input);
@@ -294,6 +296,8 @@ static gchar *get_title(gchar *filename)
     g_free(temp);
     g_free(input);
   }
+
+  MikMod_free(temp);
 
   return title;
 }

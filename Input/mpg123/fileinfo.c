@@ -447,13 +447,11 @@ void mpg123_file_info_box(char *filename)
   gtk_entry_set_text(GTK_ENTRY(filename_entry), filename);
   gtk_editable_set_position(GTK_EDITABLE(filename_entry), -1);
 
-  basename = g_path_get_basename(filename);
   title = g_path_get_basename(filename);
   if ((tmp = strrchr(title, '.')) != NULL)
     *tmp = '\0';
   gtk_entry_set_text(GTK_ENTRY(title_entry), title);
   g_free(title);
-  g_free(basename);
 
   gtk_entry_set_text(GTK_ENTRY(artist_entry), "");
   gtk_entry_set_text(GTK_ENTRY(album_entry), "");

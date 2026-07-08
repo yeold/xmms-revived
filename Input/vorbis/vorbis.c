@@ -713,6 +713,7 @@ static char *vorbis_generate_title(OggVorbis_File *vorbisfile, char *fn)
   g_free(input->genre);
   g_free(input->comment);
   g_free(input->file_name);
+  g_free(input->file_path);
   g_free(input);
   g_free(path);
 
