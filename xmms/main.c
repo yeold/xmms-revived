@@ -1467,7 +1467,6 @@ void mainwin_focus_out(GtkWidget *widget, GdkEventButton *event, gpointer callba
 
 gboolean mainwin_keypress(GtkWidget *w, GdkEventKey *event, gpointer data)
 {
-
   switch (event->keyval)
   {
   case GDK_Up:
@@ -1489,7 +1488,7 @@ gboolean mainwin_keypress(GtkWidget *w, GdkEventKey *event, gpointer data)
       input_seek(CLAMP(input_get_time() + 5000, 0, playlist_get_current_length()) / 1000);
     break;
   default:
-    break;
+    return FALSE;
   }
 
   return TRUE;
@@ -3505,7 +3504,7 @@ static void mainwin_create_gtk(void)
   gtk_window_set_wmclass(GTK_WINDOW(mainwin), "XMMS_Player", "xmms");
 
   gtk_widget_set_events(mainwin, GDK_FOCUS_CHANGE_MASK | GDK_BUTTON_MOTION_MASK | GDK_BUTTON_PRESS_MASK |
-                                     GDK_BUTTON_RELEASE_MASK | GDK_STRUCTURE_MASK);
+                                     GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK | GDK_STRUCTURE_MASK);
   if (cfg.player_x != -1 && cfg.save_window_position)
     dock_set_uposition(mainwin, cfg.player_x, cfg.player_y);
   gtk_widget_realize(mainwin);
