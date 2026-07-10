@@ -19,6 +19,7 @@ static FLAC__StreamDecoder *decoder = NULL;
 static pthread_t decoder_thread;
 static volatile gboolean is_playing = FALSE;
 static volatile gboolean eof_reached = FALSE;
+static volatile int seek_to = -1;
 
 static unsigned sample_rate;
 static unsigned channels;
@@ -51,11 +52,13 @@ static FLAC__StreamDecoderWriteStatus flac_write_cb(const FLAC__StreamDecoder *d
 
   flac_ip.add_vis_pcm(flac_ip.output->written_time(), FMT_S16_NE, ch, bytes, pcm_buf);
 
-  while (is_playing && flac_ip.output->buffer_free() < bytes)
+  while (is_playing && seek_to == -1 && flac_ip.output->buffer_free() < bytes)
     xmms_usleep(10000);
 
   if (!is_playing)
     return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
+  if (seek_to != -1)
+    return FLAC__STREAM_DECODER_WRITE_STATUS_CONTINUE; /* skip write; decode_loop will seek */
 
   flac_ip.output->write_audio((char *)pcm_buf, bytes);
 
@@ -81,28 +84,48 @@ static void flac_error_cb(const FLAC__StreamDecoder *dec, FLAC__StreamDecoderErr
 
 static void seek_flac(int time)
 {
-  /* TODO: FLAC__stream_decoder_seek_absolute from the decode thread */
-  (void)time;
+  seek_to = time;
+  while (seek_to != -1 && is_playing)
+    xmms_usleep(10000);
 }
 
 static void *decoder_loop(void *arg)
 {
   while (is_playing)
   {
+    if (seek_to != -1)
+    {
+      FLAC__uint64 target = (FLAC__uint64)seek_to * sample_rate;
+
+      if (FLAC__stream_decoder_seek_absolute(decoder, target))
+      {
+        flac_ip.output->flush(seek_to * 1000);
+        eof_reached = FALSE;
+      }
+      else
+      {
+        g_warning("flac: seek to %d s failed", seek_to);
+        if (FLAC__stream_decoder_get_state(decoder) == FLAC__STREAM_DECODER_SEEK_ERROR)
+          FLAC__stream_decoder_flush(decoder);
+      }
+      seek_to = -1;
+    }
+
+    if (eof_reached)
+    {
+      if (!flac_ip.output->buffer_playing())
+        break; /* fully drained: done */
+      xmms_usleep(10000);
+      continue; /* drain, but keep servicing seeks */
+    }
+
     if (!FLAC__stream_decoder_process_single(decoder))
     {
       break;
     }
-    if (FLAC__stream_decoder_get_state(decoder) == FLAC__STREAM_DECODER_END_OF_STREAM)
-    {
-      eof_reached = TRUE;
-      break;
-    }
-  }
 
-  while (is_playing && eof_reached && flac_ip.output->buffer_playing())
-  {
-    xmms_usleep(10000);
+    if (FLAC__stream_decoder_get_state(decoder) == FLAC__STREAM_DECODER_END_OF_STREAM)
+      eof_reached = TRUE;
   }
 
   is_playing = FALSE;
@@ -169,7 +192,7 @@ static void stop_flac()
 
 static void pause_flac(short p)
 {
-  flac_ip.pause(p);
+  flac_ip.output->pause(p);
 }
 
 static int get_time_flac()
