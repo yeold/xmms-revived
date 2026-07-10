@@ -73,7 +73,7 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
-AM_DISABLE_STATIC
+AC_DISABLE_STATIC([])
 LT_INIT
 
 AC_CHECK_HEADER([pthread.h],,[AC_MSG_ERROR([*** POSIX threads support not installed - please install first ***])])
@@ -225,6 +225,23 @@ else
 	have_esd=no
 fi
 AM_CONDITIONAL([HAVE_ESD], [test "x$have_esd" = "xyes"])
+
+dnl ***
+dnl *** flac
+dnl ***
+AC_ARG_ENABLE([flac],
+	[AS_HELP_STRING([--disable-flac], [Disable FLAC input plugin [default=enabled]])],,
+	[enable_flac="yes"])
+
+have_flac=no
+if test "x$enable_flac" = "xyes"; then
+	PKG_CHECK_MODULES([LIBFLAC], [flac >= 1.3.0],
+		[have_flac=yes],
+		[AC_MSG_WARN([*** libFLAC not found; flac plugin will not be built ***])])
+else
+	AC_MSG_NOTICE([*** flac plugin disabled per user request ***])
+fi
+AM_CONDITIONAL([HAVE_FLAC], [test "x$have_flac" = "xyes"])
 
 
 dnl ***
@@ -658,6 +675,7 @@ Input/Makefile
 Input/wav/Makefile
 Input/mpg123/Makefile
 Input/mikmod/Makefile
+Input/flac/Makefile
 Input/cdaudio/Makefile
 Input/tonegen/Makefile
 Input/vorbis/Makefile
@@ -694,6 +712,7 @@ echo "  Build Solaris plugin:       $have_solaris"
 echo "  Build BSD Sun plugin:       $have_sun"
 echo "  Build ALSA plugin:          $have_alsa"
 echo "  Build mikmod plugin:        $have_mikmod"
+echo "  Build flac plugin:          $have_flac"
 echo "  Build Ogg Vorbis plugin:    $have_oggvorbis"
 echo "  Build OpenGL plugins:       $have_opengl"
 echo "  Pthread flag:               $PTHREAD_LIBS"
