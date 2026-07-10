@@ -187,7 +187,17 @@ static int alsa_handle_error(int err)
     return suspend_recover();
   }
 
-  return err;
+  /* Anything else (e.g. -EBADFD from a state the PCM shouldn't be in,
+   * which has been observed after drop()+prepare() on PipeWire's ALSA
+   * compat layer): try a generic snd_pcm_prepare() recovery rather than
+   * leaving the stream permanently wedged. */
+  g_warning("alsa_handle_error(): unhandled error %s (state=%s), attempting snd_pcm_prepare() recovery",
+            snd_strerror(-err), alsa_pcm ? snd_pcm_state_name(snd_pcm_state(alsa_pcm)) : "no pcm");
+
+  if (alsa_pcm == NULL)
+    return err;
+
+  return snd_pcm_prepare(alsa_pcm);
 }
 
 /* update and get the available space on h/w buffer (in frames) */
@@ -308,8 +318,20 @@ static void alsa_do_flush(int time)
 {
   if (alsa_pcm)
   {
-    snd_pcm_drop(alsa_pcm);
-    snd_pcm_prepare(alsa_pcm);
+    int err;
+
+    if ((err = snd_pcm_drop(alsa_pcm)) < 0)
+      g_warning("alsa_do_flush(): snd_pcm_drop() failed: %s", snd_strerror(-err));
+    if ((err = snd_pcm_prepare(alsa_pcm)) < 0)
+    {
+      g_warning("alsa_do_flush(): snd_pcm_prepare() failed: %s (state=%s)", snd_strerror(-err),
+                snd_pcm_state_name(snd_pcm_state(alsa_pcm)));
+      /* retry once; a lingering bad state here is what leaves playback
+       * permanently stuck after a flush */
+      if ((err = snd_pcm_prepare(alsa_pcm)) < 0)
+        g_warning("alsa_do_flush(): snd_pcm_prepare() retry failed: %s (state=%s)", snd_strerror(-err),
+                  snd_pcm_state_name(snd_pcm_state(alsa_pcm)));
+    }
   }
   /* correct the offset */
   output_time_offset = time;
@@ -755,7 +777,8 @@ static void alsa_write_audio(char *data, int length)
       int err = alsa_handle_error((int)written_frames);
       if (err < 0)
       {
-        g_warning("alsa_write_audio(): write error: %s", snd_strerror(-err));
+        g_warning("alsa_write_audio(): unrecoverable write error: %s (state=%s)", snd_strerror(-err),
+                  alsa_pcm ? snd_pcm_state_name(snd_pcm_state(alsa_pcm)) : "no pcm");
         break;
       }
     }
@@ -787,38 +810,38 @@ static void *alsa_loop(void *arg)
 {
   int npfds = snd_pcm_poll_descriptors_count(alsa_pcm);
   struct pollfd *pfds;
-  unsigned short *revents;
 
   if (npfds <= 0)
     goto _error;
   pfds = alloca(sizeof(*pfds) * npfds);
-  revents = alloca(sizeof(*revents) * npfds);
+  int stall_count = 0;
   while (going && alsa_pcm)
   {
     if (get_thread_buffer_filled() > prebuffer_size)
       prebuffer = FALSE;
     if (!paused && !prebuffer && get_thread_buffer_filled() > hw_period_size_in)
     {
+      stall_count = 0;
+      /* poll() is used only to avoid busy-spinning; do NOT gate the write
+       * on its revents. Some ALSA compat layers (observed with PipeWire)
+       * fail to ever report POLLOUT again after a snd_pcm_drop()+
+       * snd_pcm_prepare() cycle even though the PCM is PREPARED and
+       * genuinely writable, which would wedge playback forever. The
+       * write itself re-checks real available space via
+       * snd_pcm_avail_update(), so calling it unconditionally is safe. */
       snd_pcm_poll_descriptors(alsa_pcm, pfds, npfds);
-      if (poll(pfds, npfds, 10) > 0)
-      {
-        /*
-         * need to check revents.  poll() with
-         * dmix returns a postive value even
-         * if no data is available
-         */
-        int i;
-        snd_pcm_poll_descriptors_revents(alsa_pcm, pfds, npfds, revents);
-        for (i = 0; i < npfds; i++)
-          if (revents[i] & POLLOUT)
-          {
-            alsa_write_out_thread_data();
-            break;
-          }
-      }
+      poll(pfds, npfds, 10);
+      alsa_write_out_thread_data();
     }
     else
+    {
+      if (alsa_cfg.debug && ++stall_count % 300 == 0)
+        debug("alsa_loop(): stalled: paused=%d prebuffer=%d filled=%d hw_period_size_in=%d prebuffer_size=%d "
+              "pcm_state=%s",
+              paused, prebuffer, get_thread_buffer_filled(), hw_period_size_in, prebuffer_size,
+              snd_pcm_state_name(snd_pcm_state(alsa_pcm)));
       xmms_usleep(10000);
+    }
 
     if (pause_request != paused)
       alsa_do_pause(pause_request);

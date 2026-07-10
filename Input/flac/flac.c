@@ -104,7 +104,8 @@ static void *decoder_loop(void *arg)
       }
       else
       {
-        g_warning("flac: seek to %d s failed", seek_to);
+        g_warning("flac: seek to %d s failed, decoder_state=%s", seek_to,
+                  FLAC__StreamDecoderStateString[FLAC__stream_decoder_get_state(decoder)]);
         if (FLAC__stream_decoder_get_state(decoder) == FLAC__STREAM_DECODER_SEEK_ERROR)
           FLAC__stream_decoder_flush(decoder);
       }
@@ -121,6 +122,8 @@ static void *decoder_loop(void *arg)
 
     if (!FLAC__stream_decoder_process_single(decoder))
     {
+      g_warning("flac: process_single failed, decoder_state=%s",
+                FLAC__StreamDecoderStateString[FLAC__stream_decoder_get_state(decoder)]);
       break;
     }
 
