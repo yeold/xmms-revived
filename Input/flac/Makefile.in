@@ -138,8 +138,8 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libinput_flac_la_DEPENDENCIES =
-am__libinput_flac_la_SOURCES_DIST = flag.c
-am__objects_1 = flag.lo
+am__libinput_flac_la_SOURCES_DIST = flac.c
+am__objects_1 = flac.lo
 @HAVE_FLAC_TRUE@am__objects_2 = $(am__objects_1)
 am_libinput_flac_la_OBJECTS = $(am__objects_2)
 libinput_flac_la_OBJECTS = $(am_libinput_flac_la_OBJECTS)
@@ -167,7 +167,7 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir) -I$(top_builddir)/xmms
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/flag.Plo
+am__depfiles_remade = ./$(DEPDIR)/flac.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -412,16 +412,14 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 xmmsdir = @xmmsdir@
-flacsources = flag.c
-@HAVE_FLAC_FALSE@flacltlibs = 
+flacsources = flac.c
 @HAVE_FLAC_TRUE@flacltlibs = libinput_flac.la
-@HAVE_FLAC_FALSE@flacbuildsources = 
 @HAVE_FLAC_TRUE@flacbuildsources = $(flacsources)
 EXTRA_DIST = $(flacsources)
 lib_LTLIBRARIES = $(flacltlibs)
 AM_CPPFLAGS = @GTK_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)
 libinput_flac_la_LDFLAGS = @PLUGIN_LDFLAGS@
-libinput_flac_la_LIBADD = @GTK_LIBS@
+libinput_flac_la_LIBADD = @GTK_LIBS@ @LIBFLAC_LIBS@
 libinput_flac_la_SOURCES = $(flacbuildsources)
 all: all-am
 
@@ -499,7 +497,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/flag.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/flac.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -662,7 +660,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-	-rm -f ./$(DEPDIR)/flag.Plo
+	-rm -f ./$(DEPDIR)/flac.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -708,7 +706,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -f ./$(DEPDIR)/flag.Plo
+	-rm -f ./$(DEPDIR)/flac.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
