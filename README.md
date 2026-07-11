@@ -15,11 +15,4 @@ If you're visiting on github you're on the mirror,
 visit the original repo on: https://git.yeold.org/yeold/xmms-revived
 
 
-### What works and what doesn't
-
-At the moment I've verified the following things work:
-- Music playback
-- Music queuing
-- Visualizers
-
-There are a lot of untested things that I still haven't verified though.
+Most/all features work that I'm aware of. I am testing but there could still be issues.

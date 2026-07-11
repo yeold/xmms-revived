@@ -26,3 +26,4 @@ To run it without make install:
 - libpango
 - libcairo-gobject2
 - pkg-config
+- libflac
