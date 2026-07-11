@@ -777,12 +777,12 @@ static void playlistwin_check_overwrite(GtkWidget *filesel, char *filename, int 
 
   overwrite = gtk_button_new_with_label(_("Overwrite"));
   g_signal_connect(G_OBJECT(overwrite), "clicked", G_CALLBACK(playlistwin_check_overwrite_cb), data);
-  g_signal_connect(G_OBJECT(overwrite), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(dialog));
+  g_signal_connect_swapped(G_OBJECT(overwrite), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(dialog));
   GTK_WIDGET_SET_FLAGS(overwrite, GTK_CAN_DEFAULT);
   gtk_box_pack_start(GTK_BOX(bbox), overwrite, FALSE, FALSE, 0);
   cancel = gtk_button_new_with_label(_("Cancel"));
   g_signal_connect_swapped(G_OBJECT(cancel), "clicked", G_CALLBACK(g_free), data);
-  g_signal_connect(G_OBJECT(cancel), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(dialog));
+  g_signal_connect_swapped(G_OBJECT(cancel), "clicked", G_CALLBACK(gtk_widget_destroy), G_OBJECT(dialog));
   GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
   gtk_box_pack_start(GTK_BOX(bbox), cancel, FALSE, FALSE, 0);
   gtk_widget_grab_default(overwrite);
