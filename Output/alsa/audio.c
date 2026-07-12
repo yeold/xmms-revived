@@ -34,6 +34,7 @@
 #include <libxmms/xconvert.h>
 #include <math.h>
 #include <pthread.h>
+#include <xmms/plugin.h>
 
 static snd_pcm_t *alsa_pcm;
 static snd_output_t *logs;
@@ -100,11 +101,11 @@ static const struct
 {
   AFormat xmms;
   snd_pcm_format_t alsa;
-} format_table[] = {
-    {FMT_S16_LE, SND_PCM_FORMAT_S16_LE}, {FMT_S16_BE, SND_PCM_FORMAT_S16_BE}, {FMT_S16_NE, SND_PCM_FORMAT_S16},
-    {FMT_U16_LE, SND_PCM_FORMAT_U16_LE}, {FMT_U16_BE, SND_PCM_FORMAT_U16_BE}, {FMT_U16_NE, SND_PCM_FORMAT_U16},
-    {FMT_U8, SND_PCM_FORMAT_U8},         {FMT_S8, SND_PCM_FORMAT_S8},
-};
+} format_table[] = {{FMT_S16_LE, SND_PCM_FORMAT_S16_LE}, {FMT_S16_BE, SND_PCM_FORMAT_S16_BE},
+                    {FMT_S16_NE, SND_PCM_FORMAT_S16},    {FMT_U16_LE, SND_PCM_FORMAT_U16_LE},
+                    {FMT_U16_BE, SND_PCM_FORMAT_U16_BE}, {FMT_U16_NE, SND_PCM_FORMAT_U16},
+                    {FMT_U8, SND_PCM_FORMAT_U8},         {FMT_S8, SND_PCM_FORMAT_S8},
+                    {FMT_S32_LE, SND_PCM_FORMAT_S32_LE}, {FMT_S32_BE, SND_PCM_FORMAT_S32_BE}};
 
 static void debug(char *str, ...) G_GNUC_PRINTF(1, 2);
 
@@ -677,6 +678,12 @@ static void volume_adjust(void *data, int length, AFormat fmt, int channels)
   case FMT_U8:
     VOLUME_ADJUST8(guint8);
     break;
+  case FMT_S32_LE:
+    VOLUME_ADJUST(gint32, GINT32, LE);
+    break;
+  case FMT_S32_BE:
+    VOLUME_ADJUST(gint32, GINT32, BE);
+    break;
   default:
     g_warning("volue_adjust(): unhandled format: %d", fmt);
     break;
@@ -1150,7 +1157,7 @@ static int alsa_setup(struct snd_format *f)
   debug("Device setup: buffer time: %i, size: %i.", alsa_buffer_time, hw_buffer_size);
   debug("Device setup: period time: %i, size: %i.", alsa_period_time, hw_period_size);
   debug("bits per sample: %i; frame size: %i; Bps: %i", snd_pcm_format_physical_width(outputf->format),
-        snd_pcm_frames_to_bytes(alsa_pcm, 1), outputf->bps);
+        (int)snd_pcm_frames_to_bytes(alsa_pcm, 1), outputf->bps);
 
   return 0;
 }
