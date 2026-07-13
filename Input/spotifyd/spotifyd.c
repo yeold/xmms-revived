@@ -2,6 +2,7 @@
 #include "libxmms/titlestring.h"
 #include "libxmms/util.h"
 #include "xmms/i18n.h"
+#include "xmms/plugin.h"
 
 #include "xmms/plugin.h"
 #include <errno.h>
@@ -44,7 +45,7 @@ static void *decoder_loop(void *arg)
   {
     if (paused)
     {
-      xmms_usleep(50000);
+      g_usleep(50000);
       continue;
     }
 
