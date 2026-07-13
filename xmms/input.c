@@ -22,6 +22,7 @@
 #include "libxmms/util.h"
 #include "libxmms/xentry.h"
 #include "xmms.h"
+#include <xmms/plugin.h>
 
 static pthread_mutex_t vis_mutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -187,6 +188,42 @@ static void convert_to_s16_ne(AFormat fmt, gpointer ptr, gint16 *left, gint16 *r
         right[i] = (*ptr16++);
       }
     break;
+  case FMT_S32_NE:
+    for (i = 0; i < max; i++)
+    {
+      gint32 s = ((gint32 *)ptr)[nch * i];
+      left[i] = (gint16)(s >> 16);
+      if (nch == 2)
+      {
+        s = ((gint32 *)ptr)[nch * i + 1];
+        right[i] = (gint16)(s >> 16);
+      }
+    }
+    break;
+  case FMT_S32_LE:
+    for (i = 0; i < max; i++)
+    {
+      gint32 s = GINT32_FROM_LE(((gint32 *)ptr)[nch * i]);
+      left[i] = (gint16)(s >> 16);
+      if (nch == 2)
+      {
+        s = GINT32_FROM_LE(((gint32 *)ptr)[nch * i + 1]);
+        right[i] = (gint16)(s >> 16);
+      }
+    }
+    break;
+  case FMT_S32_BE:
+    for (i = 0; i < max; i++)
+    {
+      gint32 s = GINT32_FROM_BE(((gint32 *)ptr)[nch * i]);
+      left[i] = (gint16)(s >> 16);
+      if (nch == 2)
+      {
+        s = GINT32_FROM_BE(((gint32 *)ptr)[nch * i + 1]);
+        right[i] = (gint16)(s >> 16);
+      }
+    }
+    break;
   }
 }
 
@@ -204,16 +241,14 @@ void input_add_vis_pcm(int time, AFormat fmt, int nch, int length, void *ptr)
   struct vis_node *vis_node;
   int max;
 
-  max = length / nch;
-  if (fmt == FMT_U16_LE || fmt == FMT_U16_BE || fmt == FMT_U16_NE || fmt == FMT_S16_LE || fmt == FMT_S16_BE ||
-      fmt == FMT_S16_NE)
-    max /= 2;
+  max = length / nch / afmt_bytes(fmt);
   max = CLAMP(max, 0, 512);
 
   vis_node = g_malloc0(sizeof(*vis_node));
   vis_node->time = time;
   vis_node->nch = nch;
   vis_node->length = max;
+
   convert_to_s16_ne(fmt, ptr, vis_node->data[0], vis_node->data[1], nch, max);
 
   pthread_mutex_lock(&vis_mutex);

@@ -34,6 +34,7 @@
 #include <libxmms/xconvert.h>
 #include <math.h>
 #include <pthread.h>
+#include <xmms/plugin.h>
 
 static snd_pcm_t *alsa_pcm;
 static snd_output_t *logs;
@@ -103,8 +104,8 @@ static const struct
 } format_table[] = {
     {FMT_S16_LE, SND_PCM_FORMAT_S16_LE}, {FMT_S16_BE, SND_PCM_FORMAT_S16_BE}, {FMT_S16_NE, SND_PCM_FORMAT_S16},
     {FMT_U16_LE, SND_PCM_FORMAT_U16_LE}, {FMT_U16_BE, SND_PCM_FORMAT_U16_BE}, {FMT_U16_NE, SND_PCM_FORMAT_U16},
-    {FMT_U8, SND_PCM_FORMAT_U8},         {FMT_S8, SND_PCM_FORMAT_S8},
-};
+    {FMT_U8, SND_PCM_FORMAT_U8},         {FMT_S8, SND_PCM_FORMAT_S8},         {FMT_S32_LE, SND_PCM_FORMAT_S32_LE},
+    {FMT_S32_BE, SND_PCM_FORMAT_S32_BE}, {FMT_S32_NE, SND_PCM_FORMAT_S32}};
 
 static void debug(char *str, ...) G_GNUC_PRINTF(1, 2);
 
@@ -579,7 +580,7 @@ int alsa_get_written_time(void)
   return (alsa_total_written * 1000) / inputf->bps;
 }
 
-#define STEREO_ADJUST(type, type2, endian)                                                                             \
+#define STEREO_ADJUST16(type, type2, endian)                                                                           \
   do                                                                                                                   \
   {                                                                                                                    \
     type *ptr = data;                                                                                                  \
@@ -592,7 +593,20 @@ int alsa_get_written_time(void)
     }                                                                                                                  \
   } while (0)
 
-#define MONO_ADJUST(type, type2, endian)                                                                               \
+#define STEREO_ADJUST32(endian)                                                                                        \
+  do                                                                                                                   \
+  {                                                                                                                    \
+    gint32 *ptr = data;                                                                                                \
+    for (i = 0; i < length; i += 8)                                                                                    \
+    {                                                                                                                  \
+      *ptr = GINT32_TO_##endian((gint32)((gint64)GINT32_FROM_##endian(*ptr) * lvol / 256));                            \
+      ptr++;                                                                                                           \
+      *ptr = GINT32_TO_##endian((gint32)((gint64)GINT32_FROM_##endian(*ptr) * rvol / 256));                            \
+      ptr++;                                                                                                           \
+    }                                                                                                                  \
+  } while (0)
+
+#define MONO_ADJUST16(type, type2, endian)                                                                             \
   do                                                                                                                   \
   {                                                                                                                    \
     type *ptr = data;                                                                                                  \
@@ -603,13 +617,33 @@ int alsa_get_written_time(void)
     }                                                                                                                  \
   } while (0)
 
-#define VOLUME_ADJUST(type, type2, endian)                                                                             \
+#define MONO_ADJUST32(endian)                                                                                          \
+  do                                                                                                                   \
+  {                                                                                                                    \
+    gint32 *ptr = data;                                                                                                \
+    for (i = 0; i < length; i += 4)                                                                                    \
+    {                                                                                                                  \
+      *ptr = GINT32_TO_##endian((gint32)((gint64)GINT32_FROM_##endian(*ptr) * vol / 256));                             \
+      ptr++;                                                                                                           \
+    }                                                                                                                  \
+  } while (0)
+
+#define VOLUME_ADJUST32(endian)                                                                                        \
   do                                                                                                                   \
   {                                                                                                                    \
     if (channels == 2)                                                                                                 \
-      STEREO_ADJUST(type, type2, endian);                                                                              \
+      STEREO_ADJUST32(endian);                                                                                         \
     else                                                                                                               \
-      MONO_ADJUST(type, type2, endian);                                                                                \
+      MONO_ADJUST32(endian);                                                                                           \
+  } while (0)
+
+#define VOLUME_ADJUST16(type, type2, endian)                                                                           \
+  do                                                                                                                   \
+  {                                                                                                                    \
+    if (channels == 2)                                                                                                 \
+      STEREO_ADJUST16(type, type2, endian);                                                                            \
+    else                                                                                                               \
+      MONO_ADJUST16(type, type2, endian);                                                                              \
   } while (0)
 
 #define STEREO_ADJUST8(type)                                                                                           \
@@ -660,22 +694,28 @@ static void volume_adjust(void *data, int length, AFormat fmt, int channels)
   switch (fmt)
   {
   case FMT_S16_LE:
-    VOLUME_ADJUST(gint16, GINT16, LE);
+    VOLUME_ADJUST16(gint16, GINT16, LE);
     break;
   case FMT_U16_LE:
-    VOLUME_ADJUST(guint16, GUINT16, LE);
+    VOLUME_ADJUST16(guint16, GUINT16, LE);
     break;
   case FMT_S16_BE:
-    VOLUME_ADJUST(gint16, GINT16, BE);
+    VOLUME_ADJUST16(gint16, GINT16, BE);
     break;
   case FMT_U16_BE:
-    VOLUME_ADJUST(guint16, GUINT16, BE);
+    VOLUME_ADJUST16(guint16, GUINT16, BE);
     break;
   case FMT_S8:
     VOLUME_ADJUST8(gint8);
     break;
   case FMT_U8:
     VOLUME_ADJUST8(guint8);
+    break;
+  case FMT_S32_LE:
+    VOLUME_ADJUST32(LE);
+    break;
+  case FMT_S32_BE:
+    VOLUME_ADJUST32(BE);
     break;
   default:
     g_warning("volue_adjust(): unhandled format: %d", fmt);
@@ -693,6 +733,7 @@ static void alsa_do_write(gpointer data, int length)
   EffectPlugin *ep = NULL;
   int new_freq;
   int new_chn;
+  gboolean fmt_is_s32 = FALSE;
   AFormat f;
 
   if (paused)
@@ -702,7 +743,10 @@ static void alsa_do_write(gpointer data, int length)
   new_chn = inputf->channels;
   f = inputf->xmms_format;
 
-  if (effects_enabled() && (ep = get_current_effect_plugin()) && ep->query_format)
+  fmt_is_s32 =
+      (inputf->xmms_format == FMT_S32_NE || inputf->xmms_format == FMT_S32_BE || inputf->xmms_format == FMT_S32_LE);
+
+  if (!fmt_is_s32 && effects_enabled() && (ep = get_current_effect_plugin()) && ep->query_format)
     ep->query_format(&f, &new_freq, &new_chn);
 
   if (f != effectf->xmms_format || new_freq != effectf->rate || new_chn != effectf->channels)
@@ -718,7 +762,7 @@ static void alsa_do_write(gpointer data, int length)
     }
   }
 
-  if (ep)
+  if (ep && !fmt_is_s32)
     length = ep->mod_samples(&data, length, inputf->xmms_format, inputf->rate, inputf->channels);
 
   if (alsa_convert_func != NULL)
@@ -1150,7 +1194,7 @@ static int alsa_setup(struct snd_format *f)
   debug("Device setup: buffer time: %i, size: %i.", alsa_buffer_time, hw_buffer_size);
   debug("Device setup: period time: %i, size: %i.", alsa_period_time, hw_period_size);
   debug("bits per sample: %i; frame size: %i; Bps: %i", snd_pcm_format_physical_width(outputf->format),
-        snd_pcm_frames_to_bytes(alsa_pcm, 1), outputf->bps);
+        (int)snd_pcm_frames_to_bytes(alsa_pcm, 1), outputf->bps);
 
   return 0;
 }

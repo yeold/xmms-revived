@@ -2011,14 +2011,9 @@ static void mainwin_jump_to_file(void)
   gtk_widget_show(jump);
   gtk_widget_grab_default(jump);
 
-  gtk_box_pack_start(GTK_BOX(bbox), queue, FALSE, FALSE, 0);
-  g_signal_connect_swapped(G_OBJECT(cancel), "clicked", G_CALLBACK(gtk_widget_destroy), mainwin_qm);
-  GTK_WIDGET_SET_FLAGS(queue, GTK_CAN_DEFAULT);
-  gtk_widget_show(queue);
-
   cancel = gtk_button_new_with_label(_("Close"));
   gtk_box_pack_start(GTK_BOX(bbox), cancel, FALSE, FALSE, 0);
-  g_signal_connect_swapped(G_OBJECT(cancel), "clicked", G_CALLBACK(gtk_widget_destroy), mainwin_jtf);
+  g_signal_connect(G_OBJECT(cancel), "clicked", G_CALLBACK(gtk_widget_destroy), mainwin_jtf);
   GTK_WIDGET_SET_FLAGS(cancel, GTK_CAN_DEFAULT);
   gtk_widget_show(cancel);
   gtk_widget_show(bbox);

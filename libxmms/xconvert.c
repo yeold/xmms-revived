@@ -6,6 +6,7 @@
 
 #include "xconvert.h"
 #include "config.h"
+#include <endian.h>
 #include <stdlib.h>
 #include <xmms/plugin.h>
 
@@ -17,769 +18,845 @@
 
 struct buffer
 {
-	void *buffer;
-	int size;
+  void *buffer;
+  int size;
 };
 
 struct xmms_convert_buffers
 {
-	struct buffer format_buffer, stereo_buffer, freq_buffer;
+  struct buffer format_buffer, stereo_buffer, freq_buffer;
 };
 
 struct xmms_convert_buffers *xmms_convert_buffers_new(void)
 {
-	return g_malloc0(sizeof(struct xmms_convert_buffers));
+  return g_malloc0(sizeof(struct xmms_convert_buffers));
 }
 
 static void *convert_get_buffer(struct buffer *buffer, size_t size)
 {
-	if(size > 0 && size <= buffer->size)
-		return buffer->buffer;
+  if (size > 0 && size <= buffer->size)
+    return buffer->buffer;
 
-	buffer->size = size;
-	buffer->buffer = g_realloc(buffer->buffer, size);
-	return buffer->buffer;
+  buffer->size = size;
+  buffer->buffer = g_realloc(buffer->buffer, size);
+  return buffer->buffer;
 }
 
 void xmms_convert_buffers_free(struct xmms_convert_buffers *buf)
 {
-	convert_get_buffer(&buf->format_buffer, 0);
-	convert_get_buffer(&buf->stereo_buffer, 0);
-	convert_get_buffer(&buf->freq_buffer, 0);
+  convert_get_buffer(&buf->format_buffer, 0);
+  convert_get_buffer(&buf->stereo_buffer, 0);
+  convert_get_buffer(&buf->freq_buffer, 0);
 }
 
 void xmms_convert_buffers_destroy(struct xmms_convert_buffers *buf)
 {
-	if(!buf)
-		return;
-	xmms_convert_buffers_free(buf);
-	g_free(buf);
+  if (!buf)
+    return;
+  xmms_convert_buffers_free(buf);
+  g_free(buf);
 }
 
-static int convert_swap_endian(struct xmms_convert_buffers *buf, void **data,
-							   int length)
+static int convert_swap_endian_16(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	guint16 *ptr = *data;
-	int i;
-	for(i = 0; i < length; i += 2, ptr++)
-		*ptr = GUINT16_SWAP_LE_BE(*ptr);
+  guint16 *ptr = *data;
+  int i;
+  for (i = 0; i < length; i += 2, ptr++)
+    *ptr = GUINT16_SWAP_LE_BE(*ptr);
 
-	return i;
+  return i;
 }
 
-static int
-convert_swap_sign_and_endian_to_native(struct xmms_convert_buffers *buf,
-									   void **data, int length)
+static int convert_swap_endian_32(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	guint16 *ptr = *data;
-	int i;
-	for(i = 0; i < length; i += 2, ptr++)
-		*ptr = GUINT16_SWAP_LE_BE(*ptr) ^ 1 << 15;
+  guint32 *ptr = *data;
+  int i;
+  for (i = 0; i < length; i += 4, ptr++)
+    *ptr = GUINT32_SWAP_LE_BE(*ptr);
 
-	return i;
+  return i;
 }
 
-static int
-convert_swap_sign_and_endian_to_alien(struct xmms_convert_buffers *buf,
-									  void **data, int length)
+static int convert_s16_to_s32_native_endian(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	guint16 *ptr = *data;
-	int i;
-	for(i = 0; i < length; i += 2, ptr++)
-		*ptr = GUINT16_SWAP_LE_BE(*ptr ^ 1 << 15);
+  gint16 *input = *data;
+  gint32 *output;
+  int i;
+  int samples = length / 2;
+  *data = convert_get_buffer(&buf->format_buffer, length * 2);
+  output = *data;
+  for (i = 0; i < samples; i++)
+    *output++ = *input++ << 16;
 
-	return i;
+  return samples * 4;
 }
 
-static int convert_swap_sign16(struct xmms_convert_buffers *buf, void **data,
-							   int length)
+static int convert_s32_to_s16_native_endian(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	gint16 *ptr = *data;
-	int i;
-	for(i = 0; i < length; i += 2, ptr++)
-		*ptr ^= 1 << 15;
+  gint32 *input = *data;
+  gint16 *output = *data;
+  int i, samples = length / 4;
 
-	return i;
+  for (i = 0; i < samples; i++)
+    *output++ = (gint16)(*input++ >> 16);
+
+  return samples * 2;
 }
 
-static int convert_swap_sign8(struct xmms_convert_buffers *buf, void **data,
-							  int length)
+static int convert_swap_sign_and_endian_to_native(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	gint8 *ptr = *data;
-	int i;
-	for(i = 0; i < length; i++)
-		*ptr++ ^= 1 << 7;
+  guint16 *ptr = *data;
+  int i;
+  for (i = 0; i < length; i += 2, ptr++)
+    *ptr = GUINT16_SWAP_LE_BE(*ptr) ^ 1 << 15;
 
-	return i;
+  return i;
 }
 
-static int convert_to_8_native_endian(struct xmms_convert_buffers *buf,
-									  void **data, int length)
+static int convert_swap_sign_and_endian_to_alien(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	gint8 *output = *data;
-	gint16 *input = *data;
-	int i;
-	for(i = 0; i < length / 2; i++)
-		*output++ = *input++ >> 8;
+  guint16 *ptr = *data;
+  int i;
+  for (i = 0; i < length; i += 2, ptr++)
+    *ptr = GUINT16_SWAP_LE_BE(*ptr ^ 1 << 15);
 
-	return i;
+  return i;
 }
 
-static int
-convert_to_8_native_endian_swap_sign(struct xmms_convert_buffers *buf,
-									 void **data, int length)
+static int convert_swap_sign16(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	gint8 *output = *data;
-	gint16 *input = *data;
-	int i;
-	for(i = 0; i < length / 2; i++)
-		*output++ = (*input++ >> 8) ^ (1 << 7);
+  gint16 *ptr = *data;
+  int i;
+  for (i = 0; i < length; i += 2, ptr++)
+    *ptr ^= 1 << 15;
 
-	return i;
+  return i;
 }
 
-static int convert_to_8_alien_endian(struct xmms_convert_buffers *buf,
-									 void **data, int length)
+static int convert_swap_sign8(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	gint8 *output = *data;
-	gint16 *input = *data;
-	int i;
-	for(i = 0; i < length / 2; i++)
-		*output++ = *input++ & 0xff;
+  gint8 *ptr = *data;
+  int i;
+  for (i = 0; i < length; i++)
+    *ptr++ ^= 1 << 7;
 
-	return i;
+  return i;
 }
 
-static int
-convert_to_8_alien_endian_swap_sign(struct xmms_convert_buffers *buf,
-									void **data, int length)
+static int convert_to_8_native_endian(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	gint8 *output = *data;
-	gint16 *input = *data;
-	int i;
-	for(i = 0; i < length / 2; i++)
-		*output++ = (*input++ & 0xff) ^ (1 << 7);
+  gint8 *output = *data;
+  gint16 *input = *data;
+  int i;
+  for (i = 0; i < length / 2; i++)
+    *output++ = *input++ >> 8;
 
-	return i;
+  return i;
 }
 
-static int convert_to_16_native_endian(struct xmms_convert_buffers *buf,
-									   void **data, int length)
+static int convert_to_8_native_endian_swap_sign(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	guint8 *input = *data;
-	guint16 *output;
-	int i;
-	*data = convert_get_buffer(&buf->format_buffer, length * 2);
-	output = *data;
-	for(i = 0; i < length; i++)
-		*output++ = *input++ << 8;
+  gint8 *output = *data;
+  gint16 *input = *data;
+  int i;
+  for (i = 0; i < length / 2; i++)
+    *output++ = (*input++ >> 8) ^ (1 << 7);
 
-	return i * 2;
+  return i;
 }
 
-static int
-convert_to_16_native_endian_swap_sign(struct xmms_convert_buffers *buf,
-									  void **data, int length)
+static int convert_to_8_alien_endian(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	guint8 *input = *data;
-	guint16 *output;
-	int i;
-	*data = convert_get_buffer(&buf->format_buffer, length * 2);
-	output = *data;
-	for(i = 0; i < length; i++)
-		*output++ = (*input++ << 8) ^ (1 << 15);
+  gint8 *output = *data;
+  gint16 *input = *data;
+  int i;
+  for (i = 0; i < length / 2; i++)
+    *output++ = *input++ & 0xff;
 
-	return i * 2;
+  return i;
 }
 
-static int convert_to_16_alien_endian(struct xmms_convert_buffers *buf,
-									  void **data, int length)
+static int convert_to_8_alien_endian_swap_sign(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	guint8 *input = *data;
-	guint16 *output;
-	int i;
-	*data = convert_get_buffer(&buf->format_buffer, length * 2);
-	output = *data;
-	for(i = 0; i < length; i++)
-		*output++ = *input++;
+  gint8 *output = *data;
+  gint16 *input = *data;
+  int i;
+  for (i = 0; i < length / 2; i++)
+    *output++ = (*input++ & 0xff) ^ (1 << 7);
 
-	return i * 2;
+  return i;
 }
 
-static int
-convert_to_16_alien_endian_swap_sign(struct xmms_convert_buffers *buf,
-									 void **data, int length)
+static int convert_to_16_native_endian(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	guint8 *input = *data;
-	guint16 *output;
-	int i;
-	*data = convert_get_buffer(&buf->format_buffer, length * 2);
-	output = *data;
-	for(i = 0; i < length; i++)
-		*output++ = *input++ ^ (1 << 7);
+  guint8 *input = *data;
+  guint16 *output;
+  int i;
+  *data = convert_get_buffer(&buf->format_buffer, length * 2);
+  output = *data;
+  for (i = 0; i < length; i++)
+    *output++ = *input++ << 8;
 
-	return i * 2;
+  return i * 2;
+}
+
+static int convert_to_16_native_endian_swap_sign(struct xmms_convert_buffers *buf, void **data, int length)
+{
+  guint8 *input = *data;
+  guint16 *output;
+  int i;
+  *data = convert_get_buffer(&buf->format_buffer, length * 2);
+  output = *data;
+  for (i = 0; i < length; i++)
+    *output++ = (*input++ << 8) ^ (1 << 15);
+
+  return i * 2;
+}
+
+static int convert_to_16_alien_endian(struct xmms_convert_buffers *buf, void **data, int length)
+{
+  guint8 *input = *data;
+  guint16 *output;
+  int i;
+  *data = convert_get_buffer(&buf->format_buffer, length * 2);
+  output = *data;
+  for (i = 0; i < length; i++)
+    *output++ = *input++;
+
+  return i * 2;
+}
+
+static int convert_to_16_alien_endian_swap_sign(struct xmms_convert_buffers *buf, void **data, int length)
+{
+  guint8 *input = *data;
+  guint16 *output;
+  int i;
+  *data = convert_get_buffer(&buf->format_buffer, length * 2);
+  output = *data;
+  for (i = 0; i < length; i++)
+    *output++ = *input++ ^ (1 << 7);
+
+  return i * 2;
 }
 
 static AFormat unnativize(AFormat fmt)
 {
-	if(fmt == FMT_S16_NE)
-		{
-			if(IS_BIG_ENDIAN)
-				return FMT_S16_BE;
-			else
-				return FMT_S16_LE;
-		}
-	if(fmt == FMT_U16_NE)
-		{
-			if(IS_BIG_ENDIAN)
-				return FMT_U16_BE;
-			else
-				return FMT_U16_LE;
-		}
-	return fmt;
+  if (fmt == FMT_S16_NE)
+  {
+    if (IS_BIG_ENDIAN)
+      return FMT_S16_BE;
+    else
+      return FMT_S16_LE;
+  }
+  if (fmt == FMT_U16_NE)
+  {
+    if (IS_BIG_ENDIAN)
+      return FMT_U16_BE;
+    else
+      return FMT_U16_LE;
+  }
+  if (fmt == FMT_S32_NE)
+  {
+    if (IS_BIG_ENDIAN)
+      return FMT_S32_BE;
+    else
+      return FMT_S32_LE;
+  }
+  return fmt;
 }
 
 convert_func_t xmms_convert_get_func(AFormat output, AFormat input)
 {
-	output = unnativize(output);
-	input = unnativize(input);
+  output = unnativize(output);
+  input = unnativize(input);
 
-	if(output == input)
-		return NULL;
+  if (output == input)
+    return NULL;
 
-	if((output == FMT_U16_BE && input == FMT_U16_LE)
-	   || (output == FMT_U16_LE && input == FMT_U16_BE)
-	   || (output == FMT_S16_BE && input == FMT_S16_LE)
-	   || (output == FMT_S16_LE && input == FMT_S16_BE))
-		return convert_swap_endian;
+  if ((output == FMT_U16_BE && input == FMT_U16_LE) || (output == FMT_U16_LE && input == FMT_U16_BE) ||
+      (output == FMT_S16_BE && input == FMT_S16_LE) || (output == FMT_S16_LE && input == FMT_S16_BE))
+    return convert_swap_endian_16;
 
-	if((output == FMT_U16_BE && input == FMT_S16_BE)
-	   || (output == FMT_U16_LE && input == FMT_S16_LE)
-	   || (output == FMT_S16_BE && input == FMT_U16_BE)
-	   || (output == FMT_S16_LE && input == FMT_U16_LE))
-		return convert_swap_sign16;
+  if ((output == FMT_S32_BE && input == FMT_S32_LE) || (output == FMT_S32_LE && input == FMT_S32_BE))
+    return convert_swap_endian_32;
 
-	if((IS_BIG_ENDIAN
-		&& ((output == FMT_U16_BE && input == FMT_S16_LE)
-			|| (output == FMT_S16_BE && input == FMT_U16_LE)))
-	   || (!IS_BIG_ENDIAN
-		   && ((output == FMT_U16_LE && input == FMT_S16_BE)
-			   || (output == FMT_S16_LE && input == FMT_U16_BE))))
-		return convert_swap_sign_and_endian_to_native;
+  if (((output == FMT_S16_LE && input == FMT_S32_LE) && BYTE_ORDER == LITTLE_ENDIAN) ||
+      ((output == FMT_S16_BE && input == FMT_S32_BE) && BYTE_ORDER == BIG_ENDIAN))
+    return convert_s32_to_s16_native_endian;
 
-	if((!IS_BIG_ENDIAN
-		&& ((output == FMT_U16_BE && input == FMT_S16_LE)
-			|| (output == FMT_S16_BE && input == FMT_U16_LE)))
-	   || (IS_BIG_ENDIAN
-		   && ((output == FMT_U16_LE && input == FMT_S16_BE)
-			   || (output == FMT_S16_LE && input == FMT_U16_BE))))
-		return convert_swap_sign_and_endian_to_alien;
+  if ((((output == FMT_S32_LE && input == FMT_S16_LE) && BYTE_ORDER == LITTLE_ENDIAN)) ||
+      ((output == FMT_S32_BE && input == FMT_S16_BE) && BYTE_ORDER == BIG_ENDIAN))
+    return convert_s16_to_s32_native_endian;
 
-	if((IS_BIG_ENDIAN
-		&& ((output == FMT_U8 && input == FMT_U16_BE)
-			|| (output == FMT_S8 && input == FMT_S16_BE)))
-	   || (!IS_BIG_ENDIAN
-		   && ((output == FMT_U8 && input == FMT_U16_LE)
-			   || (output == FMT_S8 && input == FMT_S16_LE))))
-		return convert_to_8_native_endian;
+  if ((output == FMT_U16_BE && input == FMT_S16_BE) || (output == FMT_U16_LE && input == FMT_S16_LE) ||
+      (output == FMT_S16_BE && input == FMT_U16_BE) || (output == FMT_S16_LE && input == FMT_U16_LE))
+    return convert_swap_sign16;
 
-	if((IS_BIG_ENDIAN
-		&& ((output == FMT_U8 && input == FMT_S16_BE)
-			|| (output == FMT_S8 && input == FMT_U16_BE)))
-	   || (!IS_BIG_ENDIAN
-		   && ((output == FMT_U8 && input == FMT_S16_LE)
-			   || (output == FMT_S8 && input == FMT_U16_LE))))
-		return convert_to_8_native_endian_swap_sign;
+  if ((IS_BIG_ENDIAN &&
+       ((output == FMT_U16_BE && input == FMT_S16_LE) || (output == FMT_S16_BE && input == FMT_U16_LE))) ||
+      (!IS_BIG_ENDIAN &&
+       ((output == FMT_U16_LE && input == FMT_S16_BE) || (output == FMT_S16_LE && input == FMT_U16_BE))))
+    return convert_swap_sign_and_endian_to_native;
 
-	if((!IS_BIG_ENDIAN
-		&& ((output == FMT_U8 && input == FMT_U16_BE)
-			|| (output == FMT_S8 && input == FMT_S16_BE)))
-	   || (IS_BIG_ENDIAN
-		   && ((output == FMT_U8 && input == FMT_U16_LE)
-			   || (output == FMT_S8 && input == FMT_S16_LE))))
-		return convert_to_8_alien_endian;
+  if ((!IS_BIG_ENDIAN &&
+       ((output == FMT_U16_BE && input == FMT_S16_LE) || (output == FMT_S16_BE && input == FMT_U16_LE))) ||
+      (IS_BIG_ENDIAN &&
+       ((output == FMT_U16_LE && input == FMT_S16_BE) || (output == FMT_S16_LE && input == FMT_U16_BE))))
+    return convert_swap_sign_and_endian_to_alien;
 
-	if((!IS_BIG_ENDIAN
-		&& ((output == FMT_U8 && input == FMT_S16_BE)
-			|| (output == FMT_S8 && input == FMT_U16_BE)))
-	   || (IS_BIG_ENDIAN
-		   && ((output == FMT_U8 && input == FMT_S16_LE)
-			   || (output == FMT_S8 && input == FMT_U16_LE))))
-		return convert_to_8_alien_endian_swap_sign;
+  if ((IS_BIG_ENDIAN && ((output == FMT_U8 && input == FMT_U16_BE) || (output == FMT_S8 && input == FMT_S16_BE))) ||
+      (!IS_BIG_ENDIAN && ((output == FMT_U8 && input == FMT_U16_LE) || (output == FMT_S8 && input == FMT_S16_LE))))
+    return convert_to_8_native_endian;
 
-	if((output == FMT_U8 && input == FMT_S8)
-	   || (output == FMT_S8 && input == FMT_U8))
-		return convert_swap_sign8;
+  if ((IS_BIG_ENDIAN && ((output == FMT_U8 && input == FMT_S16_BE) || (output == FMT_S8 && input == FMT_U16_BE))) ||
+      (!IS_BIG_ENDIAN && ((output == FMT_U8 && input == FMT_S16_LE) || (output == FMT_S8 && input == FMT_U16_LE))))
+    return convert_to_8_native_endian_swap_sign;
 
-	if((IS_BIG_ENDIAN
-		&& ((output == FMT_U16_BE && input == FMT_U8)
-			|| (output == FMT_S16_BE && input == FMT_S8)))
-	   || (!IS_BIG_ENDIAN
-		   && ((output == FMT_U16_LE && input == FMT_U8)
-			   || (output == FMT_S16_LE && input == FMT_S8))))
-		return convert_to_16_native_endian;
+  if ((!IS_BIG_ENDIAN && ((output == FMT_U8 && input == FMT_U16_BE) || (output == FMT_S8 && input == FMT_S16_BE))) ||
+      (IS_BIG_ENDIAN && ((output == FMT_U8 && input == FMT_U16_LE) || (output == FMT_S8 && input == FMT_S16_LE))))
+    return convert_to_8_alien_endian;
 
-	if((IS_BIG_ENDIAN
-		&& ((output == FMT_U16_BE && input == FMT_S8)
-			|| (output == FMT_S16_BE && input == FMT_U8)))
-	   || (!IS_BIG_ENDIAN
-		   && ((output == FMT_U16_LE && input == FMT_S8)
-			   || (output == FMT_S16_LE && input == FMT_U8))))
-		return convert_to_16_native_endian_swap_sign;
+  if ((!IS_BIG_ENDIAN && ((output == FMT_U8 && input == FMT_S16_BE) || (output == FMT_S8 && input == FMT_U16_BE))) ||
+      (IS_BIG_ENDIAN && ((output == FMT_U8 && input == FMT_S16_LE) || (output == FMT_S8 && input == FMT_U16_LE))))
+    return convert_to_8_alien_endian_swap_sign;
 
-	if((!IS_BIG_ENDIAN
-		&& ((output == FMT_U16_BE && input == FMT_U8)
-			|| (output == FMT_S16_BE && input == FMT_S8)))
-	   || (IS_BIG_ENDIAN
-		   && ((output == FMT_U16_LE && input == FMT_U8)
-			   || (output == FMT_S16_LE && input == FMT_S8))))
-		return convert_to_16_alien_endian;
+  if ((output == FMT_U8 && input == FMT_S8) || (output == FMT_S8 && input == FMT_U8))
+    return convert_swap_sign8;
 
-	if((!IS_BIG_ENDIAN
-		&& ((output == FMT_U16_BE && input == FMT_S8)
-			|| (output == FMT_S16_BE && input == FMT_U8)))
-	   || (IS_BIG_ENDIAN
-		   && ((output == FMT_U16_LE && input == FMT_S8)
-			   || (output == FMT_S16_LE && input == FMT_U8))))
-		return convert_to_16_alien_endian_swap_sign;
+  if ((IS_BIG_ENDIAN && ((output == FMT_U16_BE && input == FMT_U8) || (output == FMT_S16_BE && input == FMT_S8))) ||
+      (!IS_BIG_ENDIAN && ((output == FMT_U16_LE && input == FMT_U8) || (output == FMT_S16_LE && input == FMT_S8))))
+    return convert_to_16_native_endian;
 
-	g_warning("Translation needed, but not available.\n"
-			  "Input: %d; Output %d.",
-			  input, output);
-	return NULL;
+  if ((IS_BIG_ENDIAN && ((output == FMT_U16_BE && input == FMT_S8) || (output == FMT_S16_BE && input == FMT_U8))) ||
+      (!IS_BIG_ENDIAN && ((output == FMT_U16_LE && input == FMT_S8) || (output == FMT_S16_LE && input == FMT_U8))))
+    return convert_to_16_native_endian_swap_sign;
+
+  if ((!IS_BIG_ENDIAN && ((output == FMT_U16_BE && input == FMT_U8) || (output == FMT_S16_BE && input == FMT_S8))) ||
+      (IS_BIG_ENDIAN && ((output == FMT_U16_LE && input == FMT_U8) || (output == FMT_S16_LE && input == FMT_S8))))
+    return convert_to_16_alien_endian;
+
+  if ((!IS_BIG_ENDIAN && ((output == FMT_U16_BE && input == FMT_S8) || (output == FMT_S16_BE && input == FMT_U8))) ||
+      (IS_BIG_ENDIAN && ((output == FMT_U16_LE && input == FMT_S8) || (output == FMT_S16_LE && input == FMT_U8))))
+    return convert_to_16_alien_endian_swap_sign;
+
+  g_warning("Translation needed, but not available.\n"
+            "Input: %d; Output %d.",
+            input, output);
+  return NULL;
 }
 
-static int convert_mono_to_stereo(struct xmms_convert_buffers *buf,
-								  void **data, int length, int b16)
+static int convert_mono_to_stereo(struct xmms_convert_buffers *buf, void **data, int length, int b16)
 {
-	int i;
-	void *outbuf = convert_get_buffer(&buf->stereo_buffer, length * 2);
+  int i;
+  void *outbuf = convert_get_buffer(&buf->stereo_buffer, length * 2);
 
-	if(b16)
-		{
-			guint16 *output = outbuf, *input = *data;
-			for(i = 0; i < length / 2; i++)
-				{
-					*output++ = *input;
-					*output++ = *input;
-					input++;
-				}
-		}
-	else
-		{
-			guint8 *output = outbuf, *input = *data;
-			for(i = 0; i < length; i++)
-				{
-					*output++ = *input;
-					*output++ = *input;
-					input++;
-				}
-		}
-	*data = outbuf;
+  if (b16)
+  {
+    guint16 *output = outbuf, *input = *data;
+    for (i = 0; i < length / 2; i++)
+    {
+      *output++ = *input;
+      *output++ = *input;
+      input++;
+    }
+  }
+  else
+  {
+    guint8 *output = outbuf, *input = *data;
+    for (i = 0; i < length; i++)
+    {
+      *output++ = *input;
+      *output++ = *input;
+      input++;
+    }
+  }
+  *data = outbuf;
 
-	return length * 2;
+  return length * 2;
 }
 
-static int convert_mono_to_stereo_8(struct xmms_convert_buffers *buf,
-									void **data, int length)
+static int convert_mono_to_stereo_8(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	return convert_mono_to_stereo(buf, data, length, FALSE);
+  return convert_mono_to_stereo(buf, data, length, FALSE);
 }
 
-static int convert_mono_to_stereo_16(struct xmms_convert_buffers *buf,
-									 void **data, int length)
+static int convert_mono_to_stereo_16(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	return convert_mono_to_stereo(buf, data, length, TRUE);
+  return convert_mono_to_stereo(buf, data, length, TRUE);
 }
 
-static int convert_stereo_to_mono_u8(struct xmms_convert_buffers *buf,
-									 void **data, int length)
+static int convert_mono_to_stereo_32(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	guint8 *output = *data, *input = *data;
-	int i;
-	for(i = 0; i < length / 2; i++)
-		{
-			guint16 tmp;
-			tmp = *input++;
-			tmp += *input++;
-			*output++ = tmp / 2;
-		}
-	return length / 2;
-}
-static int convert_stereo_to_mono_s8(struct xmms_convert_buffers *buf,
-									 void **data, int length)
-{
-	gint8 *output = *data, *input = *data;
-	int i;
-	for(i = 0; i < length / 2; i++)
-		{
-			gint16 tmp;
-			tmp = *input++;
-			tmp += *input++;
-			*output++ = tmp / 2;
-		}
-	return length / 2;
-}
-static int convert_stereo_to_mono_u16le(struct xmms_convert_buffers *buf,
-										void **data, int length)
-{
-	guint16 *output = *data, *input = *data;
-	int i;
-	for(i = 0; i < length / 4; i++)
-		{
-			guint32 tmp;
-			guint16 stmp;
-			tmp = GUINT16_FROM_LE(*input);
-			input++;
-			tmp += GUINT16_FROM_LE(*input);
-			input++;
-			stmp = tmp / 2;
-			*output++ = GUINT16_TO_LE(stmp);
-		}
-	return length / 2;
+  int i;
+  gint32 *output, *input = *data;
+  output = convert_get_buffer(&buf->stereo_buffer, length * 2);
+  for (i = 0; i < length / 4; i++)
+  {
+    *output++ = *input;
+    *output++ = *input;
+    input++;
+  }
+  *data = buf->stereo_buffer.buffer;
+  return length * 2;
 }
 
-static int convert_stereo_to_mono_u16be(struct xmms_convert_buffers *buf,
-										void **data, int length)
+static int convert_stereo_to_mono_u8(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	guint16 *output = *data, *input = *data;
-	int i;
-	for(i = 0; i < length / 4; i++)
-		{
-			guint32 tmp;
-			guint16 stmp;
-			tmp = GUINT16_FROM_BE(*input);
-			input++;
-			tmp += GUINT16_FROM_BE(*input);
-			input++;
-			stmp = tmp / 2;
-			*output++ = GUINT16_TO_BE(stmp);
-		}
-	return length / 2;
+  guint8 *output = *data, *input = *data;
+  int i;
+  for (i = 0; i < length / 2; i++)
+  {
+    guint16 tmp;
+    tmp = *input++;
+    tmp += *input++;
+    *output++ = tmp / 2;
+  }
+  return length / 2;
+}
+static int convert_stereo_to_mono_s8(struct xmms_convert_buffers *buf, void **data, int length)
+{
+  gint8 *output = *data, *input = *data;
+  int i;
+  for (i = 0; i < length / 2; i++)
+  {
+    gint16 tmp;
+    tmp = *input++;
+    tmp += *input++;
+    *output++ = tmp / 2;
+  }
+  return length / 2;
+}
+static int convert_stereo_to_mono_u16le(struct xmms_convert_buffers *buf, void **data, int length)
+{
+  guint16 *output = *data, *input = *data;
+  int i;
+  for (i = 0; i < length / 4; i++)
+  {
+    guint32 tmp;
+    guint16 stmp;
+    tmp = GUINT16_FROM_LE(*input);
+    input++;
+    tmp += GUINT16_FROM_LE(*input);
+    input++;
+    stmp = tmp / 2;
+    *output++ = GUINT16_TO_LE(stmp);
+  }
+  return length / 2;
 }
 
-static int convert_stereo_to_mono_s16le(struct xmms_convert_buffers *buf,
-										void **data, int length)
+static int convert_stereo_to_mono_u16be(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	gint16 *output = *data, *input = *data;
-	int i;
-	for(i = 0; i < length / 4; i++)
-		{
-			gint32 tmp;
-			gint16 stmp;
-			tmp = GINT16_FROM_LE(*input);
-			input++;
-			tmp += GINT16_FROM_LE(*input);
-			input++;
-			stmp = tmp / 2;
-			*output++ = GINT16_TO_LE(stmp);
-		}
-	return length / 2;
+  guint16 *output = *data, *input = *data;
+  int i;
+  for (i = 0; i < length / 4; i++)
+  {
+    guint32 tmp;
+    guint16 stmp;
+    tmp = GUINT16_FROM_BE(*input);
+    input++;
+    tmp += GUINT16_FROM_BE(*input);
+    input++;
+    stmp = tmp / 2;
+    *output++ = GUINT16_TO_BE(stmp);
+  }
+  return length / 2;
 }
 
-static int convert_stereo_to_mono_s16be(struct xmms_convert_buffers *buf,
-										void **data, int length)
+static int convert_stereo_to_mono_s16le(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	gint16 *output = *data, *input = *data;
-	int i;
-	for(i = 0; i < length / 4; i++)
-		{
-			gint32 tmp;
-			gint16 stmp;
-			tmp = GINT16_FROM_BE(*input);
-			input++;
-			tmp += GINT16_FROM_BE(*input);
-			input++;
-			stmp = tmp / 2;
-			*output++ = GINT16_TO_BE(stmp);
-		}
-	return length / 2;
+  gint16 *output = *data, *input = *data;
+  int i;
+  for (i = 0; i < length / 4; i++)
+  {
+    gint32 tmp;
+    gint16 stmp;
+    tmp = GINT16_FROM_LE(*input);
+    input++;
+    tmp += GINT16_FROM_LE(*input);
+    input++;
+    stmp = tmp / 2;
+    *output++ = GINT16_TO_LE(stmp);
+  }
+  return length / 2;
 }
 
-convert_channel_func_t xmms_convert_get_channel_func(AFormat fmt, int output,
-													 int input)
+static int convert_stereo_to_mono_s16be(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	fmt = unnativize(fmt);
-
-	if(output == input)
-		return NULL;
-
-	if(input == 1 && output == 2)
-		switch(fmt)
-			{
-				case FMT_U8:
-				case FMT_S8:
-					return convert_mono_to_stereo_8;
-				case FMT_U16_LE:
-				case FMT_U16_BE:
-				case FMT_S16_LE:
-				case FMT_S16_BE:
-					return convert_mono_to_stereo_16;
-				default:
-					g_warning("Unknown format: %d"
-							  "No conversion available.",
-							  fmt);
-					return NULL;
-			}
-	if(input == 2 && output == 1)
-		switch(fmt)
-			{
-				case FMT_U8:
-					return convert_stereo_to_mono_u8;
-				case FMT_S8:
-					return convert_stereo_to_mono_s8;
-				case FMT_U16_LE:
-					return convert_stereo_to_mono_u16le;
-				case FMT_U16_BE:
-					return convert_stereo_to_mono_u16be;
-				case FMT_S16_LE:
-					return convert_stereo_to_mono_s16le;
-				case FMT_S16_BE:
-					return convert_stereo_to_mono_s16be;
-				default:
-					g_warning("Unknown format: %d.  "
-							  "No conversion available.",
-							  fmt);
-					return NULL;
-			}
-
-	g_warning("Input has %d channels, soundcard uses %d channels\n"
-			  "No conversion is available",
-			  input, output);
-	return NULL;
+  gint16 *output = *data, *input = *data;
+  int i;
+  for (i = 0; i < length / 4; i++)
+  {
+    gint32 tmp;
+    gint16 stmp;
+    tmp = GINT16_FROM_BE(*input);
+    input++;
+    tmp += GINT16_FROM_BE(*input);
+    input++;
+    stmp = tmp / 2;
+    *output++ = GINT16_TO_BE(stmp);
+  }
+  return length / 2;
 }
 
-#define RESAMPLE_STEREO(sample_type, bswap)                                   \
-	do                                                                        \
-		{                                                                     \
-			const int shift = sizeof(sample_type);                            \
-			int i, in_samples, out_samples, x, delta;                         \
-			sample_type *inptr = *data, *outptr;                              \
-			guint nlen = (((length >> shift) * ofreq) / ifreq);               \
-			void *nbuf;                                                       \
-			if(nlen == 0)                                                     \
-				break;                                                        \
-			nlen <<= shift;                                                   \
-			if(bswap)                                                         \
-				convert_swap_endian(NULL, data, length);                      \
-			nbuf = convert_get_buffer(&buf->freq_buffer, nlen);               \
-			outptr = nbuf;                                                    \
-			in_samples = length >> shift;                                     \
-			out_samples = nlen >> shift;                                      \
-			delta = (in_samples << 12) / out_samples;                         \
-			for(x = 0, i = 0; i < out_samples; i++)                           \
-				{                                                             \
-					int x1, frac;                                             \
-					x1 = (x >> 12) << 12;                                     \
-					frac = x - x1;                                            \
-					*outptr++ = ((inptr[(x1 >> 12) << 1] * ((1 << 12) - frac) \
-								  + inptr[((x1 >> 12) + 1) << 1] * frac)      \
-								 >> 12);                                      \
-					*outptr++                                                 \
-						= ((inptr[((x1 >> 12) << 1) + 1] * ((1 << 12) - frac) \
-							+ inptr[(((x1 >> 12) + 1) << 1) + 1] * frac)      \
-						   >> 12);                                            \
-					x += delta;                                               \
-				}                                                             \
-			if(bswap)                                                         \
-				convert_swap_endian(NULL, &nbuf, nlen);                       \
-			*data = nbuf;                                                     \
-			return nlen;                                                      \
-		}                                                                     \
-	while(0)
-
-#define RESAMPLE_MONO(sample_type, bswap)                                     \
-	do                                                                        \
-		{                                                                     \
-			const int shift = sizeof(sample_type) - 1;                        \
-			int i, x, delta, out_samples;                                     \
-			sample_type *inptr = *data, *outptr;                              \
-			guint nlen = (((length >> shift) * ofreq) / ifreq);               \
-			void *nbuf;                                                       \
-			if(nlen == 0)                                                     \
-				break;                                                        \
-			nlen <<= shift;                                                   \
-			if(bswap)                                                         \
-				convert_swap_endian(NULL, data, length);                      \
-			nbuf = convert_get_buffer(&buf->freq_buffer, nlen);               \
-			outptr = nbuf;                                                    \
-			/*in_samples = length >>  shift; */                               \
-			out_samples = nlen >> shift;                                      \
-			delta = ((length >> shift) << 12) / out_samples;                  \
-			for(x = 0, i = 0; i < out_samples; i++)                           \
-				{                                                             \
-					int x1, frac;                                             \
-					x1 = (x >> 12) << 12;                                     \
-					frac = x - x1;                                            \
-					*outptr++ = ((inptr[x1 >> 12] * ((1 << 12) - frac)        \
-								  + inptr[(x1 >> 12) + 1] * frac)             \
-								 >> 12);                                      \
-					x += delta;                                               \
-				}                                                             \
-			if(bswap)                                                         \
-				convert_swap_endian(NULL, &nbuf, nlen);                       \
-			*data = nbuf;                                                     \
-			return nlen;                                                      \
-		}                                                                     \
-	while(0)
-
-static int convert_resample_stereo_s16ne(struct xmms_convert_buffers *buf,
-										 void **data, int length, int ifreq,
-										 int ofreq)
+static int convert_stereo_to_mono_s32ne(struct xmms_convert_buffers *buf, void **data, int length)
 {
-	RESAMPLE_STEREO(gint16, FALSE);
-	return 0;
+  gint32 *output = *data, *input = *data;
+  int i;
+  for (i = 0; i < length / 8; i++)
+  {
+    gint64 tmp;
+    tmp = *input++;
+    tmp += *input++;
+    *output++ = (gint32)(tmp / 2);
+  }
+  return length / 2;
 }
 
-static int convert_resample_stereo_s16ae(struct xmms_convert_buffers *buf,
-										 void **data, int length, int ifreq,
-										 int ofreq)
+convert_channel_func_t xmms_convert_get_channel_func(AFormat fmt, int output, int input)
 {
-	RESAMPLE_STEREO(gint16, TRUE);
-	return 0;
+  fmt = unnativize(fmt);
+
+  if (output == input)
+    return NULL;
+
+  if (input == 1 && output == 2)
+    switch (fmt)
+    {
+    case FMT_U8:
+    case FMT_S8:
+      return convert_mono_to_stereo_8;
+    case FMT_U16_LE:
+    case FMT_U16_BE:
+    case FMT_S16_LE:
+    case FMT_S16_BE:
+      return convert_mono_to_stereo_16;
+    case FMT_S32_LE:
+    case FMT_S32_BE:
+      return convert_mono_to_stereo_32;
+    default:
+      g_warning("Unknown format: %d"
+                "No conversion available.",
+                fmt);
+      return NULL;
+    }
+  if (input == 2 && output == 1)
+    switch (fmt)
+    {
+    case FMT_U8:
+      return convert_stereo_to_mono_u8;
+    case FMT_S8:
+      return convert_stereo_to_mono_s8;
+    case FMT_U16_LE:
+      return convert_stereo_to_mono_u16le;
+    case FMT_U16_BE:
+      return convert_stereo_to_mono_u16be;
+    case FMT_S16_LE:
+      return convert_stereo_to_mono_s16le;
+    case FMT_S16_BE:
+      return convert_stereo_to_mono_s16be;
+    case FMT_S32_BE:
+    case FMT_S32_LE:
+      return convert_stereo_to_mono_s32ne;
+    default:
+      g_warning("Unknown format: %d.  "
+                "No conversion available.",
+                fmt);
+      return NULL;
+    }
+
+  g_warning("Input has %d channels, soundcard uses %d channels\n"
+            "No conversion is available",
+            input, output);
+  return NULL;
 }
 
-static int convert_resample_stereo_u16ne(struct xmms_convert_buffers *buf,
-										 void **data, int length, int ifreq,
-										 int ofreq)
+#define RESAMPLE_STEREO16(sample_type, bswap)                                                                          \
+  do                                                                                                                   \
+  {                                                                                                                    \
+    const int shift = sizeof(sample_type);                                                                             \
+    int i, in_samples, out_samples, x, delta;                                                                          \
+    sample_type *inptr = *data, *outptr;                                                                               \
+    guint nlen = (((length >> shift) * ofreq) / ifreq);                                                                \
+    void *nbuf;                                                                                                        \
+    if (nlen == 0)                                                                                                     \
+      break;                                                                                                           \
+    nlen <<= shift;                                                                                                    \
+    if (bswap)                                                                                                         \
+      convert_swap_endian_16(NULL, data, length);                                                                      \
+    nbuf = convert_get_buffer(&buf->freq_buffer, nlen);                                                                \
+    outptr = nbuf;                                                                                                     \
+    in_samples = length >> shift;                                                                                      \
+    out_samples = nlen >> shift;                                                                                       \
+    delta = (in_samples << 12) / out_samples;                                                                          \
+    for (x = 0, i = 0; i < out_samples; i++)                                                                           \
+    {                                                                                                                  \
+      int x1, frac;                                                                                                    \
+      x1 = (x >> 12) << 12;                                                                                            \
+      frac = x - x1;                                                                                                   \
+      *outptr++ = ((inptr[(x1 >> 12) << 1] * ((1 << 12) - frac) + inptr[((x1 >> 12) + 1) << 1] * frac) >> 12);         \
+      *outptr++ =                                                                                                      \
+          ((inptr[((x1 >> 12) << 1) + 1] * ((1 << 12) - frac) + inptr[(((x1 >> 12) + 1) << 1) + 1] * frac) >> 12);     \
+      x += delta;                                                                                                      \
+    }                                                                                                                  \
+    if (bswap)                                                                                                         \
+      convert_swap_endian_16(NULL, &nbuf, nlen);                                                                       \
+    *data = nbuf;                                                                                                      \
+    return nlen;                                                                                                       \
+  } while (0)
+
+#define RESAMPLE_STEREO32(sample_type, bswap)                                                                          \
+  do                                                                                                                   \
+  {                                                                                                                    \
+    const int shift = 3;                                                                                               \
+    int i, in_samples, out_samples, x, delta;                                                                          \
+    sample_type *inptr = *data, *outptr;                                                                               \
+    guint nlen = (((length >> shift) * ofreq) / ifreq);                                                                \
+    void *nbuf;                                                                                                        \
+    if (nlen == 0)                                                                                                     \
+      break;                                                                                                           \
+    nlen <<= shift;                                                                                                    \
+    if (bswap)                                                                                                         \
+      convert_swap_endian_32(NULL, data, length);                                                                      \
+    nbuf = convert_get_buffer(&buf->freq_buffer, nlen);                                                                \
+    outptr = nbuf;                                                                                                     \
+    in_samples = length >> shift;                                                                                      \
+    out_samples = nlen >> shift;                                                                                       \
+    delta = (in_samples << 12) / out_samples;                                                                          \
+    for (x = 0, i = 0; i < out_samples; i++)                                                                           \
+    {                                                                                                                  \
+      int x1, frac;                                                                                                    \
+      x1 = (x >> 12) << 12;                                                                                            \
+      frac = x - x1;                                                                                                   \
+      *outptr++ = (sample_type)(((gint64)inptr[(x1 >> 12) << 1] * ((1 << 12) - frac) +                                 \
+                                 (gint64)inptr[((x1 >> 12) + 1) << 1] * frac) >>                                       \
+                                12);                                                                                   \
+      *outptr++ = (sample_type)(((gint64)inptr[((x1 >> 12) << 1) + 1] * ((1 << 12) - frac) +                           \
+                                 (gint64)inptr[(((x1 >> 12) + 1) << 1) + 1] * frac) >>                                 \
+                                12);                                                                                   \
+      x += delta;                                                                                                      \
+    }                                                                                                                  \
+    if (bswap)                                                                                                         \
+      convert_swap_endian_32(NULL, &nbuf, nlen);                                                                       \
+    *data = nbuf;                                                                                                      \
+    return nlen;                                                                                                       \
+  } while (0)
+
+#define RESAMPLE_MONO16(sample_type, bswap)                                                                            \
+  do                                                                                                                   \
+  {                                                                                                                    \
+    const int shift = sizeof(sample_type) - 1;                                                                         \
+    int i, x, delta, out_samples;                                                                                      \
+    sample_type *inptr = *data, *outptr;                                                                               \
+    guint nlen = (((length >> shift) * ofreq) / ifreq);                                                                \
+    void *nbuf;                                                                                                        \
+    if (nlen == 0)                                                                                                     \
+      break;                                                                                                           \
+    nlen <<= shift;                                                                                                    \
+    if (bswap)                                                                                                         \
+      convert_swap_endian_16(NULL, data, length);                                                                      \
+    nbuf = convert_get_buffer(&buf->freq_buffer, nlen);                                                                \
+    outptr = nbuf;                                                                                                     \
+    /*in_samples = length >>  shift; */                                                                                \
+    out_samples = nlen >> shift;                                                                                       \
+    delta = ((length >> shift) << 12) / out_samples;                                                                   \
+    for (x = 0, i = 0; i < out_samples; i++)                                                                           \
+    {                                                                                                                  \
+      int x1, frac;                                                                                                    \
+      x1 = (x >> 12) << 12;                                                                                            \
+      frac = x - x1;                                                                                                   \
+      *outptr++ = ((inptr[x1 >> 12] * ((1 << 12) - frac) + inptr[(x1 >> 12) + 1] * frac) >> 12);                       \
+      x += delta;                                                                                                      \
+    }                                                                                                                  \
+    if (bswap)                                                                                                         \
+      convert_swap_endian_16(NULL, &nbuf, nlen);                                                                       \
+    *data = nbuf;                                                                                                      \
+    return nlen;                                                                                                       \
+  } while (0)
+
+#define RESAMPLE_MONO32(sample_type, bswap)                                                                            \
+  do                                                                                                                   \
+  {                                                                                                                    \
+    const int shift = 2;                                                                                               \
+    int i, x, delta, out_samples;                                                                                      \
+    sample_type *inptr = *data, *outptr;                                                                               \
+    guint nlen = (((length >> shift) * ofreq) / ifreq);                                                                \
+    void *nbuf;                                                                                                        \
+    if (nlen == 0)                                                                                                     \
+      break;                                                                                                           \
+    nlen <<= shift;                                                                                                    \
+    if (bswap)                                                                                                         \
+      convert_swap_endian_32(NULL, data, length);                                                                      \
+    nbuf = convert_get_buffer(&buf->freq_buffer, nlen);                                                                \
+    outptr = nbuf;                                                                                                     \
+    /*in_samples = length >>  shift; */                                                                                \
+    out_samples = nlen >> shift;                                                                                       \
+    delta = ((length >> shift) << 12) / out_samples;                                                                   \
+    for (x = 0, i = 0; i < out_samples; i++)                                                                           \
+    {                                                                                                                  \
+      int x1, frac;                                                                                                    \
+      x1 = (x >> 12) << 12;                                                                                            \
+      frac = x - x1;                                                                                                   \
+      *outptr++ =                                                                                                      \
+          (sample_type)(((gint64)inptr[x1 >> 12] * ((1 << 12) - frac) + (gint64)inptr[(x1 >> 12) + 1] * frac) >> 12);  \
+      x += delta;                                                                                                      \
+    }                                                                                                                  \
+    if (bswap)                                                                                                         \
+      convert_swap_endian_32(NULL, &nbuf, nlen);                                                                       \
+    *data = nbuf;                                                                                                      \
+    return nlen;                                                                                                       \
+  } while (0)
+
+static int convert_resample_stereo_s16ne(struct xmms_convert_buffers *buf, void **data, int length, int ifreq,
+                                         int ofreq)
 {
-	RESAMPLE_STEREO(guint16, FALSE);
-	return 0;
+  RESAMPLE_STEREO16(gint16, FALSE);
+  return 0;
 }
 
-static int convert_resample_stereo_u16ae(struct xmms_convert_buffers *buf,
-										 void **data, int length, int ifreq,
-										 int ofreq)
+static int convert_resample_stereo_s16ae(struct xmms_convert_buffers *buf, void **data, int length, int ifreq,
+                                         int ofreq)
 {
-	RESAMPLE_STEREO(guint16, TRUE);
-	return 0;
+  RESAMPLE_STEREO16(gint16, TRUE);
+  return 0;
 }
 
-static int convert_resample_mono_s16ne(struct xmms_convert_buffers *buf,
-									   void **data, int length, int ifreq,
-									   int ofreq)
+static int convert_resample_stereo_u16ne(struct xmms_convert_buffers *buf, void **data, int length, int ifreq,
+                                         int ofreq)
 {
-	RESAMPLE_MONO(gint16, FALSE);
-	return 0;
+  RESAMPLE_STEREO16(guint16, FALSE);
+  return 0;
 }
 
-static int convert_resample_mono_s16ae(struct xmms_convert_buffers *buf,
-									   void **data, int length, int ifreq,
-									   int ofreq)
+static int convert_resample_stereo_u16ae(struct xmms_convert_buffers *buf, void **data, int length, int ifreq,
+                                         int ofreq)
 {
-	RESAMPLE_MONO(gint16, TRUE);
-	return 0;
+  RESAMPLE_STEREO16(guint16, TRUE);
+  return 0;
 }
 
-static int convert_resample_mono_u16ne(struct xmms_convert_buffers *buf,
-									   void **data, int length, int ifreq,
-									   int ofreq)
+static int convert_resample_stereo_s32ne(struct xmms_convert_buffers *buf, void **data, int length, int ifreq,
+                                         int ofreq)
 {
-	RESAMPLE_MONO(guint16, FALSE);
-	return 0;
+  RESAMPLE_STEREO32(gint32, FALSE);
+  return 0;
 }
 
-static int convert_resample_mono_u16ae(struct xmms_convert_buffers *buf,
-									   void **data, int length, int ifreq,
-									   int ofreq)
+static int convert_resample_mono_s32ne(struct xmms_convert_buffers *buf, void **data, int length, int ifreq, int ofreq)
 {
-	RESAMPLE_MONO(guint16, TRUE);
-	return 0;
+  RESAMPLE_MONO32(gint32, FALSE);
+  return 0;
 }
 
-static int convert_resample_stereo_u8(struct xmms_convert_buffers *buf,
-									  void **data, int length, int ifreq,
-									  int ofreq)
+static int convert_resample_mono_s16ne(struct xmms_convert_buffers *buf, void **data, int length, int ifreq, int ofreq)
 {
-	RESAMPLE_STEREO(guint8, FALSE);
-	return 0;
+  RESAMPLE_MONO16(gint16, FALSE);
+  return 0;
 }
 
-static int convert_resample_mono_u8(struct xmms_convert_buffers *buf,
-									void **data, int length, int ifreq,
-									int ofreq)
+static int convert_resample_mono_s16ae(struct xmms_convert_buffers *buf, void **data, int length, int ifreq, int ofreq)
 {
-	RESAMPLE_MONO(guint8, FALSE);
-	return 0;
+  RESAMPLE_MONO16(gint16, TRUE);
+  return 0;
 }
 
-static int convert_resample_stereo_s8(struct xmms_convert_buffers *buf,
-									  void **data, int length, int ifreq,
-									  int ofreq)
+static int convert_resample_mono_u16ne(struct xmms_convert_buffers *buf, void **data, int length, int ifreq, int ofreq)
 {
-	RESAMPLE_STEREO(gint8, FALSE);
-	return 0;
+  RESAMPLE_MONO16(guint16, FALSE);
+  return 0;
 }
 
-static int convert_resample_mono_s8(struct xmms_convert_buffers *buf,
-									void **data, int length, int ifreq,
-									int ofreq)
+static int convert_resample_mono_u16ae(struct xmms_convert_buffers *buf, void **data, int length, int ifreq, int ofreq)
 {
-	RESAMPLE_MONO(gint8, FALSE);
-	return 0;
+  RESAMPLE_MONO16(guint16, TRUE);
+  return 0;
+}
+
+static int convert_resample_stereo_u8(struct xmms_convert_buffers *buf, void **data, int length, int ifreq, int ofreq)
+{
+  RESAMPLE_STEREO16(guint8, FALSE);
+  return 0;
+}
+
+static int convert_resample_mono_u8(struct xmms_convert_buffers *buf, void **data, int length, int ifreq, int ofreq)
+{
+  RESAMPLE_MONO16(guint8, FALSE);
+  return 0;
+}
+
+static int convert_resample_stereo_s8(struct xmms_convert_buffers *buf, void **data, int length, int ifreq, int ofreq)
+{
+  RESAMPLE_STEREO16(gint8, FALSE);
+  return 0;
+}
+
+static int convert_resample_mono_s8(struct xmms_convert_buffers *buf, void **data, int length, int ifreq, int ofreq)
+{
+  RESAMPLE_MONO16(gint8, FALSE);
+  return 0;
 }
 
 convert_freq_func_t xmms_convert_get_frequency_func(AFormat fmt, int channels)
 {
-	fmt = unnativize(fmt);
-	g_message("fmt %d, channels: %d", fmt, channels);
+  fmt = unnativize(fmt);
 
-	if(channels < 1 || channels > 2)
-		{
-			g_warning("Unsupported number of channels: %d.  "
-					  "Resample function not available",
-					  channels);
-			return NULL;
-		}
-	if((IS_BIG_ENDIAN && fmt == FMT_U16_BE)
-	   || (!IS_BIG_ENDIAN && fmt == FMT_U16_LE))
-		{
-			if(channels == 1)
-				return convert_resample_mono_u16ne;
-			else
-				return convert_resample_stereo_u16ne;
-		}
-	if((IS_BIG_ENDIAN && fmt == FMT_S16_BE)
-	   || (!IS_BIG_ENDIAN && fmt == FMT_S16_LE))
-		{
-			if(channels == 1)
-				return convert_resample_mono_s16ne;
-			else
-				return convert_resample_stereo_s16ne;
-		}
-	if((!IS_BIG_ENDIAN && fmt == FMT_U16_BE)
-	   || (IS_BIG_ENDIAN && fmt == FMT_U16_LE))
-		{
-			if(channels == 1)
-				return convert_resample_mono_u16ae;
-			else
-				return convert_resample_stereo_u16ae;
-		}
-	if((!IS_BIG_ENDIAN && fmt == FMT_S16_BE)
-	   || (IS_BIG_ENDIAN && fmt == FMT_S16_LE))
-		{
-			if(channels == 1)
-				return convert_resample_mono_s16ae;
-			else
-				return convert_resample_stereo_s16ae;
-		}
-	if(fmt == FMT_U8)
-		{
-			if(channels == 1)
-				return convert_resample_mono_u8;
-			else
-				return convert_resample_stereo_u8;
-		}
-	if(fmt == FMT_S8)
-		{
-			if(channels == 1)
-				return convert_resample_mono_s8;
-			else
-				return convert_resample_stereo_s8;
-		}
-	g_warning("Resample function not available"
-			  "Format %d.",
-			  fmt);
-	return NULL;
+  if (channels < 1 || channels > 2)
+  {
+    g_warning("Unsupported number of channels: %d.  "
+              "Resample function not available",
+              channels);
+    return NULL;
+  }
+  if ((IS_BIG_ENDIAN && fmt == FMT_U16_BE) || (!IS_BIG_ENDIAN && fmt == FMT_U16_LE))
+  {
+    if (channels == 1)
+      return convert_resample_mono_u16ne;
+    else
+      return convert_resample_stereo_u16ne;
+  }
+  if ((IS_BIG_ENDIAN && fmt == FMT_S16_BE) || (!IS_BIG_ENDIAN && fmt == FMT_S16_LE))
+  {
+    if (channels == 1)
+      return convert_resample_mono_s16ne;
+    else
+      return convert_resample_stereo_s16ne;
+  }
+  if ((!IS_BIG_ENDIAN && fmt == FMT_U16_BE) || (IS_BIG_ENDIAN && fmt == FMT_U16_LE))
+  {
+    if (channels == 1)
+      return convert_resample_mono_u16ae;
+    else
+      return convert_resample_stereo_u16ae;
+  }
+  if ((!IS_BIG_ENDIAN && fmt == FMT_S16_BE) || (IS_BIG_ENDIAN && fmt == FMT_S16_LE))
+  {
+    if (channels == 1)
+      return convert_resample_mono_s16ae;
+    else
+      return convert_resample_stereo_s16ae;
+  }
+  if ((IS_BIG_ENDIAN && fmt == FMT_S32_BE) || (!IS_BIG_ENDIAN && fmt == FMT_S32_LE))
+  {
+    if (channels == 1)
+      return convert_resample_mono_s32ne;
+    else
+      return convert_resample_stereo_s32ne;
+  }
+  if (fmt == FMT_U8)
+  {
+    if (channels == 1)
+      return convert_resample_mono_u8;
+    else
+      return convert_resample_stereo_u8;
+  }
+  if (fmt == FMT_S8)
+  {
+    if (channels == 1)
+      return convert_resample_mono_s8;
+    else
+      return convert_resample_stereo_s8;
+  }
+  g_warning("Resample function not available"
+            "Format %d.",
+            fmt);
+  return NULL;
 }
