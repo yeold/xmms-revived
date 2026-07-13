@@ -243,6 +243,20 @@ else
 fi
 AM_CONDITIONAL([HAVE_FLAC], [test "x$have_flac" = "xyes"])
 
+dnl ***
+dnl *** spotifyd
+dnl ***
+AC_ARG_ENABLE([spotifyd],
+	[AS_HELP_STRING([--disable-spotifyd], [Disable spotifyd input plugin [default=enabled]])],,
+	[enable_spotifyd="yes"])
+
+have_spotifyd=no
+if test "x$enable_spotifyd" = "xyes"; then
+	[have_spotifyd=yes],
+else
+	AC_MSG_NOTICE([*** spotifyd plugin disabled per user request ***])
+fi
+AM_CONDITIONAL([HAVE_SPOTIFYD], [test "x$have_spotifyd" = "xyes"])
 
 dnl ***
 dnl *** mikmod
@@ -676,6 +690,7 @@ Input/wav/Makefile
 Input/mpg123/Makefile
 Input/mikmod/Makefile
 Input/flac/Makefile
+Input/spotifyd/Makefile
 Input/cdaudio/Makefile
 Input/tonegen/Makefile
 Input/vorbis/Makefile
@@ -713,6 +728,7 @@ echo "  Build BSD Sun plugin:       $have_sun"
 echo "  Build ALSA plugin:          $have_alsa"
 echo "  Build mikmod plugin:        $have_mikmod"
 echo "  Build flac plugin:          $have_flac"
+echo "  Build spotifyd plugin:      $have_spotifyd"
 echo "  Build Ogg Vorbis plugin:    $have_oggvorbis"
 echo "  Build OpenGL plugins:       $have_opengl"
 echo "  Pthread flag:               $PTHREAD_LIBS"
