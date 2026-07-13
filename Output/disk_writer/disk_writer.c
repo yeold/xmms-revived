@@ -193,12 +193,9 @@ static gint disk_open(AFormat fmt, gint rate, gint nch)
   header.format = GUINT16_TO_LE(1);
   header.modus = GUINT16_TO_LE(nch);
   header.sample_fq = GUINT32_TO_LE(rate);
-  if (fmt == FMT_U8 || fmt == FMT_S8)
-    header.bit_p_spl = GUINT16_TO_LE(8);
-  else
-    header.bit_p_spl = GUINT16_TO_LE(16);
-  header.byte_p_sec = GUINT32_TO_LE(rate * header.modus * (GUINT16_FROM_LE(header.bit_p_spl) / 8));
-  header.byte_p_spl = GUINT16_TO_LE((GUINT16_FROM_LE(header.bit_p_spl) / (8 / nch)));
+  header.bit_p_spl = GUINT16_TO_LE(8 * afmt_bytes(fmt));
+  header.byte_p_sec = GUINT32_TO_LE(rate * nch * afmt_bytes(fmt));
+  header.byte_p_spl = GUINT16_TO_LE(nch * afmt_bytes(fmt));
   memcpy(&header.data_chunk, "data", 4);
   header.data_length = GUINT32_TO_LE(0);
   fwrite(&header, sizeof(struct wavhead), 1, output_file);
@@ -252,13 +249,19 @@ static void convert_buffer(gpointer buffer, gint length)
     for (i = 0; i < length >> 1; i++, ptr2++)
       *(ptr1++) = GINT16_TO_LE(GUINT16_FROM_LE(*ptr2) ^ 32768);
   }
-  if (afmt == FMT_U16_NE)
+  if (afmt == FMT_S32_NE)
   {
-    gint16 *ptr1 = buffer;
-    guint16 *ptr2 = buffer;
+    gint32 *ptr = buffer;
 
-    for (i = 0; i < length >> 1; i++, ptr2++)
-      *(ptr1++) = GINT16_TO_LE((*ptr2) ^ 32768);
+    for (i = 0; i < length >> 2; i++, ptr++)
+      *ptr = GINT32_TO_LE(*ptr);
+  }
+  if (afmt == FMT_S32_BE)
+  {
+    guint32 *ptr = buffer;
+
+    for (i = 0; i < length >> 2; i++, ptr++)
+      *ptr = GUINT32_SWAP_LE_BE(*ptr);
   }
 }
 
@@ -283,7 +286,8 @@ static void disk_write(void *ptr, gint length)
     length = ep->mod_samples(&ptr, length, input.format, input.frequency, input.channels);
   }
 
-  if (afmt == FMT_S8 || afmt == FMT_S16_BE || afmt == FMT_U16_LE || afmt == FMT_U16_BE || afmt == FMT_U16_NE)
+  if (afmt == FMT_S8 || afmt == FMT_S16_BE || afmt == FMT_U16_LE || afmt == FMT_U16_BE || afmt == FMT_U16_NE ||
+      afmt == FMT_S32_NE || afmt == FMT_S32_BE || afmt == FMT_S32_LE)
     convert_buffer(ptr, length);
 #ifdef WORDS_BIGENDIAN
   if (afmt == FMT_S16_NE)

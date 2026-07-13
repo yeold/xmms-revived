@@ -203,11 +203,11 @@ static void convert_to_s16_ne(AFormat fmt, gpointer ptr, gint16 *left, gint16 *r
   case FMT_S32_LE:
     for (i = 0; i < max; i++)
     {
-      gint32 s = GINT16_FROM_LE(((gint32 *)ptr)[nch * i]);
+      gint32 s = GINT32_FROM_LE(((gint32 *)ptr)[nch * i]);
       left[i] = (gint16)(s >> 16);
       if (nch == 2)
       {
-        s = GINT16_FROM_LE(((gint32 *)ptr)[nch * i + 1]);
+        s = GINT32_FROM_LE(((gint32 *)ptr)[nch * i + 1]);
         right[i] = (gint16)(s >> 16);
       }
     }
@@ -215,11 +215,11 @@ static void convert_to_s16_ne(AFormat fmt, gpointer ptr, gint16 *left, gint16 *r
   case FMT_S32_BE:
     for (i = 0; i < max; i++)
     {
-      gint32 s = GINT16_FROM_BE(((gint32 *)ptr)[nch * i]);
+      gint32 s = GINT32_FROM_BE(((gint32 *)ptr)[nch * i]);
       left[i] = (gint16)(s >> 16);
       if (nch == 2)
       {
-        s = GINT16_FROM_BE(((gint32 *)ptr)[nch * i + 1]);
+        s = GINT32_FROM_BE(((gint32 *)ptr)[nch * i + 1]);
         right[i] = (gint16)(s >> 16);
       }
     }

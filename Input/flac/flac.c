@@ -26,31 +26,53 @@ static unsigned channels;
 static unsigned bits_per_sample;
 
 static int song_len;
-static gint16 pcm_buf[65536];
+static gint32 pcm_buf[65536];
 
 static FLAC__StreamDecoderWriteStatus flac_write_cb(const FLAC__StreamDecoder *dec, const FLAC__Frame *frame,
                                                     const FLAC__int32 *const buffer[], void *client_data)
 {
   unsigned samples = frame->header.blocksize;
   unsigned ch = frame->header.channels;
-  unsigned shift = frame->header.bits_per_sample -
-                   16; // shitfing it down from 24 bit to 16 bit since XMMS can only handle 16 at the moment
+  unsigned bps = frame->header.bits_per_sample;
   unsigned i;
   unsigned c;
-  gint16 *ptr = pcm_buf;
+
   int bytes;
+  gboolean use_s32 = (bps > 16);
 
-  for (i = 0; i < samples; i++)
+  if (samples * ch > G_N_ELEMENTS(pcm_buf))
+    return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
+
+  if (use_s32)
   {
-    for (c = 0; c < ch; c++)
+    gint32 *ptr = pcm_buf;
+    unsigned shift = 32 - bps;
+
+    for (i = 0; i < samples; i++)
     {
-      *ptr++ = (frame->header.bits_per_sample > 16) ? (gint16)(buffer[c][i] >> shift) : (gint16)buffer[c][i];
+      for (c = 0; c < ch; c++)
+      {
+        *ptr++ = buffer[c][i] << shift;
+      }
     }
+
+    bytes = samples * ch * 4;
+    flac_ip.add_vis_pcm(flac_ip.output->written_time(), FMT_S32_NE, ch, bytes, pcm_buf);
   }
+  else
+  {
+    gint16 *ptr = (gint16 *)pcm_buf;
+    for (i = 0; i < samples; i++)
+    {
+      for (c = 0; c < ch; c++)
+      {
+        *ptr++ = (gint16)buffer[c][i];
+      }
+    }
 
-  bytes = samples * ch * 2;
-
-  flac_ip.add_vis_pcm(flac_ip.output->written_time(), FMT_S16_NE, ch, bytes, pcm_buf);
+    bytes = samples * ch * 2;
+    flac_ip.add_vis_pcm(flac_ip.output->written_time(), FMT_S16_NE, ch, bytes, pcm_buf);
+  }
 
   while (is_playing && seek_to == -1 && flac_ip.output->buffer_free() < bytes)
     xmms_usleep(10000);
@@ -141,6 +163,7 @@ static void play_flac(char *filename)
 
   song_len = -1;
   eof_reached = FALSE;
+  AFormat fmt;
 
   decoder = FLAC__stream_decoder_new();
   if (!decoder)
@@ -161,7 +184,9 @@ static void play_flac(char *filename)
     return;
   }
 
-  if (flac_ip.output->open_audio(FMT_S16_NE, sample_rate, channels) == 0)
+  fmt = (bits_per_sample > 16) ? FMT_S32_NE : FMT_S16_NE;
+
+  if (flac_ip.output->open_audio(fmt, sample_rate, channels) == 0)
   {
     FLAC__stream_decoder_delete(decoder);
     decoder = NULL;
