@@ -226,33 +226,23 @@ static unsigned int convert(void *data, int in)
 
     case 24:
     {
-      char *dst = data;
-      char *src = data;
+      gint32 *dst = data;
+      guint8 *src = data;
 
-      while (in > 0)
+      int samples = in / 3;
+      int i;
+
+      for (i = samples - 1; i >= 0; i--)
       {
-        out += 2;
-        in -= 3;
-        src++;           /* skip low byte */
-        *dst++ = *src++; /* copy 16bit */
-        *dst++ = *src++;
+        guint8 *s = src + i * 3;
+        /* little-endian 24-bit -> left-justified S32 */
+        dst[i] = (gint32)((s[0] << 8) | (s[1] << 16) | ((guint32)s[2] << 24));
       }
+      return samples * 4;
     }
-    break;
 
     case 32:
-    {
-      guint16 *dst = data;
-      guint16 *src = data;
-      int i;
-      out = in / sizeof(guint16);
-      for (i = 0; i < out; i++)
-      {
-        src++;           /* skip low word */
-        *dst++ = *src++; /* copy 16 bit */
-      }
-    }
-    break;
+      return in;
     }
   }
   else if (wav_file->format_tag == WAVE_FORMAT_IEEE_FLOAT)
@@ -436,9 +426,14 @@ static struct wave_file *construct_wave_file(char *filename)
       break;
     case 12:
     case 16:
-    case 24:
-    case 32:
       wav->afmt = FMT_S16_LE;
+      break;
+    case 24:
+      wav->afmt = FMT_S32_LE;
+      wav->bits_per_sample_out = 32;
+      break;
+    case 32:
+      wav->afmt = FMT_S32_LE;
       break;
     default:
       goto exit_on_error;
