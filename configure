@@ -717,6 +717,8 @@ LIBMIKMOD_CFLAGS
 LIBMIKMOD_CONFIG
 HAVE_SPOTIFYD_FALSE
 HAVE_SPOTIFYD_TRUE
+GIO_LIBS
+GIO_CFLAGS
 HAVE_FLAC_FALSE
 HAVE_FLAC_TRUE
 LIBFLAC_LIBS
@@ -943,6 +945,8 @@ ESD_CFLAGS
 ESD_LIBS
 LIBFLAC_CFLAGS
 LIBFLAC_LIBS
+GIO_CFLAGS
+GIO_LIBS
 OGG_CFLAGS
 OGG_LIBS
 VORBIS_CFLAGS
@@ -1677,6 +1681,8 @@ Some influential environment variables:
               C compiler flags for LIBFLAC, overriding pkg-config
   LIBFLAC_LIBS
               linker flags for LIBFLAC, overriding pkg-config
+  GIO_CFLAGS  C compiler flags for GIO, overriding pkg-config
+  GIO_LIBS    linker flags for GIO, overriding pkg-config
   OGG_CFLAGS  C compiler flags for OGG, overriding pkg-config
   OGG_LIBS    linker flags for OGG, overriding pkg-config
   VORBIS_CFLAGS
@@ -17602,7 +17608,79 @@ fi
 
 have_spotifyd=no
 if test "x$enable_spotifyd" = "xyes"; then
-	have_spotifyd=yes
+
+pkg_failed=no
+{ printf '%s\n' "$as_me:${as_lineno-$LINENO}: checking for gio-2.0 >= 2.26" >&5
+printf %s "checking for gio-2.0 >= 2.26... " >&6; }
+
+if test -n "$GIO_CFLAGS"; then
+    pkg_cv_GIO_CFLAGS="$GIO_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { printf '%s\n' "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gio-2.0 >= 2.26\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "gio-2.0 >= 2.26") 2>&5
+  ac_status=$?
+  printf '%s\n' "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GIO_CFLAGS=`$PKG_CONFIG --cflags "gio-2.0 >= 2.26" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$GIO_LIBS"; then
+    pkg_cv_GIO_LIBS="$GIO_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { printf '%s\n' "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gio-2.0 >= 2.26\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "gio-2.0 >= 2.26") 2>&5
+  ac_status=$?
+  printf '%s\n' "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GIO_LIBS=`$PKG_CONFIG --libs "gio-2.0 >= 2.26" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+        { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf '%s\n' "no" >&6; }
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+                GIO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "gio-2.0 >= 2.26" 2>&1`
+        else
+                GIO_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "gio-2.0 >= 2.26" 2>&1`
+        fi
+        # Put the nasty error message in config.log where it belongs
+        echo "$GIO_PKG_ERRORS" >&5
+
+        { printf '%s\n' "$as_me:${as_lineno-$LINENO}: WARNING: *** gio not found; spotifyd plugin will not be built ***" >&5
+printf '%s\n' "$as_me: WARNING: *** gio not found; spotifyd plugin will not be built ***" >&2;}
+elif test $pkg_failed = untried; then
+        { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf '%s\n' "no" >&6; }
+        { printf '%s\n' "$as_me:${as_lineno-$LINENO}: WARNING: *** gio not found; spotifyd plugin will not be built ***" >&5
+printf '%s\n' "$as_me: WARNING: *** gio not found; spotifyd plugin will not be built ***" >&2;}
+else
+        GIO_CFLAGS=$pkg_cv_GIO_CFLAGS
+        GIO_LIBS=$pkg_cv_GIO_LIBS
+        { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf '%s\n' "yes" >&6; }
+        have_spotifyd=yes
+fi
 else
 	{ printf '%s\n' "$as_me:${as_lineno-$LINENO}: *** spotifyd plugin disabled per user request ***" >&5
 printf '%s\n' "$as_me: *** spotifyd plugin disabled per user request ***" >&6;}
@@ -21096,7 +21174,7 @@ if test ${enable_oss+y}
 then :
   enableval=$enable_oss; have_oss=$enableval
 else case e in #(
-  e) have_oss=yes ;;
+  e) have_oss=no ;;
 esac
 fi
 

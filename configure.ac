@@ -252,7 +252,9 @@ AC_ARG_ENABLE([spotifyd],
 
 have_spotifyd=no
 if test "x$enable_spotifyd" = "xyes"; then
-	[have_spotifyd=yes]
+	PKG_CHECK_MODULES([GIO], [gio-2.0 >= 2.26],
+		[have_spotifyd=yes],
+		[AC_MSG_WARN([*** gio not found; spotifyd plugin will not be built ***])])
 else
 	AC_MSG_NOTICE([*** spotifyd plugin disabled per user request ***])
 fi
@@ -423,7 +425,7 @@ dnl *** Check for OSS
 dnl ***
 AC_ARG_ENABLE([oss],
 	[  --disable-oss           disable the OSS output plugin],
-	[have_oss=$enableval], [have_oss=yes])
+	[have_oss=$enableval], [have_oss=no])
 
 if test "x$have_oss" = "xauto"; then
     AC_MSG_CHECKING([for OSS include dir])

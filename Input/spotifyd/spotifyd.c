@@ -9,7 +9,7 @@
 #include <string.h>
 #include <strings.h>
 
-static InputPlugin flac_ip;
+static InputPlugin spotifyd_ip;
 
 static pthread_t decoder_thread;
 static volatile gboolean is_playing = FALSE;
@@ -23,83 +23,7 @@ static unsigned bits_per_sample;
 static int song_len;
 static gint16 pcm_buf[65536];
 
-static FLAC__StreamDecoderWriteStatus flac_write_cb(const FLAC__StreamDecoder *dec, const FLAC__Frame *frame,
-                                                    const FLAC__int32 *const buffer[], void *client_data)
-{
-  unsigned samples = frame->header.blocksize;
-  unsigned ch = frame->header.channels;
-  unsigned bps = frame->header.bits_per_sample;
-  unsigned i;
-  unsigned c;
-
-  int bytes;
-  gboolean use_s32 = (bps > 16);
-
-  if (samples * ch > G_N_ELEMENTS(pcm_buf))
-    return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
-
-  if (use_s32)
-  {
-    gint32 *ptr = pcm_buf;
-    unsigned shift = 32 - bps;
-
-    for (i = 0; i < samples; i++)
-    {
-      for (c = 0; c < ch; c++)
-      {
-        *ptr++ = buffer[c][i] << shift;
-      }
-    }
-
-    bytes = samples * ch * 4;
-    flac_ip.add_vis_pcm(flac_ip.output->written_time(), FMT_S32_NE, ch, bytes, pcm_buf);
-  }
-  else
-  {
-    gint16 *ptr = (gint16 *)pcm_buf;
-    for (i = 0; i < samples; i++)
-    {
-      for (c = 0; c < ch; c++)
-      {
-        *ptr++ = (gint16)buffer[c][i];
-      }
-    }
-
-    bytes = samples * ch * 2;
-    flac_ip.add_vis_pcm(flac_ip.output->written_time(), FMT_S16_NE, ch, bytes, pcm_buf);
-  }
-
-  while (is_playing && seek_to == -1 && flac_ip.output->buffer_free() < bytes)
-    xmms_usleep(10000);
-
-  if (!is_playing)
-    return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
-  if (seek_to != -1)
-    return FLAC__STREAM_DECODER_WRITE_STATUS_CONTINUE; /* skip write; decode_loop will seek */
-
-  flac_ip.output->write_audio((char *)pcm_buf, bytes);
-
-  return FLAC__STREAM_DECODER_WRITE_STATUS_CONTINUE;
-}
-
-static void flac_metadata_cb(const FLAC__StreamDecoder *dec, const FLAC__StreamMetadata *meta, void *client_data)
-{
-  if (meta->type == FLAC__METADATA_TYPE_STREAMINFO)
-  {
-    sample_rate = meta->data.stream_info.sample_rate;
-    channels = meta->data.stream_info.channels;
-    bits_per_sample = meta->data.stream_info.bits_per_sample;
-    if (sample_rate > 0)
-      song_len = (int)(meta->data.stream_info.total_samples * 1000 / sample_rate);
-  }
-}
-
-static void flac_error_cb(const FLAC__StreamDecoder *dec, FLAC__StreamDecoderErrorStatus status, void *client_data)
-{
-  g_warning("flac plugin: decoder error: %s", FLAC__StreamDecoderErrorStatusString[status]);
-}
-
-static void seek_flac(int time)
+static void seek_stream(int time)
 {
   seek_to = time;
   while (seek_to != -1 && is_playing)
@@ -112,47 +36,23 @@ static void *decoder_loop(void *arg)
   {
     if (seek_to != -1)
     {
-      FLAC__uint64 target = (FLAC__uint64)seek_to * sample_rate;
-
-      if (FLAC__stream_decoder_seek_absolute(decoder, target))
-      {
-        flac_ip.output->flush(seek_to * 1000);
-        eof_reached = FALSE;
-      }
-      else
-      {
-        g_warning("flac: seek to %d s failed, decoder_state=%s", seek_to,
-                  FLAC__StreamDecoderStateString[FLAC__stream_decoder_get_state(decoder)]);
-        if (FLAC__stream_decoder_get_state(decoder) == FLAC__STREAM_DECODER_SEEK_ERROR)
-          FLAC__stream_decoder_flush(decoder);
-      }
       seek_to = -1;
     }
 
     if (eof_reached)
     {
-      if (!flac_ip.output->buffer_playing())
+      if (!spotifyd_ip.output->buffer_playing())
         break; /* fully drained: done */
       xmms_usleep(10000);
       continue; /* drain, but keep servicing seeks */
     }
-
-    if (!FLAC__stream_decoder_process_single(decoder))
-    {
-      g_warning("flac: process_single failed, decoder_state=%s",
-                FLAC__StreamDecoderStateString[FLAC__stream_decoder_get_state(decoder)]);
-      break;
-    }
-
-    if (FLAC__stream_decoder_get_state(decoder) == FLAC__STREAM_DECODER_END_OF_STREAM)
-      eof_reached = TRUE;
   }
 
   is_playing = FALSE;
   pthread_exit(NULL);
 }
 
-static void play_flac(char *filename)
+static void play_stream(char *filename)
 {
   char *title;
 
@@ -160,76 +60,53 @@ static void play_flac(char *filename)
   eof_reached = FALSE;
   AFormat fmt;
 
-  decoder = FLAC__stream_decoder_new();
-  if (!decoder)
-    return;
-
-  if (FLAC__stream_decoder_init_file(decoder, filename, flac_write_cb, flac_metadata_cb, flac_error_cb, NULL) !=
-      FLAC__STREAM_DECODER_INIT_STATUS_OK)
-  {
-    FLAC__stream_decoder_delete(decoder);
-    decoder = NULL;
-    return;
-  }
-
-  if (!FLAC__stream_decoder_process_until_end_of_metadata(decoder))
-  {
-    FLAC__stream_decoder_delete(decoder);
-    decoder = NULL;
-    return;
-  }
-
   fmt = (bits_per_sample > 16) ? FMT_S32_NE : FMT_S16_NE;
 
-  if (flac_ip.output->open_audio(fmt, sample_rate, channels) == 0)
+  if (spotifyd_ip.output->open_audio(fmt, sample_rate, channels) == 0)
   {
-    FLAC__stream_decoder_delete(decoder);
-    decoder = NULL;
+
     return;
   }
 
   title = g_path_get_basename(filename);
 
-  flac_ip.set_info(title, song_len, sample_rate * channels * bits_per_sample, sample_rate, channels);
+  spotifyd_ip.set_info(title, song_len, sample_rate * channels * bits_per_sample, sample_rate, channels);
   g_free(title);
 
   is_playing = TRUE;
   pthread_create(&decoder_thread, NULL, decoder_loop, NULL);
 }
 
-static void stop_flac()
+static void stop_stream()
 {
-  if (!is_playing && !decoder)
+  if (!is_playing)
     return;
 
   is_playing = FALSE;
   pthread_join(decoder_thread, NULL);
 
-  flac_ip.output->close_audio();
-  if (decoder)
-  {
-    FLAC__stream_decoder_delete(decoder);
-    decoder = NULL;
-  }
+  spotifyd_ip.output->close_audio();
 }
 
-static void pause_flac(short p)
+static void pause_stream(short p)
 {
-  flac_ip.output->pause(p);
+  spotifyd_ip.output->pause(p);
 }
 
-static int get_time_flac()
+static int get_time()
 {
-  if (!is_playing && !flac_ip.output->buffer_playing())
+  if (!is_playing && !spotifyd_ip.output->buffer_playing())
     return -1;
 
-  return flac_ip.output->output_time();
+  return spotifyd_ip.output->output_time();
 }
 
 static int is_our_file(char *filename)
 {
-  char *ext = strrchr(filename, '.');
-  return ext && !strcasecmp(ext, ".flac");
+  if (filename == NULL)
+    return FALSE;
+
+  return g_ascii_strncasecmp(filename, "spotify://", 10);
 }
 
 static void get_song_info(char *filename, char **title, int *length)
@@ -241,17 +118,17 @@ static void get_song_info(char *filename, char **title, int *length)
 
 InputPlugin *get_iplugin_info(void)
 {
-  flac_ip.description = g_strdup_printf("FLAC Player %s", VERSION);
-  return &flac_ip;
+  spotifyd_ip.description = g_strdup_printf("Spotifyd Player %s", VERSION);
+  return &spotifyd_ip;
 }
 
-static InputPlugin flac_ip = {
+static InputPlugin spotifyd_ip = {
     .description = NULL,
     .is_our_file = is_our_file,
-    .play_file = play_flac,
-    .stop = stop_flac,
-    .pause = pause_flac,
-    .get_time = get_time_flac,
+    .play_file = play_stream,
+    .stop = stop_stream,
+    .pause = pause_stream,
+    .get_time = get_time,
     .get_song_info = get_song_info,
-    .seek = seek_flac,
+    .seek = seek_stream,
 };
