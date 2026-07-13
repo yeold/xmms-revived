@@ -4,6 +4,10 @@ XMMS rewritten for modern Linux systems
 
 Migrated to GTK2 and glib2
 
+Added features:
+ - Native FLAC support 
+ - Native 24/32-bit playback (only FLAC and WAV, of course)
+
 ![XMMS](./xmms.png)
 
 [Build instructions](./BUILDING.md)
