@@ -1,5 +1,4 @@
 #include "config.h"
-#include "fdesfdsf.h"
 #include "libxmms/titlestring.h"
 #include "libxmms/util.h"
 #include "xmms/i18n.h"
@@ -12,7 +11,6 @@
 
 static InputPlugin flac_ip;
 
-static FLAC__StreamDecoder *decoder = NULL;
 static pthread_t decoder_thread;
 static volatile gboolean is_playing = FALSE;
 static volatile gboolean eof_reached = FALSE;
@@ -23,7 +21,7 @@ static unsigned channels;
 static unsigned bits_per_sample;
 
 static int song_len;
-static gint32 pcm_buf[65536];
+static gint16 pcm_buf[65536];
 
 static FLAC__StreamDecoderWriteStatus flac_write_cb(const FLAC__StreamDecoder *dec, const FLAC__Frame *frame,
                                                     const FLAC__int32 *const buffer[], void *client_data)

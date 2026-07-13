@@ -17602,7 +17602,7 @@ fi
 
 have_spotifyd=no
 if test "x$enable_spotifyd" = "xyes"; then
-	have_spotifyd=yes,
+	have_spotifyd=yes
 else
 	{ printf '%s\n' "$as_me:${as_lineno-$LINENO}: *** spotifyd plugin disabled per user request ***" >&5
 printf '%s\n' "$as_me: *** spotifyd plugin disabled per user request ***" >&6;}

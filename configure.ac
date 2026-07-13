@@ -252,7 +252,7 @@ AC_ARG_ENABLE([spotifyd],
 
 have_spotifyd=no
 if test "x$enable_spotifyd" = "xyes"; then
-	[have_spotifyd=yes],
+	[have_spotifyd=yes]
 else
 	AC_MSG_NOTICE([*** spotifyd plugin disabled per user request ***])
 fi
