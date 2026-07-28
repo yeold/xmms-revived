@@ -715,6 +715,10 @@ LIBMIKMOD_LDADD
 LIBMIKMOD_LIBS
 LIBMIKMOD_CFLAGS
 LIBMIKMOD_CONFIG
+HAVE_SPOTIFYD_FALSE
+HAVE_SPOTIFYD_TRUE
+GIO_LIBS
+GIO_CFLAGS
 HAVE_FLAC_FALSE
 HAVE_FLAC_TRUE
 LIBFLAC_LIBS
@@ -897,6 +901,7 @@ with_libiconv_prefix
 enable_opengl
 enable_esd
 enable_flac
+enable_spotifyd
 enable_mikmod
 with_libmikmod_prefix
 with_libmikmod_exec_prefix
@@ -940,6 +945,8 @@ ESD_CFLAGS
 ESD_LIBS
 LIBFLAC_CFLAGS
 LIBFLAC_LIBS
+GIO_CFLAGS
+GIO_LIBS
 OGG_CFLAGS
 OGG_LIBS
 VORBIS_CFLAGS
@@ -1600,6 +1607,7 @@ Optional Features:
   --disable-opengl        Disable OpenGL plugin(s) default=enabled
   --disable-esd           Disable esound output plugin default=enabled
   --disable-flac          Disable FLAC input plugin [default=enabled]
+  --disable-spotifyd      Disable spotifyd input plugin [default=enabled]
   --disable-mikmod        Disable mikmod input plugin default=enabled
   --disable-libmikmodtest       Do not try to compile and run a test libmikmod program
   --disable-vorbis        Disable Ogg Vorbis input plugin default=enabled
@@ -1673,6 +1681,8 @@ Some influential environment variables:
               C compiler flags for LIBFLAC, overriding pkg-config
   LIBFLAC_LIBS
               linker flags for LIBFLAC, overriding pkg-config
+  GIO_CFLAGS  C compiler flags for GIO, overriding pkg-config
+  GIO_LIBS    linker flags for GIO, overriding pkg-config
   OGG_CFLAGS  C compiler flags for OGG, overriding pkg-config
   OGG_LIBS    linker flags for OGG, overriding pkg-config
   VORBIS_CFLAGS
@@ -17586,6 +17596,103 @@ else
 fi
 
 
+# Check whether --enable-spotifyd was given.
+if test ${enable_spotifyd+y}
+then :
+  enableval=$enable_spotifyd;
+else case e in #(
+  e) enable_spotifyd="yes" ;;
+esac
+fi
+
+
+have_spotifyd=no
+if test "x$enable_spotifyd" = "xyes"; then
+
+pkg_failed=no
+{ printf '%s\n' "$as_me:${as_lineno-$LINENO}: checking for gio-2.0 >= 2.26" >&5
+printf %s "checking for gio-2.0 >= 2.26... " >&6; }
+
+if test -n "$GIO_CFLAGS"; then
+    pkg_cv_GIO_CFLAGS="$GIO_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { printf '%s\n' "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gio-2.0 >= 2.26\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "gio-2.0 >= 2.26") 2>&5
+  ac_status=$?
+  printf '%s\n' "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GIO_CFLAGS=`$PKG_CONFIG --cflags "gio-2.0 >= 2.26" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$GIO_LIBS"; then
+    pkg_cv_GIO_LIBS="$GIO_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { printf '%s\n' "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gio-2.0 >= 2.26\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "gio-2.0 >= 2.26") 2>&5
+  ac_status=$?
+  printf '%s\n' "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GIO_LIBS=`$PKG_CONFIG --libs "gio-2.0 >= 2.26" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+        { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf '%s\n' "no" >&6; }
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+                GIO_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "gio-2.0 >= 2.26" 2>&1`
+        else
+                GIO_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "gio-2.0 >= 2.26" 2>&1`
+        fi
+        # Put the nasty error message in config.log where it belongs
+        echo "$GIO_PKG_ERRORS" >&5
+
+        { printf '%s\n' "$as_me:${as_lineno-$LINENO}: WARNING: *** gio not found; spotifyd plugin will not be built ***" >&5
+printf '%s\n' "$as_me: WARNING: *** gio not found; spotifyd plugin will not be built ***" >&2;}
+elif test $pkg_failed = untried; then
+        { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf '%s\n' "no" >&6; }
+        { printf '%s\n' "$as_me:${as_lineno-$LINENO}: WARNING: *** gio not found; spotifyd plugin will not be built ***" >&5
+printf '%s\n' "$as_me: WARNING: *** gio not found; spotifyd plugin will not be built ***" >&2;}
+else
+        GIO_CFLAGS=$pkg_cv_GIO_CFLAGS
+        GIO_LIBS=$pkg_cv_GIO_LIBS
+        { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf '%s\n' "yes" >&6; }
+        have_spotifyd=yes
+fi
+else
+	{ printf '%s\n' "$as_me:${as_lineno-$LINENO}: *** spotifyd plugin disabled per user request ***" >&5
+printf '%s\n' "$as_me: *** spotifyd plugin disabled per user request ***" >&6;}
+fi
+ if test "x$have_spotifyd" = "xyes"; then
+  HAVE_SPOTIFYD_TRUE=
+  HAVE_SPOTIFYD_FALSE='#'
+else
+  HAVE_SPOTIFYD_TRUE='#'
+  HAVE_SPOTIFYD_FALSE=
+fi
+
 
 # Check whether --enable-mikmod was given.
 if test ${enable_mikmod+y}
@@ -21067,7 +21174,7 @@ if test ${enable_oss+y}
 then :
   enableval=$enable_oss; have_oss=$enableval
 else case e in #(
-  e) have_oss=yes ;;
+  e) have_oss=no ;;
 esac
 fi
 
@@ -22189,7 +22296,7 @@ subdirs="$subdirs libxmms"
 
 
 
-ac_config_files="$ac_config_files Makefile xmms.1 wmxmms.1 xmms.spec xmms-config xmms/Makefile xmms/defskin/Makefile Output/Makefile Output/OSS/Makefile Output/esd/Makefile Output/disk_writer/Makefile Output/solaris/Makefile Output/sun/Makefile Output/alsa/Makefile Input/Makefile Input/wav/Makefile Input/mpg123/Makefile Input/mikmod/Makefile Input/flac/Makefile Input/cdaudio/Makefile Input/tonegen/Makefile Input/vorbis/Makefile Effect/Makefile Effect/voice/Makefile Effect/echo_plugin/Makefile Effect/stereo_plugin/Makefile General/Makefile General/ir/Makefile General/joystick/Makefile General/song_change/Makefile Visualization/Makefile Visualization/blur_scope/Makefile Visualization/sanalyzer/Makefile Visualization/opengl_spectrum/Makefile wmxmms/Makefile po/Makefile.in"
+ac_config_files="$ac_config_files Makefile xmms.1 wmxmms.1 xmms.spec xmms-config xmms/Makefile xmms/defskin/Makefile Output/Makefile Output/OSS/Makefile Output/esd/Makefile Output/disk_writer/Makefile Output/solaris/Makefile Output/sun/Makefile Output/alsa/Makefile Input/Makefile Input/wav/Makefile Input/mpg123/Makefile Input/mikmod/Makefile Input/flac/Makefile Input/spotifyd/Makefile Input/cdaudio/Makefile Input/tonegen/Makefile Input/vorbis/Makefile Effect/Makefile Effect/voice/Makefile Effect/echo_plugin/Makefile Effect/stereo_plugin/Makefile General/Makefile General/ir/Makefile General/joystick/Makefile General/song_change/Makefile Visualization/Makefile Visualization/blur_scope/Makefile Visualization/sanalyzer/Makefile Visualization/opengl_spectrum/Makefile wmxmms/Makefile po/Makefile.in"
 
 
  if test "x$USE_INCLUDED_LIBINTL" = "xyes"; then
@@ -22324,6 +22431,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${HAVE_FLAC_TRUE}" && test -z "${HAVE_FLAC_FALSE}"; then
   as_fn_error $? "conditional \"HAVE_FLAC\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${HAVE_SPOTIFYD_TRUE}" && test -z "${HAVE_SPOTIFYD_FALSE}"; then
+  as_fn_error $? "conditional \"HAVE_SPOTIFYD\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${HAVE_MIKMOD_TRUE}" && test -z "${HAVE_MIKMOD_FALSE}"; then
@@ -23272,6 +23383,7 @@ do
     "Input/mpg123/Makefile") CONFIG_FILES="$CONFIG_FILES Input/mpg123/Makefile" ;;
     "Input/mikmod/Makefile") CONFIG_FILES="$CONFIG_FILES Input/mikmod/Makefile" ;;
     "Input/flac/Makefile") CONFIG_FILES="$CONFIG_FILES Input/flac/Makefile" ;;
+    "Input/spotifyd/Makefile") CONFIG_FILES="$CONFIG_FILES Input/spotifyd/Makefile" ;;
     "Input/cdaudio/Makefile") CONFIG_FILES="$CONFIG_FILES Input/cdaudio/Makefile" ;;
     "Input/tonegen/Makefile") CONFIG_FILES="$CONFIG_FILES Input/tonegen/Makefile" ;;
     "Input/vorbis/Makefile") CONFIG_FILES="$CONFIG_FILES Input/vorbis/Makefile" ;;
@@ -24849,6 +24961,7 @@ echo "  Build BSD Sun plugin:       $have_sun"
 echo "  Build ALSA plugin:          $have_alsa"
 echo "  Build mikmod plugin:        $have_mikmod"
 echo "  Build flac plugin:          $have_flac"
+echo "  Build spotifyd plugin:      $have_spotifyd"
 echo "  Build Ogg Vorbis plugin:    $have_oggvorbis"
 echo "  Build OpenGL plugins:       $have_opengl"
 echo "  Pthread flag:               $PTHREAD_LIBS"

@@ -90,7 +90,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-subdir = Effect/echo_plugin
+subdir = Input/spotifyd
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
 	$(top_srcdir)/m4/host-cpu-c-abi.m4 $(top_srcdir)/m4/iconv.m4 \
@@ -137,16 +137,21 @@ am__uninstall_files_from_dir = { \
   }
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
-libecho_la_DEPENDENCIES =
-am_libecho_la_OBJECTS = echo.lo gui.lo
-libecho_la_OBJECTS = $(am_libecho_la_OBJECTS)
+libinput_spotifyd_la_DEPENDENCIES =
+am__libinput_spotifyd_la_SOURCES_DIST = spotifyd.c
+am__objects_1 = spotifyd.lo
+@HAVE_SPOTIFYD_TRUE@am__objects_2 = $(am__objects_1)
+am_libinput_spotifyd_la_OBJECTS = $(am__objects_2)
+libinput_spotifyd_la_OBJECTS = $(am_libinput_spotifyd_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-libecho_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libecho_la_LDFLAGS) $(LDFLAGS) -o $@
+libinput_spotifyd_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(libinput_spotifyd_la_LDFLAGS) \
+	$(LDFLAGS) -o $@
+@HAVE_SPOTIFYD_TRUE@am_libinput_spotifyd_la_rpath = -rpath $(libdir)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -162,7 +167,7 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir) -I$(top_builddir)/xmms
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/echo.Plo ./$(DEPDIR)/gui.Plo
+am__depfiles_remade = ./$(DEPDIR)/spotifyd.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -182,8 +187,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libecho_la_SOURCES)
-DIST_SOURCES = $(libecho_la_SOURCES)
+SOURCES = $(libinput_spotifyd_la_SOURCES)
+DIST_SOURCES = $(am__libinput_spotifyd_la_SOURCES_DIST)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -385,7 +390,7 @@ htmldir = @htmldir@
 includedir = @includedir@
 infodir = @infodir@
 install_sh = @install_sh@
-libdir = $(plugindir)/$(EFFECT_PLUGIN_DIR)
+libdir = $(plugindir)/$(INPUT_PLUGIN_DIR)
 libexecdir = @libexecdir@
 localedir = @localedir@
 localstatedir = @localstatedir@
@@ -409,15 +414,15 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 xmmsdir = @xmmsdir@
-lib_LTLIBRARIES = libecho.la
-libecho_la_LDFLAGS = @PLUGIN_LDFLAGS@
-libecho_la_LIBADD = @GTK_LIBS@
-libecho_la_SOURCES = \
-echo.c \
-echo.h \
-gui.c
-
-AM_CPPFLAGS = @GTK_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)
+spotifydsources = spotifyd.c
+@HAVE_SPOTIFYD_TRUE@spotifydltlibs = libinput_spotifyd.la
+@HAVE_SPOTIFYD_TRUE@spotifydbuildsources = $(spotifydsources)
+EXTRA_DIST = $(spotifydsources)
+lib_LTLIBRARIES = $(spotifydltlibs)
+AM_CPPFLAGS = @GTK_CFLAGS@ @GIO_CFLAGS@ -I$(top_builddir)/intl -I$(top_srcdir)
+libinput_spotifyd_la_LDFLAGS = @PLUGIN_LDFLAGS@
+libinput_spotifyd_la_LIBADD = @GTK_LIBS@ @GIO_LIBS@
+libinput_spotifyd_la_SOURCES = $(spotifydbuildsources)
 all: all-am
 
 .SUFFIXES:
@@ -431,9 +436,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu Effect/echo_plugin/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu Input/spotifyd/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu Effect/echo_plugin/Makefile
+	  $(AUTOMAKE) --gnu Input/spotifyd/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
@@ -485,8 +490,8 @@ clean-libLTLIBRARIES:
 	echo rm -f $${locs}; \
 	$(am__rm_f) $${locs}
 
-libecho.la: $(libecho_la_OBJECTS) $(libecho_la_DEPENDENCIES) $(EXTRA_libecho_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(libecho_la_LINK) -rpath $(libdir) $(libecho_la_OBJECTS) $(libecho_la_LIBADD) $(LIBS)
+libinput_spotifyd.la: $(libinput_spotifyd_la_OBJECTS) $(libinput_spotifyd_la_DEPENDENCIES) $(EXTRA_libinput_spotifyd_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libinput_spotifyd_la_LINK) $(am_libinput_spotifyd_la_rpath) $(libinput_spotifyd_la_OBJECTS) $(libinput_spotifyd_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -494,8 +499,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/echo.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gui.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spotifyd.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -658,8 +662,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 	mostlyclean-am
 
 distclean: distclean-am
-	-rm -f ./$(DEPDIR)/echo.Plo
-	-rm -f ./$(DEPDIR)/gui.Plo
+	-rm -f ./$(DEPDIR)/spotifyd.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -705,8 +708,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -f ./$(DEPDIR)/echo.Plo
-	-rm -f ./$(DEPDIR)/gui.Plo
+	-rm -f ./$(DEPDIR)/spotifyd.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

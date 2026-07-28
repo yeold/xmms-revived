@@ -1,4 +1,3 @@
-#include "flac.h"
 #include "config.h"
 #include "libxmms/titlestring.h"
 #include "libxmms/util.h"
